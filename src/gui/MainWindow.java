@@ -99,7 +99,6 @@ public class MainWindow extends JFrame {
         helpMenu.add(aboutAction);
         //OBJECTS INITIALIZATION
         //TEXT FIELDS
-       // newIngredientName = new JTextField();
         ingredientInSearchComboBox = new JComboBox<String>();
         IngredientsList.reloadComboBox(ingredientInSearchComboBox);
         //BUTTONS
@@ -298,7 +297,6 @@ public class MainWindow extends JFrame {
                 if(manageIngredientsInputList.getSelectedIndex()>=0)
                 {
                     IngredientsList.removeIngredient(manageIngredientsInputList.getSelectedValue());
-                    //manageIngredientsInputListModel.removeElementAt(manageIngredientsInputList.getSelectedIndex());
                 }
                 IngredientsList.rebuildModel(manageIngredientsInputListModel);
                 IngredientsList.reloadComboBox(ingredientInSearchComboBox);
@@ -337,33 +335,6 @@ public class MainWindow extends JFrame {
         add(mainTable);
         repaint();
     }
-
-    //Tymczasowa metoda, jedynie do wyświetlenia czegokolwiek, prawdziwa metoda "showRecipe" (poniżej)
-    //przyjmuje jako argument przepis do wyświetlenia (przepis - obiekt takiej klasy)
-    /*private void showRecipe(String name, String instructions)
-    {
-        recipesBorderLayout = new JPanel(new BorderLayout());
-        recipeTextArea = new JTextArea();
-        recipeTextArea.setEditable(false);
-        String toShow = new String();
-
-        toShow+=name+="\n\n\n";
-        toShow+=instructions;
-        recipeTextArea.setText(toShow);
-        recipeTextAreaScrollPane = new JScrollPane(recipeTextArea);
-        recipesBorderLayout.add(recipeTextAreaScrollPane, BorderLayout.CENTER);
-        closeTab = new JButton(WhatToCook.selectedLanguagePack.get(23));
-        closeTab.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                mainTable.removeTabAt(mainTable.getSelectedIndex());
-            }
-        });
-        recipesBorderLayout.add(closeTab, BorderLayout.SOUTH);
-        mainTable.addTab(name, recipesBorderLayout);
-        if (settingsDialog.getToNewCardCheckbox() == true) {
-            mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
-        }
-    }*/
 
     private void showRecipe(Recipe recipeToShow) {
         recipesBorderLayout = new JPanel(new BorderLayout());
