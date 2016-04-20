@@ -23,7 +23,9 @@ public class WhatToCook implements Runnable {
         buildEnglishLanguage();
         selectedLanguagePack = polishLanguagePack;
 
-        recipesDatabase = new ReceipesList();
+        RecipesList.initialize();
+        IngredientsList.initialize();
+        IngredientsList.loadIngredients();
 
         Scanner in;
         try
@@ -73,7 +75,7 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Search");
         englishLanguagePack.add("Recipes Database");
         englishLanguagePack.add("Insert ingredients");
-        englishLanguagePack.add("Insert ingredients name and quantity");
+        englishLanguagePack.add("Choose ingredients:");
         englishLanguagePack.add("Add ingredients");
         englishLanguagePack.add("Remove ingredients");
         englishLanguagePack.add("Founds receipes");
@@ -89,6 +91,11 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Auto-Move to the new tab");
         englishLanguagePack.add("Language");
         englishLanguagePack.add("General");
+        englishLanguagePack.add("Ingredients");
+        englishLanguagePack.add("Ingredient Name:");
+        englishLanguagePack.add("Add");
+        englishLanguagePack.add("Remove");
+        englishLanguagePack.add("Remove recipe");
 
     }
 
@@ -106,7 +113,7 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Wyszukiwanie");
         polishLanguagePack.add("Baza Przepisów");
         polishLanguagePack.add("Wprowadź składniki");
-        polishLanguagePack.add("Podaj nazwę i ilość składników");
+        polishLanguagePack.add("Wybierz składniki:");
         polishLanguagePack.add("Dodaj składnik");
         polishLanguagePack.add("Usuń składnik");
         polishLanguagePack.add("Znalezione przepisy");
@@ -122,12 +129,17 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Automatyczne przechodzenie do nowej karty");
         polishLanguagePack.add("Język");
         polishLanguagePack.add("Ogólne");
-
+    //27
+        polishLanguagePack.add("Składniki");
+        polishLanguagePack.add("Nazwa Składnika:");
+        polishLanguagePack.add("Dodaj");
+        polishLanguagePack.add("Usuń");
+        polishLanguagePack.add("Usuń przepis");
     }
     public static ArrayList<String> polishLanguagePack;
     public static ArrayList<String> englishLanguagePack;
     public static ArrayList<String> selectedLanguagePack;
     public static MainWindow frame;
 
-    public static ReceipesList recipesDatabase;
+    //public static RecipesList recipesDatabase;
 }
