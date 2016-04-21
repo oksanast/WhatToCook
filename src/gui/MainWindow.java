@@ -63,6 +63,8 @@ public class MainWindow extends JFrame {
 
         if (settingsDialog == null)
             settingsDialog = new SettingsWindow(MainWindow.this);
+        if(aboutDialog == null)
+            aboutDialog = new AboutWindow(MainWindow.this);
 
         Action settingsAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(6)) {
             public void actionPerformed(ActionEvent event) {
@@ -93,7 +95,7 @@ public class MainWindow extends JFrame {
         };
         Action aboutAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(7)) {
             public void actionPerformed(ActionEvent event) {
-
+                aboutDialog.setVisible(true);
             }
         };
         fileMenu.add(exitAction);
@@ -646,6 +648,7 @@ public class MainWindow extends JFrame {
     private JScrollPane instructionAreaJScrollPane;
 
     private SettingsWindow settingsDialog;
+    private AboutWindow aboutDialog;
 
     public static boolean getToNewCard;
 }

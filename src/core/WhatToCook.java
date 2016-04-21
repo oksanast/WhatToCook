@@ -101,6 +101,9 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Check input ingredients, name and preparing instructions. Maybe the same recipe is already in the database");
         englishLanguagePack.add("Recipe Error");
         englishLanguagePack.add("Insert recipe name:");
+        englishLanguagePack.add("About");
+        englishLanguagePack.add("OK");
+        englishLanguagePack.add("Authors");
     }
 
     private void buildPolishLanguage()
@@ -141,6 +144,9 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Sprawdź czy podałeś składniki, nazwę i instrukcję przygotowania. Być może taki przepis już jest w bazie");
         polishLanguagePack.add("Błąd Przepisu");
         polishLanguagePack.add("Podaj nazwę przepisu:");
+        polishLanguagePack.add("O programie");
+        polishLanguagePack.add("OK");
+        polishLanguagePack.add("Autorzy");
     }
     public static ArrayList<String> polishLanguagePack;
     public static ArrayList<String> englishLanguagePack;
