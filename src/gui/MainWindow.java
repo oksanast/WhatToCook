@@ -1,10 +1,6 @@
 package gui;
 
-import core.Ingredient;
-import core.IngredientsList;
-import core.Recipe;
-import core.RecipesList;
-import core.WhatToCook;
+import core.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,7 +52,7 @@ public class MainWindow extends JFrame {
 
         if (settingsDialog == null)
             settingsDialog = new SettingsWindow(MainWindow.this);
-        if(aboutDialog == null)
+        if (aboutDialog == null)
             aboutDialog = new AboutWindow(MainWindow.this);
 
         Action settingsAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(6)) {
@@ -108,14 +104,12 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent event) {
                 receipesOutputListModel.clear();
                 ArrayList<Ingredient> ingredients = new ArrayList<>();
-                for(int i = 0;i < ingredientsInputListModel.size();i++)
-                {
+                for (int i = 0; i < ingredientsInputListModel.size(); i++) {
                     String name[] = ingredientsInputListModel.getElementAt(i).split(" ");
                     ingredients.add(new Ingredient(name[1]));
                 }
-                for(int i = 0; i < RecipesList.size();i++)
-                {
-                    if(RecipesList.checkWithIngredientsList(ingredients, i))
+                for (int i = 0; i < RecipesList.size(); i++) {
+                    if (RecipesList.checkWithIngredientsList(ingredients, i))
                         receipesOutputListModel.addElement(RecipesList.getRecipeNameAtIndex(i));
                 }
             }
@@ -123,19 +117,17 @@ public class MainWindow extends JFrame {
         addIngredientButton = new JButton(WhatToCook.selectedLanguagePack.get(12));
         addIngredientButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                        String newForm = "● " + ingredientInSearchComboBox.getSelectedItem();
-                        boolean exist = false;
-                        for(int i = 0; i < ingredientsInputListModel.getSize();i++)
-                        {
-                            if((newForm.equals(ingredientsInputListModel.get(i))))
-                            {
-                                exist = true;
-                                break;
-                            }
-                        }
-                        if(!exist) {
-                            ingredientsInputListModel.addElement(newForm);
-                        }
+                String newForm = "● " + ingredientInSearchComboBox.getSelectedItem();
+                boolean exist = false;
+                for (int i = 0; i < ingredientsInputListModel.getSize(); i++) {
+                    if ((newForm.equals(ingredientsInputListModel.get(i)))) {
+                        exist = true;
+                        break;
+                    }
+                }
+                if (!exist) {
+                    ingredientsInputListModel.addElement(newForm);
+                }
             }
         });
         removeIngredientButton = new JButton(WhatToCook.selectedLanguagePack.get(13));
@@ -161,9 +153,8 @@ public class MainWindow extends JFrame {
                 if (e.getClickCount() == 2) {
                     int index = receipesOutputList.getSelectedIndex();
                     int i;
-                    for(i = 0; i < RecipesList.size();i++)
-                    {
-                        if(receipesOutputListModel.get(index).equals(RecipesList.recipesList.get(i).getName()))
+                    for (i = 0; i < RecipesList.size(); i++) {
+                        if (receipesOutputListModel.get(index).equals(RecipesList.recipesList.get(i).getName()))
                             break;
                     }
                     showRecipe(RecipesList.recipesList.get(i));
@@ -228,9 +219,8 @@ public class MainWindow extends JFrame {
                 if (e.getClickCount() == 2) {
                     int index = receipesList.getSelectedIndex();
                     int i;
-                    for(i = 0; i < RecipesList.recipesList.size();i++)
-                    {
-                        if(receipesListModel.get(index).equals(RecipesList.recipesList.get(i).getName()))
+                    for (i = 0; i < RecipesList.recipesList.size(); i++) {
+                        if (receipesListModel.get(index).equals(RecipesList.recipesList.get(i).getName()))
                             break;
                     }
                     showRecipe(RecipesList.recipesList.get(i));
@@ -253,9 +243,9 @@ public class MainWindow extends JFrame {
         manageReceipesMainPanel.add(manageReceipesGridPanel, BorderLayout.CENTER);
 
         //CREATING INGREDIENTS MANAGE WINDOW
-        ingredientsMainGridLayout = new JPanel(new GridLayout(1,2));
+        ingredientsMainGridLayout = new JPanel(new GridLayout(1, 2));
         ingredientsRightBorderLayout = new JPanel(new BorderLayout());
-        ingredientsRightGridLayout = new JPanel(new GridLayout(4,1));
+        ingredientsRightGridLayout = new JPanel(new GridLayout(4, 1));
         manageIngredientsInputListModel = new DefaultListModel<>();
         manageIngredientsInputList = new JList<>();
         manageIngredientsInputList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -269,7 +259,7 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean exist = false;
-                if(!newIngredientTextField.getText().equals("")) {
+                if (!newIngredientTextField.getText().equals("")) {
 
 
                     Ingredient toAdd = new Ingredient(newIngredientTextField.getText());
@@ -286,8 +276,7 @@ public class MainWindow extends JFrame {
         removeIngredientsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(manageIngredientsInputList.getSelectedIndex()>=0)
-                {
+                if (manageIngredientsInputList.getSelectedIndex() >= 0) {
                     IngredientsList.removeIngredient(manageIngredientsInputList.getSelectedValue());
                 }
                 IngredientsList.rebuildModel(manageIngredientsInputListModel);
@@ -296,12 +285,12 @@ public class MainWindow extends JFrame {
             }
         });
         //KONIEC SEKCJI
-        ingredientsRightGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(28),SwingConstants.HORIZONTAL));
+        ingredientsRightGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(28), SwingConstants.HORIZONTAL));
         ingredientsRightGridLayout.add(newIngredientTextField);
         ingredientsRightGridLayout.add(newIngredientButton);
         ingredientsRightGridLayout.add(removeIngredientsButton);
 
-        ingredientsRightBorderLayout.add(ingredientsRightGridLayout,BorderLayout.NORTH);
+        ingredientsRightBorderLayout.add(ingredientsRightGridLayout, BorderLayout.NORTH);
         ingredientsMainGridLayout.add(manageIngredientsListScrollPane);
         ingredientsMainGridLayout.add(ingredientsRightBorderLayout);
         //PANELS AND OBJECTS LOCATION
@@ -323,10 +312,11 @@ public class MainWindow extends JFrame {
         refreshGUILists();
         mainTable.addTab(WhatToCook.selectedLanguagePack.get(8), mainBorderLayout);
         mainTable.add(WhatToCook.selectedLanguagePack.get(9), manageReceipesMainPanel);
-        mainTable.add(WhatToCook.selectedLanguagePack.get(27),ingredientsMainGridLayout);
+        mainTable.add(WhatToCook.selectedLanguagePack.get(27), ingredientsMainGridLayout);
         add(mainTable);
         repaint();
     }
+
     //FUNCKJA OTWIERA NOWĄ KARTĘ Z KONKRETNYM PRZEPISEM
     private void showRecipe(Recipe recipeToShow) {
         recipesBorderLayout = new JPanel(new BorderLayout());
@@ -335,13 +325,12 @@ public class MainWindow extends JFrame {
         recipeTextArea.setLineWrap(true);
         String toShow = "";
         toShow += "Przepis: " + recipeToShow.getName() + "\n\n\n";
-        toShow += "Potrzebne składniki: "+"\n\n";
-        for(int i = 0; i < recipeToShow.getSize();i++)
-        {
-            toShow+=recipeToShow.getIngredient(i).toString()+"\n";
+        toShow += "Potrzebne składniki: " + "\n\n";
+        for (int i = 0; i < recipeToShow.getSize(); i++) {
+            toShow += recipeToShow.getIngredient(i).toString() + "\n";
         }
-        toShow+="\n\n";
-        toShow += "Wykonanie:" + "\n\n" +recipeToShow.getRecipe();
+        toShow += "\n\n";
+        toShow += "Wykonanie:" + "\n\n" + recipeToShow.getRecipe();
         recipeTextArea.setText(toShow);
         recipeTextAreaScrollPane = new JScrollPane(recipeTextArea);
         recipesBorderLayout.add(recipeTextAreaScrollPane, BorderLayout.CENTER);
@@ -353,25 +342,24 @@ public class MainWindow extends JFrame {
         });
         recipesBorderLayout.add(closeTab, BorderLayout.SOUTH);
         mainTable.addTab(recipeToShow.getName(), recipesBorderLayout);
-       // if (settingsDialog.getToNewCardCheckbox()) {
-       //     mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
-       // }
-        if(MainWindow.getToNewCard)
-        {
+        // if (settingsDialog.getToNewCardCheckbox()) {
+        //     mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
+        // }
+        if (MainWindow.getToNewCard) {
             mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
         }
 
     }
+
     private void refreshGUILists() {
         receipesListModel.clear();
-        for(int i = 0; i < RecipesList.recipesList.size();i++)
-        {
+        for (int i = 0; i < RecipesList.recipesList.size(); i++) {
             receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
         }
     }
+
     //FUNKCJA TWORZY KARTĘ DO EDYCJI PRZEPISU
-    private void showNewEditMenu(int index)
-    {
+    private void showNewEditMenu(int index) {
         newEditMainBorderLayout = new JPanel(new BorderLayout());
         newEditMainGridLayout = new JPanel(new GridLayout(2, 1));
         newEditUpGridLayout = new JPanel((new GridLayout(1, 2)));
@@ -396,24 +384,19 @@ public class MainWindow extends JFrame {
                 String instructions = instructionsInsertTextArea.getText();
                 String[] oneIngredientFromList;
                 ArrayList<Ingredient> ingredients = new ArrayList<>();
-                for(int i = 0; i < ingredientsInputInRecipeListModel.getSize();i++)
-                {
+                for (int i = 0; i < ingredientsInputInRecipeListModel.getSize(); i++) {
                     oneIngredientFromList = ingredientsInputInRecipeListModel.getElementAt(i).split(" ");
                     Ingredient ingredient;
-                    if (oneIngredientFromList.length==2)
-                    {
+                    if (oneIngredientFromList.length == 2) {
                         ingredient = new Ingredient(oneIngredientFromList[1]);
-                    }
-                    else
-                    {
+                    } else {
                         ingredient = new Ingredient(oneIngredientFromList[1]);
                     }
 
                     ingredients.add(ingredient);
                 }
                 Recipe newRecipe = new Recipe(name, ingredients, instructions);
-                if(index<0)
-                {
+                if (index < 0) {
                     if ((!name.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty()) && (!RecipesList.isRecipe(newRecipe))) {
                         RecipesList.add(newRecipe);
                         refreshGUILists();
@@ -423,11 +406,9 @@ public class MainWindow extends JFrame {
                         JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(32), WhatToCook.selectedLanguagePack.get(33), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
                     }
                 }
-                if(index>=0)
-                {
+                if (index >= 0) {
                     if ((!name.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty())) {
-                        if(RecipesList.recipesList.get(index).getName().equals(name) || (!RecipesList.isRecipe(newRecipe)))
-                        {
+                        if (RecipesList.recipesList.get(index).getName().equals(name) || (!RecipesList.isRecipe(newRecipe))) {
                             RecipesList.remove(RecipesList.recipesList.get(index).getName());
                             RecipesList.add(newRecipe);
                             refreshGUILists();
@@ -444,21 +425,19 @@ public class MainWindow extends JFrame {
         newEditAddIngredientButton = new JButton(WhatToCook.selectedLanguagePack.get(12));
         newEditAddIngredientButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                    if (!ingredientInCreatingRecipeComboBox.getSelectedItem().equals("")) {
-                        String newForm = "● " + ingredientInCreatingRecipeComboBox.getSelectedItem();
-                        boolean exist = false;
-                        for(int i = 0; i < ingredientsInputInRecipeListModel.getSize();i++)
-                        {
-                            if((newForm.equals(ingredientsInputInRecipeListModel.get(i))))
-                            {
-                                exist = true;
-                                break;
-                            }
-                        }
-                        if(!exist) {
-                            ingredientsInputInRecipeListModel.addElement(newForm);
+                if (!ingredientInCreatingRecipeComboBox.getSelectedItem().equals("")) {
+                    String newForm = "● " + ingredientInCreatingRecipeComboBox.getSelectedItem();
+                    boolean exist = false;
+                    for (int i = 0; i < ingredientsInputInRecipeListModel.getSize(); i++) {
+                        if ((newForm.equals(ingredientsInputInRecipeListModel.get(i)))) {
+                            exist = true;
+                            break;
                         }
                     }
+                    if (!exist) {
+                        ingredientsInputInRecipeListModel.addElement(newForm);
+                    }
+                }
             }
         });
         newEditRemoveIngredientButton = new JButton(WhatToCook.selectedLanguagePack.get(13));
@@ -490,14 +469,12 @@ public class MainWindow extends JFrame {
         newEditTopGridLayout.add(recipeNameTextField);
         newEditMainUpBorderLayout.add(newEditTopGridLayout, BorderLayout.NORTH);
 
-        if(index>=0)
-        {
+        if (index >= 0) {
             recipeNameTextField.setText(RecipesList.recipesList.get(index).getName());
             instructionsInsertTextArea.setText(RecipesList.recipesList.get(index).getRecipe());
-            for(int i =0; i < RecipesList.recipesList.get(index).getSize();i++)
-            {
+            for (int i = 0; i < RecipesList.recipesList.get(index).getSize(); i++) {
                 String toAdd;
-                    toAdd = "● " + RecipesList.recipesList.get(index).getIngredient(i).getName();
+                toAdd = "● " + RecipesList.recipesList.get(index).getIngredient(i).getName();
 
                 ingredientsInputInRecipeListModel.addElement(toAdd);
             }
@@ -526,21 +503,18 @@ public class MainWindow extends JFrame {
         newEditMainGridLayout.add(newEditMainDownBorderLayout);
 
         newEditMainBorderLayout.add(newEditMainGridLayout, BorderLayout.CENTER);
-        if(index==-1) {
+        if (index == -1) {
             mainTable.addTab(WhatToCook.selectedLanguagePack.get(17), newEditMainBorderLayout);
-        }
-        else
-        {
+        } else {
             mainTable.addTab(RecipesList.recipesList.get(index).getName(), newEditMainBorderLayout);
         }
-        if(MainWindow.getToNewCard)
-        {
+        if (MainWindow.getToNewCard) {
             mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
         }
 
     }
-    private void showNewEditMenu()
-    {
+
+    private void showNewEditMenu() {
         showNewEditMenu(-1);
     }
 
@@ -578,7 +552,7 @@ public class MainWindow extends JFrame {
 
     private JTextArea instructionsInsertTextArea;
     private JTextField recipeNameTextField;
-   // private JTextField newEditInsertIngredientTextField;
+    // private JTextField newEditInsertIngredientTextField;
 
     private JPanel manageReceipesMainPanel;
     private JPanel manageReceipesGridPanel;
