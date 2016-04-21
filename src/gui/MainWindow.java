@@ -39,14 +39,19 @@ public class MainWindow extends JFrame {
         mainBorderLayout = new JPanel(new BorderLayout());
         downBorderLayout = new JPanel(new BorderLayout());
         upBorderLayout = new JPanel(new BorderLayout());
-
         mainGridLayout = new JPanel(new GridLayout(2, 1));
         upGridLayout = new JPanel(new GridLayout(1, 2));
         upRightGridLayout = new JPanel(new GridLayout(4, 1));
 
+        manageReceipesMainPanel = new JPanel(new BorderLayout());
+        manageReceipesGridPanel = new JPanel(new GridLayout(1, 2));
+        manageReceipesLeftBorderLayout = new JPanel(new BorderLayout());
+        manageReceipesLeftUpGridPanel = new JPanel(new GridLayout(2, 1));
+        manageReceipesLeftDownGridPanel = new JPanel(new GridLayout(1, 3));
+
         isEditionTurnOn = false;
 
-        //MENUBAR CREATING
+        //MENUBAR CREATING/////////////////////////////////////////////////////////////////////////////////////////////
         mainMenu = new JMenuBar();
         setJMenuBar(mainMenu);
         fileMenu = new JMenu(WhatToCook.selectedLanguagePack.get(0));
@@ -97,7 +102,8 @@ public class MainWindow extends JFrame {
         editMenu.addSeparator();
         editMenu.add(settingsAction);
         helpMenu.add(aboutAction);
-        //OBJECTS INITIALIZATION
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //OBJECTS INITIALIZATION////////////////////////////////////////////////////////////////////////////////////////
         //TEXT FIELDS
         ingredientInSearchComboBox = new JComboBox<String>();
         IngredientsList.reloadComboBox(ingredientInSearchComboBox);
@@ -215,13 +221,6 @@ public class MainWindow extends JFrame {
             }
         });
 
-        manageReceipesMainPanel = new JPanel(new BorderLayout());
-        manageReceipesGridPanel = new JPanel(new GridLayout(1, 2));
-        manageReceipesLeftBorderLayout = new JPanel(new BorderLayout());
-        manageReceipesLeftUpGridPanel = new JPanel(new GridLayout(2, 1));
-        manageReceipesLeftDownGridPanel = new JPanel(new GridLayout(1, 3));
-
-
         receipesListModel = new DefaultListModel<String>();
         receipesList = new JList<String>();
         receipesList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -334,7 +333,7 @@ public class MainWindow extends JFrame {
         add(mainTable);
         repaint();
     }
-
+    //FUNCKJA OTWIERA NOWĄ KARTĘ Z KONKRETNYM PRZEPISEM
     private void showRecipe(Recipe recipeToShow) {
         recipesBorderLayout = new JPanel(new BorderLayout());
         recipeTextArea = new JTextArea();
@@ -376,6 +375,7 @@ public class MainWindow extends JFrame {
             receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
         }
     }
+    //FUNKCJA TWORZY KARTĘ DO EDYCJI PRZEPISU
     private void showNewEditMenu(int index)
     {
         newEditMainBorderLayout = new JPanel(new BorderLayout());
@@ -542,10 +542,6 @@ public class MainWindow extends JFrame {
         {
             mainTable.addTab(RecipesList.recipesList.get(index).getName(), newEditMainBorderLayout);
         }
-
-       // if (settingsDialog.getToNewCardCheckbox()) {
-       //     mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
-       // }
         if(MainWindow.getToNewCard)
         {
             mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
@@ -615,9 +611,6 @@ public class MainWindow extends JFrame {
     private JButton newRecipe;
     private JButton editRecipe;
     private JButton deleteRecipe;
-
-
- //   private JTextField newIngredientName;
 
     private JMenuBar mainMenu;
     public JMenu fileMenu;
