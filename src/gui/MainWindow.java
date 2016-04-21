@@ -94,8 +94,8 @@ public class MainWindow extends JFrame {
         fileMenu.add(exitAction);
         editMenu.add(clearIngredientsAction);
         editMenu.add(clearReceipesAction);
-        helpMenu.add(settingsAction);
-        helpMenu.addSeparator();
+        editMenu.addSeparator();
+        editMenu.add(settingsAction);
         helpMenu.add(aboutAction);
         //OBJECTS INITIALIZATION
         //TEXT FIELDS
@@ -360,7 +360,11 @@ public class MainWindow extends JFrame {
         });
         recipesBorderLayout.add(closeTab, BorderLayout.SOUTH);
         mainTable.addTab(recipeToShow.getName(), recipesBorderLayout);
-        if (settingsDialog.getToNewCardCheckbox()) {
+       // if (settingsDialog.getToNewCardCheckbox()) {
+       //     mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
+       // }
+        if(MainWindow.getToNewCard)
+        {
             mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
         }
 
@@ -422,7 +426,7 @@ public class MainWindow extends JFrame {
                         isEditionTurnOn = false;
                         mainTable.removeTabAt(mainTable.getSelectedIndex());
                     } else {
-                        JOptionPane.showConfirmDialog(null, "Sprawdź czy podałeś składniki, nazwę i instrukcję przygotowania. Być może taki przepis już jest w bazie", "Błąd Przepisu", JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(32), WhatToCook.selectedLanguagePack.get(33), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 if(index>=0)
@@ -437,7 +441,7 @@ public class MainWindow extends JFrame {
                             mainTable.removeTabAt(mainTable.getSelectedIndex());
                         }
                     } else {
-                        JOptionPane.showConfirmDialog(null, "Sprawdź czy podałeś składniki, nazwę i instrukcję przygotowania. Być może taki przepis już jest w bazie", "Błąd Przepisu", JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(32), WhatToCook.selectedLanguagePack.get(33), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -491,7 +495,7 @@ public class MainWindow extends JFrame {
         instructionAreaJScrollPane = new JScrollPane(instructionsInsertTextArea);
         recipeNameTextField = new JTextField();
 
-        newEditTopGridLayout.add(new JLabel("Podaj nazwę przepisu:", SwingConstants.CENTER));
+        newEditTopGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(34), SwingConstants.CENTER));
         newEditTopGridLayout.add(recipeNameTextField);
         newEditMainUpBorderLayout.add(newEditTopGridLayout, BorderLayout.NORTH);
 
@@ -539,7 +543,11 @@ public class MainWindow extends JFrame {
             mainTable.addTab(RecipesList.recipesList.get(index).getName(), newEditMainBorderLayout);
         }
 
-        if (settingsDialog.getToNewCardCheckbox()) {
+       // if (settingsDialog.getToNewCardCheckbox()) {
+       //     mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
+       // }
+        if(MainWindow.getToNewCard)
+        {
             mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
         }
 
@@ -645,4 +653,6 @@ public class MainWindow extends JFrame {
     private JScrollPane instructionAreaJScrollPane;
 
     private SettingsWindow settingsDialog;
+
+    public static boolean getToNewCard;
 }

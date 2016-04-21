@@ -23,6 +23,17 @@ public class SettingsWindow extends JDialog
         languageComboBox.addItem("English");
         mainGridLayout = new JPanel(new GridLayout(2,2));
         toNewCardCheckbox = new JCheckBox();
+        if(MainWindow.getToNewCard)
+        {
+            toNewCardCheckbox.setSelected(true);
+        }
+        toNewCardCheckbox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(toNewCardCheckbox.isSelected()) MainWindow.getToNewCard = true;
+                else MainWindow.getToNewCard = false;
+            }
+        });
         mainGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(24),SwingConstants.CENTER));
         mainGridLayout.add(toNewCardCheckbox);
         mainGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(25),SwingConstants.CENTER));

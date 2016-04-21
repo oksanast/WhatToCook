@@ -34,8 +34,10 @@ public class WhatToCook implements Runnable {
             String language = in.next();
             if(language.equals("english"))
                 selectedLanguagePack = englishLanguagePack;
-            else
+            if(language.equals("polski"))
                 selectedLanguagePack = polishLanguagePack;
+            MainWindow.getToNewCard = in.nextBoolean();
+            System.out.println(MainWindow.getToNewCard);
 
         }
         catch (FileNotFoundException e)
@@ -70,7 +72,7 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Clear inserted ingredients");
         englishLanguagePack.add("Clear search results");
         englishLanguagePack.add("Help");
-        englishLanguagePack.add("Settings");
+        englishLanguagePack.add("Options");
         englishLanguagePack.add("About");
         englishLanguagePack.add("Search");
         englishLanguagePack.add("Recipes Database");
@@ -96,7 +98,9 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Add");
         englishLanguagePack.add("Remove");
         englishLanguagePack.add("Remove recipe");
-
+        englishLanguagePack.add("Check input ingredients, name and preparing instructions. Maybe the same recipe is already in the database");
+        englishLanguagePack.add("Recipe Error");
+        englishLanguagePack.add("Insert recipe name:");
     }
 
     private void buildPolishLanguage()
@@ -108,7 +112,7 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Wyczyść wprowadzone składniki");
         polishLanguagePack.add("Wyczyść wyniki wyszukiwania");
         polishLanguagePack.add("Pomoc");
-        polishLanguagePack.add("Ustawienia");
+        polishLanguagePack.add("Opcje");
         polishLanguagePack.add("O Programie");
         polishLanguagePack.add("Wyszukiwanie");
         polishLanguagePack.add("Baza Przepisów");
@@ -129,12 +133,14 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Automatyczne przechodzenie do nowej karty");
         polishLanguagePack.add("Język");
         polishLanguagePack.add("Ogólne");
-    //27
         polishLanguagePack.add("Składniki");
         polishLanguagePack.add("Nazwa Składnika:");
         polishLanguagePack.add("Dodaj");
         polishLanguagePack.add("Usuń");
         polishLanguagePack.add("Usuń przepis");
+        polishLanguagePack.add("Sprawdź czy podałeś składniki, nazwę i instrukcję przygotowania. Być może taki przepis już jest w bazie");
+        polishLanguagePack.add("Błąd Przepisu");
+        polishLanguagePack.add("Podaj nazwę przepisu:");
     }
     public static ArrayList<String> polishLanguagePack;
     public static ArrayList<String> englishLanguagePack;
