@@ -7,19 +7,12 @@ import core.RecipesList;
 import core.WhatToCook;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-import static java.lang.String.valueOf;
 
 /**
  * Created by Mateusz on 20.03.2016.
@@ -107,14 +100,14 @@ public class MainWindow extends JFrame {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //OBJECTS INITIALIZATION////////////////////////////////////////////////////////////////////////////////////////
         //TEXT FIELDS
-        ingredientInSearchComboBox = new JComboBox<String>();
+        ingredientInSearchComboBox = new JComboBox<>();
         IngredientsList.reloadComboBox(ingredientInSearchComboBox);
         //BUTTONS
         execute = new JButton(WhatToCook.selectedLanguagePack.get(15));
         execute.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 receipesOutputListModel.clear();
-                ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+                ArrayList<Ingredient> ingredients = new ArrayList<>();
                 for(int i = 0;i < ingredientsInputListModel.size();i++)
                 {
                     String name[] = ingredientsInputListModel.getElementAt(i).split(" ");
@@ -155,12 +148,12 @@ public class MainWindow extends JFrame {
             }
         });
         //JLISTS
-        receipesOutputListModel = new DefaultListModel<String>();
-        receipesOutputList = new JList<String>();
+        receipesOutputListModel = new DefaultListModel<>();
+        receipesOutputList = new JList<>();
         receipesOutputList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         receipesOutputList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         receipesOutputList.setVisibleRowCount(-1);
-        receipesOutputList = new JList<String>(receipesOutputListModel);
+        receipesOutputList = new JList<>(receipesOutputListModel);
         receipesOutputListScrollPane = new JScrollPane(receipesOutputList);
         receipesOutputList.addMouseListener(new MouseAdapter() {
             @Override
@@ -177,12 +170,12 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-        ingredientsInputListModel = new DefaultListModel<String>();
-        ingredientsInputList = new JList<String>();
+        ingredientsInputListModel = new DefaultListModel<>();
+        ingredientsInputList = new JList<>();
         ingredientsInputList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         ingredientsInputList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         ingredientsInputList.setVisibleRowCount(-1);
-        ingredientsInputList = new JList<String>(ingredientsInputListModel);
+        ingredientsInputList = new JList<>(ingredientsInputListModel);
         ingredientsInputListScrollPane = new JScrollPane(ingredientsInputList);
         //MANAGE RECEIPES CREATING SECTION
 
@@ -202,8 +195,7 @@ public class MainWindow extends JFrame {
         editRecipe = new JButton(WhatToCook.selectedLanguagePack.get(18));
         editRecipe.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 String recipeName = receipesListModel.getElementAt(receipesList.getSelectedIndex());
                 int index = RecipesList.getIndex(recipeName);
                 if (!isEditionTurnOn) {
@@ -223,12 +215,12 @@ public class MainWindow extends JFrame {
             }
         });
 
-        receipesListModel = new DefaultListModel<String>();
-        receipesList = new JList<String>();
+        receipesListModel = new DefaultListModel<>();
+        receipesList = new JList<>();
         receipesList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         receipesList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         receipesList.setVisibleRowCount(-1);
-        receipesList = new JList<String>(receipesListModel);
+        receipesList = new JList<>(receipesListModel);
         receipesListScrollPane = new JScrollPane(receipesList);
         receipesList.addMouseListener(new MouseAdapter() {
             @Override
@@ -264,12 +256,12 @@ public class MainWindow extends JFrame {
         ingredientsMainGridLayout = new JPanel(new GridLayout(1,2));
         ingredientsRightBorderLayout = new JPanel(new BorderLayout());
         ingredientsRightGridLayout = new JPanel(new GridLayout(4,1));
-        manageIngredientsInputListModel = new DefaultListModel<String>();
-        manageIngredientsInputList = new JList<String>();
+        manageIngredientsInputListModel = new DefaultListModel<>();
+        manageIngredientsInputList = new JList<>();
         manageIngredientsInputList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         manageIngredientsInputList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         manageIngredientsInputList.setVisibleRowCount(-1);
-        manageIngredientsInputList = new JList<String>(manageIngredientsInputListModel);
+        manageIngredientsInputList = new JList<>(manageIngredientsInputListModel);
         manageIngredientsListScrollPane = new JScrollPane(manageIngredientsInputList);
         IngredientsList.rebuildModel(manageIngredientsInputListModel);
         newIngredientButton = new JButton(WhatToCook.selectedLanguagePack.get(29));
@@ -403,7 +395,7 @@ public class MainWindow extends JFrame {
                 String name = recipeNameTextField.getText();
                 String instructions = instructionsInsertTextArea.getText();
                 String[] oneIngredientFromList;
-                ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+                ArrayList<Ingredient> ingredients = new ArrayList<>();
                 for(int i = 0; i < ingredientsInputInRecipeListModel.getSize();i++)
                 {
                     oneIngredientFromList = ingredientsInputInRecipeListModel.getElementAt(i).split(" ");
@@ -453,8 +445,6 @@ public class MainWindow extends JFrame {
         newEditAddIngredientButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                     if (!ingredientInCreatingRecipeComboBox.getSelectedItem().equals("")) {
-                       // String newForm = "● " + ingredientInCreatingRecipeComboBox.getSelectedItem();
-                       // ingredientsInputInRecipeListModel.addElement(newForm);
                         String newForm = "● " + ingredientInCreatingRecipeComboBox.getSelectedItem();
                         boolean exist = false;
                         for(int i = 0; i < ingredientsInputInRecipeListModel.getSize();i++)
@@ -481,16 +471,15 @@ public class MainWindow extends JFrame {
             }
         });
 
-        ingredientsInputInRecipeListModel = new DefaultListModel<String>();
-        ingredientsInputinRecipeList = new JList<String>();
+        ingredientsInputInRecipeListModel = new DefaultListModel<>();
+        ingredientsInputinRecipeList = new JList<>();
         ingredientsInputinRecipeList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         ingredientsInputinRecipeList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         ingredientsInputinRecipeList.setVisibleRowCount(-1);
-        ingredientsInputinRecipeList = new JList<String>(ingredientsInputInRecipeListModel);
+        ingredientsInputinRecipeList = new JList<>(ingredientsInputInRecipeListModel);
         ingredientsInputinRecipeListScrollPane = new JScrollPane(ingredientsInputinRecipeList);
 
-        //newEditInsertIngredientTextField = new JTextField();
-        ingredientInCreatingRecipeComboBox = new JComboBox<String>();
+        ingredientInCreatingRecipeComboBox = new JComboBox<>();
         IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
         instructionsInsertTextArea = new JTextArea();
         instructionsInsertTextArea.setLineWrap(true);
@@ -507,7 +496,7 @@ public class MainWindow extends JFrame {
             instructionsInsertTextArea.setText(RecipesList.recipesList.get(index).getRecipe());
             for(int i =0; i < RecipesList.recipesList.get(index).getSize();i++)
             {
-                String toAdd = "";
+                String toAdd;
                     toAdd = "● " + RecipesList.recipesList.get(index).getIngredient(i).getName();
 
                 ingredientsInputInRecipeListModel.addElement(toAdd);
