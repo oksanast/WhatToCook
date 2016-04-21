@@ -276,8 +276,25 @@ public class MainWindow extends JFrame {
         removeIngredientsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (manageIngredientsInputList.getSelectedIndex() >= 0) {
-                    IngredientsList.removeIngredient(manageIngredientsInputList.getSelectedValue());
+                boolean ifExist = false;
+                for(int i = 0; i < RecipesList.size();i++)
+                {
+                    for(int j = 0; j < RecipesList.recipesList.get(i).getSize();j++)
+                    {
+                        if(manageIngredientsInputListModel.get(manageIngredientsInputList.getSelectedIndex()).equals(RecipesList.recipesList.get(i).getIngredient(j).getName())) {
+                            ifExist = true;
+                            break;
+                        }
+                    }
+                }
+                if(!ifExist) {
+                    if (manageIngredientsInputList.getSelectedIndex() >= 0) {
+                        IngredientsList.removeIngredient(manageIngredientsInputList.getSelectedValue());
+                    }
+                }
+                else
+                {
+                    JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(38), WhatToCook.selectedLanguagePack.get(39), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
                 }
                 IngredientsList.rebuildModel(manageIngredientsInputListModel);
                 IngredientsList.reloadComboBox(ingredientInSearchComboBox);
