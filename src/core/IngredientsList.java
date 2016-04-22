@@ -107,7 +107,7 @@ public class IngredientsList {
         comboBox.removeAllItems();
         for(int i = 0; i < IngredientsList.size();i++)
         {
-            comboBox.addItem(IngredientsList.get(i).getName());
+            //comboBox.addItem(IngredientsList.get(i).getName());
         }
     }
     private static  List<Ingredient> IngredientsList;

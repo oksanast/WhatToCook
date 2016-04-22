@@ -37,7 +37,6 @@ public class WhatToCook implements Runnable {
             if(language.equals("polski"))
                 selectedLanguagePack = polishLanguagePack;
             MainWindow.getToNewCard = in.nextBoolean();
-            System.out.println(MainWindow.getToNewCard);
 
         }
         catch (FileNotFoundException e)

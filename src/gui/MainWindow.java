@@ -20,6 +20,7 @@ public class MainWindow extends JFrame {
         setSize(400, 600);
         setResizable(true);
         setTitle("WhatToCook");
+        setLocationRelativeTo(null);
         setMinimumSize(new Dimension(250, 300));
         //
         //PANELS INITIALIZATION
@@ -100,6 +101,8 @@ public class MainWindow extends JFrame {
         //TEXT FIELDS
         ingredientInSearchComboBox = new JComboBox<>();
         IngredientsList.reloadComboBox(ingredientInSearchComboBox);
+        ingredientInCreatingRecipeComboBox = new JComboBox<>();
+        IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
         //BUTTONS
         execute = new JButton(WhatToCook.selectedLanguagePack.get(15));
         execute.addActionListener(new ActionListener() {
@@ -294,6 +297,9 @@ public class MainWindow extends JFrame {
                     if (manageIngredientsInputList.getSelectedIndex() >= 0) {
                         IngredientsList.removeIngredient(manageIngredientsInputList.getSelectedValue());
                     }
+                    IngredientsList.rebuildModel(manageIngredientsInputListModel);
+                    IngredientsList.reloadComboBox(ingredientInSearchComboBox);
+                    IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
                 }
                 else
                 {
@@ -301,9 +307,7 @@ public class MainWindow extends JFrame {
                     errorDialog.refresh(recipesContainIngredient);
                     errorDialog.setVisible(true);
                 }
-                IngredientsList.rebuildModel(manageIngredientsInputListModel);
-                IngredientsList.reloadComboBox(ingredientInSearchComboBox);
-                IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
+
             }
         });
         //KONIEC SEKCJI
@@ -480,8 +484,6 @@ public class MainWindow extends JFrame {
         ingredientsInputinRecipeList = new JList<>(ingredientsInputInRecipeListModel);
         ingredientsInputinRecipeListScrollPane = new JScrollPane(ingredientsInputinRecipeList);
 
-        ingredientInCreatingRecipeComboBox = new JComboBox<>();
-        IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
         instructionsInsertTextArea = new JTextArea();
         instructionsInsertTextArea.setLineWrap(true);
         instructionAreaJScrollPane = new JScrollPane(instructionsInsertTextArea);

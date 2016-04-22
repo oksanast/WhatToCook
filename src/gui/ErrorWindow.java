@@ -3,7 +3,6 @@ package gui;
 import core.WhatToCook;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +17,7 @@ public class ErrorWindow extends JFrame {
     {
         setSize(300,150);
         setTitle(WhatToCook.selectedLanguagePack.get(39));
+        setLocationRelativeTo(null);
         mainBorderLayout = new JPanel(new BorderLayout());
         ErrorMessage = "";
         exit = new JButton(WhatToCook.selectedLanguagePack.get(36));

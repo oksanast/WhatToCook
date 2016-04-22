@@ -15,6 +15,7 @@ public class AboutWindow extends JFrame{
     {
         setSize(250,250);
         setResizable(false);
+        setLocationRelativeTo(null);
         setTitle(WhatToCook.selectedLanguagePack.get(35));
         exit = new JButton(WhatToCook.selectedLanguagePack.get(36));
         exit.addActionListener(new ActionListener() {

@@ -17,6 +17,7 @@ public class SettingsWindow extends JDialog
     {
         setSize(640,130);
         setTitle(WhatToCook.selectedLanguagePack.get(6));
+        setLocationRelativeTo(null);
         mainTable = new JTabbedPane();
         languageComboBox = new JComboBox<String>();
         languageComboBox.addItem("Polski");
