@@ -54,6 +54,8 @@ public class MainWindow extends JFrame {
             settingsDialog = new SettingsWindow(MainWindow.this);
         if (aboutDialog == null)
             aboutDialog = new AboutWindow(MainWindow.this);
+        if(errorDialog == null)
+            errorDialog = new ErrorWindow(MainWindow.this);
 
         Action settingsAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(6)) {
             public void actionPerformed(ActionEvent event) {
@@ -277,13 +279,14 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean ifExist = false;
+                ArrayList<String> recipesContainIngredient = new ArrayList<String>();
                 for(int i = 0; i < RecipesList.size();i++)
                 {
                     for(int j = 0; j < RecipesList.recipesList.get(i).getSize();j++)
                     {
                         if(manageIngredientsInputListModel.get(manageIngredientsInputList.getSelectedIndex()).equals(RecipesList.recipesList.get(i).getIngredient(j).getName())) {
                             ifExist = true;
-                            break;
+                            recipesContainIngredient.add(RecipesList.recipesList.get(i).getName());
                         }
                     }
                 }
@@ -294,7 +297,9 @@ public class MainWindow extends JFrame {
                 }
                 else
                 {
-                    JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(38), WhatToCook.selectedLanguagePack.get(39), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
+                    //JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(38), WhatToCook.selectedLanguagePack.get(39), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
+                    errorDialog.refresh(recipesContainIngredient);
+                    errorDialog.setVisible(true);
                 }
                 IngredientsList.rebuildModel(manageIngredientsInputListModel);
                 IngredientsList.reloadComboBox(ingredientInSearchComboBox);
@@ -629,6 +634,7 @@ public class MainWindow extends JFrame {
 
     private SettingsWindow settingsDialog;
     private AboutWindow aboutDialog;
+    private ErrorWindow errorDialog;
 
     public static boolean getToNewCard;
 }

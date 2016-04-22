@@ -104,7 +104,7 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("About");
         englishLanguagePack.add("OK");
         englishLanguagePack.add("Authors");
-        englishLanguagePack.add("This ingredients can't be deleted, cause it is used by at least one recipe");
+        englishLanguagePack.add("This ingredients can't be deleted, cause it is used in recipes:");
         englishLanguagePack.add("Deleting ingredients error");
     }
 
@@ -149,7 +149,7 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("O programie");
         polishLanguagePack.add("OK");
         polishLanguagePack.add("Autorzy");
-        polishLanguagePack.add("Ten składnik nie może być usunięty ponieważ jest wykorzystywany w conajmniej jednym przepisie");
+        polishLanguagePack.add("Ten składnik nie może być usunięty ponieważ jest wykorzystywany w przepisach na:");
         polishLanguagePack.add("Błąd usuwania składnika");
     }
     public static ArrayList<String> polishLanguagePack;
