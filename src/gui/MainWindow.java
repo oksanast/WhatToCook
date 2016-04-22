@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class MainWindow extends JFrame {
 
     public MainWindow() {
-
+        //LEPSZY WYGLAD DLA WINDOWS'A
         String platform = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
         try {
             UIManager.setLookAndFeel(platform);
