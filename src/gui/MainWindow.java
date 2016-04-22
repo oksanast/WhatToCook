@@ -223,12 +223,14 @@ public class MainWindow extends JFrame {
         editRecipe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String recipeName = receipesListModel.getElementAt(receipesList.getSelectedIndex());
-                int index = RecipesList.getIndex(recipeName);
-                if (!isEditionTurnOn) {
+                if(receipesList.getSelectedIndex()>=0) {
+                    String recipeName = receipesListModel.getElementAt(receipesList.getSelectedIndex());
+                    int index = RecipesList.getIndex(recipeName);
+                    if (!isEditionTurnOn) {
 
-                    isEditionTurnOn = true;
-                    showNewEditMenu(index);
+                        isEditionTurnOn = true;
+                        showNewEditMenu(index);
+                    }
                 }
             }
         });
@@ -236,9 +238,11 @@ public class MainWindow extends JFrame {
         deleteRecipe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String recipeName = receipesListModel.getElementAt(receipesList.getSelectedIndex());
-                RecipesList.remove(recipeName);
-                refreshGUILists();
+               // if(receipesList.getSelectedIndex()>=0) {
+                    String recipeName = receipesListModel.getElementAt(receipesList.getSelectedIndex());
+                    RecipesList.remove(recipeName);
+                    refreshGUILists();
+               // }
             }
         });
 
@@ -395,6 +399,7 @@ public class MainWindow extends JFrame {
         closeTab.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 mainTable.removeTabAt(mainTable.getSelectedIndex());
+                mainTable.setSelectedIndex(0);
             }
         });
         recipesBorderLayout.add(closeTab, BorderLayout.SOUTH);
@@ -431,6 +436,7 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 isEditionTurnOn = false;
                 mainTable.removeTabAt(mainTable.getSelectedIndex());
+                mainTable.setSelectedIndex(1);
             }
         });
         editNewExitWithSaving = new JButton(WhatToCook.selectedLanguagePack.get(21));
@@ -476,6 +482,7 @@ public class MainWindow extends JFrame {
                         JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(32), WhatToCook.selectedLanguagePack.get(33), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
                     }
                 }
+                mainTable.setSelectedIndex(1);
             }
         });
 

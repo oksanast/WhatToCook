@@ -95,13 +95,13 @@ public class RecipesList
             String path = "";
             if(toDelete.equals(recipesList.get(i).getName())) {
                 path = "src/recipes/" + recipesList.get(i).getName();
+                System.out.println("usuwam");
                 recipesList.remove(i);
-            }
                 File fileToDelete = new File(path);
                 System.out.println(fileToDelete.exists());
                 fileToDelete.delete();
-
-            return;
+                return;
+            }
         }
     }
     static public int size()
