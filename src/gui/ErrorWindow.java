@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 /**
  * Created by Mateusz on 22.04.2016.
- * Project WhatToCook
  */
 public class ErrorWindow extends JFrame {
     public ErrorWindow(MainWindow owner)

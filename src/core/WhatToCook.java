@@ -106,7 +106,11 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("OK");
         englishLanguagePack.add("Authors");
         englishLanguagePack.add("This ingredients can't be deleted, cause it is used in recipes:");
-        englishLanguagePack.add("Deleting ingredients error");
+        englishLanguagePack.add("Deleting ingredients error");//39 index
+        englishLanguagePack.add("Export Ingredients");
+        englishLanguagePack.add("Inport Ingredients");
+        englishLanguagePack.add("Are you sure? It will cause restart.");
+        englishLanguagePack.add("Confirmation");
     }
 
     private void buildPolishLanguage()
@@ -152,11 +156,16 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Autorzy");
         polishLanguagePack.add("Ten składnik nie może być usunięty ponieważ jest wykorzystywany w przepisach na:");
         polishLanguagePack.add("Błąd usuwania składnika");
+        polishLanguagePack.add("Eksportuj składniki");
+        polishLanguagePack.add("Imporrtuj składniki");
+        polishLanguagePack.add("Jesteś pewien? Spowoduje to restart programu.");
+        polishLanguagePack.add("Potwierdzenie");
     }
     public static ArrayList<String> polishLanguagePack;
     public static ArrayList<String> englishLanguagePack;
     public static ArrayList<String> selectedLanguagePack;
     public static MainWindow frame;
+    public static String version = "1.1 Beta";
 
     //public static RecipesList recipesDatabase;
 }

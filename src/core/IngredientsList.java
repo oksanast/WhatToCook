@@ -110,5 +110,13 @@ public class IngredientsList {
             comboBox.addItem(IngredientsList.get(i).getName());
         }
     }
+    static public int Size()
+    {
+        return IngredientsList.size();
+    }
+    static public Ingredient Get(int i)
+    {
+        return IngredientsList.get(i);
+    }
     private static  List<Ingredient> IngredientsList;
 }

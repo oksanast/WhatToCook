@@ -1,6 +1,7 @@
 package gui;
 
 import core.*;
+import javafx.stage.FileChooser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Created by Mateusz on 20.03.2016.
@@ -23,7 +29,7 @@ public class MainWindow extends JFrame {
             SwingUtilities.updateComponentTreeUI(MainWindow.this);
         } catch (Exception e)
         {
-            e.printStackTrace();
+
         }
 
         //MAIN WINDOW'S SETTINGS
@@ -100,7 +106,22 @@ public class MainWindow extends JFrame {
                 aboutDialog.setVisible(true);
             }
         };
+        Action exportIngredientsAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(40)) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exportIngredientsList();
+            }
+        };
+        Action importIngredientsAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(41)) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                importIngredientsList();
+            }
+        };
         fileMenu.add(exitAction);
+        editMenu.add(exportIngredientsAction);
+        editMenu.add(importIngredientsAction);
+        editMenu.addSeparator();
         editMenu.add(clearIngredientsAction);
         editMenu.add(clearReceipesAction);
         editMenu.addSeparator();
@@ -551,6 +572,59 @@ public class MainWindow extends JFrame {
     private void showNewEditMenu() {
         showNewEditMenu(-1);
     }
+    private void exportIngredientsList()
+    {
+        JFileChooser chooseFile = new JFileChooser();
+        int save = chooseFile.showSaveDialog(null);
+        if(save == JFileChooser.APPROVE_OPTION) {
+            String filename = chooseFile.getSelectedFile().getPath();
+            PrintWriter writer;
+            try
+            {
+                File toSave = new File(filename);
+                writer = new PrintWriter(filename,"UTF-8");
+                for(int i = 0;i<IngredientsList.Size();i++)
+                {
+                    writer.println(IngredientsList.Get(i).getName());
+                }
+                writer.close();
+            }
+            catch (FileNotFoundException e)
+            {
+
+            }
+            catch (UnsupportedEncodingException e)
+            {
+
+            }
+        }
+    }
+    private void importIngredientsList()
+    {
+        JFileChooser chooseFile = new JFileChooser();
+        int save = chooseFile.showOpenDialog(null);
+        if(save == JFileChooser.APPROVE_OPTION) {
+            String filename = chooseFile.getSelectedFile().getPath();
+            String name;
+            try {
+                Scanner in = new Scanner(new File(filename));
+                while(in.hasNextLine())
+                {
+                    name = in.nextLine();
+                    Ingredient toAdd = new Ingredient(name);
+                    IngredientsList.addIngredient(toAdd);
+                }
+                IngredientsList.rebuildModel(manageIngredientsInputListModel);
+                IngredientsList.reloadComboBox(ingredientInSearchComboBox);
+                IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
+                in.close();
+
+            } catch (FileNotFoundException e) {
+
+            }
+
+        }
+    }
 
     //ELEMENTY GUI BAZY SKŁADNIKÓW
     private JPanel ingredientsMainGridLayout;
@@ -586,7 +660,6 @@ public class MainWindow extends JFrame {
 
     private JTextArea instructionsInsertTextArea;
     private JTextField recipeNameTextField;
-    // private JTextField newEditInsertIngredientTextField;
 
     private JPanel manageReceipesMainPanel;
     private JPanel manageReceipesGridPanel;

@@ -57,7 +57,7 @@ public class SettingsWindow extends JDialog
                 if(languageComboBox.getSelectedItem() == "Polski")
                 {
                     int selection;
-                    selection = JOptionPane.showConfirmDialog(null, "Jesteś pewien? Spowoduje to restart programu.", "Potwierdzenie",JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
+                    selection = JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(42), WhatToCook.selectedLanguagePack.get(43),JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
                     if(selection == JOptionPane.OK_OPTION)
                     {
                         WhatToCook.selectedLanguagePack = WhatToCook.polishLanguagePack;
@@ -76,7 +76,7 @@ public class SettingsWindow extends JDialog
                 if(languageComboBox.getSelectedItem() == "English")
                 {
                     int selection;
-                    selection = JOptionPane.showConfirmDialog(null, "Are you sure? It will cause the restart.", "Potwierdzenie",JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
+                    selection = JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(42), WhatToCook.selectedLanguagePack.get(43),JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
                     if(selection == JOptionPane.OK_OPTION)
                     {
                         WhatToCook.selectedLanguagePack = WhatToCook.englishLanguagePack;

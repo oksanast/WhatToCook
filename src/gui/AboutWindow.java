@@ -26,7 +26,7 @@ public class AboutWindow extends JFrame{
         });
         JLabel name = new JLabel("<html><h1>WhatToCook 2016</h1></html>");
         JLabel description = new JLabel("<html>" + WhatToCook.selectedLanguagePack.get(37) +":<br>Radosław Churski<br>Robert Górnicki" +
-                "<br>Mateusz Kalinowski<br>Paweł Kurbiel<br>Oksana Stechkevych</html>");
+                "<br>Mateusz Kalinowski<br>Paweł Kurbiel<br>Oksana Stechkevych<br><br>" + WhatToCook.version +"</html>");
         JPanel mainBorderLayout = new JPanel(new BorderLayout());
         mainBorderLayout.add(exit,BorderLayout.SOUTH);
         mainBorderLayout.add(description,BorderLayout.CENTER);
