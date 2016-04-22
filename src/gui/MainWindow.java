@@ -16,6 +16,16 @@ import java.util.ArrayList;
 public class MainWindow extends JFrame {
 
     public MainWindow() {
+
+        String platform = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+        try {
+            UIManager.setLookAndFeel(platform);
+            SwingUtilities.updateComponentTreeUI(MainWindow.this);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
         //MAIN WINDOW'S SETTINGS
         setSize(400, 600);
         setResizable(true);

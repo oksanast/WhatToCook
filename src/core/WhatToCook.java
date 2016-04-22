@@ -18,6 +18,7 @@ public class WhatToCook implements Runnable {
         new WhatToCook();
     }
     public WhatToCook() {
+
         selectedLanguagePack = new ArrayList<String>();
         buildPolishLanguage();
         buildEnglishLanguage();
@@ -51,6 +52,7 @@ public class WhatToCook implements Runnable {
         frame = new MainWindow();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
+
 
         new Thread(this).start();
     }
