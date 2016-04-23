@@ -2,13 +2,11 @@ package gui;
 
 import core.*;
 import javafx.stage.FileChooser;
+import auxiliary.Pair;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -57,15 +55,21 @@ public class MainWindow extends JFrame {
 
         isEditionTurnOn = false;
 
+        shownRecipesList = new Pair();
+
         //MENUBAR CREATING/////////////////////////////////////////////////////////////////////////////////////////////
         mainMenu = new JMenuBar();
         setJMenuBar(mainMenu);
         fileMenu = new JMenu(WhatToCook.selectedLanguagePack.get(0));
         editMenu = new JMenu(WhatToCook.selectedLanguagePack.get(2));
         helpMenu = new JMenu(WhatToCook.selectedLanguagePack.get(5));
+        newSubmenu = new JMenu(WhatToCook.selectedLanguagePack.get(45));
         mainMenu.add(fileMenu);
         mainMenu.add(editMenu);
         mainMenu.add(helpMenu);
+        fileMenu.add(newSubmenu);
+
+
 
         if (settingsDialog == null)
             settingsDialog = new SettingsWindow(MainWindow.this);
@@ -73,7 +77,23 @@ public class MainWindow extends JFrame {
             aboutDialog = new AboutWindow(MainWindow.this);
         if(errorDialog == null)
             errorDialog = new ErrorWindow(MainWindow.this);
+        Action newIngredientAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(46)) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainTable.setSelectedIndex(2);
+                newIngredientTextField.requestFocus();
+            }
+        };
+        Action newRecipeAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(47)) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!isEditionTurnOn) {
 
+                    isEditionTurnOn = true;
+                    showNewEditMenu();
+                }
+            }
+        };
         Action settingsAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(6)) {
             public void actionPerformed(ActionEvent event) {
                 settingsDialog.setVisible(true);
@@ -118,7 +138,10 @@ public class MainWindow extends JFrame {
                 importIngredientsList();
             }
         };
+        fileMenu.addSeparator();
         fileMenu.add(exitAction);
+        newSubmenu.add(newIngredientAction);
+        newSubmenu.add(newRecipeAction);
         editMenu.add(exportIngredientsAction);
         editMenu.add(importIngredientsAction);
         editMenu.addSeparator();
@@ -132,6 +155,37 @@ public class MainWindow extends JFrame {
         //TEXT FIELDS
         ingredientInSearchComboBox = new JComboBox<>();
         IngredientsList.reloadComboBox(ingredientInSearchComboBox);
+
+        ingredientInSearchComboBox.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(e.getKeyChar()==KeyEvent.VK_ENTER)
+                {
+                    String newForm = "● " + ingredientInSearchComboBox.getSelectedItem();
+                    boolean exist = false;
+                    for (int i = 0; i < ingredientsInputListModel.getSize(); i++) {
+                        if ((newForm.equals(ingredientsInputListModel.get(i)))) {
+                            exist = true;
+                            break;
+                        }
+                    }
+                    if (!exist) {
+                        ingredientsInputListModel.addElement(newForm);
+                    }
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+
         ingredientInCreatingRecipeComboBox = new JComboBox<>();
         IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
         //BUTTONS
@@ -193,6 +247,7 @@ public class MainWindow extends JFrame {
                         if (receipesOutputListModel.get(index).equals(RecipesList.recipesList.get(i).getName()))
                             break;
                     }
+                    shownRecipesList.add(RecipesList.recipesList.get(i),mainTable.getTabCount());
                     showRecipe(RecipesList.recipesList.get(i));
                 }
             }
@@ -263,6 +318,7 @@ public class MainWindow extends JFrame {
                         if (receipesListModel.get(index).equals(RecipesList.recipesList.get(i).getName()))
                             break;
                     }
+                    shownRecipesList.add(RecipesList.recipesList.get(i),mainTable.getTabCount());
                     showRecipe(RecipesList.recipesList.get(i));
                 }
             }
@@ -312,6 +368,35 @@ public class MainWindow extends JFrame {
             }
         });
         newIngredientTextField = new JTextField();
+        newIngredientTextField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(e.getKeyChar()==KeyEvent.VK_ENTER)
+                {
+                    boolean exist = false;
+                    if (!newIngredientTextField.getText().equals("")) {
+
+
+                        Ingredient toAdd = new Ingredient(newIngredientTextField.getText());
+                        IngredientsList.addIngredient(toAdd);
+                    }
+                    newIngredientTextField.setText("");
+                    IngredientsList.rebuildModel(manageIngredientsInputListModel);
+                    IngredientsList.reloadComboBox(ingredientInSearchComboBox);
+                    IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
         removeIngredientsButton = new JButton(WhatToCook.selectedLanguagePack.get(30));
         removeIngredientsButton.addActionListener(new ActionListener() {
             @Override
@@ -381,6 +466,7 @@ public class MainWindow extends JFrame {
     //FUNCKJA OTWIERA NOWĄ KARTĘ Z KONKRETNYM PRZEPISEM
     private void showRecipe(Recipe recipeToShow) {
         recipesBorderLayout = new JPanel(new BorderLayout());
+        recipesGridLayout = new JPanel((new GridLayout(1,2)));
         recipeTextArea = new JTextArea();
         recipeTextArea.setEditable(false);
         recipeTextArea.setLineWrap(true);
@@ -398,15 +484,53 @@ public class MainWindow extends JFrame {
         closeTab = new JButton(WhatToCook.selectedLanguagePack.get(23));
         closeTab.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
+                shownRecipesList.remove(mainTable.getSelectedIndex());
                 mainTable.removeTabAt(mainTable.getSelectedIndex());
                 mainTable.setSelectedIndex(0);
             }
         });
-        recipesBorderLayout.add(closeTab, BorderLayout.SOUTH);
+        exportTab = new JButton(WhatToCook.selectedLanguagePack.get(44));
+        exportTab.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                JFileChooser chooseFile = new JFileChooser();
+                int save = chooseFile.showSaveDialog(null);
+                if(save == JFileChooser.APPROVE_OPTION) {
+                    String filename = chooseFile.getSelectedFile().getPath();
+                    PrintWriter writer;
+                    try
+                    {
+                        File toSave = new File(filename);
+                        writer = new PrintWriter(filename,"UTF-8");
+
+                        writer.println("Przepis: " + shownRecipesList.getRecipe(mainTable.getSelectedIndex()).getName());
+                        writer.println("\nPotrzebne składniki:");
+                        for(int i = 0; i < shownRecipesList.getRecipe(mainTable.getSelectedIndex()).getSize();i++)
+                        {
+                            writer.println(shownRecipesList.getRecipe(mainTable.getSelectedIndex()).getIngredient(i).getName());
+                        }
+                        writer.println("\nWykonanie:");
+                        writer.println(shownRecipesList.getRecipe(mainTable.getSelectedIndex()).getRecipe());
+
+                        writer.close();
+                    }
+                    catch (FileNotFoundException exception)
+                    {
+
+                    }
+                    catch (UnsupportedEncodingException exception)
+                    {
+
+                    }
+                }
+
+            }
+        });
+        recipesGridLayout.add(exportTab);
+        recipesGridLayout.add(closeTab);
+        recipesBorderLayout.add(recipesGridLayout,BorderLayout.SOUTH);
         mainTable.addTab(recipeToShow.getName(), recipesBorderLayout);
-        // if (settingsDialog.getToNewCardCheckbox()) {
-        //     mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
-        // }
         if (MainWindow.getToNewCard) {
             mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
         }
@@ -647,6 +771,7 @@ public class MainWindow extends JFrame {
 
     private JScrollPane recipeTextAreaScrollPane;
     private JPanel recipesBorderLayout;
+    private JPanel recipesGridLayout;
     private JTextArea recipeTextArea;
     private JButton closeTab;
 
@@ -695,6 +820,8 @@ public class MainWindow extends JFrame {
     public JMenu fileMenu;
     private JMenu editMenu;
     private JMenu helpMenu;
+    private JMenu newSubmenu;
+
 
     private JList<String> ingredientsInputList;
     private final DefaultListModel<String> ingredientsInputListModel;
@@ -727,6 +854,10 @@ public class MainWindow extends JFrame {
     private SettingsWindow settingsDialog;
     private AboutWindow aboutDialog;
     private ErrorWindow errorDialog;
+
+    private Pair shownRecipesList;
+
+    private JButton exportTab;
 
     public static boolean getToNewCard;
 }

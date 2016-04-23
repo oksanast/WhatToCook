@@ -111,10 +111,13 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Inport Ingredients");
         englishLanguagePack.add("Are you sure? It will cause restart.");
         englishLanguagePack.add("Confirmation");
+        englishLanguagePack.add("Export Recipe");
+        englishLanguagePack.add("New");
+        englishLanguagePack.add("Ingredient");
+        englishLanguagePack.add("Recipe");
     }
 
-    private void buildPolishLanguage()
-    {
+    private void buildPolishLanguage() {
         polishLanguagePack = new ArrayList<String>();
         polishLanguagePack.add("Plik");
         polishLanguagePack.add("Zakończ");
@@ -157,9 +160,13 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Ten składnik nie może być usunięty ponieważ jest wykorzystywany w przepisach na:");
         polishLanguagePack.add("Błąd usuwania składnika");
         polishLanguagePack.add("Eksportuj składniki");
-        polishLanguagePack.add("Imporrtuj składniki");
+        polishLanguagePack.add("Importuj składniki");
         polishLanguagePack.add("Jesteś pewien? Spowoduje to restart programu.");
         polishLanguagePack.add("Potwierdzenie");
+        polishLanguagePack.add("Eksportuj przepis");
+        polishLanguagePack.add("Nowy");
+        polishLanguagePack.add("Składnik");
+        polishLanguagePack.add("Przepis");
     }
     public static ArrayList<String> polishLanguagePack;
     public static ArrayList<String> englishLanguagePack;
