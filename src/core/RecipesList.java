@@ -15,7 +15,8 @@ public class RecipesList
     static public void initialize()
     {
             recipesList = new ArrayList<Recipe>();
-            final File[] listOfFiles = new File("src/recipes").listFiles();
+            recipesList.clear();
+            final File[] listOfFiles = new File(WhatToCook.SelectedPackage.GetRecipesPath()).listFiles();
             for(int i = 0; i < listOfFiles.length;i++)
             {
                 String name;
@@ -53,7 +54,7 @@ public class RecipesList
     {
         recipesList.add(recipe);
         String filename;
-        filename = "src/recipes/" + recipe.getName();
+        filename = WhatToCook.SelectedPackage.GetRecipesPath() + recipe.getName();
         try {
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename)));
            writer.println(recipe.getName());
@@ -94,8 +95,7 @@ public class RecipesList
         {
             String path = "";
             if(toDelete.equals(recipesList.get(i).getName())) {
-                path = "src/recipes/" + recipesList.get(i).getName();
-                System.out.println("usuwam");
+                path = WhatToCook.SelectedPackage.GetRecipesPath() + recipesList.get(i).getName();
                 recipesList.remove(i);
                 File fileToDelete = new File(path);
                 System.out.println(fileToDelete.exists());

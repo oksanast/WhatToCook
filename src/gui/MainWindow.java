@@ -1,8 +1,7 @@
 package gui;
 
 import core.*;
-import javafx.stage.FileChooser;
-import auxiliary.Pair;
+import auxiliary.PairIngredientIndex;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,6 +29,9 @@ public class MainWindow extends JFrame {
 
         }
 
+        RecipesList.initialize();
+        IngredientsList.initialize();
+
         //MAIN WINDOW'S SETTINGS
         setSize(400, 600);
         setResizable(true);
@@ -55,7 +57,7 @@ public class MainWindow extends JFrame {
 
         isEditionTurnOn = false;
 
-        shownRecipesList = new Pair();
+        shownRecipesList = new PairIngredientIndex();
 
         //MENUBAR CREATING/////////////////////////////////////////////////////////////////////////////////////////////
         mainMenu = new JMenuBar();
@@ -855,7 +857,7 @@ public class MainWindow extends JFrame {
     private AboutWindow aboutDialog;
     private ErrorWindow errorDialog;
 
-    private Pair shownRecipesList;
+    private PairIngredientIndex shownRecipesList;
 
     private JButton exportTab;
 

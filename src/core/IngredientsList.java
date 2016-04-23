@@ -17,13 +17,11 @@ public class IngredientsList {
     static public void initialize()
     {
         IngredientsList = new ArrayList<Ingredient>();
-    }
-    static public void loadIngredients()
-    {
         Scanner in;
         String tmp;
+        IngredientsList.clear();
         try {
-            in = new Scanner(new File("src/ingredients"));
+            in = new Scanner(new File(WhatToCook.SelectedPackage.GetIngredientsPath()));
             while(in.hasNextLine())
             {
                 tmp = in.nextLine();
@@ -58,7 +56,7 @@ public class IngredientsList {
 
             try
             {
-                writer = new PrintWriter(new File("src/ingredients"));
+                writer = new PrintWriter(new File(WhatToCook.SelectedPackage.GetIngredientsPath()));
                 for(int i = 0; i < IngredientsList.size();i++)
                 {
                     writer.println(IngredientsList.get(i).getName());
@@ -81,7 +79,7 @@ public class IngredientsList {
 
                 try
                 {
-                    writer = new PrintWriter(new File("src/ingredients"));
+                    writer = new PrintWriter(new File(WhatToCook.SelectedPackage.GetIngredientsPath()));
                     for(int j = 0; j < IngredientsList.size();j++)
                     {
                         writer.println(IngredientsList.get(j).getName());

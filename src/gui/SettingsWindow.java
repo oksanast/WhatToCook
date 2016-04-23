@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
@@ -33,6 +36,7 @@ public class SettingsWindow extends JDialog
             public void actionPerformed(ActionEvent e) {
                 if(toNewCardCheckbox.isSelected()) MainWindow.getToNewCard = true;
                 else MainWindow.getToNewCard = false;
+                exportSettings();
             }
         });
         mainGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(24),SwingConstants.CENTER));
@@ -61,6 +65,7 @@ public class SettingsWindow extends JDialog
                     if(selection == JOptionPane.OK_OPTION)
                     {
                         WhatToCook.selectedLanguagePack = WhatToCook.polishLanguagePack;
+                        WhatToCook.SelectedPackage = WhatToCook.PolishPackage;
                         WhatToCook.frame.dispose();
                         WhatToCook.frame = new MainWindow();
                         WhatToCook.frame.setVisible(true);
@@ -80,6 +85,7 @@ public class SettingsWindow extends JDialog
                     if(selection == JOptionPane.OK_OPTION)
                     {
                         WhatToCook.selectedLanguagePack = WhatToCook.englishLanguagePack;
+                        WhatToCook.SelectedPackage = WhatToCook.EnglishPackage;
                         WhatToCook.frame.dispose();
                         WhatToCook.frame = new MainWindow();
                         WhatToCook.frame.setVisible(true);
@@ -93,6 +99,7 @@ public class SettingsWindow extends JDialog
                         languageComboBox.setSelectedIndex(0);
 
                 }
+                exportSettings();
             }
         });
         add(mainTable);
@@ -108,7 +115,26 @@ public class SettingsWindow extends JDialog
         if (toNewCardCheckbox.isSelected()) return true;
         else return false;
     }
+    private void exportSettings()
+    {
+        try {
+            PrintWriter writer = new PrintWriter(new File("src/cfg"));
+            if(languageComboBox.getSelectedItem() == "Polski")
+            {
+                writer.println("polish");
+            }
+            if(languageComboBox.getSelectedItem() == "English")
+            {
+                writer.println("english");
+            }
+            writer.println(toNewCardCheckbox.isSelected());
+            writer.close();
 
+        } catch (FileNotFoundException e) {
+
+        }
+
+    }
     JComboBox<String> languageComboBox;
     JTabbedPane mainTable;
     JPanel mainGridLayout;

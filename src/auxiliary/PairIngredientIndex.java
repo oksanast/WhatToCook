@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by Mateusz on 23.04.2016.
  * Project WhatToCook
  */
-public class Pair {
+public class PairIngredientIndex {
 
     class NumeratedRecipe
     {
@@ -22,7 +22,7 @@ public class Pair {
         private int index;
 
     }
-    public Pair()
+    public PairIngredientIndex()
     {
         recipesList = new ArrayList<NumeratedRecipe>();
     }

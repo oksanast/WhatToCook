@@ -1,5 +1,6 @@
 package core;
 
+import auxiliary.LanguagePackage;
 import gui.MainWindow;
 
 import javax.swing.*;
@@ -23,20 +24,24 @@ public class WhatToCook implements Runnable {
         buildPolishLanguage();
         buildEnglishLanguage();
         selectedLanguagePack = polishLanguagePack;
-
-        RecipesList.initialize();
-        IngredientsList.initialize();
-        IngredientsList.loadIngredients();
+        PolishPackage = new LanguagePackage("src/ingredientsPL","src/recipesPL");
+        EnglishPackage = new LanguagePackage("src/ingredientsENG","src/recipesENG");
+        SelectedPackage = new LanguagePackage();
 
         Scanner in;
+
         try
         {
             in = new Scanner(new File("src/cfg"));
             String language = in.next();
-            if(language.equals("english"))
+            if(language.equals("english")) {
                 selectedLanguagePack = englishLanguagePack;
-            if(language.equals("polski"))
+                SelectedPackage = EnglishPackage;
+            }
+            if(language.equals("polish")) {
                 selectedLanguagePack = polishLanguagePack;
+                SelectedPackage = PolishPackage;
+            }
             MainWindow.getToNewCard = in.nextBoolean();
 
         }
@@ -173,6 +178,11 @@ public class WhatToCook implements Runnable {
     public static ArrayList<String> selectedLanguagePack;
     public static MainWindow frame;
     public static String version = "1.1 Beta";
+
+    public static LanguagePackage SelectedPackage;
+
+    public static LanguagePackage PolishPackage;
+    public static LanguagePackage EnglishPackage;
 
     //public static RecipesList recipesDatabase;
 }
