@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 /**
@@ -40,6 +41,7 @@ public class RecipesList
                         instructions+=in.nextLine();
                     }
                     recipesList.add(new Recipe(name,ingredients,instructions));
+                    Collections.sort(recipesList);
                     in.close();
                 }
                 catch (FileNotFoundException e)
@@ -53,8 +55,9 @@ public class RecipesList
     static public void add(Recipe recipe)
     {
         recipesList.add(recipe);
+        Collections.sort(recipesList);
         String filename;
-        filename = WhatToCook.SelectedPackage.GetRecipesPath() + recipe.getName();
+        filename = WhatToCook.SelectedPackage.GetRecipesPath() +"/"+ recipe.getName();
         try {
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename)));
            writer.println(recipe.getName());

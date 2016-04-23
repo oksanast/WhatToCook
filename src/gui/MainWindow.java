@@ -4,6 +4,8 @@ import core.*;
 import auxiliary.PairIngredientIndex;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -264,6 +266,23 @@ public class MainWindow extends JFrame {
         //MANAGE RECEIPES CREATING SECTION
 
         searchForReceipesTextArea = new JTextField();
+
+        searchForReceipesTextArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                refreshGUILists(searchForReceipesTextArea.getText());
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                refreshGUILists(searchForReceipesTextArea.getText());
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                refreshGUILists(searchForReceipesTextArea.getText());
+            }
+        });
 
         newRecipe = new JButton(WhatToCook.selectedLanguagePack.get(17));
         newRecipe.addActionListener(new ActionListener() {
@@ -543,6 +562,14 @@ public class MainWindow extends JFrame {
         receipesListModel.clear();
         for (int i = 0; i < RecipesList.recipesList.size(); i++) {
             receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
+        }
+    }
+    private void refreshGUILists(String StartWith) {
+        receipesListModel.clear();
+        for (int i = 0; i < RecipesList.recipesList.size(); i++) {
+            if(RecipesList.recipesList.get(i).getName().startsWith(StartWith)) {
+                receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
+            }
         }
     }
 

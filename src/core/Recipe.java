@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by Mateusz on 23.03.2016.
  */
-public class Recipe
+public class Recipe implements Comparable<Recipe>
 {
     public Recipe(String name, ArrayList<Ingredient> ingredients, String instructions)
     {
@@ -29,4 +29,9 @@ public class Recipe
     private String name;
     private ArrayList<Ingredient> ingredients;
     private String instructions;
+
+    @Override
+    public int compareTo(Recipe o) {
+        return this.getName().compareTo(o.getName());
+    }
 }
