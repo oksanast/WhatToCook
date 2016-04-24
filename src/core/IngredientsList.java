@@ -4,10 +4,8 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.text.Collator;
+import java.util.*;
 
 /**
  * Created by Mateusz on 20.04.2016.

@@ -2,7 +2,9 @@ package core;
 
 import auxiliary.PairAmountUnit;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Mateusz on 23.03.2016.
@@ -39,6 +41,8 @@ public class Recipe implements Comparable<Recipe>
 
     @Override
     public int compareTo(Recipe o) {
-        return this.getName().compareTo(o.getName());
+        Collator c = Collator.getInstance(Locale.getDefault());
+        return c.compare(this.getName(),o.getName());
+
     }
 }

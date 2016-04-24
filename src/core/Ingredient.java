@@ -1,5 +1,8 @@
 package core;
 
+import java.text.Collator;
+import java.util.Locale;
+
 /**
  * Created by Mateusz on 23.03.2016.
  */
@@ -36,6 +39,7 @@ public class Ingredient implements Comparable<Ingredient> {
 
     @Override
     public int compareTo(Ingredient o) {
-        return this.getName().compareTo(o.getName());
+        Collator c = Collator.getInstance(Locale.getDefault());
+        return c.compare(this.getName(),o.getName());
     }
 }
