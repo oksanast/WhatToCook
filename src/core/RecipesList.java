@@ -1,5 +1,7 @@
 package core;
 
+import auxiliary.PairAmountUnit;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,12 +18,14 @@ public class RecipesList
     static public void initialize()
     {
             recipesList = new ArrayList<Recipe>();
+
             recipesList.clear();
             final File[] listOfFiles = new File(WhatToCook.SelectedPackage.GetRecipesPath()).listFiles();
             for(int i = 0; i < listOfFiles.length;i++)
             {
                 String name;
                 ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+                ArrayList<PairAmountUnit> ammountsAndUnits = new ArrayList<PairAmountUnit>();
                 int ingredientsAmmount;
                 String instructions = "";
 
@@ -33,14 +37,19 @@ public class RecipesList
                     for(int j = 0; j < ingredientsAmmount;j++)
                     {
                         String nextName = in.nextLine();
-                        Ingredient newIngredient = new Ingredient(nextName);
+                        String[] ingredient;
+                        ingredient = nextName.split(" ");
+                        Ingredient newIngredient = new Ingredient(ingredient[0]);
+                        ammountsAndUnits.add(new PairAmountUnit(ingredient[1],ingredient[2]));
                         ingredients.add(newIngredient);
+
                     }
                     while(in.hasNextLine())
                     {
                         instructions+=in.nextLine();
                     }
-                    recipesList.add(new Recipe(name,ingredients,instructions));
+
+                    recipesList.add(new Recipe(name,ingredients,ammountsAndUnits,instructions));
                     Collections.sort(recipesList);
                     in.close();
                 }
@@ -64,7 +73,7 @@ public class RecipesList
             writer.println(recipe.getSize());
             for(int i = 0; i < recipe.getSize();i++)
             {
-                writer.println(recipe.getIngredient(i).getName());
+                writer.println(recipe.getIngredient(i).getName() + " " + recipe.getAmmount(i) + " " + recipe.getUnit(i));
             }
             writer.println((recipe.getRecipe()));
             writer.close();
@@ -101,7 +110,6 @@ public class RecipesList
                 path = WhatToCook.SelectedPackage.GetRecipesPath() + recipesList.get(i).getName();
                 recipesList.remove(i);
                 File fileToDelete = new File(path);
-                System.out.println(fileToDelete.exists());
                 fileToDelete.delete();
                 return;
             }

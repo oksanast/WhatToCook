@@ -120,6 +120,8 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("New");
         englishLanguagePack.add("Ingredient");
         englishLanguagePack.add("Recipe");
+        englishLanguagePack.add("Ammount:");
+        englishLanguagePack.add("Unit:");
     }
 
     private void buildPolishLanguage() {
@@ -172,6 +174,8 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Nowy");
         polishLanguagePack.add("Składnik");
         polishLanguagePack.add("Przepis");
+        polishLanguagePack.add("Ilość:");
+        polishLanguagePack.add("Jednostka:");
     }
     public static ArrayList<String> polishLanguagePack;
     public static ArrayList<String> englishLanguagePack;
