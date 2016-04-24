@@ -37,11 +37,27 @@ public class RecipesList
                     for(int j = 0; j < ingredientsAmmount;j++)
                     {
                         String nextName = in.nextLine();
+                        String IngredientName = "";
                         String[] ingredient;
                         ingredient = nextName.split(" ");
-                        Ingredient newIngredient = new Ingredient(ingredient[0]);
-                        ammountsAndUnits.add(new PairAmountUnit(ingredient[1],ingredient[2]));
+                        for(int k = 0;k < ingredient.length-2;k++) {
+                            IngredientName += ingredient[k];
+                            if(k<ingredient.length-3)
+                                IngredientName+=" ";
+                        }
+                        Ingredient newIngredient = new Ingredient(IngredientName);
                         ingredients.add(newIngredient);
+
+                        String ammount = "";
+                        String unit = "";
+                        if(ingredient[ingredient.length-2].equals("true"))
+                            ammount = in.nextLine();
+                        if(ingredient[ingredient.length-1].equals("true"))
+                            unit = in.nextLine();
+
+                        ammountsAndUnits.add(new PairAmountUnit(ammount,unit));
+
+
 
                     }
                     while(in.hasNextLine())
@@ -73,7 +89,21 @@ public class RecipesList
             writer.println(recipe.getSize());
             for(int i = 0; i < recipe.getSize();i++)
             {
-                writer.println(recipe.getIngredient(i).getName() + " " + recipe.getAmmount(i) + " " + recipe.getUnit(i));
+                String NameAndBooleans;
+                NameAndBooleans = recipe.getIngredient(i).getName();
+                if(recipe.getAmmount(i).equals(""))
+                    NameAndBooleans+=" " + false;
+                else
+                    NameAndBooleans+=" " + true;
+                if(recipe.getUnit(i).equals(""))
+                    NameAndBooleans+=" " + false;
+                else
+                    NameAndBooleans+=" " + true;
+                writer.println(NameAndBooleans);
+                if(!recipe.getAmmount(i).equals(""))
+                    writer.println(recipe.getAmmount(i));
+                if(!recipe.getUnit(i).equals(""))
+                    writer.println(recipe.getUnit(i));
             }
             writer.println((recipe.getRecipe()));
             writer.close();

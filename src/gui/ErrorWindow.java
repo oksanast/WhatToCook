@@ -11,10 +11,11 @@ import java.util.ArrayList;
 /**
  * Created by Mateusz on 22.04.2016.
  */
-public class ErrorWindow extends JFrame {
+public class ErrorWindow extends JDialog {
     public ErrorWindow(MainWindow owner)
     {
         setSize(300,150);
+        setModal(true);
         setTitle(WhatToCook.selectedLanguagePack.get(39));
         setLocationRelativeTo(null);
         mainBorderLayout = new JPanel(new BorderLayout());

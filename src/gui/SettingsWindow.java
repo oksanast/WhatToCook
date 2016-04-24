@@ -19,6 +19,7 @@ public class SettingsWindow extends JDialog
     public SettingsWindow(MainWindow owner)
     {
         setSize(640,130);
+        setModal(true);
         setTitle(WhatToCook.selectedLanguagePack.get(6));
         setLocationRelativeTo(null);
         mainTable = new JTabbedPane();

@@ -181,7 +181,7 @@ public class WhatToCook implements Runnable {
     public static ArrayList<String> englishLanguagePack;
     public static ArrayList<String> selectedLanguagePack;
     public static MainWindow frame;
-    public static String version = "1.1 Beta";
+    public static String version = "1.0";
 
     public static LanguagePackage SelectedPackage;
 

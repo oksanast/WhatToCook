@@ -1,5 +1,6 @@
 package gui;
 
+import auxiliary.ListHandler;
 import auxiliary.PairAmountUnit;
 import core.*;
 import auxiliary.PairIngredientIndex;
@@ -610,6 +611,8 @@ public class MainWindow extends JFrame {
         newEditAmmountAndUnitGridLayoutUp.setBorder(new EmptyBorder(5,5,5,5));
         newEditAmmountAndUnitGridLayoutDown.setBorder(new EmptyBorder(5,5,5,5));
 
+        ArrayList<ListHandler> ingredientsListInput = new ArrayList<>();
+
 
         editNewExitWithoutSaving = new JButton(WhatToCook.selectedLanguagePack.get(22));
         editNewExitWithoutSaving.addActionListener(new ActionListener() {
@@ -626,14 +629,12 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String name = recipeNameTextField.getText();
                 String instructions = instructionsInsertTextArea.getText();
-                String[] oneIngredientFromList;
                 ArrayList<Ingredient> ingredients = new ArrayList<>();
                 ArrayList<PairAmountUnit> ammountsAndUnits = new ArrayList<PairAmountUnit>();
-                for (int i = 0; i < ingredientsInputInRecipeListModel.getSize(); i++) {
-                    oneIngredientFromList = ingredientsInputInRecipeListModel.getElementAt(i).split(" ");
+                for (int i = 0; i < ingredientsListInput.size(); i++) {
                     Ingredient ingredient;
-                    ingredient = new Ingredient(oneIngredientFromList[1]);
-                    ammountsAndUnits.add(new PairAmountUnit(oneIngredientFromList[2],oneIngredientFromList[3]));
+                    ingredient = new Ingredient(ingredientsListInput.get(i).getIngredient());
+                    ammountsAndUnits.add(new PairAmountUnit(ingredientsListInput.get(i).getAmmount(),ingredientsListInput.get(i).getUnit()));
                     ingredients.add(ingredient);
                 }
                 Recipe newRecipe = new Recipe(name, ingredients,ammountsAndUnits, instructions);
@@ -668,7 +669,7 @@ public class MainWindow extends JFrame {
         newEditAddIngredientButton = new JButton(WhatToCook.selectedLanguagePack.get(12));
         newEditAddIngredientButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                if (!ingredientInCreatingRecipeComboBox.getSelectedItem().equals("") && !newEditAmmountTextArea.getText().equals("") && !newEditUnitTextArea.getText().equals("")) {
+                if (!ingredientInCreatingRecipeComboBox.getSelectedItem().equals("")) {
                     String newForm = "● " + ingredientInCreatingRecipeComboBox.getSelectedItem();
                     newForm+=" " + newEditAmmountTextArea.getText() +" "+newEditUnitTextArea.getText();
                     boolean exist = false;
@@ -680,6 +681,9 @@ public class MainWindow extends JFrame {
                     }
                     if (!exist) {
                         ingredientsInputInRecipeListModel.addElement(newForm);
+                        ingredientsListInput.add(new ListHandler(ingredientInCreatingRecipeComboBox.getSelectedItem().toString(),newEditAmmountTextArea.getText(),newEditUnitTextArea.getText()));
+                        newEditAmmountTextArea.setText("");
+                        newEditUnitTextArea.setText("");
                     }
                 }
             }
@@ -690,6 +694,7 @@ public class MainWindow extends JFrame {
                 int index = ingredientsInputinRecipeList.getSelectedIndex();
                 if (index >= 0) {
                     ingredientsInputInRecipeListModel.removeElementAt(index);
+                    ingredientsListInput.remove(index);
                 }
             }
         });
@@ -722,6 +727,7 @@ public class MainWindow extends JFrame {
                 toAdd+=" "+ RecipesList.recipesList.get(index).getUnit(i);
 
                 ingredientsInputInRecipeListModel.addElement(toAdd);
+                ingredientsListInput.add(new ListHandler(RecipesList.recipesList.get(index).getIngredient(i).getName(),RecipesList.recipesList.get(index).getAmmount(i),RecipesList.recipesList.get(index).getUnit(i)));
             }
             repaint();
         }

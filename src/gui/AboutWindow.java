@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by Mateusz on 21.04.2016.
  */
-public class AboutWindow extends JFrame{
+public class AboutWindow extends JDialog{
     public AboutWindow(MainWindow owner)
     {
         setSize(250,250);
