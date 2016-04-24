@@ -107,7 +107,7 @@ public class RecipesList
         {
             String path = "";
             if(toDelete.equals(recipesList.get(i).getName())) {
-                path = WhatToCook.SelectedPackage.GetRecipesPath() + recipesList.get(i).getName();
+                path = WhatToCook.SelectedPackage.GetRecipesPath() + "/" + recipesList.get(i).getName();
                 recipesList.remove(i);
                 File fileToDelete = new File(path);
                 fileToDelete.delete();

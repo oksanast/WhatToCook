@@ -493,6 +493,7 @@ public class MainWindow extends JFrame {
         recipesBorderLayout = new JPanel(new BorderLayout());
         recipesGridLayout = new JPanel((new GridLayout(1,2)));
         recipeTextArea = new JTextArea();
+        recipeTextArea.setFont(new Font("monospaced",Font.PLAIN,12));
         recipeTextArea.setEditable(false);
         recipeTextArea.setLineWrap(true);
         String toShow = "";
@@ -576,7 +577,9 @@ public class MainWindow extends JFrame {
     private void refreshGUILists(String StartWith) {
         receipesListModel.clear();
         for (int i = 0; i < RecipesList.recipesList.size(); i++) {
-            if(RecipesList.recipesList.get(i).getName().startsWith(StartWith)) {
+            String tmp1 = RecipesList.recipesList.get(i).getName().toLowerCase();
+            String tmp2 = StartWith.toLowerCase();
+            if(tmp1.startsWith(tmp2)) {
                 receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
             }
         }
@@ -700,6 +703,7 @@ public class MainWindow extends JFrame {
         ingredientsInputinRecipeListScrollPane = new JScrollPane(ingredientsInputinRecipeList);
 
         instructionsInsertTextArea = new JTextArea();
+        instructionsInsertTextArea.setFont(new Font("monospaced",Font.PLAIN,12));
         instructionsInsertTextArea.setLineWrap(true);
         instructionAreaJScrollPane = new JScrollPane(instructionsInsertTextArea);
         recipeNameTextField = new JTextField();
