@@ -4,8 +4,6 @@ import core.WhatToCook;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * Created by Mateusz on 21.04.2016.
