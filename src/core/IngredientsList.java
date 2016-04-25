@@ -4,17 +4,17 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.text.Collator;
 import java.util.*;
 
 /**
  * Created by Mateusz on 20.04.2016.
+ * Project WhatToCook
  */
 public class IngredientsList {
 
     static public void initialize()
     {
-        IngredientsList = new ArrayList<Ingredient>();
+        IngredientsList = new ArrayList<>();
         Scanner in;
         String tmp;
         IngredientsList.clear();
@@ -30,7 +30,7 @@ public class IngredientsList {
             in.close();
         } catch (FileNotFoundException e)
         {
-
+            System.err.println("Error during loading ingredients");
         }
     }
 
@@ -38,10 +38,8 @@ public class IngredientsList {
     {
         boolean exist = false;
 
-        for(int i = 0; i < IngredientsList.size(); i++)
-        {
-            if(newIngredient.equals(IngredientsList.get(i)))
-            {
+        for(Ingredient ingredient : IngredientsList) {
+            if (newIngredient.equals(ingredient)) {
                 exist = true;
                 break;
             }
@@ -55,9 +53,9 @@ public class IngredientsList {
             try
             {
                 writer = new PrintWriter(new File(WhatToCook.SelectedPackage.GetIngredientsPath()));
-                for(int i = 0; i < IngredientsList.size();i++)
+                for(Ingredient ingredient : IngredientsList)
                 {
-                    writer.println(IngredientsList.get(i).getName());
+                    writer.println(ingredient.getName());
                 }
                 writer.close();
             } catch (FileNotFoundException e) {
@@ -78,9 +76,9 @@ public class IngredientsList {
                 try
                 {
                     writer = new PrintWriter(new File(WhatToCook.SelectedPackage.GetIngredientsPath()));
-                    for(int j = 0; j < IngredientsList.size();j++)
+                    for(Ingredient ingredient : IngredientsList)
                     {
-                        writer.println(IngredientsList.get(j).getName());
+                        writer.println(ingredient.getName());
                     }
                     writer.close();
                 } catch (FileNotFoundException e) {
@@ -93,17 +91,17 @@ public class IngredientsList {
     static public void rebuildModel(DefaultListModel<String> toInsert)
     {
         toInsert.clear();
-        for(int i = 0; i < IngredientsList.size();i++)
+        for(Ingredient ingredient : IngredientsList)
         {
-            toInsert.addElement(IngredientsList.get(i).getName());
+            toInsert.addElement(ingredient.getName());
         }
     }
     static public void reloadComboBox(JComboBox<String> comboBox)
     {
         comboBox.removeAllItems();
-        for(int i = 0; i < IngredientsList.size();i++)
+        for(Ingredient ingredient : IngredientsList)
         {
-            comboBox.addItem(IngredientsList.get(i).getName());
+            comboBox.addItem(ingredient.getName());
         }
     }
     static public int Size()

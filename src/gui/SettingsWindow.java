@@ -4,15 +4,13 @@ import core.WhatToCook;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 /**
  * Created by Mateusz on 23.03.2016.
+ * Project WhatToCook
  */
 public class SettingsWindow extends JDialog
 {
@@ -23,7 +21,7 @@ public class SettingsWindow extends JDialog
         setTitle(WhatToCook.selectedLanguagePack.get(6));
         setLocationRelativeTo(null);
         mainTable = new JTabbedPane();
-        languageComboBox = new JComboBox<String>();
+        languageComboBox = new JComboBox<>();
         languageComboBox.addItem("Polski");
         languageComboBox.addItem("English");
         mainGridLayout = new JPanel(new GridLayout(2,2));
@@ -32,13 +30,9 @@ public class SettingsWindow extends JDialog
         {
             toNewCardCheckbox.setSelected(true);
         }
-        toNewCardCheckbox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(toNewCardCheckbox.isSelected()) MainWindow.getToNewCard = true;
-                else MainWindow.getToNewCard = false;
-                exportSettings();
-            }
+        toNewCardCheckbox.addActionListener(e -> {
+            MainWindow.getToNewCard = toNewCardCheckbox.isSelected();
+            exportSettings();
         });
         mainGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(24),SwingConstants.CENTER));
         mainGridLayout.add(toNewCardCheckbox);
@@ -55,53 +49,49 @@ public class SettingsWindow extends JDialog
             languageComboBox.setSelectedIndex(1);
         }
 
-        languageComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
+        languageComboBox.addActionListener(e -> {
+            if(languageComboBox.getSelectedItem() == "Polski")
             {
-                if(languageComboBox.getSelectedItem() == "Polski")
+                int selection;
+                selection = JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(42), WhatToCook.selectedLanguagePack.get(43),JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
+                if(selection == JOptionPane.OK_OPTION)
                 {
-                    int selection;
-                    selection = JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(42), WhatToCook.selectedLanguagePack.get(43),JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
-                    if(selection == JOptionPane.OK_OPTION)
-                    {
-                        WhatToCook.selectedLanguagePack = WhatToCook.polishLanguagePack;
-                        WhatToCook.SelectedPackage = WhatToCook.PolishPackage;
-                        WhatToCook.frame.dispose();
-                        WhatToCook.frame = new MainWindow();
-                        WhatToCook.frame.setVisible(true);
-                        WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                        setTitle(WhatToCook.selectedLanguagePack.get(6));
-                        repaint();
-                        setVisible(false);
-                        toFront();
-                    }
-                    else
-                        languageComboBox.setSelectedIndex(1);
+                    WhatToCook.selectedLanguagePack = WhatToCook.polishLanguagePack;
+                    WhatToCook.SelectedPackage = WhatToCook.PolishPackage;
+                    WhatToCook.frame.dispose();
+                    WhatToCook.frame = new MainWindow();
+                    WhatToCook.frame.setVisible(true);
+                    WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                    setTitle(WhatToCook.selectedLanguagePack.get(6));
+                    repaint();
+                    setVisible(false);
+                    toFront();
                 }
-                if(languageComboBox.getSelectedItem() == "English")
-                {
-                    int selection;
-                    selection = JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(42), WhatToCook.selectedLanguagePack.get(43),JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
-                    if(selection == JOptionPane.OK_OPTION)
-                    {
-                        WhatToCook.selectedLanguagePack = WhatToCook.englishLanguagePack;
-                        WhatToCook.SelectedPackage = WhatToCook.EnglishPackage;
-                        WhatToCook.frame.dispose();
-                        WhatToCook.frame = new MainWindow();
-                        WhatToCook.frame.setVisible(true);
-                        WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                        setTitle(WhatToCook.selectedLanguagePack.get(6));
-                        repaint();
-                        setVisible(false);
-                        toFront();
-                    }
-                    else
-                        languageComboBox.setSelectedIndex(0);
-
-                }
-                exportSettings();
+                else
+                    languageComboBox.setSelectedIndex(1);
             }
+            if(languageComboBox.getSelectedItem() == "English")
+            {
+                int selection;
+                selection = JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(42), WhatToCook.selectedLanguagePack.get(43),JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
+                if(selection == JOptionPane.OK_OPTION)
+                {
+                    WhatToCook.selectedLanguagePack = WhatToCook.englishLanguagePack;
+                    WhatToCook.SelectedPackage = WhatToCook.EnglishPackage;
+                    WhatToCook.frame.dispose();
+                    WhatToCook.frame = new MainWindow();
+                    WhatToCook.frame.setVisible(true);
+                    WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                    setTitle(WhatToCook.selectedLanguagePack.get(6));
+                    repaint();
+                    setVisible(false);
+                    toFront();
+                }
+                else
+                    languageComboBox.setSelectedIndex(0);
+
+            }
+            exportSettings();
         });
         add(mainTable);
 
@@ -113,8 +103,7 @@ public class SettingsWindow extends JDialog
     }
     public boolean getToNewCardCheckbox()
     {
-        if (toNewCardCheckbox.isSelected()) return true;
-        else return false;
+        return toNewCardCheckbox.isSelected();
     }
     private void exportSettings()
     {
@@ -132,6 +121,7 @@ public class SettingsWindow extends JDialog
             writer.close();
 
         } catch (FileNotFoundException e) {
+
 
         }
 

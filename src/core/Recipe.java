@@ -8,6 +8,7 @@ import java.util.Locale;
 
 /**
  * Created by Mateusz on 23.03.2016.
+ * Project WhatToCook
  */
 public class Recipe implements Comparable<Recipe>
 {

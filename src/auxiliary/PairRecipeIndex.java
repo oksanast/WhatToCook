@@ -8,27 +8,28 @@ import java.util.ArrayList;
  * Created by Mateusz on 23.04.2016.
  * Project WhatToCook
  */
-public class PairIngredientIndex {
+public class PairRecipeIndex {
 
     class NumeratedRecipe
     {
-        public NumeratedRecipe(Recipe recipe,int index)
+        public NumeratedRecipe(Recipe recipe,int index,int startPage)
         {
             this.recipe = recipe;
             this.index = index;
+            this.startPage = startPage;
         }
-
+        private int startPage;
         private Recipe recipe;
         private int index;
 
     }
-    public PairIngredientIndex()
+    public PairRecipeIndex()
     {
-        recipesList = new ArrayList<NumeratedRecipe>();
+        recipesList = new ArrayList<>();
     }
-    public void add(Recipe recipe, int index)
+    public void add(Recipe recipe, int index,int StartPage)
     {
-        NumeratedRecipe newEntry = new NumeratedRecipe(recipe,index);
+        NumeratedRecipe newEntry = new NumeratedRecipe(recipe,index,StartPage);
         recipesList.add(newEntry);
     }
     public void remove(int index)
@@ -49,6 +50,14 @@ public class PairIngredientIndex {
         return null;
     }
 
-
+    public int getStartPage(int index)
+    {
+        for(int i = 0; i < recipesList.size();i++)
+        {
+            if(recipesList.get(i).index==index)
+                return recipesList.get(i).startPage;
+        }
+        return 1;
+    }
     private ArrayList<NumeratedRecipe> recipesList;
 }

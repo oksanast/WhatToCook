@@ -2,6 +2,7 @@ package auxiliary;
 
 /**
  * Created by Mateusz on 24.04.2016.
+ * Project WhatToCook
  */
 public class ListHandler {
 

@@ -11,7 +11,8 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * Created by Mateusz on 09.03.2016.s
+ * Created by Mateusz on 09.03.2016.
+ * Project WhatToCook
  */
 public class WhatToCook implements Runnable {
 
@@ -20,7 +21,7 @@ public class WhatToCook implements Runnable {
     }
     public WhatToCook() {
 
-        selectedLanguagePack = new ArrayList<String>();
+        selectedLanguagePack = new ArrayList<>();
         buildPolishLanguage();
         buildEnglishLanguage();
         selectedLanguagePack = polishLanguagePack;
@@ -71,7 +72,7 @@ public class WhatToCook implements Runnable {
     }
     private void buildEnglishLanguage()
     {
-        englishLanguagePack = new ArrayList<String>();
+        englishLanguagePack = new ArrayList<>();
         englishLanguagePack.add("File");
         englishLanguagePack.add("Exit");
         englishLanguagePack.add("Edit");
@@ -125,7 +126,7 @@ public class WhatToCook implements Runnable {
     }
 
     private void buildPolishLanguage() {
-        polishLanguagePack = new ArrayList<String>();
+        polishLanguagePack = new ArrayList<>();
         polishLanguagePack.add("Plik");
         polishLanguagePack.add("Zakończ");
         polishLanguagePack.add("Edycja");
