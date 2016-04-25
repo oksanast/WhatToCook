@@ -1,6 +1,7 @@
 package core;
 
 import auxiliary.PairAmountUnit;
+import auxiliary.RecipeParameters;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -12,13 +13,14 @@ import java.util.Locale;
  */
 public class Recipe implements Comparable<Recipe>
 {
-    public Recipe(String name, ArrayList<Ingredient> ingredients, ArrayList<PairAmountUnit> ingredientsAmountAndUnits, String instructions)
+    public Recipe(String name, ArrayList<Ingredient> ingredients, ArrayList<PairAmountUnit> ingredientsAmountAndUnits, String instructions,RecipeParameters parameters)
    // public Recipe(String name, ArrayList<Ingredient> ingredients, String instructions)
     {
         this.name = name;
         this.ingredients = ingredients;
         this.instructions = instructions;
         this.ingredientsAmountAndUnits = ingredientsAmountAndUnits;
+        this.parameters = parameters;
     }
     public String getName()
     {
@@ -34,11 +36,13 @@ public class Recipe implements Comparable<Recipe>
     }
     public String getAmmount(int i){return ingredientsAmountAndUnits.get(i).getAmmount();}
     public String getUnit(int i){return ingredientsAmountAndUnits.get(i).getUnit();}
+    public RecipeParameters getParameters() {return parameters;}
     public int getSize(){return ingredients.size();}
     private String name;
     private ArrayList<Ingredient> ingredients;
     private ArrayList<PairAmountUnit> ingredientsAmountAndUnits;
     private String instructions;
+    private RecipeParameters parameters;
 
     @Override
     public int compareTo(Recipe o) {

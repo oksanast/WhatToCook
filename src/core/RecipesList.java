@@ -1,6 +1,7 @@
 package core;
 
 import auxiliary.PairAmountUnit;
+import auxiliary.RecipeParameters;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -18,18 +19,29 @@ public class RecipesList
         recipesList = new ArrayList<>();
 
         recipesList.clear();
+        int preparingTime;
+        int preparingEase;
         final File[] listOfFiles = new File(WhatToCook.SelectedPackage.GetRecipesPath()).listFiles();
         int i = 0;
         while (i < listOfFiles.length) {
             String name;
             ArrayList<Ingredient> ingredients = new ArrayList<>();
             ArrayList<PairAmountUnit> ammountsAndUnits = new ArrayList<>();
+            boolean parameters[] = new boolean[5];
             int ingredientsAmmount;
             String instructions = "";
 
             try{
                 Scanner in = new Scanner(listOfFiles[i]);
                 name = in.nextLine();
+                preparingEase = in.nextInt();
+                preparingTime = in.nextInt();
+                in.nextLine();
+                String parametersString = in.nextLine();
+                String dividedParameters[] = parametersString.split(" ");
+                for(int j = 0; j < 5; j ++) {
+                    parameters[j] = dividedParameters[j].equals("true");
+                }
                 ingredientsAmmount = in.nextInt();
                 in.nextLine();
                 for(int j = 0; j < ingredientsAmmount;j++)
@@ -62,8 +74,7 @@ public class RecipesList
                 {
                     instructions+=in.nextLine();
                 }
-
-                recipesList.add(new Recipe(name,ingredients,ammountsAndUnits,instructions));
+                recipesList.add(new Recipe(name,ingredients,ammountsAndUnits,instructions,new RecipeParameters(parameters,preparingEase,preparingTime)));
                 Collections.sort(recipesList);
                 in.close();
             }
@@ -85,6 +96,15 @@ public class RecipesList
         try {
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename)));
            writer.println(recipe.getName());
+            writer.println(recipe.getParameters().getPreparingEase());
+            writer.println(recipe.getParameters().getPreparingTime());
+            String parameters = "";
+            parameters+=recipe.getParameters().getParameters()[0]+ " ";
+            parameters+=recipe.getParameters().getParameters()[1]+ " ";
+            parameters+=recipe.getParameters().getParameters()[2]+ " ";
+            parameters+=recipe.getParameters().getParameters()[3]+ " ";
+            parameters+=recipe.getParameters().getParameters()[4]+ " ";
+            writer.println(parameters);
             writer.println(recipe.getSize());
             for(int i = 0; i < recipe.getSize();i++)
             {
@@ -153,7 +173,7 @@ public class RecipesList
     {
         return recipesList.get(i).getName();
     }
-    static public boolean checkWithIngredientsList(ArrayList<Ingredient> aviableIngredients,int index)
+    static public boolean checkWithIngredientsList(ArrayList<Ingredient> aviableIngredients,int index,boolean parameters[],int ease,int time)
     {
         boolean contains;
         for(int i = 0; i < recipesList.get(index).getSize();i++)
@@ -166,7 +186,16 @@ public class RecipesList
             if(!contains)
                 return false;
         }
-        return true;
+        if(recipesList.get(index).getParameters().getPreparingEase()<=ease && recipesList.get(index).getParameters().getPreparingTime()<=time) {
+            for(int i = 0; i < 5;i++)
+            {
+                if(recipesList.get(index).getParameters().getParameters()[i]==true && parameters[i]==false)
+                    return false;
+            }
+            return true;
+        }
+        else
+            return false;
 
     }
     static public ArrayList<Recipe> recipesList;

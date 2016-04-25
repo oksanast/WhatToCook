@@ -123,6 +123,24 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Recipe");
         englishLanguagePack.add("Ammount:");
         englishLanguagePack.add("Unit:");
+        englishLanguagePack.add("Dish for:");//51
+        englishLanguagePack.add("Breakfest");
+        englishLanguagePack.add("Lunch");
+        englishLanguagePack.add("Diner");
+        englishLanguagePack.add("Supper");
+        englishLanguagePack.add("Snack");
+        englishLanguagePack.add("Preparing time:");
+        englishLanguagePack.add("Preparing ease:");
+        englishLanguagePack.add("Parameters");
+        englishLanguagePack.add("Quick");//59
+        englishLanguagePack.add("Average");
+        englishLanguagePack.add("Long");
+        englishLanguagePack.add("Easy");
+        englishLanguagePack.add("Average");
+        englishLanguagePack.add("Difficult");
+        englishLanguagePack.add("Recipe: ");
+        englishLanguagePack.add("Instructions: ");
+
     }
 
     private void buildPolishLanguage() {
@@ -154,7 +172,7 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Automatyczne przechodzenie do nowej karty");
         polishLanguagePack.add("Język");
         polishLanguagePack.add("Ogólne");
-        polishLanguagePack.add("Składniki");
+        polishLanguagePack.add("Składniki");//27
         polishLanguagePack.add("Nazwa Składnika:");
         polishLanguagePack.add("Dodaj");
         polishLanguagePack.add("Usuń");
@@ -177,12 +195,29 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Przepis");
         polishLanguagePack.add("Ilość:");
         polishLanguagePack.add("Jednostka:");
+        polishLanguagePack.add("Danie na:");//50
+        polishLanguagePack.add("Śniadanie");//51
+        polishLanguagePack.add("Lunch");
+        polishLanguagePack.add("Obiad");
+        polishLanguagePack.add("Kolację");
+        polishLanguagePack.add("Przekąskę");
+        polishLanguagePack.add("Czas przygotowywania:");
+        polishLanguagePack.add("Łatwość przygotowania:");
+        polishLanguagePack.add("Parametry");
+        polishLanguagePack.add("Szybko");
+        polishLanguagePack.add("Średnio");
+        polishLanguagePack.add("Wolno");
+        polishLanguagePack.add("Łatwe");
+        polishLanguagePack.add("Średnie");
+        polishLanguagePack.add("Trudne");
+        polishLanguagePack.add("Przepis: ");//65
+        polishLanguagePack.add("Wykonianie: ");
     }
     public static ArrayList<String> polishLanguagePack;
     public static ArrayList<String> englishLanguagePack;
     public static ArrayList<String> selectedLanguagePack;
     public static MainWindow frame;
-    public static String version = "1.0";
+    public static String version = "1.1";
 
     public static LanguagePackage SelectedPackage;
 
