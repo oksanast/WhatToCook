@@ -546,6 +546,18 @@ public class MainWindow extends JFrame {
         if(recipeToShow.getParameters().getPreparingTime()==2)
             toShow+=WhatToCook.selectedLanguagePack.get(61);
         toShow+="\n\n";
+        toShow += WhatToCook.selectedLanguagePack.get(50);
+        if(recipeToShow.getParameters().getParameters()[0])
+            toShow +=" " + WhatToCook.selectedLanguagePack.get(51);
+        if(recipeToShow.getParameters().getParameters()[1])
+            toShow +=" " + WhatToCook.selectedLanguagePack.get(52);
+        if(recipeToShow.getParameters().getParameters()[2])
+            toShow +=" " + WhatToCook.selectedLanguagePack.get(53);
+        if(recipeToShow.getParameters().getParameters()[3])
+            toShow +=" " + WhatToCook.selectedLanguagePack.get(54);
+        if(recipeToShow.getParameters().getParameters()[4])
+            toShow +=" " + WhatToCook.selectedLanguagePack.get(55);
+        toShow+="\n\n";
         toShow += WhatToCook.selectedLanguagePack.get(27) + "\n\n";
         for (int i = 0; i < recipeToShow.getSize(); i++) {
             toShow += recipeToShow.getIngredient(i).toString() + " " + recipeToShow.getAmmount(i) + " " + recipeToShow.getUnit(i) + "\n";
@@ -553,6 +565,7 @@ public class MainWindow extends JFrame {
         }
         toShow += "\n\n";
         toShow += WhatToCook.selectedLanguagePack.get(66) + "\n\n" + recipeToShow.getRecipe();
+
         recipeTextArea.setText(toShow);
         final String toExport = toShow;
         recipeTextAreaScrollPane = new JScrollPane(recipeTextArea);
