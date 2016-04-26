@@ -24,6 +24,7 @@ public class SettingsWindow extends JDialog
         languageComboBox = new JComboBox<>();
         languageComboBox.addItem("Polski");
         languageComboBox.addItem("English");
+        languageComboBox.setToolTipText(WhatToCook.selectedLanguagePack.get(67));
         mainGridLayout = new JPanel(new GridLayout(2,2));
         toNewCardCheckbox = new JCheckBox();
         if(MainWindow.getToNewCard)

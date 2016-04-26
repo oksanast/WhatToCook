@@ -140,6 +140,7 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Difficult");
         englishLanguagePack.add("Recipe: ");
         englishLanguagePack.add("Instructions: ");
+        englishLanguagePack.add("The change of language will cause change of database.");
 
     }
 
@@ -212,6 +213,7 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Trudne");
         polishLanguagePack.add("Przepis: ");//65
         polishLanguagePack.add("Wykonianie: ");
+        polishLanguagePack.add("Zmiana przepisu spowoduje zmianę bazy danych przepisów.");
     }
     public static ArrayList<String> polishLanguagePack;
     public static ArrayList<String> englishLanguagePack;
