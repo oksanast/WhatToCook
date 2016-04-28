@@ -42,6 +42,9 @@ public class WhatToCook implements Runnable {
                 SelectedPackage = PolishPackage;
             }
             MainWindow.getToNewCard = in.nextBoolean();
+            MainWindow.autoLoadIngredients = in.nextBoolean();
+            in.nextLine();
+            MainWindow.Path = in.nextLine();
 
         }
         catch (FileNotFoundException e)
@@ -89,7 +92,7 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Search for receipes");
         englishLanguagePack.add("Search");
         englishLanguagePack.add("New Recipe");
-        englishLanguagePack.add("Edit Selected Recipe");
+        englishLanguagePack.add("Edit Recipe");
         englishLanguagePack.add("Insert Recipe Name");
         englishLanguagePack.add("Write making instrictions below");
         englishLanguagePack.add("Save and Exit");
@@ -139,6 +142,15 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Recipe: ");
         englishLanguagePack.add("Instructions: ");
         englishLanguagePack.add("The change of language will cause change of database.");
+        englishLanguagePack.add("Import");
+        englishLanguagePack.add("Export");
+        englishLanguagePack.add("Importing ingredients error");
+        englishLanguagePack.add("Following ingredients was not imported, cause they are not in the database");
+        englishLanguagePack.add("Ingredients");
+        englishLanguagePack.add("Auto import owned ingredients");
+        englishLanguagePack.add("Path: ");
+        englishLanguagePack.add("Change path");
+        englishLanguagePack.add("It was impossible to read the file with owned ingredients, check its path in the options");
 
     }
 
@@ -162,7 +174,7 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Szukaj przepisów");
         polishLanguagePack.add("Wyszukaj");
         polishLanguagePack.add("Nowy Przepis");
-        polishLanguagePack.add("Edytuj Wybrany Przepis");
+        polishLanguagePack.add("Edytuj Przepis");
         polishLanguagePack.add("Podaj nazwę przepisu");
         polishLanguagePack.add("Napisz instrukcję przygotowania posiłku");
         polishLanguagePack.add("Zapisz i wyjdź");
@@ -212,12 +224,22 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Przepis: ");//65
         polishLanguagePack.add("Wykonianie: ");
         polishLanguagePack.add("Zmiana przepisu spowoduje zmianę bazy danych przepisów.");
+        polishLanguagePack.add("Importuj");
+        polishLanguagePack.add("Eksportuj");
+        polishLanguagePack.add("Błąd dodawania składników");
+        polishLanguagePack.add("Poniższe składniki nie zostały zaimportowane, gdyż nie znajdują się w bazie danych");
+        polishLanguagePack.add("Posiadane składniki");//72
+        polishLanguagePack.add("Automatyczny import posiadanych składników:");
+        polishLanguagePack.add("Ścieżka:");
+        polishLanguagePack.add("Zmień ścieżkę");
+        polishLanguagePack.add("Błąd importowania");
+        polishLanguagePack.add("Nie można było odczytać pliku z posiadanymi składnikami, sprawdź jego śnieżkę w opcjach");
     }
     private static ArrayList<String> polishLanguagePack;
     private static ArrayList<String> englishLanguagePack;
     private static ArrayList<String> selectedLanguagePack;
     public static MainWindow frame;
-    public static String version = "1.4";
+    public static String version = "1.5";
 
     public static LanguagePackage SelectedPackage;
 

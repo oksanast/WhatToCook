@@ -104,6 +104,15 @@ public class IngredientsList {
             comboBox.addItem(ingredient.getName());
         }
     }
+    static public boolean contain(Ingredient toCheck)
+    {
+        for(Ingredient ingredient : IngredientsList)
+        {
+            if(ingredient.equals(toCheck))
+                return true;
+        }
+        return false;
+    }
     static public int Size()
     {
         return IngredientsList.size();

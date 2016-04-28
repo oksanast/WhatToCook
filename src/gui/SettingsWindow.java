@@ -24,7 +24,9 @@ public class SettingsWindow extends JDialog {
         languageComboBox.addItem("Polski");
         languageComboBox.addItem("English");
         languageComboBox.setToolTipText(WhatToCook.SelectedPackage.get(67));
-        mainGridLayout = new JPanel(new GridLayout(2, 2));
+        mainGridLayout = new JPanel(new GridLayout(2 , 2));
+        secondGridLayout = new JPanel(new GridLayout( 2 , 2));
+
         toNewCardCheckbox = new JCheckBox();
         if (MainWindow.getToNewCard) {
             toNewCardCheckbox.setSelected(true);
@@ -37,7 +39,33 @@ public class SettingsWindow extends JDialog {
         mainGridLayout.add(toNewCardCheckbox);
         mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(25), SwingConstants.CENTER));
         mainGridLayout.add(languageComboBox);
+
+        secondGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(73)));
+        autoImportIngredientsCheckbox = new JCheckBox();
+        autoImportIngredientsCheckbox.addActionListener(e -> {
+            MainWindow.autoLoadIngredients = autoImportIngredientsCheckbox.isSelected();
+            exportSettings();
+        });
+        changePathButton = new JButton(WhatToCook.SelectedPackage.get(75));
+        changePathButton.addActionListener(e -> {
+            JFileChooser chooseFile = new JFileChooser();
+            int save = chooseFile.showOpenDialog(null);
+            if (save == JFileChooser.APPROVE_OPTION) {
+                MainWindow.Path = chooseFile.getSelectedFile().getPath();
+                exportSettings();
+                pathLabel.setText(WhatToCook.SelectedPackage.get(74)+" "+MainWindow.Path);
+            }
+
+        });
+        secondGridLayout.add(autoImportIngredientsCheckbox);
+        pathLabel = new JLabel(WhatToCook.SelectedPackage.get(74)+" "+MainWindow.Path,SwingConstants.CENTER);
+        pathLabel.setToolTipText(MainWindow.Path);
+        secondGridLayout.add(pathLabel);
+        secondGridLayout.add(changePathButton);
+        autoImportIngredientsCheckbox.setSelected(MainWindow.autoLoadIngredients);
+
         mainTable.addTab(WhatToCook.SelectedPackage.get(26), mainGridLayout);
+        mainTable.addTab(WhatToCook.SelectedPackage.get(72), secondGridLayout);
 
         if (WhatToCook.SelectedPackage.equals(WhatToCook.PolishPackage)) {
             languageComboBox.setSelectedIndex(0);
@@ -106,6 +134,8 @@ public class SettingsWindow extends JDialog {
                 writer.println("english");
             }
             writer.println(toNewCardCheckbox.isSelected());
+            writer.println(autoImportIngredientsCheckbox.isSelected());
+            writer.print(MainWindow.Path);
             writer.close();
 
         } catch (FileNotFoundException e) {
@@ -118,5 +148,11 @@ public class SettingsWindow extends JDialog {
     JComboBox<String> languageComboBox;
     JTabbedPane mainTable;
     JPanel mainGridLayout;
+    JPanel secondGridLayout;
     JCheckBox toNewCardCheckbox;
+    JCheckBox autoImportIngredientsCheckbox;
+    JLabel pathLabel;
+    JButton changePathButton;
+
+
 }

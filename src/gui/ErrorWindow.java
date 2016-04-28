@@ -13,9 +13,8 @@ import java.util.ArrayList;
 public class ErrorWindow extends JDialog {
     public ErrorWindow(MainWindow owner)
     {
-        setSize(300,150);
         setModal(true);
-        setTitle(WhatToCook.SelectedPackage.get(39));
+        Height = 160;
         setLocationRelativeTo(null);
         JPanel mainBorderLayout = new JPanel(new BorderLayout());
         ErrorMessage = "";
@@ -27,18 +26,21 @@ public class ErrorWindow extends JDialog {
 
         add(mainBorderLayout);
     }
-    public void refresh(ArrayList<String> errorsList)
+    public void refresh(ArrayList<String> errorsList,String errorMessage,String windowName)
     {
-        ErrorMessage = "<html><h4>" + WhatToCook.SelectedPackage.get(38) + "</h4>";
+        setTitle(windowName);
+        ErrorMessage = "<html><h4>" + errorMessage + "</h4>";
         for(String toPrint : errorsList)
         {
             ErrorMessage+="<br>" + toPrint;
+            Height +=12;
         }
         ErrorMessage+="</hmlt>";
         ErrorMessageLabel.setText(ErrorMessage);
-
+        setSize(300,Height);
         repaint();
     }
     private JLabel ErrorMessageLabel;
     private String ErrorMessage;
+    private int Height;
 }
