@@ -10,6 +10,11 @@ import java.util.ArrayList;
  * Created by Mateusz on 22.04.2016.
  * Project WhatToCook
  */
+/*
+    UNIWERSALNE OKNO DO WYSWIETLANIA KOMUNIKATÓW
+    METODA "REFRESH" OTRZYMUJE LISTE ELEMENTOW DO WYSWIETLENIA, WIADOMOŚĆ I TYTUŁ OKNA
+    OKNO USTALA SWOJĄ WYSOKOŚĆ NA PODSTAWIE ILOŚĆI ELEMENTÓW DO WYŚWIETLENIA
+ */
 public class ErrorWindow extends JDialog {
     public ErrorWindow(MainWindow owner)
     {

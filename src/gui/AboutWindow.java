@@ -9,6 +9,9 @@ import java.awt.*;
  * Created by Mateusz on 21.04.2016.
  * Project WhatToCook
  */
+/*
+    WYŚWIETLA INFORMACJE O AUTORACH PROGRAMU I WERSJI
+ */
 public class AboutWindow extends JDialog{
     public AboutWindow(MainWindow owner)
     {

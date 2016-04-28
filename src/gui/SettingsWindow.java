@@ -13,6 +13,14 @@ import java.io.PrintWriter;
  * Created by Mateusz on 23.03.2016.
  * Project WhatToCook
  */
+/*
+    OKNO Z USTAWIENIAMI
+    UŻYTKOWNIK MOŻE WYBRAĆ
+        -AUTOMATYCZNE PRZECHODZENIE DO NOWO OTWARTEJ KARTY
+        -JĘZYK INTERFACE'U PROGRAMU I ZARAZEM PACZKĘ JĘZYKOWĄ
+        -AUTOMATYCZNE WCZYTYWANIE LISTY POSIADANYCH SKŁADNIKÓW
+        -ŚCIEŻKĘ DO PLIKU ZE SKŁADNIKAMI
+ */
 public class SettingsWindow extends JDialog {
     public SettingsWindow(MainWindow owner) {
         setSize(640, 130);

@@ -4,6 +4,9 @@ package auxiliary;
  * Created by Mateusz on 24.04.2016.
  * Project WhatToCook
  */
+/*
+    ZAJMUJE SIĘ OBSŁUGA ILOŚCI I JEDNOSTEK, POŚREDNICZY MIĘDZY GUI A KLASĄ PRZEPISÓW
+ */
 public class ListHandler {
 
     public ListHandler(String ingredient, String ammount, String unit) {

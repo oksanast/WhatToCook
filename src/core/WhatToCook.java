@@ -14,6 +14,10 @@ import java.util.Scanner;
  * Created by Mateusz on 09.03.2016.
  * Project WhatToCook
  */
+/*
+    KLASA PODSTAWOWA, URUCHOMIENIOWA, SŁUŻY DO UTWORZENIA GŁÓWNEGO OKNA PROGRAMU I PACZEK JĘZYKOWYCH
+    WCZYTUJE PLIK KONFIGURACYJNY "CFG"
+ */
 public class WhatToCook implements Runnable {
 
     public static void main(String[] args) {
@@ -30,7 +34,6 @@ public class WhatToCook implements Runnable {
         SelectedPackage = new LanguagePackage();
 
         Scanner in;
-
         try
         {
             in = new Scanner(new File("src/cfg"));

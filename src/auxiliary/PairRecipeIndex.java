@@ -8,6 +8,10 @@ import java.util.ArrayList;
  * Created by Mateusz on 23.04.2016.
  * Project WhatToCook
  */
+/*
+    UŻYWANA DO NUMEROWANIA PRZEPISÓW PRZY WYŚWIETLANIU (TAK ABY DAŁO SIĘ EKSPORTOWAC PRZEPIS Z DANEJ KARTY
+    STARTPAGE - KARTA Z KTOREJ OTWARTO DANY PRZEPIS (A ZARAZEM KARTA POWROTNA)
+ */
 public class PairRecipeIndex {
 
     class NumeratedRecipe

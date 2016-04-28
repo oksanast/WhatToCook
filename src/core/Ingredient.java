@@ -7,6 +7,9 @@ import java.util.Locale;
  * Created by Mateusz on 23.03.2016.
  * Project WhatToCook
  */
+/*
+    IMPLEMENTUJE COMPARABLE W CELU ALFABETYCZNEGO SORTOWANIA SKLADNIKÓW
+ */
 public class Ingredient implements Comparable<Ingredient> {
     public Ingredient(String name) {
         this.name = name;

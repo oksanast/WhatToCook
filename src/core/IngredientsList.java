@@ -10,6 +10,10 @@ import java.util.*;
  * Created by Mateusz on 20.04.2016.
  * Project WhatToCook
  */
+/*
+    KLASA "STATYCZNA", PONIEKĄD ABSKTRAKCYJNA, SLUŻY DO OBSŁUGI LISTY PRZEPISÓW, NIE TWORZY OBIEKTÓW
+    BO POTRZEBNA JEST TYLKO JEDNA TAKA LISTA
+ */
 public class IngredientsList {
 
     static public void initialize()

@@ -24,6 +24,10 @@ import java.util.Scanner;
  * Created by Mateusz on 20.03.2016.
  * Project WhatToCook
  */
+/*
+    GŁÓWNA KLASA PROGRAMU, JEST BEZPOŚRENDIO ODPOWIEDZIALNA ZA TWORZENIE GŁÓWNEGO OKNA INTERFEJSU GRAFICZNEGO,
+    ALE POŚREDNIO JEST RÓWNIEŻ "FASADĄ" DO KOMUNIKACJI MIĘDZY POZOSTAŁYMI KLASAMI W PROGRAMIE
+ */
 public class MainWindow extends JFrame {
 
     public MainWindow() {

@@ -11,6 +11,9 @@ import java.util.Locale;
  * Created by Mateusz on 23.03.2016.
  * Project WhatToCook
  */
+/*
+    IMPLEMENTUJE COMPARABLE W CELU ALFABETYCZNEGO SORTOWANIA PRZEPISÓW
+ */
 public class Recipe implements Comparable<Recipe>
 {
     public Recipe(String name, ArrayList<Ingredient> ingredients, ArrayList<PairAmountUnit> ingredientsAmountAndUnits, String instructions,RecipeParameters parameters)

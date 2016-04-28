@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Created by Mateusz on 25.04.2016.
  * Project WhatToCook
  */
+//PRZECHOWUJE DODATKOWE TAG'I PRZEPISOW
 public class RecipeParameters {
 
     public RecipeParameters(boolean[] parameters, int preparingEase, int preparingTime) {

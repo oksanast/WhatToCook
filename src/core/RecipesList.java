@@ -12,6 +12,10 @@ import java.util.Scanner;
  * Created by Mateusz on 23.03.2016.
  * Project WhatToCook
  */
+/*
+    KLASA "STATYCZNA", PONIEKĄD ABSKTRAKCYJNA, SLUŻY DO OBSŁUGI LISTY PRZEPISÓW, NIE TWORZY OBIEKTÓW
+    BO POTRZEBNA JEST TYLKO JEDNA TAKA LISTA
+ */
 public class RecipesList
 {
     static public void initialize()

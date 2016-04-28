@@ -6,6 +6,9 @@ import java.util.ArrayList;
  * Created by Mateusz on 23.04.2016.
  * Project WhatToCook
  */
+/*
+    ZARZĄDZA OBSŁUGĄ JĘZYKÓW W CAŁYM PROGRAMIE
+ */
 public class LanguagePackage
     {
         public LanguagePackage()
