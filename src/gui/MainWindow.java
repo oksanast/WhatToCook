@@ -125,7 +125,27 @@ public class MainWindow extends JFrame {
                 int i = ingredientsInputListModel.getSize() - 1;
                 for (; i >= 0; i--)
                     ingredientsInputListModel.removeElementAt(i);
+                if(MainWindow.autoLoadIngredients) {
+                    String name;
+                    try {
+                        Scanner in = new Scanner(new File(MainWindow.Path));
+                        while (in.hasNextLine()) {
+                            name = in.nextLine();
+                            Ingredient toAdd = new Ingredient(name);
 
+                            if (IngredientsList.contain(toAdd))
+                                ingredientsInputListModel.addElement("● " + name);
+                        }
+                        in.close();
+
+                    } catch (FileNotFoundException exception) {
+                        JOptionPane.showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(77), WhatToCook.SelectedPackage.get(76), JOptionPane.ERROR_MESSAGE);
+                    }
+                    catch (NullPointerException exception)
+                    {
+                        JOptionPane.showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(77), WhatToCook.SelectedPackage.get(76), JOptionPane.ERROR_MESSAGE);
+                    }
+                }
             }
         };
         Action clearReceipesAction = new AbstractAction(WhatToCook.SelectedPackage.get(4)) {
@@ -134,7 +154,9 @@ public class MainWindow extends JFrame {
                 for (; i >= 0; i--)
                     receipesOutputListModel.removeElementAt(i);
 
+
             }
+
         };
         Action aboutAction = new AbstractAction(WhatToCook.SelectedPackage.get(7)) {
             public void actionPerformed(ActionEvent event) {
@@ -473,13 +495,9 @@ public class MainWindow extends JFrame {
         manageReceipesLeftDownGridPanel.add(editRecipe);
         manageReceipesLeftDownGridPanel.add(deleteRecipe);
         manageReceipesLeftBorderLayout.add(manageReceipesLeftDownGridPanel, BorderLayout.SOUTH);
-
         manageReceipesLeftBorderLayout.add(receipesListScrollPane, BorderLayout.CENTER);
-
         manageReceipesGridPanel.add(manageReceipesLeftBorderLayout);
-
         manageReceipesMainPanel.add(manageReceipesGridPanel, BorderLayout.CENTER);
-
         //CREATING INGREDIENTS MANAGE WINDOW
         ingredientsMainGridLayout = new JPanel(new GridLayout(1, 2));
         ingredientsRightBorderLayout = new JPanel(new BorderLayout());
@@ -566,9 +584,7 @@ public class MainWindow extends JFrame {
         ingredientsMainGridLayout.add(ingredientsRightBorderLayout);
 
         //NOWE ELEMENTY - Kategorie, Łatwość przygotowania, Czas przygotowania
-
         ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(50), SwingConstants.CENTER));
-
         breakfestCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(51));
         dessertCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(52));
         dinerCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(53));
@@ -579,25 +595,18 @@ public class MainWindow extends JFrame {
         ingredientsRightDownGridLayout.add(supperCheckBox);
         ingredientsRightDownGridLayout.add(dessertCheckBox);
         ingredientsRightDownGridLayout.add(snackCheckBox);
-
         ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(56), SwingConstants.CENTER));
-
         PreparingTimeComboBox = new JComboBox<>();
         PreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(59));
         PreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(60));
         PreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(61));
-
         ingredientsRightDownGridLayout.add(PreparingTimeComboBox);
-
         ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(57), SwingConstants.CENTER));
-
         EaseToPrepare = new JComboBox<>();
         EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(62));
         EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(63));
         EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(64));
-
         ingredientsRightDownGridLayout.add(EaseToPrepare);
-
         //PANELS AND OBJECTS LOCATION
         upRightGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(11), SwingConstants.CENTER));
         upRightGridLayout.add(ingredientInSearchComboBox);
@@ -1017,6 +1026,16 @@ public class MainWindow extends JFrame {
     }
 
     //ELEMENTY GUI BAZY SKŁADNIKÓW
+    private JTabbedPane mainTable;
+    private JTabbedPane creatingRecipeTable;
+
+    private JScrollPane ingredientsInputListScrollPane;
+    private JScrollPane receipesOutputListScrollPane;
+    private JScrollPane receipesListScrollPane;
+    private JScrollPane ingredientsInputinRecipeListScrollPane;
+    private JScrollPane manageIngredientsListScrollPane;
+    private JScrollPane recipeTextAreaScrollPane;
+    private JScrollPane instructionAreaJScrollPane;
 
     private JCheckBox breakfestCheckBox;
     private JCheckBox dessertCheckBox;
@@ -1024,34 +1043,35 @@ public class MainWindow extends JFrame {
     private JCheckBox supperCheckBox;
     private JCheckBox snackCheckBox;
 
+    private JComboBox<String> ingredientInSearchComboBox;
+    private JComboBox<String> ingredientInCreatingRecipeComboBox;
     private JComboBox<String> PreparingTimeComboBox;
     private JComboBox<String> EaseToPrepare;
 
+    private JButton newIngredientButton;
+    private JButton removeIngredientsButton;
+    private JButton importIngredientsInSearch;
+    private JButton exportIngredientsInSearch;
+    private JButton editNewExitWithoutSaving;
+    private JButton editNewExitWithSaving;
+    private JButton execute;
+    private JButton addIngredientButton;
+    private JButton removeIngredientButton;
+    private JButton newRecipe;
+    private JButton editRecipe;
+    private JButton deleteRecipe;
+    private JButton closeTab;
+    private JButton exportTab;
+    private JButton newEditAddIngredientButton;
+    private JButton newEditRemoveIngredientButton;
 
     private JPanel ingredientsMainGridLayout;
     private JPanel ingredientsRightBorderLayout;
     private JPanel ingredientsRightGridLayout;
     private JPanel ingredientsDownGridLayout;
     private JPanel ingredientsRightDownGridLayout;
-
-    private JList<String> manageIngredientsInputList;
-    private final DefaultListModel<String> manageIngredientsInputListModel;
-
-    private JTextField newIngredientTextField;
-    private JButton newIngredientButton;
-    private JButton removeIngredientsButton;
-
-    private JButton importIngredientsInSearch;
-    private JButton exportIngredientsInSearch;
-
-    private JPanel importExportInSearchGrid;
-
-    private JScrollPane recipeTextAreaScrollPane;
     private JPanel recipesBorderLayout;
     private JPanel recipesGridLayout;
-    private JTextArea recipeTextArea;
-    private JButton closeTab;
-
     private JPanel newEditMainBorderLayout;
     private JPanel newEditMainGridLayout;
     private JPanel newEditUpGridLayout;
@@ -1062,50 +1082,36 @@ public class MainWindow extends JFrame {
     private JPanel newEditTopGridLayout;
     private JPanel newEditAmmountAndUnitGridLayoutUp;
     private JPanel newEditAmmountAndUnitGridLayoutDown;
-
     private JPanel newEditParametersGrid;
-
-    private JTextField newEditAmmountTextArea;
-    private JTextField newEditUnitTextArea;
-
-    private JButton editNewExitWithoutSaving;
-    private JButton editNewExitWithSaving;
-
-    private JButton newEditAddIngredientButton;
-    private JButton newEditRemoveIngredientButton;
-
-    private JTextArea instructionsInsertTextArea;
-    private JTextField recipeNameTextField;
-
     private JPanel manageReceipesMainPanel;
     private JPanel manageReceipesGridPanel;
     private JPanel manageReceipesLeftBorderLayout;
     private JPanel manageReceipesLeftUpGridPanel;
     private JPanel manageReceipesLeftDownGridPanel;
-
-
     private JPanel mainBorderLayout;
     private JPanel downBorderLayout;
     private JPanel upBorderLayout;
+    private JPanel importExportInSearchGrid;
+
+    private JTextArea recipeTextArea;
+    private JTextArea instructionsInsertTextArea;
+
+    private JTextField newIngredientTextField;
+    private JTextField newEditAmmountTextArea;
+    private JTextField newEditUnitTextArea;
+    private JTextField recipeNameTextField;
+    private JTextField searchForReceipesTextArea;
 
     private JPanel mainGridLayout;
     private JPanel upGridLayout;
     private JPanel upRightGridLayout;
 
-    private JTextField searchForReceipesTextArea;
-    private JButton execute;
-    private JButton addIngredientButton;
-    private JButton removeIngredientButton;
-    private JButton newRecipe;
-    private JButton editRecipe;
-    private JButton deleteRecipe;
-
     private JMenuBar mainMenu;
-    public JMenu fileMenu;
+
+    private JMenu fileMenu;
     private JMenu editMenu;
     private JMenu helpMenu;
     private JMenu newSubmenu;
-
 
     private JList<String> ingredientsInputList;
     private final DefaultListModel<String> ingredientsInputListModel;
@@ -1119,23 +1125,8 @@ public class MainWindow extends JFrame {
     private JList<String> ingredientsInputinRecipeList;
     private DefaultListModel<String> ingredientsInputInRecipeListModel;
 
-
-    private JScrollPane ingredientsInputListScrollPane;
-    private JScrollPane receipesOutputListScrollPane;
-    private JScrollPane receipesListScrollPane;
-    private JScrollPane ingredientsInputinRecipeListScrollPane;
-    private JScrollPane manageIngredientsListScrollPane;
-
-    private JTabbedPane mainTable;
-    private JTabbedPane creatingRecipeTable;
-
-    private boolean isEditionTurnOn;
-
-
-    private JComboBox<String> ingredientInSearchComboBox;
-    private JComboBox<String> ingredientInCreatingRecipeComboBox;
-
-    private JScrollPane instructionAreaJScrollPane;
+    private JList<String> manageIngredientsInputList;
+    private final DefaultListModel<String> manageIngredientsInputListModel;
 
     private SettingsWindow settingsDialog;
     private AboutWindow aboutDialog;
@@ -1143,9 +1134,9 @@ public class MainWindow extends JFrame {
 
     private PairRecipeIndex shownRecipesList;
 
-    private JButton exportTab;
+    public static String Path;
 
     public static boolean getToNewCard;
     public static boolean autoLoadIngredients;
-    public static String Path;
+    private boolean isEditionTurnOn;
 }
