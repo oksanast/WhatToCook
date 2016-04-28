@@ -13,11 +13,9 @@ import java.io.PrintWriter;
  * Created by Mateusz on 23.03.2016.
  * Project WhatToCook
  */
-public class SettingsWindow extends JDialog
-{
-    public SettingsWindow(MainWindow owner)
-    {
-        setSize(640,130);
+public class SettingsWindow extends JDialog {
+    public SettingsWindow(MainWindow owner) {
+        setSize(640, 130);
         setModal(true);
         setTitle(WhatToCook.SelectedPackage.get(6));
         setLocationRelativeTo(null);
@@ -26,39 +24,34 @@ public class SettingsWindow extends JDialog
         languageComboBox.addItem("Polski");
         languageComboBox.addItem("English");
         languageComboBox.setToolTipText(WhatToCook.SelectedPackage.get(67));
-        mainGridLayout = new JPanel(new GridLayout(2,2));
+        mainGridLayout = new JPanel(new GridLayout(2, 2));
         toNewCardCheckbox = new JCheckBox();
-        if(MainWindow.getToNewCard)
-        {
+        if (MainWindow.getToNewCard) {
             toNewCardCheckbox.setSelected(true);
         }
         toNewCardCheckbox.addActionListener(e -> {
             MainWindow.getToNewCard = toNewCardCheckbox.isSelected();
             exportSettings();
         });
-        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(24),SwingConstants.CENTER));
+        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(24), SwingConstants.CENTER));
         mainGridLayout.add(toNewCardCheckbox);
-        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(25),SwingConstants.CENTER));
+        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(25), SwingConstants.CENTER));
         mainGridLayout.add(languageComboBox);
-        mainTable.addTab(WhatToCook.SelectedPackage.get(26),mainGridLayout);
+        mainTable.addTab(WhatToCook.SelectedPackage.get(26), mainGridLayout);
 
-        if(WhatToCook.SelectedPackage.equals(WhatToCook.PolishPackage))
-        {
+        if (WhatToCook.SelectedPackage.equals(WhatToCook.PolishPackage)) {
             languageComboBox.setSelectedIndex(0);
         }
-        if(WhatToCook.SelectedPackage.equals(WhatToCook.EnglishPackage))
-        {
+        if (WhatToCook.SelectedPackage.equals(WhatToCook.EnglishPackage)) {
             languageComboBox.setSelectedIndex(1);
         }
 
         languageComboBox.addActionListener(e -> {
-            if(languageComboBox.getSelectedItem() == "Polski")
-            {
+            if (languageComboBox.getSelectedItem() == "Polski") {
                 int selection;
-                selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43),JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
-                if(selection == JOptionPane.OK_OPTION)
-                {
-                   // WhatToCook.SelectedPackage = WhatToCook.polishLanguagePack;
+                selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43), JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (selection == JOptionPane.OK_OPTION) {
+                    // WhatToCook.SelectedPackage = WhatToCook.polishLanguagePack;
                     WhatToCook.SelectedPackage = WhatToCook.PolishPackage;
                     WhatToCook.frame.dispose();
                     WhatToCook.frame = new MainWindow();
@@ -68,17 +61,14 @@ public class SettingsWindow extends JDialog
                     repaint();
                     setVisible(false);
                     toFront();
-                }
-                else
+                } else
                     languageComboBox.setSelectedIndex(1);
             }
-            if(languageComboBox.getSelectedItem() == "English")
-            {
+            if (languageComboBox.getSelectedItem() == "English") {
                 int selection;
-                selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43),JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
-                if(selection == JOptionPane.OK_OPTION)
-                {
-                   // WhatToCook.SelectedPackage = WhatToCook.englishLanguagePack;
+                selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43), JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (selection == JOptionPane.OK_OPTION) {
+                    // WhatToCook.SelectedPackage = WhatToCook.englishLanguagePack;
                     WhatToCook.SelectedPackage = WhatToCook.EnglishPackage;
                     WhatToCook.frame.dispose();
                     WhatToCook.frame = new MainWindow();
@@ -88,8 +78,7 @@ public class SettingsWindow extends JDialog
                     repaint();
                     setVisible(false);
                     toFront();
-                }
-                else
+                } else
                     languageComboBox.setSelectedIndex(0);
 
             }
@@ -99,24 +88,21 @@ public class SettingsWindow extends JDialog
 
     }
 
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return (String) languageComboBox.getSelectedItem();
     }
-    public boolean getToNewCardCheckbox()
-    {
+
+    public boolean getToNewCardCheckbox() {
         return toNewCardCheckbox.isSelected();
     }
-    private void exportSettings()
-    {
+
+    private void exportSettings() {
         try {
             PrintWriter writer = new PrintWriter(new File("src/cfg"));
-            if(languageComboBox.getSelectedItem() == "Polski")
-            {
+            if (languageComboBox.getSelectedItem() == "Polski") {
                 writer.println("polish");
             }
-            if(languageComboBox.getSelectedItem() == "English")
-            {
+            if (languageComboBox.getSelectedItem() == "English") {
                 writer.println("english");
             }
             writer.println(toNewCardCheckbox.isSelected());
@@ -128,6 +114,7 @@ public class SettingsWindow extends JDialog
         }
 
     }
+
     JComboBox<String> languageComboBox;
     JTabbedPane mainTable;
     JPanel mainGridLayout;

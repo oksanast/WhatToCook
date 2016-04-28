@@ -36,11 +36,9 @@ public class WhatToCook implements Runnable {
             in = new Scanner(new File("src/cfg"));
             String language = in.next();
             if(language.equals("english")) {
-                //selectedLanguagePack = englishLanguagePack;
                 SelectedPackage = EnglishPackage;
             }
             if(language.equals("polish")) {
-               // selectedLanguagePack = polishLanguagePack;
                 SelectedPackage = PolishPackage;
             }
             MainWindow.getToNewCard = in.nextBoolean();

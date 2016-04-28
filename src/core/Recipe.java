@@ -14,7 +14,6 @@ import java.util.Locale;
 public class Recipe implements Comparable<Recipe>
 {
     public Recipe(String name, ArrayList<Ingredient> ingredients, ArrayList<PairAmountUnit> ingredientsAmountAndUnits, String instructions,RecipeParameters parameters)
-   // public Recipe(String name, ArrayList<Ingredient> ingredients, String instructions)
     {
         this.name = name;
         this.ingredients = ingredients;
