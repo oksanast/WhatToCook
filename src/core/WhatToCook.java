@@ -25,8 +25,8 @@ public class WhatToCook implements Runnable {
         buildPolishLanguage();
         buildEnglishLanguage();
         selectedLanguagePack = polishLanguagePack;
-        PolishPackage = new LanguagePackage("src/ingredientsPL","src/recipesPL");
-        EnglishPackage = new LanguagePackage("src/ingredientsENG","src/recipesENG");
+        PolishPackage = new LanguagePackage("src/ingredientsPL","src/recipesPL",polishLanguagePack);
+        EnglishPackage = new LanguagePackage("src/ingredientsENG","src/recipesENG",englishLanguagePack);
         SelectedPackage = new LanguagePackage();
 
         Scanner in;
@@ -36,11 +36,11 @@ public class WhatToCook implements Runnable {
             in = new Scanner(new File("src/cfg"));
             String language = in.next();
             if(language.equals("english")) {
-                selectedLanguagePack = englishLanguagePack;
+                //selectedLanguagePack = englishLanguagePack;
                 SelectedPackage = EnglishPackage;
             }
             if(language.equals("polish")) {
-                selectedLanguagePack = polishLanguagePack;
+               // selectedLanguagePack = polishLanguagePack;
                 SelectedPackage = PolishPackage;
             }
             MainWindow.getToNewCard = in.nextBoolean();
@@ -125,7 +125,7 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Unit:");
         englishLanguagePack.add("Dish for:");//51
         englishLanguagePack.add("Breakfest");
-        englishLanguagePack.add("Lunch");
+        englishLanguagePack.add("Dessert");
         englishLanguagePack.add("Diner");
         englishLanguagePack.add("Supper");
         englishLanguagePack.add("Snack");
@@ -198,7 +198,7 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Jednostka:");
         polishLanguagePack.add("Danie na:");//50
         polishLanguagePack.add("Śniadanie");//51
-        polishLanguagePack.add("Lunch");
+        polishLanguagePack.add("Deser");
         polishLanguagePack.add("Obiad");
         polishLanguagePack.add("Kolację");
         polishLanguagePack.add("Przekąskę");
@@ -215,11 +215,11 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Wykonianie: ");
         polishLanguagePack.add("Zmiana przepisu spowoduje zmianę bazy danych przepisów.");
     }
-    public static ArrayList<String> polishLanguagePack;
-    public static ArrayList<String> englishLanguagePack;
-    public static ArrayList<String> selectedLanguagePack;
+    private static ArrayList<String> polishLanguagePack;
+    private static ArrayList<String> englishLanguagePack;
+    private static ArrayList<String> selectedLanguagePack;
     public static MainWindow frame;
-    public static String version = "1.1";
+    public static String version = "1.4";
 
     public static LanguagePackage SelectedPackage;
 

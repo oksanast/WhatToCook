@@ -2,6 +2,7 @@ package gui;
 
 import core.WhatToCook;
 
+import javax.annotation.processing.SupportedSourceVersion;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -18,13 +19,13 @@ public class SettingsWindow extends JDialog
     {
         setSize(640,130);
         setModal(true);
-        setTitle(WhatToCook.selectedLanguagePack.get(6));
+        setTitle(WhatToCook.SelectedPackage.get(6));
         setLocationRelativeTo(null);
         mainTable = new JTabbedPane();
         languageComboBox = new JComboBox<>();
         languageComboBox.addItem("Polski");
         languageComboBox.addItem("English");
-        languageComboBox.setToolTipText(WhatToCook.selectedLanguagePack.get(67));
+        languageComboBox.setToolTipText(WhatToCook.SelectedPackage.get(67));
         mainGridLayout = new JPanel(new GridLayout(2,2));
         toNewCardCheckbox = new JCheckBox();
         if(MainWindow.getToNewCard)
@@ -35,17 +36,17 @@ public class SettingsWindow extends JDialog
             MainWindow.getToNewCard = toNewCardCheckbox.isSelected();
             exportSettings();
         });
-        mainGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(24),SwingConstants.CENTER));
+        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(24),SwingConstants.CENTER));
         mainGridLayout.add(toNewCardCheckbox);
-        mainGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(25),SwingConstants.CENTER));
+        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(25),SwingConstants.CENTER));
         mainGridLayout.add(languageComboBox);
-        mainTable.addTab(WhatToCook.selectedLanguagePack.get(26),mainGridLayout);
+        mainTable.addTab(WhatToCook.SelectedPackage.get(26),mainGridLayout);
 
-        if(WhatToCook.selectedLanguagePack == WhatToCook.polishLanguagePack)
+        if(WhatToCook.SelectedPackage.equals(WhatToCook.PolishPackage))
         {
             languageComboBox.setSelectedIndex(0);
         }
-        if(WhatToCook.selectedLanguagePack == WhatToCook.englishLanguagePack)
+        if(WhatToCook.SelectedPackage.equals(WhatToCook.EnglishPackage))
         {
             languageComboBox.setSelectedIndex(1);
         }
@@ -54,16 +55,16 @@ public class SettingsWindow extends JDialog
             if(languageComboBox.getSelectedItem() == "Polski")
             {
                 int selection;
-                selection = JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(42), WhatToCook.selectedLanguagePack.get(43),JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
+                selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43),JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
                 if(selection == JOptionPane.OK_OPTION)
                 {
-                    WhatToCook.selectedLanguagePack = WhatToCook.polishLanguagePack;
+                   // WhatToCook.SelectedPackage = WhatToCook.polishLanguagePack;
                     WhatToCook.SelectedPackage = WhatToCook.PolishPackage;
                     WhatToCook.frame.dispose();
                     WhatToCook.frame = new MainWindow();
                     WhatToCook.frame.setVisible(true);
                     WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                    setTitle(WhatToCook.selectedLanguagePack.get(6));
+                    setTitle(WhatToCook.SelectedPackage.get(6));
                     repaint();
                     setVisible(false);
                     toFront();
@@ -74,16 +75,16 @@ public class SettingsWindow extends JDialog
             if(languageComboBox.getSelectedItem() == "English")
             {
                 int selection;
-                selection = JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(42), WhatToCook.selectedLanguagePack.get(43),JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
+                selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43),JOptionPane.OK_OPTION,JOptionPane.QUESTION_MESSAGE);
                 if(selection == JOptionPane.OK_OPTION)
                 {
-                    WhatToCook.selectedLanguagePack = WhatToCook.englishLanguagePack;
+                   // WhatToCook.SelectedPackage = WhatToCook.englishLanguagePack;
                     WhatToCook.SelectedPackage = WhatToCook.EnglishPackage;
                     WhatToCook.frame.dispose();
                     WhatToCook.frame = new MainWindow();
                     WhatToCook.frame.setVisible(true);
                     WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                    setTitle(WhatToCook.selectedLanguagePack.get(6));
+                    setTitle(WhatToCook.SelectedPackage.get(6));
                     repaint();
                     setVisible(false);
                     toFront();

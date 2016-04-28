@@ -15,11 +15,11 @@ public class ErrorWindow extends JDialog {
     {
         setSize(300,150);
         setModal(true);
-        setTitle(WhatToCook.selectedLanguagePack.get(39));
+        setTitle(WhatToCook.SelectedPackage.get(39));
         setLocationRelativeTo(null);
         JPanel mainBorderLayout = new JPanel(new BorderLayout());
         ErrorMessage = "";
-        JButton exit = new JButton(WhatToCook.selectedLanguagePack.get(36));
+        JButton exit = new JButton(WhatToCook.SelectedPackage.get(36));
         exit.addActionListener(e -> setVisible(false));
         ErrorMessageLabel = new JLabel();
         mainBorderLayout.add(ErrorMessageLabel,BorderLayout.NORTH);
@@ -29,7 +29,7 @@ public class ErrorWindow extends JDialog {
     }
     public void refresh(ArrayList<String> errorsList)
     {
-        ErrorMessage = "<html><h4>" + WhatToCook.selectedLanguagePack.get(38) + "</h4>";
+        ErrorMessage = "<html><h4>" + WhatToCook.SelectedPackage.get(38) + "</h4>";
         for(String toPrint : errorsList)
         {
             ErrorMessage+="<br>" + toPrint;

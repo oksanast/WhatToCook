@@ -73,10 +73,10 @@ public class MainWindow extends JFrame {
         //MENUBAR CREATING/////////////////////////////////////////////////////////////////////////////////////////////
         mainMenu = new JMenuBar();
         setJMenuBar(mainMenu);
-        fileMenu = new JMenu(WhatToCook.selectedLanguagePack.get(0));
-        editMenu = new JMenu(WhatToCook.selectedLanguagePack.get(2));
-        helpMenu = new JMenu(WhatToCook.selectedLanguagePack.get(5));
-        newSubmenu = new JMenu(WhatToCook.selectedLanguagePack.get(45));
+        fileMenu = new JMenu(WhatToCook.SelectedPackage.get(0));
+        editMenu = new JMenu(WhatToCook.SelectedPackage.get(2));
+        helpMenu = new JMenu(WhatToCook.SelectedPackage.get(5));
+        newSubmenu = new JMenu(WhatToCook.SelectedPackage.get(45));
         mainMenu.add(fileMenu);
         mainMenu.add(editMenu);
         mainMenu.add(helpMenu);
@@ -89,14 +89,14 @@ public class MainWindow extends JFrame {
             aboutDialog = new AboutWindow(MainWindow.this);
         if (errorDialog == null)
             errorDialog = new ErrorWindow(MainWindow.this);
-        Action newIngredientAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(46)) {
+        Action newIngredientAction = new AbstractAction(WhatToCook.SelectedPackage.get(46)) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainTable.setSelectedIndex(2);
                 newIngredientTextField.requestFocus();
             }
         };
-        Action newRecipeAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(47)) {
+        Action newRecipeAction = new AbstractAction(WhatToCook.SelectedPackage.get(47)) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!isEditionTurnOn) {
@@ -106,18 +106,18 @@ public class MainWindow extends JFrame {
                 }
             }
         };
-        Action settingsAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(6)) {
+        Action settingsAction = new AbstractAction(WhatToCook.SelectedPackage.get(6)) {
             public void actionPerformed(ActionEvent event) {
                 settingsDialog.setVisible(true);
             }
         };
 
-        Action exitAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(1)) {
+        Action exitAction = new AbstractAction(WhatToCook.SelectedPackage.get(1)) {
             public void actionPerformed(ActionEvent event) {
                 System.exit(0);
             }
         };
-        Action clearIngredientsAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(3)) {
+        Action clearIngredientsAction = new AbstractAction(WhatToCook.SelectedPackage.get(3)) {
             public void actionPerformed(ActionEvent event) {
                 int i = ingredientsInputListModel.getSize() - 1;
                 for (; i >= 0; i--)
@@ -125,7 +125,7 @@ public class MainWindow extends JFrame {
 
             }
         };
-        Action clearReceipesAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(4)) {
+        Action clearReceipesAction = new AbstractAction(WhatToCook.SelectedPackage.get(4)) {
             public void actionPerformed(ActionEvent event) {
                 int i = receipesOutputListModel.getSize() - 1;
                 for (; i >= 0; i--)
@@ -133,18 +133,18 @@ public class MainWindow extends JFrame {
 
             }
         };
-        Action aboutAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(7)) {
+        Action aboutAction = new AbstractAction(WhatToCook.SelectedPackage.get(7)) {
             public void actionPerformed(ActionEvent event) {
                 aboutDialog.setVisible(true);
             }
         };
-        Action exportIngredientsAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(40)) {
+        Action exportIngredientsAction = new AbstractAction(WhatToCook.SelectedPackage.get(40)) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 exportIngredientsList();
             }
         };
-        Action importIngredientsAction = new AbstractAction(WhatToCook.selectedLanguagePack.get(41)) {
+        Action importIngredientsAction = new AbstractAction(WhatToCook.SelectedPackage.get(41)) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 importIngredientsList();
@@ -200,14 +200,14 @@ public class MainWindow extends JFrame {
         ingredientInCreatingRecipeComboBox = new JComboBox<>();
         IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
         //BUTTONS
-        execute = new JButton(WhatToCook.selectedLanguagePack.get(15));
+        execute = new JButton(WhatToCook.SelectedPackage.get(15));
         execute.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 receipesOutputListModel.clear();
                 ArrayList<Ingredient> ingredients = new ArrayList<>();
                 boolean[] parameters = new boolean[5];
                 parameters[0] = breakfestCheckBox.isSelected();
-                parameters[1] = lunchCheckBox.isSelected();
+                parameters[1] = dessertCheckBox.isSelected();
                 parameters[2] = dinerCheckBox.isSelected();
                 parameters[3] = supperCheckBox.isSelected();
                 parameters[4] = snackCheckBox.isSelected();
@@ -227,7 +227,7 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-        addIngredientButton = new JButton(WhatToCook.selectedLanguagePack.get(12));
+        addIngredientButton = new JButton(WhatToCook.SelectedPackage.get(12));
         addIngredientButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 String newForm = "● " + ingredientInSearchComboBox.getSelectedItem();
@@ -243,7 +243,7 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-        removeIngredientButton = new JButton(WhatToCook.selectedLanguagePack.get(13));
+        removeIngredientButton = new JButton(WhatToCook.SelectedPackage.get(13));
         removeIngredientButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 int index = ingredientsInputList.getSelectedIndex();
@@ -303,7 +303,7 @@ public class MainWindow extends JFrame {
             }
         });
 
-        newRecipe = new JButton(WhatToCook.selectedLanguagePack.get(17));
+        newRecipe = new JButton(WhatToCook.SelectedPackage.get(17));
         newRecipe.addActionListener(e -> {
             if (!isEditionTurnOn) {
 
@@ -311,7 +311,7 @@ public class MainWindow extends JFrame {
                 showNewEditMenu();
             }
         });
-        editRecipe = new JButton(WhatToCook.selectedLanguagePack.get(18));
+        editRecipe = new JButton(WhatToCook.SelectedPackage.get(18));
         editRecipe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -326,7 +326,7 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-        deleteRecipe = new JButton(WhatToCook.selectedLanguagePack.get(31));
+        deleteRecipe = new JButton(WhatToCook.SelectedPackage.get(31));
         deleteRecipe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -361,7 +361,7 @@ public class MainWindow extends JFrame {
             }
         });
 
-        manageReceipesLeftUpGridPanel.add(new JLabel(WhatToCook.selectedLanguagePack.get(16), SwingConstants.CENTER));
+        manageReceipesLeftUpGridPanel.add(new JLabel(WhatToCook.SelectedPackage.get(16), SwingConstants.CENTER));
         manageReceipesLeftUpGridPanel.add(searchForReceipesTextArea);
         manageReceipesLeftBorderLayout.add(manageReceipesLeftUpGridPanel, BorderLayout.NORTH);
         manageReceipesLeftDownGridPanel.add(newRecipe);
@@ -387,7 +387,7 @@ public class MainWindow extends JFrame {
         manageIngredientsInputList = new JList<>(manageIngredientsInputListModel);
         manageIngredientsListScrollPane = new JScrollPane(manageIngredientsInputList);
         IngredientsList.rebuildModel(manageIngredientsInputListModel);
-        newIngredientButton = new JButton(WhatToCook.selectedLanguagePack.get(29));
+        newIngredientButton = new JButton(WhatToCook.SelectedPackage.get(29));
         newIngredientButton.addActionListener(e -> {
             if (!newIngredientTextField.getText().equals("")) {
                 Ingredient toAdd = new Ingredient(newIngredientTextField.getText());
@@ -424,7 +424,7 @@ public class MainWindow extends JFrame {
 
             }
         });
-        removeIngredientsButton = new JButton(WhatToCook.selectedLanguagePack.get(30));
+        removeIngredientsButton = new JButton(WhatToCook.SelectedPackage.get(30));
         removeIngredientsButton.addActionListener(e -> {
             boolean ifExist = false;
             ArrayList<String> recipesContainIngredient = new ArrayList<>();
@@ -444,14 +444,14 @@ public class MainWindow extends JFrame {
                 IngredientsList.reloadComboBox(ingredientInSearchComboBox);
                 IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
             } else {
-                //JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(38), WhatToCook.selectedLanguagePack.get(39), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
+                //JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(38), WhatToCook.SelectedPackage.get(39), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
                 errorDialog.refresh(recipesContainIngredient);
                 errorDialog.setVisible(true);
             }
 
         });
         //KONIEC SEKCJI
-        ingredientsRightGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(28), SwingConstants.CENTER));
+        ingredientsRightGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(28), SwingConstants.CENTER));
         ingredientsRightGridLayout.add(newIngredientTextField);
         ingredientsRightGridLayout.add(newIngredientButton);
         ingredientsRightGridLayout.add(removeIngredientsButton);
@@ -462,50 +462,50 @@ public class MainWindow extends JFrame {
 
         //NOWE ELEMENTY - Kategorie, Łatwość przygotowania, Czas przygotowania
 
-        ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(50),SwingConstants.CENTER));
+        ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(50),SwingConstants.CENTER));
 
-        breakfestCheckBox = new JCheckBox(WhatToCook.selectedLanguagePack.get(51));
-        lunchCheckBox = new JCheckBox(WhatToCook.selectedLanguagePack.get(52));
-        dinerCheckBox = new JCheckBox(WhatToCook.selectedLanguagePack.get(53));
-        supperCheckBox = new JCheckBox(WhatToCook.selectedLanguagePack.get(54));
-        snackCheckBox = new JCheckBox(WhatToCook.selectedLanguagePack.get(55));
+        breakfestCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(51));
+        dessertCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(52));
+        dinerCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(53));
+        supperCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(54));
+        snackCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(55));
         ingredientsRightDownGridLayout.add(breakfestCheckBox);
-        ingredientsRightDownGridLayout.add(lunchCheckBox);
         ingredientsRightDownGridLayout.add(dinerCheckBox);
         ingredientsRightDownGridLayout.add(supperCheckBox);
+        ingredientsRightDownGridLayout.add(dessertCheckBox);
         ingredientsRightDownGridLayout.add(snackCheckBox);
 
-        ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(56),SwingConstants.CENTER));
+        ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(56),SwingConstants.CENTER));
 
         PreparingTimeComboBox = new JComboBox<>();
-        PreparingTimeComboBox.addItem(WhatToCook.selectedLanguagePack.get(59));
-        PreparingTimeComboBox.addItem(WhatToCook.selectedLanguagePack.get(60));
-        PreparingTimeComboBox.addItem(WhatToCook.selectedLanguagePack.get(61));
+        PreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(59));
+        PreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(60));
+        PreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(61));
 
         ingredientsRightDownGridLayout.add(PreparingTimeComboBox);
 
-        ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(57),SwingConstants.CENTER));
+        ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(57),SwingConstants.CENTER));
 
         EaseToPrepare = new JComboBox<>();
-        EaseToPrepare.addItem(WhatToCook.selectedLanguagePack.get(62));
-        EaseToPrepare.addItem(WhatToCook.selectedLanguagePack.get(63));
-        EaseToPrepare.addItem(WhatToCook.selectedLanguagePack.get(64));
+        EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(62));
+        EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(63));
+        EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(64));
 
         ingredientsRightDownGridLayout.add(EaseToPrepare);
 
         //PANELS AND OBJECTS LOCATION
-        upRightGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(11), SwingConstants.CENTER));
+        upRightGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(11), SwingConstants.CENTER));
         upRightGridLayout.add(ingredientInSearchComboBox);
         upRightGridLayout.add(addIngredientButton);
         upRightGridLayout.add(removeIngredientButton);
         upGridLayout.add(ingredientsInputListScrollPane);
         upGridLayout.add(upRightGridLayout);
-        downBorderLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(14), SwingConstants.CENTER), BorderLayout.NORTH);
+        downBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(14), SwingConstants.CENTER), BorderLayout.NORTH);
         downBorderLayout.add(receipesOutputListScrollPane, BorderLayout.CENTER);
         downBorderLayout.add(execute, BorderLayout.SOUTH);
         ingredientsDownGridLayout.add(downBorderLayout);
         ingredientsDownGridLayout.add(ingredientsRightDownGridLayout);
-        upBorderLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(10), SwingConstants.CENTER), BorderLayout.NORTH);
+        upBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(10), SwingConstants.CENTER), BorderLayout.NORTH);
         upBorderLayout.add(upGridLayout, BorderLayout.CENTER);
         mainGridLayout.add(upBorderLayout);
         //mainGridLayout.add(downBorderLayout);
@@ -513,9 +513,9 @@ public class MainWindow extends JFrame {
         mainBorderLayout.add(mainGridLayout);
         add(mainBorderLayout);
         refreshGUILists();
-        mainTable.addTab(WhatToCook.selectedLanguagePack.get(8), mainBorderLayout);
-        mainTable.add(WhatToCook.selectedLanguagePack.get(9), manageReceipesMainPanel);
-        mainTable.add(WhatToCook.selectedLanguagePack.get(27), ingredientsMainGridLayout);
+        mainTable.addTab(WhatToCook.SelectedPackage.get(8), mainBorderLayout);
+        mainTable.add(WhatToCook.SelectedPackage.get(9), manageReceipesMainPanel);
+        mainTable.add(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout);
         add(mainTable);
         repaint();
     }
@@ -529,55 +529,55 @@ public class MainWindow extends JFrame {
         recipeTextArea.setEditable(false);
         recipeTextArea.setLineWrap(true);
         String toShow = "";
-        toShow += WhatToCook.selectedLanguagePack.get(65) + recipeToShow.getName() + "\n\n\n";
-        toShow +=WhatToCook.selectedLanguagePack.get(57) + " ";
+        toShow += WhatToCook.SelectedPackage.get(65) + recipeToShow.getName() + "\n\n\n";
+        toShow +=WhatToCook.SelectedPackage.get(57) + " ";
         if(recipeToShow.getParameters().getPreparingEase()==0)
-            toShow+=WhatToCook.selectedLanguagePack.get(62);
+            toShow+=WhatToCook.SelectedPackage.get(62);
         if(recipeToShow.getParameters().getPreparingEase()==1)
-            toShow+=WhatToCook.selectedLanguagePack.get(63);
+            toShow+=WhatToCook.SelectedPackage.get(63);
         if(recipeToShow.getParameters().getPreparingEase()==2)
-            toShow+=WhatToCook.selectedLanguagePack.get(64);
+            toShow+=WhatToCook.SelectedPackage.get(64);
         toShow+="\n\n";
-        toShow+=WhatToCook.selectedLanguagePack.get(56) +" ";
+        toShow+=WhatToCook.SelectedPackage.get(56) +" ";
         if(recipeToShow.getParameters().getPreparingTime()==0)
-            toShow+=WhatToCook.selectedLanguagePack.get(59);
+            toShow+=WhatToCook.SelectedPackage.get(59);
         if(recipeToShow.getParameters().getPreparingTime()==1)
-            toShow+=WhatToCook.selectedLanguagePack.get(60);
+            toShow+=WhatToCook.SelectedPackage.get(60);
         if(recipeToShow.getParameters().getPreparingTime()==2)
-            toShow+=WhatToCook.selectedLanguagePack.get(61);
+            toShow+=WhatToCook.SelectedPackage.get(61);
         toShow+="\n\n";
-        toShow += WhatToCook.selectedLanguagePack.get(50);
+        toShow += WhatToCook.SelectedPackage.get(50);
         if(recipeToShow.getParameters().getParameters()[0])
-            toShow +=" " + WhatToCook.selectedLanguagePack.get(51);
+            toShow +=" " + WhatToCook.SelectedPackage.get(51);
         if(recipeToShow.getParameters().getParameters()[1])
-            toShow +=" " + WhatToCook.selectedLanguagePack.get(52);
+            toShow +=" " + WhatToCook.SelectedPackage.get(52);
         if(recipeToShow.getParameters().getParameters()[2])
-            toShow +=" " + WhatToCook.selectedLanguagePack.get(53);
+            toShow +=" " + WhatToCook.SelectedPackage.get(53);
         if(recipeToShow.getParameters().getParameters()[3])
-            toShow +=" " + WhatToCook.selectedLanguagePack.get(54);
+            toShow +=" " + WhatToCook.SelectedPackage.get(54);
         if(recipeToShow.getParameters().getParameters()[4])
-            toShow +=" " + WhatToCook.selectedLanguagePack.get(55);
+            toShow +=" " + WhatToCook.SelectedPackage.get(55);
         toShow+="\n\n";
-        toShow += WhatToCook.selectedLanguagePack.get(27) + "\n\n";
+        toShow += WhatToCook.SelectedPackage.get(27) + "\n\n";
         for (int i = 0; i < recipeToShow.getSize(); i++) {
             toShow += recipeToShow.getIngredient(i).toString() + " " + recipeToShow.getAmmount(i) + " " + recipeToShow.getUnit(i) + "\n";
 
         }
         toShow += "\n\n";
-        toShow += WhatToCook.selectedLanguagePack.get(66) + "\n\n" + recipeToShow.getRecipe();
+        toShow += WhatToCook.SelectedPackage.get(66) + "\n\n" + recipeToShow.getRecipe();
 
         recipeTextArea.setText(toShow);
         final String toExport = toShow;
         recipeTextAreaScrollPane = new JScrollPane(recipeTextArea);
         recipesBorderLayout.add(recipeTextAreaScrollPane, BorderLayout.CENTER);
-        closeTab = new JButton(WhatToCook.selectedLanguagePack.get(23));
+        closeTab = new JButton(WhatToCook.SelectedPackage.get(23));
         closeTab.addActionListener(event -> {
             int SelectedIndex = mainTable.getSelectedIndex();
             mainTable.setSelectedIndex(shownRecipesList.getStartPage(mainTable.getSelectedIndex()));
             shownRecipesList.remove(SelectedIndex);
             mainTable.removeTabAt(SelectedIndex);
         });
-        exportTab = new JButton(WhatToCook.selectedLanguagePack.get(44));
+        exportTab = new JButton(WhatToCook.SelectedPackage.get(44));
         exportTab.addActionListener(e -> {
 
             JFileChooser chooseFile = new JFileChooser();
@@ -645,10 +645,10 @@ public class MainWindow extends JFrame {
         newEditAmmountTextArea = new JTextField();
         newEditUnitTextArea = new JTextField();
 
-        newEditAmmountAndUnitGridLayoutUp.add(new JLabel(WhatToCook.selectedLanguagePack.get(48)));
+        newEditAmmountAndUnitGridLayoutUp.add(new JLabel(WhatToCook.SelectedPackage.get(48)));
         newEditAmmountAndUnitGridLayoutUp.add(newEditAmmountTextArea);
 
-        newEditAmmountAndUnitGridLayoutDown.add(new JLabel(WhatToCook.selectedLanguagePack.get(49)));
+        newEditAmmountAndUnitGridLayoutDown.add(new JLabel(WhatToCook.SelectedPackage.get(49)));
         newEditAmmountAndUnitGridLayoutDown.add(newEditUnitTextArea);
 
         newEditAmmountAndUnitGridLayoutUp.setBorder(new EmptyBorder(2, 2, 2, 2));
@@ -656,43 +656,43 @@ public class MainWindow extends JFrame {
 
         ArrayList<ListHandler> ingredientsListInput = new ArrayList<>();
 
-        newEditParametersGrid.add(new JLabel(WhatToCook.selectedLanguagePack.get(50),SwingConstants.CENTER));
+        newEditParametersGrid.add(new JLabel(WhatToCook.SelectedPackage.get(50),SwingConstants.CENTER));
 
-        JCheckBox NewEditbreakfestCheckBox = new JCheckBox(WhatToCook.selectedLanguagePack.get(51));
-        JCheckBox NewEditlunchCheckBox = new JCheckBox(WhatToCook.selectedLanguagePack.get(52));
-        JCheckBox NewEditdinerCheckBox = new JCheckBox(WhatToCook.selectedLanguagePack.get(53));
-        JCheckBox NewEditsupperCheckBox = new JCheckBox(WhatToCook.selectedLanguagePack.get(54));
-        JCheckBox NewEditsnackCheckBox = new JCheckBox(WhatToCook.selectedLanguagePack.get(55));
+        JCheckBox NewEditbreakfestCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(51));
+        JCheckBox NewEditdessertCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(52));
+        JCheckBox NewEditdinerCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(53));
+        JCheckBox NewEditsupperCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(54));
+        JCheckBox NewEditsnackCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(55));
         newEditParametersGrid.add(NewEditbreakfestCheckBox);
-        newEditParametersGrid.add(NewEditlunchCheckBox);
         newEditParametersGrid.add(NewEditdinerCheckBox);
         newEditParametersGrid.add(NewEditsupperCheckBox);
+        newEditParametersGrid.add(NewEditdessertCheckBox);
         newEditParametersGrid.add(NewEditsnackCheckBox);
 
-        newEditParametersGrid.add(new JLabel(WhatToCook.selectedLanguagePack.get(56),SwingConstants.CENTER));
+        newEditParametersGrid.add(new JLabel(WhatToCook.SelectedPackage.get(56),SwingConstants.CENTER));
 
         JComboBox<String> NewEditPreparingTimeComboBox = new JComboBox<>();
-        NewEditPreparingTimeComboBox.addItem(WhatToCook.selectedLanguagePack.get(59));
-        NewEditPreparingTimeComboBox.addItem(WhatToCook.selectedLanguagePack.get(60));
-        NewEditPreparingTimeComboBox.addItem(WhatToCook.selectedLanguagePack.get(61));
+        NewEditPreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(59));
+        NewEditPreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(60));
+        NewEditPreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(61));
 
         newEditParametersGrid.add(NewEditPreparingTimeComboBox);
 
-        newEditParametersGrid.add(new JLabel(WhatToCook.selectedLanguagePack.get(57),SwingConstants.CENTER));
+        newEditParametersGrid.add(new JLabel(WhatToCook.SelectedPackage.get(57),SwingConstants.CENTER));
 
         JComboBox<String> NewEditEaseToPrepare = new JComboBox<>();
-        NewEditEaseToPrepare.addItem(WhatToCook.selectedLanguagePack.get(62));
-        NewEditEaseToPrepare.addItem(WhatToCook.selectedLanguagePack.get(63));
-        NewEditEaseToPrepare.addItem(WhatToCook.selectedLanguagePack.get(64));
+        NewEditEaseToPrepare.addItem(WhatToCook.SelectedPackage.get(62));
+        NewEditEaseToPrepare.addItem(WhatToCook.SelectedPackage.get(63));
+        NewEditEaseToPrepare.addItem(WhatToCook.SelectedPackage.get(64));
         newEditParametersGrid.add(NewEditEaseToPrepare);
 
-        editNewExitWithoutSaving = new JButton(WhatToCook.selectedLanguagePack.get(22));
+        editNewExitWithoutSaving = new JButton(WhatToCook.SelectedPackage.get(22));
         editNewExitWithoutSaving.addActionListener(e -> {
             isEditionTurnOn = false;
             mainTable.removeTabAt(mainTable.getSelectedIndex());
             mainTable.setSelectedIndex(1);
         });
-        editNewExitWithSaving = new JButton(WhatToCook.selectedLanguagePack.get(21));
+        editNewExitWithSaving = new JButton(WhatToCook.SelectedPackage.get(21));
         editNewExitWithSaving.addActionListener(e -> {
             String name1 = recipeNameTextField.getText();
             String instructions = instructionsInsertTextArea.getText();
@@ -707,7 +707,7 @@ public class MainWindow extends JFrame {
             }
             boolean parameters[] = new boolean[5];
             parameters[0] = NewEditbreakfestCheckBox.isSelected();
-            parameters[1] = NewEditlunchCheckBox.isSelected();
+            parameters[1] = NewEditdessertCheckBox.isSelected();
             parameters[2] = NewEditdinerCheckBox.isSelected();
             parameters[3] = NewEditsupperCheckBox.isSelected();
             parameters[4] = NewEditsnackCheckBox.isSelected();
@@ -720,7 +720,7 @@ public class MainWindow extends JFrame {
                     mainTable.removeTabAt(mainTable.getSelectedIndex());
                     mainTable.setSelectedIndex(1);
                 } else {
-                    JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(32), WhatToCook.selectedLanguagePack.get(33), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(32), WhatToCook.SelectedPackage.get(33), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
                 }
             }
             if (index >= 0) {
@@ -734,12 +734,12 @@ public class MainWindow extends JFrame {
                         mainTable.setSelectedIndex(1);
                     }
                 } else {
-                    JOptionPane.showConfirmDialog(null, WhatToCook.selectedLanguagePack.get(32), WhatToCook.selectedLanguagePack.get(33), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(32), WhatToCook.SelectedPackage.get(33), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
-        newEditAddIngredientButton = new JButton(WhatToCook.selectedLanguagePack.get(12));
+        newEditAddIngredientButton = new JButton(WhatToCook.SelectedPackage.get(12));
         newEditAddIngredientButton.addActionListener(event -> {
             if (!ingredientInCreatingRecipeComboBox.getSelectedItem().equals("")) {
                 String newForm = "● " + ingredientInCreatingRecipeComboBox.getSelectedItem();
@@ -759,7 +759,7 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-        newEditRemoveIngredientButton = new JButton(WhatToCook.selectedLanguagePack.get(13));
+        newEditRemoveIngredientButton = new JButton(WhatToCook.SelectedPackage.get(13));
         newEditRemoveIngredientButton.addActionListener(event -> {
             int index1 = ingredientsInputinRecipeList.getSelectedIndex();
             if (index1 >= 0) {
@@ -782,7 +782,7 @@ public class MainWindow extends JFrame {
         instructionAreaJScrollPane = new JScrollPane(instructionsInsertTextArea);
         recipeNameTextField = new JTextField();
 
-        newEditTopGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(34), SwingConstants.CENTER));
+        newEditTopGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(34), SwingConstants.CENTER));
         newEditTopGridLayout.add(recipeNameTextField);
         newEditMainUpBorderLayout.add(newEditTopGridLayout, BorderLayout.NORTH);
 
@@ -801,7 +801,7 @@ public class MainWindow extends JFrame {
             if(RecipesList.recipesList.get(index).getParameters().getParameters()[0])
                 NewEditbreakfestCheckBox.setSelected(true);
             if(RecipesList.recipesList.get(index).getParameters().getParameters()[1])
-                NewEditlunchCheckBox.setSelected(true);
+                NewEditdessertCheckBox.setSelected(true);
             if(RecipesList.recipesList.get(index).getParameters().getParameters()[2])
                 NewEditdinerCheckBox.setSelected(true);
             if(RecipesList.recipesList.get(index).getParameters().getParameters()[3])
@@ -814,7 +814,7 @@ public class MainWindow extends JFrame {
         }
 
         newEditUpRightGridLayout.add(ingredientsInputinRecipeListScrollPane);
-        newEditUpRightGridLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(11), SwingConstants.CENTER));
+        newEditUpRightGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(11), SwingConstants.CENTER));
         newEditUpRightGridLayout.add(ingredientInCreatingRecipeComboBox);
         newEditUpRightGridLayout.add(newEditAmmountAndUnitGridLayoutUp);
         newEditUpRightGridLayout.add(newEditAmmountAndUnitGridLayoutDown);
@@ -824,11 +824,11 @@ public class MainWindow extends JFrame {
 
         newEditDownGridLayout.add(editNewExitWithSaving);
         newEditDownGridLayout.add(editNewExitWithoutSaving);
-        newEditMainDownBorderLayout.add(new JLabel(WhatToCook.selectedLanguagePack.get(20), SwingConstants.CENTER), BorderLayout.NORTH);
+        newEditMainDownBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(20), SwingConstants.CENTER), BorderLayout.NORTH);
         newEditMainDownBorderLayout.add(instructionAreaJScrollPane, BorderLayout.CENTER);
         newEditUpGridLayout.add(ingredientsInputinRecipeListScrollPane);
-        creatingRecipeTable.addTab(WhatToCook.selectedLanguagePack.get(27), newEditUpRightGridLayout);
-        creatingRecipeTable.addTab(WhatToCook.selectedLanguagePack.get(58),newEditParametersGrid);
+        creatingRecipeTable.addTab(WhatToCook.SelectedPackage.get(27), newEditUpRightGridLayout);
+        creatingRecipeTable.addTab(WhatToCook.SelectedPackage.get(58),newEditParametersGrid);
         newEditUpGridLayout.add(creatingRecipeTable);
         newEditMainUpBorderLayout.add(newEditUpGridLayout, BorderLayout.CENTER);
 
@@ -840,7 +840,7 @@ public class MainWindow extends JFrame {
 
         newEditMainBorderLayout.add(newEditMainGridLayout, BorderLayout.CENTER);
         if (index == -1) {
-            mainTable.addTab(WhatToCook.selectedLanguagePack.get(17), newEditMainBorderLayout);
+            mainTable.addTab(WhatToCook.SelectedPackage.get(17), newEditMainBorderLayout);
         } else {
             mainTable.addTab(RecipesList.recipesList.get(index).getName(), newEditMainBorderLayout);
         }
@@ -915,7 +915,7 @@ public class MainWindow extends JFrame {
     //ELEMENTY GUI BAZY SKŁADNIKÓW
 
     private JCheckBox breakfestCheckBox;
-    private JCheckBox lunchCheckBox;
+    private JCheckBox dessertCheckBox;
     private JCheckBox dinerCheckBox;
     private JCheckBox supperCheckBox;
     private JCheckBox snackCheckBox;

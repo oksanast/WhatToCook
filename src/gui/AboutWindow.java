@@ -15,11 +15,11 @@ public class AboutWindow extends JDialog{
         setSize(250,250);
         setResizable(false);
         setLocationRelativeTo(null);
-        setTitle(WhatToCook.selectedLanguagePack.get(35));
-        JButton exit = new JButton(WhatToCook.selectedLanguagePack.get(36));
+        setTitle(WhatToCook.SelectedPackage.get(35));
+        JButton exit = new JButton(WhatToCook.SelectedPackage.get(36));
         exit.addActionListener(e -> setVisible(false));
         JLabel name = new JLabel("<html><h1>WhatToCook 2016</h1></html>");
-        JLabel description = new JLabel("<html>" + WhatToCook.selectedLanguagePack.get(37) +":<br>Radosław Churski<br>Robert Górnicki" +
+        JLabel description = new JLabel("<html>" + WhatToCook.SelectedPackage.get(37) +":<br>Radosław Churski<br>Robert Górnicki" +
                 "<br>Mateusz Kalinowski<br>Paweł Kurbiel<br>Oksana Stechkevych<br><br>" + WhatToCook.version +"</html>");
         JPanel mainBorderLayout = new JPanel(new BorderLayout());
         mainBorderLayout.add(exit,BorderLayout.SOUTH);
