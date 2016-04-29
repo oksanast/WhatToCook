@@ -5,7 +5,6 @@ import auxiliary.PairAmountUnit;
 import auxiliary.RecipeParameters;
 import core.*;
 import auxiliary.PairRecipeIndex;
-import sun.applet.Main;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -131,12 +130,8 @@ public class MainWindow extends JFrame {
                         }
                         in.close();
 
-                    } catch (FileNotFoundException exception) {
-                        JOptionPane.showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(77), WhatToCook.SelectedPackage.get(76), JOptionPane.ERROR_MESSAGE);
-                    }
-                    catch (NullPointerException exception)
-                    {
-                        JOptionPane.showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(77), WhatToCook.SelectedPackage.get(76), JOptionPane.ERROR_MESSAGE);
+                    } catch (FileNotFoundException | NullPointerException exception) {
+                        System.err.println("Internal program error, 'ownedIngredients' not found");
                     }
                 }
             }
@@ -233,11 +228,7 @@ public class MainWindow extends JFrame {
                 }
                 in.close();
 
-            } catch (FileNotFoundException exception) {
-                JOptionPane.showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(77), WhatToCook.SelectedPackage.get(76), JOptionPane.ERROR_MESSAGE);
-            }
-            catch (NullPointerException exception)
-            {
+            } catch (FileNotFoundException | NullPointerException exception) {
                 JOptionPane.showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(77), WhatToCook.SelectedPackage.get(76), JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -271,7 +262,7 @@ public class MainWindow extends JFrame {
                     in.close();
 
                 } catch (FileNotFoundException exception) {
-
+                    System.err.println("Internal program error, 'ownedIngredients' not found");
                 }
 
             }
@@ -290,9 +281,7 @@ public class MainWindow extends JFrame {
                         writer.println(ingredientsInputListModel.get(i).substring(2));
 
                     writer.close();
-                } catch (FileNotFoundException exception) {
-                    System.err.println("Exporting ingredients list error.");
-                } catch (UnsupportedEncodingException exception) {
+                } catch (FileNotFoundException | UnsupportedEncodingException exception) {
                     System.err.println("Exporting ingredients list error.");
                 }
             }
@@ -348,9 +337,7 @@ public class MainWindow extends JFrame {
                         writer.println(ingredientsInputListModel.get(i).substring(2));
 
                     writer.close();
-                } catch (FileNotFoundException exception) {
-                    System.err.println("Exporting ingredients list error.");
-                } catch (UnsupportedEncodingException exception) {
+                } catch (FileNotFoundException | UnsupportedEncodingException exception) {
                     System.err.println("Exporting ingredients list error.");
                 }
         });
@@ -367,9 +354,7 @@ public class MainWindow extends JFrame {
                         writer.println(ingredientsInputListModel.get(i).substring(2));
 
                     writer.close();
-                } catch (FileNotFoundException exception) {
-                    System.err.println("Exporting ingredients list error.");
-                } catch (UnsupportedEncodingException exception) {
+                } catch (FileNotFoundException | UnsupportedEncodingException exception) {
                     System.err.println("Exporting ingredients list error.");
                 }
         });
@@ -703,9 +688,7 @@ public class MainWindow extends JFrame {
                     writer.println(toExport);
 
                     writer.close();
-                } catch (FileNotFoundException exception) {
-                    System.err.println("Exporting recipe error.");
-                } catch (UnsupportedEncodingException exception) {
+                } catch (FileNotFoundException | UnsupportedEncodingException exception) {
                     System.err.println("Exporting recipe error.");
                 }
             }
@@ -830,24 +813,20 @@ public class MainWindow extends JFrame {
                     isEditionTurnOn = false;
                     mainTable.removeTabAt(mainTable.getSelectedIndex());
                     mainTable.setSelectedIndex(1);
-                } else {
+                } else
                     JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(32), WhatToCook.SelectedPackage.get(33), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
-                }
             }
-            if (index >= 0) {
-                if ((!name1.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty())) {
-                    if (RecipesList.recipesList.get(index).getName().equals(name1) || (!RecipesList.isRecipe(newRecipe1))) {
-                        RecipesList.remove(RecipesList.recipesList.get(index).getName());
-                        RecipesList.add(newRecipe1);
-                        refreshGUILists();
-                        isEditionTurnOn = false;
-                        mainTable.removeTabAt(mainTable.getSelectedIndex());
-                        mainTable.setSelectedIndex(1);
-                    }
-                } else {
-                    JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(32), WhatToCook.SelectedPackage.get(33), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
+            if (index >= 0) if ((!name1.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty())) {
+                if (RecipesList.recipesList.get(index).getName().equals(name1) || (!RecipesList.isRecipe(newRecipe1))) {
+                    RecipesList.remove(RecipesList.recipesList.get(index).getName());
+                    RecipesList.add(newRecipe1);
+                    refreshGUILists();
+                    isEditionTurnOn = false;
+                    mainTable.removeTabAt(mainTable.getSelectedIndex());
+                    mainTable.setSelectedIndex(1);
                 }
-            }
+            } else
+                JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(32), WhatToCook.SelectedPackage.get(33), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
         });
 
         newEditAddIngredientButton = new JButton(WhatToCook.SelectedPackage.get(12));
@@ -978,10 +957,8 @@ public class MainWindow extends JFrame {
                     writer.println(IngredientsList.Get(i).getName());
                 }
                 writer.close();
-            } catch (FileNotFoundException e) {
-
-            } catch (UnsupportedEncodingException e) {
-
+            } catch (FileNotFoundException | UnsupportedEncodingException e) {
+                System.err.println("Internal program error, can't export ingredients list to demanded localization");
             }
         }
     }
@@ -1019,6 +996,19 @@ public class MainWindow extends JFrame {
         }
 
         return true;
+    }
+    public void exportOwnedIngredients()
+    {
+        PrintWriter writer;
+        try {
+            writer = new PrintWriter("src/ownedIngredients", "UTF-8");
+            for (int i = 0; i < ingredientsInputListModel.size(); i++)
+                writer.println(ingredientsInputListModel.get(i).substring(2));
+
+            writer.close();
+        } catch (FileNotFoundException | UnsupportedEncodingException exception) {
+            System.err.println("Exporting ingredients list error.");
+        }
     }
 
     //ELEMENTY GUI BAZY SKŁADNIKÓW

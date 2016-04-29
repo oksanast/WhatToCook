@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class PairRecipeIndex {
 
-    class NumeratedRecipe
+    private class NumeratedRecipe
     {
         public NumeratedRecipe(Recipe recipe,int index,int startPage)
         {
