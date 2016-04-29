@@ -43,16 +43,11 @@ public class MainWindow extends JFrame {
         RecipesList.initialize();
         IngredientsList.initialize();
 
-        //MAIN WINDOW'S SETTINGS
         setSize(450, 600);
         setResizable(true);
         setTitle("WhatToCook");
         setLocationRelativeTo(null);
         setMinimumSize(new Dimension(250, 300));
-        //
-        //PANELS INITIALIZATION
-
-        mainTable = new JTabbedPane();
 
         ingredientsDownGridLayout = new JPanel(new GridLayout(1, 2));
         ingredientsRightDownGridLayout = new JPanel(new GridLayout(10, 1));
@@ -64,12 +59,6 @@ public class MainWindow extends JFrame {
         mainGridLayout = new JPanel(new GridLayout(2, 1));
         upGridLayout = new JPanel(new GridLayout(1, 2));
         upRightGridLayout = new JPanel(new GridLayout(5, 1));
-
-        manageReceipesMainPanel = new JPanel(new BorderLayout());
-        manageReceipesGridPanel = new JPanel(new GridLayout(1, 2));
-        manageReceipesLeftBorderLayout = new JPanel(new BorderLayout());
-        manageReceipesLeftUpGridPanel = new JPanel(new GridLayout(2, 1));
-        manageReceipesLeftDownGridPanel = new JPanel(new GridLayout(1, 3));
 
         importExportInSearchGrid = new JPanel(new GridLayout(1, 2));
 
@@ -132,7 +121,7 @@ public class MainWindow extends JFrame {
                 if(MainWindow.autoLoadIngredients) {
                     String name;
                     try {
-                        Scanner in = new Scanner(new File(MainWindow.Path));
+                        Scanner in = new Scanner(new File("src/ownedIngredients"));
                         while (in.hasNextLine()) {
                             name = in.nextLine();
                             Ingredient toAdd = new Ingredient(name);
@@ -192,8 +181,7 @@ public class MainWindow extends JFrame {
         editMenu.add(settingsAction);
         helpMenu.add(aboutAction);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //OBJECTS INITIALIZATION////////////////////////////////////////////////////////////////////////////////////////
-        //TEXT FIELDS
+        //KARTA WYSZUKIWANIA////////////////////////////////////////////////////////////////////////////////////////////
         ingredientInSearchComboBox = new JComboBox<>();
         IngredientsList.reloadComboBox(ingredientInSearchComboBox);
 
@@ -235,7 +223,7 @@ public class MainWindow extends JFrame {
         if(MainWindow.autoLoadIngredients) {
             String name;
             try {
-                Scanner in = new Scanner(new File(MainWindow.Path));
+                Scanner in = new Scanner(new File("src/ownedIngredients"));
                 while (in.hasNextLine()) {
                     name = in.nextLine();
                     Ingredient toAdd = new Ingredient(name);
@@ -353,10 +341,9 @@ public class MainWindow extends JFrame {
             if (!exist) {
                 ingredientsInputListModel.addElement(newForm);
             }
-            if(MainWindow.autoLoadIngredients) {
                 PrintWriter writer;
                 try {
-                    writer = new PrintWriter(MainWindow.Path, "UTF-8");
+                    writer = new PrintWriter("src/ownedIngredients", "UTF-8");
                     for (int i = 0; i < ingredientsInputListModel.size(); i++)
                         writer.println(ingredientsInputListModel.get(i).substring(2));
 
@@ -366,7 +353,6 @@ public class MainWindow extends JFrame {
                 } catch (UnsupportedEncodingException exception) {
                     System.err.println("Exporting ingredients list error.");
                 }
-            }
         });
         removeIngredientButton = new JButton(WhatToCook.SelectedPackage.get(13));
         removeIngredientButton.addActionListener(e -> {
@@ -374,10 +360,9 @@ public class MainWindow extends JFrame {
             if (index >= 0) {
                 ingredientsInputListModel.removeElementAt(index);
             }
-            if(MainWindow.autoLoadIngredients) {
                 PrintWriter writer;
                 try {
-                    writer = new PrintWriter(MainWindow.Path, "UTF-8");
+                    writer = new PrintWriter("src/ownedIngredients", "UTF-8");
                     for (int i = 0; i < ingredientsInputListModel.size(); i++)
                         writer.println(ingredientsInputListModel.get(i).substring(2));
 
@@ -387,7 +372,6 @@ public class MainWindow extends JFrame {
                 } catch (UnsupportedEncodingException exception) {
                     System.err.println("Exporting ingredients list error.");
                 }
-            }
         });
         //JLISTS
         receipesOutputListModel = new DefaultListModel<>();
@@ -413,7 +397,12 @@ public class MainWindow extends JFrame {
             }
         });
 
-        //MANAGE RECEIPES CREATING SECTION
+        //KARTA ZARZĄDZANIA PRZEPISAMI//////////////////////////////////////////////////////////////////////////////////
+        manageReceipesMainPanel = new JPanel(new BorderLayout());
+        manageReceipesGridPanel = new JPanel(new GridLayout(1, 2));
+        manageReceipesLeftBorderLayout = new JPanel(new BorderLayout());
+        manageReceipesLeftUpGridPanel = new JPanel(new GridLayout(2, 1));
+        manageReceipesLeftDownGridPanel = new JPanel(new GridLayout(1, 3));
 
         searchForReceipesTextArea = new JTextField();
 
@@ -502,7 +491,9 @@ public class MainWindow extends JFrame {
         manageReceipesLeftBorderLayout.add(receipesListScrollPane, BorderLayout.CENTER);
         manageReceipesGridPanel.add(manageReceipesLeftBorderLayout);
         manageReceipesMainPanel.add(manageReceipesGridPanel, BorderLayout.CENTER);
-        //CREATING INGREDIENTS MANAGE WINDOW
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //KARTA DO ZARZĄDZANIA SKŁADNIKAMI//////////////////////////////////////////////////////////////////////////////
         ingredientsMainGridLayout = new JPanel(new GridLayout(1, 2));
         ingredientsRightBorderLayout = new JPanel(new BorderLayout());
         ingredientsRightGridLayout = new JPanel(new GridLayout(4, 1));
@@ -577,7 +568,6 @@ public class MainWindow extends JFrame {
             }
 
         });
-        //KONIEC SEKCJI
         ingredientsRightGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(28), SwingConstants.CENTER));
         ingredientsRightGridLayout.add(newIngredientTextField);
         ingredientsRightGridLayout.add(newIngredientButton);
@@ -586,7 +576,7 @@ public class MainWindow extends JFrame {
         ingredientsRightBorderLayout.add(ingredientsRightGridLayout, BorderLayout.NORTH);
         ingredientsMainGridLayout.add(manageIngredientsListScrollPane);
         ingredientsMainGridLayout.add(ingredientsRightBorderLayout);
-
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //NOWE ELEMENTY - Kategorie, Łatwość przygotowania, Czas przygotowania
         ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(50), SwingConstants.CENTER));
         breakfestCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(51));
@@ -627,11 +617,13 @@ public class MainWindow extends JFrame {
         upBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(10), SwingConstants.CENTER), BorderLayout.NORTH);
         upBorderLayout.add(upGridLayout, BorderLayout.CENTER);
         mainGridLayout.add(upBorderLayout);
-        //mainGridLayout.add(downBorderLayout);
         mainGridLayout.add(ingredientsDownGridLayout);
         mainBorderLayout.add(mainGridLayout);
-        add(mainBorderLayout);
         refreshGUILists();
+
+        //MENU "ZAKŁADKOWE"
+
+        mainTable = new JTabbedPane();
         mainTable.addTab(WhatToCook.SelectedPackage.get(8), mainBorderLayout);
         mainTable.add(WhatToCook.SelectedPackage.get(9), manageReceipesMainPanel);
         mainTable.add(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout);
@@ -1137,8 +1129,6 @@ public class MainWindow extends JFrame {
     private ErrorWindow errorDialog;
 
     private PairRecipeIndex shownRecipesList;
-
-    public static String Path;
 
     public static boolean getToNewCard;
     public static boolean autoLoadIngredients;

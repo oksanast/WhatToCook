@@ -23,7 +23,7 @@ import java.io.PrintWriter;
  */
 public class SettingsWindow extends JDialog {
     public SettingsWindow(MainWindow owner) {
-        setSize(640, 130);
+        setSize(640, 150);
         setModal(true);
         setTitle(WhatToCook.SelectedPackage.get(6));
         setLocationRelativeTo(null);
@@ -32,8 +32,7 @@ public class SettingsWindow extends JDialog {
         languageComboBox.addItem("Polski");
         languageComboBox.addItem("English");
         languageComboBox.setToolTipText(WhatToCook.SelectedPackage.get(67));
-        mainGridLayout = new JPanel(new GridLayout(2 , 2));
-        secondGridLayout = new JPanel(new GridLayout( 2 , 2));
+        mainGridLayout = new JPanel(new GridLayout(3 , 2));
 
         toNewCardCheckbox = new JCheckBox();
         if (MainWindow.getToNewCard) {
@@ -43,37 +42,34 @@ public class SettingsWindow extends JDialog {
             MainWindow.getToNewCard = toNewCardCheckbox.isSelected();
             exportSettings();
         });
-        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(24), SwingConstants.CENTER));
-        mainGridLayout.add(toNewCardCheckbox);
-        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(25), SwingConstants.CENTER));
-        mainGridLayout.add(languageComboBox);
 
-        secondGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(73)));
         autoImportIngredientsCheckbox = new JCheckBox();
         autoImportIngredientsCheckbox.addActionListener(e -> {
             MainWindow.autoLoadIngredients = autoImportIngredientsCheckbox.isSelected();
+            if(!autoImportIngredientsCheckbox.isSelected())
+            {
+                PrintWriter writer;
+                try {
+                    writer = new PrintWriter(new File("src/ownedIngredients"));
+                    writer.close();
+                } catch (FileNotFoundException exception)
+                {
+
+                }
+
+            }
             exportSettings();
         });
-        changePathButton = new JButton(WhatToCook.SelectedPackage.get(75));
-        changePathButton.addActionListener(e -> {
-            JFileChooser chooseFile = new JFileChooser();
-            int save = chooseFile.showOpenDialog(null);
-            if (save == JFileChooser.APPROVE_OPTION) {
-                MainWindow.Path = chooseFile.getSelectedFile().getPath();
-                exportSettings();
-                pathLabel.setText(WhatToCook.SelectedPackage.get(74)+" "+MainWindow.Path);
-            }
-
-        });
-        secondGridLayout.add(autoImportIngredientsCheckbox);
-        pathLabel = new JLabel(WhatToCook.SelectedPackage.get(74)+" "+MainWindow.Path,SwingConstants.CENTER);
-        pathLabel.setToolTipText(MainWindow.Path);
-        secondGridLayout.add(pathLabel);
-        secondGridLayout.add(changePathButton);
         autoImportIngredientsCheckbox.setSelected(MainWindow.autoLoadIngredients);
 
+        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(24), SwingConstants.CENTER));
+        mainGridLayout.add(toNewCardCheckbox);
+        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(73),SwingConstants.CENTER));
+        mainGridLayout.add(autoImportIngredientsCheckbox);
+        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(25), SwingConstants.CENTER));
+        mainGridLayout.add(languageComboBox);
+
         mainTable.addTab(WhatToCook.SelectedPackage.get(26), mainGridLayout);
-        mainTable.addTab(WhatToCook.SelectedPackage.get(72), secondGridLayout);
 
         if (WhatToCook.SelectedPackage.equals(WhatToCook.PolishPackage)) {
             languageComboBox.setSelectedIndex(0);
@@ -143,12 +139,10 @@ public class SettingsWindow extends JDialog {
             }
             writer.println(toNewCardCheckbox.isSelected());
             writer.println(autoImportIngredientsCheckbox.isSelected());
-            writer.print(MainWindow.Path);
             writer.close();
 
         } catch (FileNotFoundException e) {
-
-
+            System.err.println("It was impossible to export settings");
         }
 
     }
@@ -156,11 +150,8 @@ public class SettingsWindow extends JDialog {
     JComboBox<String> languageComboBox;
     JTabbedPane mainTable;
     JPanel mainGridLayout;
-    JPanel secondGridLayout;
     JCheckBox toNewCardCheckbox;
     JCheckBox autoImportIngredientsCheckbox;
-    JLabel pathLabel;
-    JButton changePathButton;
 
 
 }

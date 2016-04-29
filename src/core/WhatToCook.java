@@ -46,9 +46,6 @@ public class WhatToCook implements Runnable {
             }
             MainWindow.getToNewCard = in.nextBoolean();
             MainWindow.autoLoadIngredients = in.nextBoolean();
-            in.nextLine();
-            MainWindow.Path = in.nextLine();
-
         }
         catch (FileNotFoundException e)
         {
@@ -150,7 +147,7 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Importing ingredients error");
         englishLanguagePack.add("Following ingredients was not imported, cause they are not in the database");
         englishLanguagePack.add("Ingredients");
-        englishLanguagePack.add("Auto import owned ingredients");
+        englishLanguagePack.add("Save program state:");
         englishLanguagePack.add("Path: ");
         englishLanguagePack.add("Change path");
         englishLanguagePack.add("It was impossible to read the file with owned ingredients, check its path in the options");
@@ -232,7 +229,7 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Błąd dodawania składników");
         polishLanguagePack.add("Poniższe składniki nie zostały zaimportowane, gdyż nie znajdują się w bazie danych");
         polishLanguagePack.add("Posiadane składniki");//72
-        polishLanguagePack.add("Automatyczny import posiadanych składników:");
+        polishLanguagePack.add("Zapisuj stan programu:");
         polishLanguagePack.add("Ścieżka:");
         polishLanguagePack.add("Zmień ścieżkę");
         polishLanguagePack.add("Błąd importowania");
