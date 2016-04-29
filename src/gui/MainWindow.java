@@ -36,7 +36,7 @@ public class MainWindow extends JFrame {
             UIManager.setLookAndFeel(platform);
             SwingUtilities.updateComponentTreeUI(MainWindow.this);
         } catch (Exception e) {
-            System.out.println("WindowsLookAndFeel is not supported");
+            System.out.println("WindowsLookAndFeel is not supported, it's not a problem, just feature.");
         }
 
         RecipesList.initialize();
@@ -47,23 +47,6 @@ public class MainWindow extends JFrame {
         setTitle("WhatToCook");
         setLocationRelativeTo(null);
         setMinimumSize(new Dimension(250, 300));
-
-        ingredientsDownGridLayout = new JPanel(new GridLayout(1, 2));
-        ingredientsRightDownGridLayout = new JPanel(new GridLayout(10, 1));
-
-
-        mainBorderLayout = new JPanel(new BorderLayout());
-        downBorderLayout = new JPanel(new BorderLayout());
-        upBorderLayout = new JPanel(new BorderLayout());
-        mainGridLayout = new JPanel(new GridLayout(2, 1));
-        upGridLayout = new JPanel(new GridLayout(1, 2));
-        upRightGridLayout = new JPanel(new GridLayout(5, 1));
-
-        importExportInSearchGrid = new JPanel(new GridLayout(1, 2));
-
-        isEditionTurnOn = false;
-
-        shownRecipesList = new PairRecipeIndex();
 
         //MENUBAR CREATING/////////////////////////////////////////////////////////////////////////////////////////////
         mainMenu = new JMenuBar();
@@ -77,13 +60,9 @@ public class MainWindow extends JFrame {
         mainMenu.add(helpMenu);
         fileMenu.add(newSubmenu);
 
-
-        if (settingsDialog == null)
-            settingsDialog = new SettingsWindow(MainWindow.this);
-        if (aboutDialog == null)
-            aboutDialog = new AboutWindow(MainWindow.this);
-        if (errorDialog == null)
-            errorDialog = new ErrorWindow(MainWindow.this);
+        settingsDialog = new SettingsWindow();
+        aboutDialog = new AboutWindow();
+        errorDialog = new ErrorWindow();
         Action newIngredientAction = new AbstractAction(WhatToCook.SelectedPackage.get(46)) {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -117,7 +96,7 @@ public class MainWindow extends JFrame {
                 int i = ingredientsInputListModel.getSize() - 1;
                 for (; i >= 0; i--)
                     ingredientsInputListModel.removeElementAt(i);
-                if(MainWindow.autoLoadIngredients) {
+                if (MainWindow.autoLoadIngredients) {
                     String name;
                     try {
                         Scanner in = new Scanner(new File("src/ownedIngredients"));
@@ -177,6 +156,23 @@ public class MainWindow extends JFrame {
         helpMenu.add(aboutAction);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //KARTA WYSZUKIWANIA////////////////////////////////////////////////////////////////////////////////////////////
+        ingredientsDownGridLayout = new JPanel(new GridLayout(1, 2));
+        ingredientsRightDownGridLayout = new JPanel(new GridLayout(10, 1));
+
+
+        mainBorderLayout = new JPanel(new BorderLayout());
+        downBorderLayout = new JPanel(new BorderLayout());
+        upBorderLayout = new JPanel(new BorderLayout());
+        mainGridLayout = new JPanel(new GridLayout(2, 1));
+        upGridLayout = new JPanel(new GridLayout(1, 2));
+        upRightGridLayout = new JPanel(new GridLayout(5, 1));
+
+        importExportInSearchGrid = new JPanel(new GridLayout(1, 2));
+
+        isEditionTurnOn = false;
+
+        shownRecipesList = new PairRecipeIndex();
+
         ingredientInSearchComboBox = new JComboBox<>();
         IngredientsList.reloadComboBox(ingredientInSearchComboBox);
 
@@ -215,7 +211,7 @@ public class MainWindow extends JFrame {
         ingredientsInputList.setVisibleRowCount(-1);
         ingredientsInputList = new JList<>(ingredientsInputListModel);
         ingredientsInputListScrollPane = new JScrollPane(ingredientsInputList);
-        if(MainWindow.autoLoadIngredients) {
+        if (MainWindow.autoLoadIngredients) {
             String name;
             try {
                 Scanner in = new Scanner(new File("src/ownedIngredients"));
@@ -232,7 +228,6 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(77), WhatToCook.SelectedPackage.get(76), JOptionPane.ERROR_MESSAGE);
             }
         }
-
 
 
         importIngredientsInSearch = new JButton(WhatToCook.SelectedPackage.get(68));
@@ -255,7 +250,7 @@ public class MainWindow extends JFrame {
                         else
                             notAdded.add(name);
                     }
-                    if(notAdded.size()>0) {
+                    if (notAdded.size() > 0) {
                         errorDialog.refresh(notAdded, WhatToCook.SelectedPackage.get(71), WhatToCook.SelectedPackage.get(70));
                         errorDialog.setVisible(true);
                     }
@@ -329,16 +324,16 @@ public class MainWindow extends JFrame {
             if (!exist) {
                 ingredientsInputListModel.addElement(newForm);
             }
-                PrintWriter writer;
-                try {
-                    writer = new PrintWriter("src/ownedIngredients", "UTF-8");
-                    for (int i = 0; i < ingredientsInputListModel.size(); i++)
-                        writer.println(ingredientsInputListModel.get(i).substring(2));
+            PrintWriter writer;
+            try {
+                writer = new PrintWriter("src/ownedIngredients", "UTF-8");
+                for (int i = 0; i < ingredientsInputListModel.size(); i++)
+                    writer.println(ingredientsInputListModel.get(i).substring(2));
 
-                    writer.close();
-                } catch (FileNotFoundException | UnsupportedEncodingException exception) {
-                    System.err.println("Exporting ingredients list error.");
-                }
+                writer.close();
+            } catch (FileNotFoundException | UnsupportedEncodingException exception) {
+                System.err.println("Exporting ingredients list error.");
+            }
         });
         removeIngredientButton = new JButton(WhatToCook.SelectedPackage.get(13));
         removeIngredientButton.addActionListener(e -> {
@@ -346,16 +341,16 @@ public class MainWindow extends JFrame {
             if (index >= 0) {
                 ingredientsInputListModel.removeElementAt(index);
             }
-                PrintWriter writer;
-                try {
-                    writer = new PrintWriter("src/ownedIngredients", "UTF-8");
-                    for (int i = 0; i < ingredientsInputListModel.size(); i++)
-                        writer.println(ingredientsInputListModel.get(i).substring(2));
+            PrintWriter writer;
+            try {
+                writer = new PrintWriter("src/ownedIngredients", "UTF-8");
+                for (int i = 0; i < ingredientsInputListModel.size(); i++)
+                    writer.println(ingredientsInputListModel.get(i).substring(2));
 
-                    writer.close();
-                } catch (FileNotFoundException | UnsupportedEncodingException exception) {
-                    System.err.println("Exporting ingredients list error.");
-                }
+                writer.close();
+            } catch (FileNotFoundException | UnsupportedEncodingException exception) {
+                System.err.println("Exporting ingredients list error.");
+            }
         });
         //JLISTS
         receipesOutputListModel = new DefaultListModel<>();
@@ -814,7 +809,7 @@ public class MainWindow extends JFrame {
                     mainTable.removeTabAt(mainTable.getSelectedIndex());
                     mainTable.setSelectedIndex(1);
                 } else
-                    JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(32), WhatToCook.SelectedPackage.get(33), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(32), WhatToCook.SelectedPackage.get(33), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
             }
             if (index >= 0) if ((!name1.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty())) {
                 if (RecipesList.recipesList.get(index).getName().equals(name1) || (!RecipesList.isRecipe(newRecipe1))) {
@@ -826,7 +821,7 @@ public class MainWindow extends JFrame {
                     mainTable.setSelectedIndex(1);
                 }
             } else
-                JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(32), WhatToCook.SelectedPackage.get(33), JOptionPane.PLAIN_MESSAGE, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(32), WhatToCook.SelectedPackage.get(33), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
         });
 
         newEditAddIngredientButton = new JButton(WhatToCook.SelectedPackage.get(12));
@@ -951,7 +946,6 @@ public class MainWindow extends JFrame {
             String filename = chooseFile.getSelectedFile().getPath();
             PrintWriter writer;
             try {
-                File toSave = new File(filename);
                 writer = new PrintWriter(filename, "UTF-8");
                 for (int i = 0; i < IngredientsList.Size(); i++) {
                     writer.println(IngredientsList.Get(i).getName());
@@ -982,23 +976,23 @@ public class MainWindow extends JFrame {
                 in.close();
 
             } catch (FileNotFoundException e) {
-
+                System.err.println("File " + filename + "don't exist.");
             }
 
         }
     }
 
-    boolean isFalse(boolean parameters[], int n) {
+    private boolean isFalse(boolean parameters[], int n) {
         for (int i = 0; i < n; i++) {
-            if (parameters[i] == true) {
+            if (parameters[i]) {
                 return false;
             }
         }
 
         return true;
     }
-    public void exportOwnedIngredients()
-    {
+
+    void exportOwnedIngredients() {
         PrintWriter writer;
         try {
             writer = new PrintWriter("src/ownedIngredients", "UTF-8");

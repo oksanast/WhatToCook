@@ -2,7 +2,6 @@ package gui;
 
 import core.WhatToCook;
 
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -21,8 +20,8 @@ import java.io.PrintWriter;
         -AUTOMATYCZNE WCZYTYWANIE LISTY POSIADANYCH SKŁADNIKÓW
         -ŚCIEŻKĘ DO PLIKU ZE SKŁADNIKAMI
  */
-public class SettingsWindow extends JDialog {
-    public SettingsWindow(MainWindow owner) {
+class SettingsWindow extends JDialog {
+     SettingsWindow() {
         setSize(640, 150);
         setModal(true);
         setTitle(WhatToCook.SelectedPackage.get(6));
@@ -54,7 +53,7 @@ public class SettingsWindow extends JDialog {
                     writer.close();
                 } catch (FileNotFoundException exception)
                 {
-
+                    System.err.println("File 'ownedIngredients' not found, it is internal jar error, download program once again");
                 }
 
             }
@@ -87,7 +86,6 @@ public class SettingsWindow extends JDialog {
                 int selection;
                 selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43), JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (selection == JOptionPane.OK_OPTION) {
-                    // WhatToCook.SelectedPackage = WhatToCook.polishLanguagePack;
                     WhatToCook.SelectedPackage = WhatToCook.PolishPackage;
                     WhatToCook.frame.dispose();
                     WhatToCook.frame = new MainWindow();
@@ -97,8 +95,7 @@ public class SettingsWindow extends JDialog {
                     repaint();
                     setVisible(false);
                     toFront();
-                } else
-                    languageComboBox.setSelectedIndex(1);
+                } else languageComboBox.setSelectedIndex(1);
             }
             if (languageComboBox.getSelectedItem() == "English") {
                 int selection;

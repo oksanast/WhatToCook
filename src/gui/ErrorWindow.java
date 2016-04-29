@@ -15,8 +15,8 @@ import java.util.ArrayList;
     METODA "REFRESH" OTRZYMUJE LISTE ELEMENTOW DO WYSWIETLENIA, WIADOMOŚĆ I TYTUŁ OKNA
     OKNO USTALA SWOJĄ WYSOKOŚĆ NA PODSTAWIE ILOŚĆI ELEMENTÓW DO WYŚWIETLENIA
  */
-public class ErrorWindow extends JDialog {
-    public ErrorWindow(MainWindow owner)
+class ErrorWindow extends JDialog {
+    ErrorWindow()
     {
         setModal(true);
         Height = 160;
@@ -31,7 +31,7 @@ public class ErrorWindow extends JDialog {
 
         add(mainBorderLayout);
     }
-    public void refresh(ArrayList<String> errorsList,String errorMessage,String windowName)
+    void refresh(ArrayList<String> errorsList,String errorMessage,String windowName)
     {
         setTitle(windowName);
         ErrorMessage = "<html><h4>" + errorMessage + "</h4>";

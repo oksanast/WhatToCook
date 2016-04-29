@@ -13,7 +13,7 @@ import java.awt.*;
     WYŚWIETLA INFORMACJE O AUTORACH PROGRAMU I WERSJI
  */
 public class AboutWindow extends JDialog{
-    public AboutWindow(MainWindow owner)
+    public AboutWindow()
     {
         setSize(250,250);
         setResizable(false);
