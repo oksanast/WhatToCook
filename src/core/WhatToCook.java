@@ -47,13 +47,9 @@ public class WhatToCook implements Runnable {
             MainWindow.getToNewCard = in.nextBoolean();
             MainWindow.autoLoadIngredients = in.nextBoolean();
         }
-        catch (FileNotFoundException e)
+        catch (FileNotFoundException | NoSuchElementException e)
         {
-
-        }
-        catch (NoSuchElementException e)
-        {
-
+            System.err.println("Error during loading 'cfg' file, program will load with default settings");
         }
 
         frame = new MainWindow();

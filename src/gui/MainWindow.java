@@ -291,7 +291,6 @@ public class MainWindow extends JFrame {
         importExportInSearchGrid.add(exportIngredientsInSearch);
         ingredientInCreatingRecipeComboBox = new JComboBox<>();
         IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
-        //BUTTONS
         execute = new JButton(WhatToCook.SelectedPackage.get(15));
         execute.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -381,7 +380,48 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-
+        ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(50), SwingConstants.CENTER));
+        breakfestCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(51));
+        dessertCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(52));
+        dinerCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(53));
+        supperCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(54));
+        snackCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(55));
+        ingredientsRightDownGridLayout.add(breakfestCheckBox);
+        ingredientsRightDownGridLayout.add(dinerCheckBox);
+        ingredientsRightDownGridLayout.add(supperCheckBox);
+        ingredientsRightDownGridLayout.add(dessertCheckBox);
+        ingredientsRightDownGridLayout.add(snackCheckBox);
+        ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(56), SwingConstants.CENTER));
+        PreparingTimeComboBox = new JComboBox<>();
+        PreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(59));
+        PreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(60));
+        PreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(61));
+        ingredientsRightDownGridLayout.add(PreparingTimeComboBox);
+        ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(57), SwingConstants.CENTER));
+        EaseToPrepare = new JComboBox<>();
+        EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(62));
+        EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(63));
+        EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(64));
+        ingredientsRightDownGridLayout.add(EaseToPrepare);
+        //PANELS AND OBJECTS LOCATION
+        upRightGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(11), SwingConstants.CENTER));
+        upRightGridLayout.add(ingredientInSearchComboBox);
+        upRightGridLayout.add(addIngredientButton);
+        upRightGridLayout.add(removeIngredientButton);
+        upRightGridLayout.add(importExportInSearchGrid);
+        upGridLayout.add(ingredientsInputListScrollPane);
+        upGridLayout.add(upRightGridLayout);
+        downBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(14), SwingConstants.CENTER), BorderLayout.NORTH);
+        downBorderLayout.add(receipesOutputListScrollPane, BorderLayout.CENTER);
+        downBorderLayout.add(execute, BorderLayout.SOUTH);
+        ingredientsDownGridLayout.add(downBorderLayout);
+        ingredientsDownGridLayout.add(ingredientsRightDownGridLayout);
+        upBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(10), SwingConstants.CENTER), BorderLayout.NORTH);
+        upBorderLayout.add(upGridLayout, BorderLayout.CENTER);
+        mainGridLayout.add(upBorderLayout);
+        mainGridLayout.add(ingredientsDownGridLayout);
+        mainBorderLayout.add(mainGridLayout);
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //KARTA ZARZĄDZANIA PRZEPISAMI//////////////////////////////////////////////////////////////////////////////////
         manageReceipesMainPanel = new JPanel(new BorderLayout());
         manageReceipesGridPanel = new JPanel(new GridLayout(1, 2));
@@ -562,48 +602,8 @@ public class MainWindow extends JFrame {
         ingredientsMainGridLayout.add(manageIngredientsListScrollPane);
         ingredientsMainGridLayout.add(ingredientsRightBorderLayout);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //NOWE ELEMENTY - Kategorie, Łatwość przygotowania, Czas przygotowania
-        ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(50), SwingConstants.CENTER));
-        breakfestCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(51));
-        dessertCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(52));
-        dinerCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(53));
-        supperCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(54));
-        snackCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(55));
-        ingredientsRightDownGridLayout.add(breakfestCheckBox);
-        ingredientsRightDownGridLayout.add(dinerCheckBox);
-        ingredientsRightDownGridLayout.add(supperCheckBox);
-        ingredientsRightDownGridLayout.add(dessertCheckBox);
-        ingredientsRightDownGridLayout.add(snackCheckBox);
-        ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(56), SwingConstants.CENTER));
-        PreparingTimeComboBox = new JComboBox<>();
-        PreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(59));
-        PreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(60));
-        PreparingTimeComboBox.addItem(WhatToCook.SelectedPackage.get(61));
-        ingredientsRightDownGridLayout.add(PreparingTimeComboBox);
-        ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(57), SwingConstants.CENTER));
-        EaseToPrepare = new JComboBox<>();
-        EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(62));
-        EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(63));
-        EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(64));
-        ingredientsRightDownGridLayout.add(EaseToPrepare);
-        //PANELS AND OBJECTS LOCATION
-        upRightGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(11), SwingConstants.CENTER));
-        upRightGridLayout.add(ingredientInSearchComboBox);
-        upRightGridLayout.add(addIngredientButton);
-        upRightGridLayout.add(removeIngredientButton);
-        upRightGridLayout.add(importExportInSearchGrid);
-        upGridLayout.add(ingredientsInputListScrollPane);
-        upGridLayout.add(upRightGridLayout);
-        downBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(14), SwingConstants.CENTER), BorderLayout.NORTH);
-        downBorderLayout.add(receipesOutputListScrollPane, BorderLayout.CENTER);
-        downBorderLayout.add(execute, BorderLayout.SOUTH);
-        ingredientsDownGridLayout.add(downBorderLayout);
-        ingredientsDownGridLayout.add(ingredientsRightDownGridLayout);
-        upBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(10), SwingConstants.CENTER), BorderLayout.NORTH);
-        upBorderLayout.add(upGridLayout, BorderLayout.CENTER);
-        mainGridLayout.add(upBorderLayout);
-        mainGridLayout.add(ingredientsDownGridLayout);
-        mainBorderLayout.add(mainGridLayout);
+        //ODŚWIEŻENIE INTERFEJSU
+
         refreshGUILists();
 
         //MENU "ZAKŁADKOWE"
