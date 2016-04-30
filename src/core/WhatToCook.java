@@ -16,7 +16,7 @@ import java.util.Scanner;
  */
 /*
     KLASA PODSTAWOWA, URUCHOMIENIOWA, SŁUŻY DO UTWORZENIA GŁÓWNEGO OKNA PROGRAMU I PACZEK JĘZYKOWYCH
-    WCZYTUJE PLIK KONFIGURACYJNY "CFG"
+    WCZYTUJE PLIK KONFIGURACYJNY "cfg"
  */
 public class WhatToCook implements Runnable {
 

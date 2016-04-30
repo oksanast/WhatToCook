@@ -338,8 +338,10 @@ public class MainWindow extends JFrame {
         removeIngredientButton = new JButton(WhatToCook.SelectedPackage.get(13));
         removeIngredientButton.addActionListener(e -> {
             int index = ingredientsInputList.getSelectedIndex();
-            if (index >= 0) {
-                ingredientsInputListModel.removeElementAt(index);
+            System.out.println(ingredientsInputList.getSelectedIndices().length);
+            for(int i = ingredientsInputList.getSelectedIndices().length-1;i>=0;i--)
+            {
+                ingredientsInputListModel.removeElementAt(ingredientsInputList.getSelectedIndices()[i]);
             }
             PrintWriter writer;
             try {
@@ -470,11 +472,11 @@ public class MainWindow extends JFrame {
         deleteRecipe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // if(receipesList.getSelectedIndex()>=0) {
-                String recipeName = receipesListModel.getElementAt(receipesList.getSelectedIndex());
-                RecipesList.remove(recipeName);
+                for(int i = receipesList.getSelectedIndices().length-1;i>=0;i--) {
+                    String recipeName = receipesListModel.getElementAt(receipesList.getSelectedIndices()[i]);
+                    RecipesList.remove(recipeName);
+                }
                 refreshGUILists();
-                // }
             }
         });
 
@@ -709,9 +711,7 @@ public class MainWindow extends JFrame {
     private void refreshGUILists(String StartWith) {
         receipesListModel.clear();
         for (int i = 0; i < RecipesList.recipesList.size(); i++) {
-            String tmp1 = RecipesList.recipesList.get(i).getName().toLowerCase();
-            String tmp2 = StartWith.toLowerCase();
-            if (tmp1.startsWith(tmp2)) {
+            if (RecipesList.recipesList.get(i).getName().toLowerCase().startsWith(StartWith.toLowerCase())) {
                 receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
             }
         }
