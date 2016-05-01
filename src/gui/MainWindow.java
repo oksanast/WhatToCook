@@ -621,6 +621,23 @@ public class MainWindow extends JFrame {
         recipeTextArea.setFont(new Font("monospaced", Font.PLAIN, 12));
         recipeTextArea.setEditable(false);
         recipeTextArea.setLineWrap(true);
+
+        JPopupMenu showRecipePopup;
+        showRecipePopup = new JPopupMenu();
+        Action exportRecipeAction = new AbstractAction(WhatToCook.SelectedPackage.get(44)) {
+            public void actionPerformed(ActionEvent event) {
+
+            }
+        };
+        Action closeRecipeAction = new AbstractAction(WhatToCook.SelectedPackage.get(23)) {
+            public void actionPerformed(ActionEvent event) {
+
+            }
+        };
+
+        showRecipePopup.add(exportRecipeAction);
+        showRecipePopup.add(closeRecipeAction);
+
         String toShow = "";
         toShow += WhatToCook.SelectedPackage.get(65) + recipeToShow.getName() + "\n\n\n";
         toShow += WhatToCook.SelectedPackage.get(57) + " ";
@@ -670,26 +687,24 @@ public class MainWindow extends JFrame {
             shownRecipesList.remove(SelectedIndex);
             mainTable.removeTabAt(SelectedIndex);
         });
-        exportTab = new JButton(WhatToCook.SelectedPackage.get(44));
-        exportTab.addActionListener(e -> {
-
-            JFileChooser chooseFile = new JFileChooser();
-            chooseFile.setSelectedFile(new File(recipeToShow.getName()));
-            int save = chooseFile.showSaveDialog(null);
-            if (save == JFileChooser.APPROVE_OPTION) {
-                String filename = chooseFile.getSelectedFile().getPath();
-                PrintWriter writer;
-                try {
-                    writer = new PrintWriter(filename, "UTF-8");
-
-                    writer.println(toExport);
-
-                    writer.close();
-                } catch (FileNotFoundException | UnsupportedEncodingException exception) {
-                    System.err.println("Exporting recipe error.");
+        recipeTextArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(e.isPopupTrigger())
+                {
+                    showRecipePopup.show(e.getComponent(),e.getX(),e.getY());
                 }
             }
-
+            public void mouseReleased(MouseEvent e) {
+                if(e.isPopupTrigger())
+                {
+                    showRecipePopup.show(e.getComponent(),e.getX(),e.getY());
+                }
+            }
+        });
+        exportTab = new JButton(WhatToCook.SelectedPackage.get(44));
+        exportTab.addActionListener(e -> {
+            exportTab(recipeToShow,toExport);
         });
         recipesGridLayout.add(exportTab);
         recipesGridLayout.add(closeTab);
@@ -716,7 +731,25 @@ public class MainWindow extends JFrame {
             }
         }
     }
+    private void exportTab(Recipe recipeToShow,String toExport)
+    {
+        JFileChooser chooseFile = new JFileChooser();
+        chooseFile.setSelectedFile(new File(recipeToShow.getName()));
+        int save = chooseFile.showSaveDialog(null);
+        if (save == JFileChooser.APPROVE_OPTION) {
+            String filename = chooseFile.getSelectedFile().getPath();
+            PrintWriter writer;
+            try {
+                writer = new PrintWriter(filename, "UTF-8");
 
+                writer.println(toExport);
+
+                writer.close();
+            } catch (FileNotFoundException | UnsupportedEncodingException exception) {
+                System.err.println("Exporting recipe error.");
+            }
+        }
+    }
     //FUNKCJA TWORZY KARTĘ DO EDYCJI PRZEPISU
     private void showNewEditMenu(int index) {
         creatingRecipeTable = new JTabbedPane();
@@ -846,10 +879,10 @@ public class MainWindow extends JFrame {
         });
         newEditRemoveIngredientButton = new JButton(WhatToCook.SelectedPackage.get(13));
         newEditRemoveIngredientButton.addActionListener(event -> {
-            int index1 = ingredientsInputinRecipeList.getSelectedIndex();
-            if (index1 >= 0) {
-                ingredientsInputInRecipeListModel.removeElementAt(index1);
-                ingredientsListInput.remove(index1);
+            for(int i = ingredientsInputinRecipeList.getSelectedIndices().length-1;i>=0;i--)
+            {
+                ingredientsInputInRecipeListModel.removeElementAt(i);
+                ingredientsListInput.remove(i);
             }
         });
 
