@@ -342,7 +342,6 @@ public class MainWindow extends JFrame {
         removeIngredientButton = new JButton(WhatToCook.SelectedPackage.get(13));
         removeIngredientButton.addActionListener(e -> {
             int index = ingredientsInputList.getSelectedIndex();
-            System.out.println(ingredientsInputList.getSelectedIndices().length);
             for (int i = ingredientsInputList.getSelectedIndices().length - 1; i >= 0; i--) {
                 ingredientsInputListModel.removeElementAt(ingredientsInputList.getSelectedIndices()[i]);
             }
@@ -791,7 +790,7 @@ public class MainWindow extends JFrame {
             }
         }
         addIngredientToRecipe addIngredientKeyListener = new addIngredientToRecipe();
-        ingredientInCreatingRecipeComboBox.addKeyListener(addIngredientKeyListener);
+        //ingredientInCreatingRecipeComboBox.addKeyListener(addIngredientKeyListener);
         creatingRecipeTable = new JTabbedPane();
         newEditMainBorderLayout = new JPanel(new BorderLayout());
         newEditMainGridLayout = new JPanel(new GridLayout(2, 1));
@@ -917,14 +916,6 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-        newEditRemoveIngredientButton = new JButton(WhatToCook.SelectedPackage.get(13));
-        newEditRemoveIngredientButton.addActionListener(event -> {
-            for (int i = ingredientsInputinRecipeList.getSelectedIndices().length - 1; i >= 0; i--) {
-                ingredientsInputInRecipeListModel.removeElementAt(i);
-                ingredientsListInput.remove(i);
-            }
-        });
-
         ingredientsInputInRecipeListModel = new DefaultListModel<>();
         ingredientsInputinRecipeList = new JList<>();
         ingredientsInputinRecipeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -932,6 +923,15 @@ public class MainWindow extends JFrame {
         ingredientsInputinRecipeList.setVisibleRowCount(-1);
         ingredientsInputinRecipeList = new JList<>(ingredientsInputInRecipeListModel);
         ingredientsInputinRecipeListScrollPane = new JScrollPane(ingredientsInputinRecipeList);
+
+        newEditRemoveIngredientButton = new JButton(WhatToCook.SelectedPackage.get(13));
+        newEditRemoveIngredientButton.addActionListener(event -> {
+            for (int i = ingredientsInputinRecipeList.getSelectedIndices().length - 1; i >= 0; i--) {
+                ingredientsListInput.remove(ingredientsInputinRecipeList.getSelectedIndices()[i]);
+                ingredientsInputInRecipeListModel.removeElementAt(ingredientsInputinRecipeList.getSelectedIndices()[i]);
+            }
+        });
+
 
         instructionsInsertTextArea = new JTextArea();
         instructionsInsertTextArea.setFont(new Font("monospaced", Font.PLAIN, 12));
