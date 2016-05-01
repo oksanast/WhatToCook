@@ -19,6 +19,7 @@ class ErrorWindow extends JDialog {
     ErrorWindow()
     {
         setModal(true);
+        setResizable(false);
         Height = 160;
         setLocationRelativeTo(null);
         JPanel mainBorderLayout = new JPanel(new BorderLayout());

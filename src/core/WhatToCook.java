@@ -29,14 +29,14 @@ public class WhatToCook implements Runnable {
         buildPolishLanguage();
         buildEnglishLanguage();
         selectedLanguagePack = polishLanguagePack;
-        PolishPackage = new LanguagePackage("src/ingredientsPL","src/recipesPL",polishLanguagePack);
-        EnglishPackage = new LanguagePackage("src/ingredientsENG","src/recipesENG",englishLanguagePack);
+        PolishPackage = new LanguagePackage("data/ingredientsPL","data/recipesPL",polishLanguagePack);
+        EnglishPackage = new LanguagePackage("data/ingredientsENG","data/recipesENG",englishLanguagePack);
         SelectedPackage = new LanguagePackage();
 
         Scanner in;
         try
         {
-            in = new Scanner(new File("src/cfg"));
+            in = new Scanner(new File("data/cfg"));
             String language = in.next();
             if(language.equals("english")) {
                 SelectedPackage = EnglishPackage;

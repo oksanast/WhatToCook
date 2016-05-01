@@ -102,7 +102,7 @@ public class MainWindow extends JFrame {
                 if (MainWindow.autoLoadIngredients) {
                     String name;
                     try {
-                        Scanner in = new Scanner(new File("src/ownedIngredients"));
+                        Scanner in = new Scanner(new File("data/ownedIngredients"));
                         while (in.hasNextLine()) {
                             name = in.nextLine();
                             Ingredient toAdd = new Ingredient(name);
@@ -175,7 +175,6 @@ public class MainWindow extends JFrame {
         isEditionTurnOn = false;
 
         shownRecipesList = new PairRecipeIndex();
-        inEditRecipeList = new PairRecipeIndex();
 
         ingredientInSearchComboBox = new JComboBox<>();
         IngredientsList.reloadComboBox(ingredientInSearchComboBox);
@@ -218,7 +217,7 @@ public class MainWindow extends JFrame {
         if (MainWindow.autoLoadIngredients) {
             String name;
             try {
-                Scanner in = new Scanner(new File("src/ownedIngredients"));
+                Scanner in = new Scanner(new File("data/ownedIngredients"));
                 while (in.hasNextLine()) {
                     name = in.nextLine();
                     Ingredient toAdd = new Ingredient(name);
@@ -330,7 +329,7 @@ public class MainWindow extends JFrame {
             }
             PrintWriter writer;
             try {
-                writer = new PrintWriter("src/ownedIngredients", "UTF-8");
+                writer = new PrintWriter("data/ownedIngredients", "UTF-8");
                 for (int i = 0; i < ingredientsInputListModel.size(); i++)
                     writer.println(ingredientsInputListModel.get(i).substring(2));
 
@@ -347,7 +346,7 @@ public class MainWindow extends JFrame {
             }
             PrintWriter writer;
             try {
-                writer = new PrintWriter("src/ownedIngredients", "UTF-8");
+                writer = new PrintWriter("data/ownedIngredients", "UTF-8");
                 for (int i = 0; i < ingredientsInputListModel.size(); i++)
                     writer.println(ingredientsInputListModel.get(i).substring(2));
 
@@ -1067,7 +1066,7 @@ public class MainWindow extends JFrame {
     void exportOwnedIngredients() {
         PrintWriter writer;
         try {
-            writer = new PrintWriter("src/ownedIngredients", "UTF-8");
+            writer = new PrintWriter("data/ownedIngredients", "UTF-8");
             for (int i = 0; i < ingredientsInputListModel.size(); i++)
                 writer.println(ingredientsInputListModel.get(i).substring(2));
 
@@ -1184,7 +1183,6 @@ public class MainWindow extends JFrame {
     private ErrorWindow errorDialog;
 
     private PairRecipeIndex shownRecipesList;
-    private PairRecipeIndex inEditRecipeList;
 
     public static boolean getToNewCard;
     public static boolean autoLoadIngredients;
