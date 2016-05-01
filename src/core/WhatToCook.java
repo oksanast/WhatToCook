@@ -147,6 +147,8 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Path: ");
         englishLanguagePack.add("Change path");
         englishLanguagePack.add("It was impossible to read the file with owned ingredients, check its path in the options");
+        englishLanguagePack.add("Creating recipe error");
+        englishLanguagePack.add("You can create/edit only one recipe in the time");
 
     }
 
@@ -230,6 +232,8 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Zmień ścieżkę");
         polishLanguagePack.add("Błąd importowania");
         polishLanguagePack.add("Nie można było odczytać pliku z posiadanymi składnikami, sprawdź jego śnieżkę w opcjach");
+        polishLanguagePack.add("Błąd tworzenia przepisu");
+        polishLanguagePack.add("W jednym momencie możesz tworzyć/edytować tylko jeden przepis");
     }
     private static ArrayList<String> polishLanguagePack;
     private static ArrayList<String> englishLanguagePack;
