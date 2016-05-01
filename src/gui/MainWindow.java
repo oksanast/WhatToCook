@@ -616,27 +616,10 @@ public class MainWindow extends JFrame {
     //FUNCKJA OTWIERA NOWĄ KARTĘ Z KONKRETNYM PRZEPISEM
     private void showRecipe(Recipe recipeToShow) {
         recipesBorderLayout = new JPanel(new BorderLayout());
-        recipesGridLayout = new JPanel((new GridLayout(1, 2)));
         recipeTextArea = new JTextArea();
         recipeTextArea.setFont(new Font("monospaced", Font.PLAIN, 12));
         recipeTextArea.setEditable(false);
         recipeTextArea.setLineWrap(true);
-
-        JPopupMenu showRecipePopup;
-        showRecipePopup = new JPopupMenu();
-        Action exportRecipeAction = new AbstractAction(WhatToCook.SelectedPackage.get(44)) {
-            public void actionPerformed(ActionEvent event) {
-
-            }
-        };
-        Action closeRecipeAction = new AbstractAction(WhatToCook.SelectedPackage.get(23)) {
-            public void actionPerformed(ActionEvent event) {
-
-            }
-        };
-
-        showRecipePopup.add(exportRecipeAction);
-        showRecipePopup.add(closeRecipeAction);
 
         String toShow = "";
         toShow += WhatToCook.SelectedPackage.get(65) + recipeToShow.getName() + "\n\n\n";
@@ -680,13 +663,26 @@ public class MainWindow extends JFrame {
         final String toExport = toShow;
         recipeTextAreaScrollPane = new JScrollPane(recipeTextArea);
         recipesBorderLayout.add(recipeTextAreaScrollPane, BorderLayout.CENTER);
-        closeTab = new JButton(WhatToCook.SelectedPackage.get(23));
-        closeTab.addActionListener(event -> {
-            int SelectedIndex = mainTable.getSelectedIndex();
-            mainTable.setSelectedIndex(shownRecipesList.getStartPage(mainTable.getSelectedIndex()));
-            shownRecipesList.remove(SelectedIndex);
-            mainTable.removeTabAt(SelectedIndex);
-        });
+        mainTable.addTab(recipeToShow.getName(), recipesBorderLayout);
+        if (MainWindow.getToNewCard) {
+            mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
+        }
+
+        JPopupMenu showRecipePopup;
+        showRecipePopup = new JPopupMenu();
+        Action exportRecipeAction = new AbstractAction(WhatToCook.SelectedPackage.get(44)) {
+            public void actionPerformed(ActionEvent event) {
+                exportTab(recipeToShow,toExport);
+            }
+        };
+        Action closeRecipeAction = new AbstractAction(WhatToCook.SelectedPackage.get(23)) {
+            public void actionPerformed(ActionEvent event) {
+                closeTab();
+            }
+        };
+
+        showRecipePopup.add(exportRecipeAction);
+        showRecipePopup.add(closeRecipeAction);
         recipeTextArea.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -702,18 +698,6 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-        exportTab = new JButton(WhatToCook.SelectedPackage.get(44));
-        exportTab.addActionListener(e -> {
-            exportTab(recipeToShow,toExport);
-        });
-        recipesGridLayout.add(exportTab);
-        recipesGridLayout.add(closeTab);
-        recipesBorderLayout.add(recipesGridLayout, BorderLayout.SOUTH);
-        mainTable.addTab(recipeToShow.getName(), recipesBorderLayout);
-        if (MainWindow.getToNewCard) {
-            mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
-        }
-
     }
 
     private void refreshGUILists() {
@@ -726,7 +710,7 @@ public class MainWindow extends JFrame {
     private void refreshGUILists(String StartWith) {
         receipesListModel.clear();
         for (int i = 0; i < RecipesList.recipesList.size(); i++) {
-            if (RecipesList.recipesList.get(i).getName().toLowerCase().startsWith(StartWith.toLowerCase())) {
+            if(extendedStartsWith(RecipesList.recipesList.get(i).getName().split(" "),StartWith)) {
                 receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
             }
         }
@@ -734,7 +718,7 @@ public class MainWindow extends JFrame {
     private void exportTab(Recipe recipeToShow,String toExport)
     {
         JFileChooser chooseFile = new JFileChooser();
-        chooseFile.setSelectedFile(new File(recipeToShow.getName()));
+        chooseFile.setSelectedFile(new File(recipeToShow.getName() +".rtf"));
         int save = chooseFile.showSaveDialog(null);
         if (save == JFileChooser.APPROVE_OPTION) {
             String filename = chooseFile.getSelectedFile().getPath();
@@ -749,6 +733,22 @@ public class MainWindow extends JFrame {
                 System.err.println("Exporting recipe error.");
             }
         }
+    }
+    private void closeTab()
+    {
+        int SelectedIndex = mainTable.getSelectedIndex();
+        mainTable.setSelectedIndex(shownRecipesList.getStartPage(mainTable.getSelectedIndex()));
+        shownRecipesList.remove(SelectedIndex);
+        mainTable.removeTabAt(SelectedIndex);
+    }
+    private boolean extendedStartsWith(String[] words,String start)
+    {
+        for(String word : words)
+        {
+            if(word.toLowerCase().startsWith(start.toLowerCase()))
+                return true;
+        }
+        return false;
     }
     //FUNKCJA TWORZY KARTĘ DO EDYCJI PRZEPISU
     private void showNewEditMenu(int index) {
@@ -1073,8 +1073,6 @@ public class MainWindow extends JFrame {
     private JButton newRecipe;
     private JButton editRecipe;
     private JButton deleteRecipe;
-    private JButton closeTab;
-    private JButton exportTab;
     private JButton newEditAddIngredientButton;
     private JButton newEditRemoveIngredientButton;
 
