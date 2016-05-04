@@ -149,6 +149,9 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("It was impossible to read the file with owned ingredients, check its path in the options");
         englishLanguagePack.add("Creating recipe error");
         englishLanguagePack.add("You can create/edit only one recipe in the time");
+        englishLanguagePack.add("Searching options");
+        englishLanguagePack.add("Search in every word");
+        englishLanguagePack.add("Recognize letters size");
 
     }
 
@@ -220,7 +223,7 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Średnie");
         polishLanguagePack.add("Trudne");
         polishLanguagePack.add("Przepis: ");//65
-        polishLanguagePack.add("Wykonianie: ");
+        polishLanguagePack.add("Wykonanie: ");
         polishLanguagePack.add("Zmiana przepisu spowoduje zmianę bazy danych przepisów.");
         polishLanguagePack.add("Importuj");
         polishLanguagePack.add("Eksportuj");
@@ -234,6 +237,9 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Nie można było odczytać pliku z posiadanymi składnikami, sprawdź jego śnieżkę w opcjach");
         polishLanguagePack.add("Błąd tworzenia przepisu");
         polishLanguagePack.add("W jednym momencie możesz tworzyć/edytować tylko jeden przepis");
+        polishLanguagePack.add("Opcje Wyszukiwania");//80
+        polishLanguagePack.add("Szukaj w każdym słowie");
+        polishLanguagePack.add("Uzględniaj wielkość liter");
     }
     private static ArrayList<String> polishLanguagePack;
     private static ArrayList<String> englishLanguagePack;
@@ -245,6 +251,8 @@ public class WhatToCook implements Runnable {
 
     public static LanguagePackage PolishPackage;
     public static LanguagePackage EnglishPackage;
+
+    public static final String endl = System.lineSeparator();
 
     //public static RecipesList recipesDatabase;
 }
