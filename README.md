@@ -7,4 +7,4 @@ search for recipes using name or by your owned ingredients. Recipes can be also 
 of meal.
 <h2>License</h2>
 You can use, edit source code and public your own modified version of our software, but you can not use it for commercial purposes and you have
-to mention original authors
+to mention original authors.
