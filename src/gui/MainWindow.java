@@ -64,6 +64,7 @@ public class MainWindow extends JFrame {
         settingsDialog = new SettingsWindow();
         aboutDialog = new AboutWindow();
         errorDialog = new ErrorWindow();
+        searchingDialog = new SearchingWindow();
         Action newIngredientAction = new AbstractAction(WhatToCook.SelectedPackage.get(46)) {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -426,9 +427,13 @@ public class MainWindow extends JFrame {
         manageReceipesLeftBorderLayout = new JPanel(new BorderLayout());
         manageReceipesLeftUpGridPanel = new JPanel(new GridLayout(2, 1));
         manageReceipesLeftDownGridPanel = new JPanel(new GridLayout(1, 3));
+        searchingOptionsBorderLayout = new JPanel(new BorderLayout());
 
         searchForReceipesTextArea = new JTextField();
-
+        searchingOptionsButton = new JButton(WhatToCook.SelectedPackage.get(80));
+        searchingOptionsButton.addActionListener(e -> {
+            searchingDialog.setVisible(true);
+        });
         searchForReceipesTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -506,7 +511,9 @@ public class MainWindow extends JFrame {
         });
 
         manageReceipesLeftUpGridPanel.add(new JLabel(WhatToCook.SelectedPackage.get(16), SwingConstants.CENTER));
-        manageReceipesLeftUpGridPanel.add(searchForReceipesTextArea);
+        searchingOptionsBorderLayout.add(searchForReceipesTextArea,BorderLayout.CENTER);
+        searchingOptionsBorderLayout.add(searchingOptionsButton,BorderLayout.EAST);
+        manageReceipesLeftUpGridPanel.add(searchingOptionsBorderLayout);
         manageReceipesLeftBorderLayout.add(manageReceipesLeftUpGridPanel, BorderLayout.NORTH);
         manageReceipesLeftDownGridPanel.add(newRecipe);
         manageReceipesLeftDownGridPanel.add(editRecipe);
@@ -710,8 +717,27 @@ public class MainWindow extends JFrame {
     private void refreshGUILists(String StartWith) {
         receipesListModel.clear();
         for (int i = 0; i < RecipesList.recipesList.size(); i++) {
-            if (extendedStartsWith(RecipesList.recipesList.get(i).getName().split(" "), StartWith)) {
-                receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
+            if(searchingDialog.wholeWords.isSelected() && searchingDialog.caseSensitiveCheckBox.isSelected()) {
+                if (extendedStartsWith(RecipesList.recipesList.get(i).getName().split(" "), StartWith,true)) {
+                    receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
+                }
+            }
+            if(searchingDialog.wholeWords.isSelected() && !searchingDialog.caseSensitiveCheckBox.isSelected()) {
+                if (extendedStartsWith(RecipesList.recipesList.get(i).getName().split(" "), StartWith,false)) {
+                    receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
+                }
+            }
+            if(!searchingDialog.wholeWords.isSelected() && searchingDialog.caseSensitiveCheckBox.isSelected())
+            {
+                if(RecipesList.recipesList.get(i).getName().startsWith(StartWith)) {
+                    receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
+                }
+            }
+            if(!searchingDialog.wholeWords.isSelected() && !searchingDialog.caseSensitiveCheckBox.isSelected())
+            {
+                if(RecipesList.recipesList.get(i).getName().toLowerCase().startsWith(StartWith.toLowerCase())) {
+                    receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
+                }
             }
         }
     }
@@ -742,10 +768,16 @@ public class MainWindow extends JFrame {
         mainTable.removeTabAt(SelectedIndex);
     }
 
-    private boolean extendedStartsWith(String[] words, String start) {
+    private boolean extendedStartsWith(String[] words, String start,boolean caseSensitive) {
         for (String word : words) {
-            if (word.toLowerCase().startsWith(start.toLowerCase()))
-                return true;
+            if(!caseSensitive) {
+                if (word.toLowerCase().startsWith(start.toLowerCase()))
+                    return true;
+            }
+            if(caseSensitive) {
+                if (word.startsWith(start))
+                    return true;
+            }
         }
         return false;
     }
@@ -1114,6 +1146,7 @@ public class MainWindow extends JFrame {
     private JButton deleteRecipe;
     private JButton newEditAddIngredientButton;
     private JButton newEditRemoveIngredientButton;
+    private JButton searchingOptionsButton;
 
     private JPanel ingredientsMainGridLayout;
     private JPanel ingredientsRightBorderLayout;
@@ -1142,6 +1175,7 @@ public class MainWindow extends JFrame {
     private JPanel downBorderLayout;
     private JPanel upBorderLayout;
     private JPanel importExportInSearchGrid;
+    private JPanel searchingOptionsBorderLayout;
 
     private JTextArea recipeTextArea;
     private JTextArea instructionsInsertTextArea;
@@ -1181,10 +1215,13 @@ public class MainWindow extends JFrame {
     private SettingsWindow settingsDialog;
     private AboutWindow aboutDialog;
     private ErrorWindow errorDialog;
+    private SearchingWindow searchingDialog;
 
     private PairRecipeIndex shownRecipesList;
 
     public static boolean getToNewCard;
     public static boolean autoLoadIngredients;
+    public static boolean searchInEveryWord;
+    public static boolean searchCaseSensitive;
     private boolean isEditionTurnOn;
 }
