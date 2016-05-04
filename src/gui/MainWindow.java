@@ -630,7 +630,7 @@ public class MainWindow extends JFrame {
         recipeTextArea.setLineWrap(true);
 
         String toShow = "";
-        toShow += WhatToCook.SelectedPackage.get(65) + recipeToShow.getName() + "\n\n\n";
+        toShow += WhatToCook.SelectedPackage.get(65) + recipeToShow.getName() + WhatToCook.endl + WhatToCook.endl + WhatToCook.endl;
         toShow += WhatToCook.SelectedPackage.get(57) + " ";
         if (recipeToShow.getParameters().getPreparingEase() == 0)
             toShow += WhatToCook.SelectedPackage.get(62);
@@ -638,7 +638,7 @@ public class MainWindow extends JFrame {
             toShow += WhatToCook.SelectedPackage.get(63);
         if (recipeToShow.getParameters().getPreparingEase() == 2)
             toShow += WhatToCook.SelectedPackage.get(64);
-        toShow += "\n\n";
+        toShow += WhatToCook.endl + WhatToCook.endl;
         toShow += WhatToCook.SelectedPackage.get(56) + " ";
         if (recipeToShow.getParameters().getPreparingTime() == 0)
             toShow += WhatToCook.SelectedPackage.get(59);
@@ -646,7 +646,7 @@ public class MainWindow extends JFrame {
             toShow += WhatToCook.SelectedPackage.get(60);
         if (recipeToShow.getParameters().getPreparingTime() == 2)
             toShow += WhatToCook.SelectedPackage.get(61);
-        toShow += "\n\n";
+        toShow += WhatToCook.endl + WhatToCook.endl;
         toShow += WhatToCook.SelectedPackage.get(50);
         if (recipeToShow.getParameters().getParameters()[0])
             toShow += " " + WhatToCook.SelectedPackage.get(51);
@@ -658,14 +658,14 @@ public class MainWindow extends JFrame {
             toShow += " " + WhatToCook.SelectedPackage.get(54);
         if (recipeToShow.getParameters().getParameters()[4])
             toShow += " " + WhatToCook.SelectedPackage.get(55);
-        toShow += "\n\n";
-        toShow += WhatToCook.SelectedPackage.get(27) + "\n\n";
+        toShow += WhatToCook.endl + WhatToCook.endl;
+        toShow += WhatToCook.SelectedPackage.get(27) + WhatToCook.endl + WhatToCook.endl;
         for (int i = 0; i < recipeToShow.getSize(); i++) {
-            toShow += recipeToShow.getIngredient(i).toString() + " " + recipeToShow.getAmount(i) + " " + recipeToShow.getUnit(i) + "\n";
+            toShow += recipeToShow.getIngredient(i).toString() + " " + recipeToShow.getAmount(i) + " " + recipeToShow.getUnit(i) + WhatToCook.endl;
 
         }
-        toShow += "\n\n";
-        toShow += WhatToCook.SelectedPackage.get(66) + "\n\n" + recipeToShow.getRecipe();
+        toShow += WhatToCook.endl + WhatToCook.endl;
+        toShow += WhatToCook.SelectedPackage.get(66) + WhatToCook.endl + WhatToCook.endl + recipeToShow.getRecipe();
 
         recipeTextArea.setText(toShow);
         final String toExport = toShow;
@@ -744,7 +744,7 @@ public class MainWindow extends JFrame {
 
     private void exportTab(Recipe recipeToShow, String toExport) {
         JFileChooser chooseFile = new JFileChooser();
-        chooseFile.setSelectedFile(new File(recipeToShow.getName() + ".rtf"));
+        chooseFile.setSelectedFile(new File(recipeToShow.getName() + ".txt"));
         int save = chooseFile.showSaveDialog(null);
         if (save == JFileChooser.APPROVE_OPTION) {
             String filename = chooseFile.getSelectedFile().getPath();

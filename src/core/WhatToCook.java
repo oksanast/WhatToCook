@@ -252,5 +252,7 @@ public class WhatToCook implements Runnable {
     public static LanguagePackage PolishPackage;
     public static LanguagePackage EnglishPackage;
 
+    public static final String endl = System.lineSeparator();
+
     //public static RecipesList recipesDatabase;
 }
