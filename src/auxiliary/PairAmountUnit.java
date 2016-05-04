@@ -6,6 +6,7 @@ package auxiliary;
  */
 /*
     UŻYWAN DO PRZECHOWYWANIA ILOŚCI I JEDNOSTKI SŁADNIKÓW W PRZEPISACH
+    Łączy się z Recipe
  */
 public class PairAmountUnit {
     public PairAmountUnit(String ammount,String unit)

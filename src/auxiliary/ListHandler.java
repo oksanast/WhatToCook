@@ -6,6 +6,7 @@ package auxiliary;
  */
 /*
     ZAJMUJE SIĘ OBSŁUGA ILOŚCI I JEDNOSTEK, POŚREDNICZY MIĘDZY GUI A KLASĄ PRZEPISÓW
+    Łączy się z MainWindow
  */
 public class ListHandler {
 

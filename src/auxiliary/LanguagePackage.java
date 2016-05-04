@@ -8,6 +8,7 @@ import java.util.ArrayList;
  */
 /*
     ZARZĄDZA OBSŁUGĄ JĘZYKÓW W CAŁYM PROGRAMIE
+    Łączy się z WhatToCook
  */
 public class LanguagePackage
     {

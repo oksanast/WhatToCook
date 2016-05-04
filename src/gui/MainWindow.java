@@ -1066,7 +1066,7 @@ public class MainWindow extends JFrame {
     void exportOwnedIngredients() {
         PrintWriter writer;
         try {
-            writer = new PrintWriter("data/ownedIngredients", "UTF-8");
+            writer = new PrintWriter("src/ownedIngredients", "UTF-8");
             for (int i = 0; i < ingredientsInputListModel.size(); i++)
                 writer.println(ingredientsInputListModel.get(i).substring(2));
 
