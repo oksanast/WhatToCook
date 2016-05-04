@@ -28,9 +28,11 @@ public class WhatToCook implements Runnable {
         selectedLanguagePack = new ArrayList<>();
         buildPolishLanguage();
         buildEnglishLanguage();
+        buildUkrainianLanguage();
         selectedLanguagePack = polishLanguagePack;
         PolishPackage = new LanguagePackage("data/ingredientsPL","data/recipesPL",polishLanguagePack);
-        EnglishPackage = new LanguagePackage("data/ingredientsENG","data/recipesENG",englishLanguagePack);
+        EnglishPackage = new LanguagePackage("data/ingredientsENG","data/recipesPL",englishLanguagePack);
+        UkrainianPackage = new LanguagePackage("data/ingredientsUKR","data/recipesPL",ukrainianLanguagePack);
         SelectedPackage = new LanguagePackage();
 
         Scanner in;
@@ -43,6 +45,9 @@ public class WhatToCook implements Runnable {
             }
             if(language.equals("polish")) {
                 SelectedPackage = PolishPackage;
+            }
+            if(language.equals("Ukrainian")) {
+                SelectedPackage = UkrainianPackage;
             }
             MainWindow.getToNewCard = in.nextBoolean();
             MainWindow.autoLoadIngredients = in.nextBoolean();
@@ -241,8 +246,98 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Szukaj w każdym słowie");
         polishLanguagePack.add("Uzględniaj wielkość liter");
     }
+
+    private void buildUkrainianLanguage() {
+        ukrainianLanguagePack = new ArrayList<>();
+        ukrainianLanguagePack.add("Файл");
+        ukrainianLanguagePack.add("Закрити");
+        ukrainianLanguagePack.add("Змінити");
+        ukrainianLanguagePack.add("Очистити вибрані інгредієнти");
+        ukrainianLanguagePack.add("Очистити результати пошуку");
+        ukrainianLanguagePack.add("Допомога");
+        ukrainianLanguagePack.add("Опції");
+        ukrainianLanguagePack.add("Про програму");
+        ukrainianLanguagePack.add("Пошук");
+        ukrainianLanguagePack.add("База рецептів");
+        ukrainianLanguagePack.add("Вибери інгредієнти");
+        ukrainianLanguagePack.add("Вибери інгредієнти:");
+        ukrainianLanguagePack.add("Додай інгредієнт");
+        ukrainianLanguagePack.add("Видали інгредієнт");
+        ukrainianLanguagePack.add("Знайдені рецепти");
+        ukrainianLanguagePack.add("Шукай рецепти");
+        ukrainianLanguagePack.add("Пошук");
+        ukrainianLanguagePack.add("Новий рецепт");
+        ukrainianLanguagePack.add("Зміни рецепт");
+        ukrainianLanguagePack.add("Подай назву рецепту");
+        ukrainianLanguagePack.add("Напиши спосіб приготування");
+        ukrainianLanguagePack.add("Зберегти і вийти");
+        ukrainianLanguagePack.add("Вийти без зберігання");
+        ukrainianLanguagePack.add("Закрити рецепт");
+        ukrainianLanguagePack.add("Автоматичний перехід до нового вікна");
+        ukrainianLanguagePack.add("Мова");
+        ukrainianLanguagePack.add("Загальне");
+        ukrainianLanguagePack.add("Інгредієнти");//27
+        ukrainianLanguagePack.add("Назва інгредієнта:");
+        ukrainianLanguagePack.add("Додати");
+        ukrainianLanguagePack.add("Видалити");
+        ukrainianLanguagePack.add("Видалити рецепт");
+        ukrainianLanguagePack.add("Перевір чи добре записані назва, інгредієнти і спосіб приготування. Такий рецепт може вже існувати в базі.");
+        ukrainianLanguagePack.add("Помилка рецепту");
+        ukrainianLanguagePack.add("Подай назву рецепту:");
+        ukrainianLanguagePack.add("Про програму");
+        ukrainianLanguagePack.add("OK");
+        ukrainianLanguagePack.add("Автори");
+        ukrainianLanguagePack.add("Не можна видалити цей інгредієнт, оскільки він використовується у:");
+        ukrainianLanguagePack.add("Помилка при видаленні інгредієнту");
+        ukrainianLanguagePack.add("Експортуй інгредієнти");
+        ukrainianLanguagePack.add("Імпортуй інгредієнти");
+        ukrainianLanguagePack.add("Впевнені? Це призведе до рестарту програми.");
+        ukrainianLanguagePack.add("Впевненийю");
+        ukrainianLanguagePack.add("Експортуй рецепт");
+        ukrainianLanguagePack.add("Новий");
+        ukrainianLanguagePack.add("Інгредієнт");
+        ukrainianLanguagePack.add("Рецепт");
+        ukrainianLanguagePack.add("Кількість:");
+        ukrainianLanguagePack.add("Одиниця вимірювання:");
+        ukrainianLanguagePack.add("Страва на:");//50
+        ukrainianLanguagePack.add("Сніданок");//51
+        ukrainianLanguagePack.add("Десерт");
+        ukrainianLanguagePack.add("Обід");
+        ukrainianLanguagePack.add("Вечеря");
+        ukrainianLanguagePack.add("Закуска");
+        ukrainianLanguagePack.add("Час приготування:");
+        ukrainianLanguagePack.add("Легкість приготування:");
+        ukrainianLanguagePack.add("Параметри");
+        ukrainianLanguagePack.add("Швидко");
+        ukrainianLanguagePack.add("Середньо");
+        ukrainianLanguagePack.add("Повільно");
+        ukrainianLanguagePack.add("Легко");
+        ukrainianLanguagePack.add("Середньо");
+        ukrainianLanguagePack.add("Складно");
+        ukrainianLanguagePack.add("Рецепт: ");//65
+        ukrainianLanguagePack.add("Приготування: ");
+        ukrainianLanguagePack.add("Зміна рецепту споводує зміну бази рецептів.");
+        ukrainianLanguagePack.add("Імпортуй");
+        ukrainianLanguagePack.add("Експортуй");
+        ukrainianLanguagePack.add("Помилка при додаванню інгредієнту");
+        ukrainianLanguagePack.add("Інгредієнти, зазначені нижче, не імпортовані, хоча знаходяться в базі даних");
+        ukrainianLanguagePack.add("Інгредієнти, які маєш");//72
+        ukrainianLanguagePack.add("Запиши стан програми:");
+        ukrainianLanguagePack.add("Шлях:");
+        ukrainianLanguagePack.add("Помилка створення рецепту");
+        ukrainianLanguagePack.add("Зміни шлях");
+        ukrainianLanguagePack.add("Помилка імпортування");
+        ukrainianLanguagePack.add("Не можна прочитати файлу з цими інгредієнтами, перевір шлях в опціях.");
+        ukrainianLanguagePack.add("Одночасно можеш створити/коригувати лише один рецепт");
+        ukrainianLanguagePack.add("Опції пошуку");//80
+        ukrainianLanguagePack.add("Шукати в кожному слові");
+        ukrainianLanguagePack.add("Бери під увагу великі і малі літери");
+    }
+
+
     private static ArrayList<String> polishLanguagePack;
     private static ArrayList<String> englishLanguagePack;
+    private static ArrayList<String> ukrainianLanguagePack;
     private static ArrayList<String> selectedLanguagePack;
     public static MainWindow frame;
     public static String version = "1.5";
@@ -251,6 +346,7 @@ public class WhatToCook implements Runnable {
 
     public static LanguagePackage PolishPackage;
     public static LanguagePackage EnglishPackage;
+    public static LanguagePackage UkrainianPackage;
 
     public static final String endl = System.lineSeparator();
 

@@ -31,6 +31,7 @@ class SettingsWindow extends JDialog {
         languageComboBox = new JComboBox<>();
         languageComboBox.addItem("Polski");
         languageComboBox.addItem("English");
+        languageComboBox.addItem("Українська");
         languageComboBox.setToolTipText(WhatToCook.SelectedPackage.get(67));
         mainGridLayout = new JPanel(new GridLayout(3 , 2));
 
@@ -81,6 +82,9 @@ class SettingsWindow extends JDialog {
         if (WhatToCook.SelectedPackage.equals(WhatToCook.EnglishPackage)) {
             languageComboBox.setSelectedIndex(1);
         }
+         if (WhatToCook.SelectedPackage.equals(WhatToCook.UkrainianPackage)) {
+             languageComboBox.setSelectedIndex(2);
+         }
 
         languageComboBox.addActionListener(e -> {
             if (languageComboBox.getSelectedItem() == "Polski") {
@@ -96,7 +100,8 @@ class SettingsWindow extends JDialog {
                     repaint();
                     setVisible(false);
                     toFront();
-                } else languageComboBox.setSelectedIndex(1);
+                }
+                else languageComboBox.setSelectedIndex(1);
             }
             if (languageComboBox.getSelectedItem() == "English") {
                 int selection;
@@ -114,7 +119,23 @@ class SettingsWindow extends JDialog {
                     toFront();
                 } else
                     languageComboBox.setSelectedIndex(0);
-
+            }
+            if (languageComboBox.getSelectedItem() == "Українська") {
+                int selection;
+                selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43), JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (selection == JOptionPane.OK_OPTION) {
+                    // WhatToCook.SelectedPackage = WhatToCook.ukrainianLanguagePack;
+                    WhatToCook.SelectedPackage = WhatToCook.UkrainianPackage;
+                    WhatToCook.frame.dispose();
+                    WhatToCook.frame = new MainWindow();
+                    WhatToCook.frame.setVisible(true);
+                    WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                    setTitle(WhatToCook.SelectedPackage.get(6));
+                    repaint();
+                    setVisible(false);
+                    toFront();
+                } else
+                    languageComboBox.setSelectedIndex(0);
             }
             exportSettings();
         });
@@ -138,6 +159,9 @@ class SettingsWindow extends JDialog {
             }
             if (languageComboBox.getSelectedItem() == "English") {
                 writer.println("english");
+            }
+            if (languageComboBox.getSelectedItem() == "Ukrainian") {
+                writer.println("Ukrainian");
             }
             writer.println(toNewCardCheckbox.isSelected());
             writer.println(autoImportIngredientsCheckbox.isSelected());
