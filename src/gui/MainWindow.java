@@ -121,9 +121,9 @@ public class MainWindow extends JFrame {
         };
         Action clearReceipesAction = new AbstractAction(WhatToCook.SelectedPackage.get(4)) {
             public void actionPerformed(ActionEvent event) {
-                int i = receipesOutputListModel.getSize() - 1;
+                int i = recipesOutputListModel.getSize() - 1;
                 for (; i >= 0; i--)
-                    receipesOutputListModel.removeElementAt(i);
+                    recipesOutputListModel.removeElementAt(i);
 
 
             }
@@ -293,7 +293,7 @@ public class MainWindow extends JFrame {
         execute = new JButton(WhatToCook.SelectedPackage.get(15));
         execute.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                receipesOutputListModel.clear();
+                recipesOutputListModel.clear();
                 ArrayList<Ingredient> ingredients = new ArrayList<>();
                 boolean[] parameters = new boolean[5];
                 parameters[0] = breakfestCheckBox.isSelected();
@@ -311,7 +311,7 @@ public class MainWindow extends JFrame {
                 }
                 for (int i = 0; i < RecipesList.size(); i++) {
                     if (RecipesList.checkWithIngredientsList(ingredients, i, parameters, EaseToPrepare.getSelectedIndex(), PreparingTimeComboBox.getSelectedIndex()))
-                        receipesOutputListModel.addElement(RecipesList.getRecipeNameAtIndex(i));
+                        recipesOutputListModel.addElement(RecipesList.getRecipeNameAtIndex(i));
                 }
             }
         });
@@ -357,21 +357,21 @@ public class MainWindow extends JFrame {
             }
         });
         //JLISTS
-        receipesOutputListModel = new DefaultListModel<>();
-        receipesOutputList = new JList<>();
-        receipesOutputList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        receipesOutputList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        receipesOutputList.setVisibleRowCount(-1);
-        receipesOutputList = new JList<>(receipesOutputListModel);
-        receipesOutputListScrollPane = new JScrollPane(receipesOutputList);
-        receipesOutputList.addMouseListener(new MouseAdapter() {
+        recipesOutputListModel = new DefaultListModel<>();
+        recipesOutputList = new JList<>();
+        recipesOutputList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        recipesOutputList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        recipesOutputList.setVisibleRowCount(-1);
+        recipesOutputList = new JList<>(recipesOutputListModel);
+        recipesOutputListScrollPane = new JScrollPane(recipesOutputList);
+        recipesOutputList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    int index = receipesOutputList.getSelectedIndex();
+                    int index = recipesOutputList.getSelectedIndex();
                     int i;
                     for (i = 0; i < RecipesList.size(); i++) {
-                        if (receipesOutputListModel.get(index).equals(RecipesList.recipesList.get(i).getName()))
+                        if (recipesOutputListModel.get(index).equals(RecipesList.recipesList.get(i).getName()))
                             break;
                     }
                     shownRecipesList.add(RecipesList.recipesList.get(i), mainTable.getTabCount(), mainTable.getSelectedIndex());
@@ -411,7 +411,7 @@ public class MainWindow extends JFrame {
         upGridLayout.add(ingredientsInputListScrollPane);
         upGridLayout.add(upRightGridLayout);
         downBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(14), SwingConstants.CENTER), BorderLayout.NORTH);
-        downBorderLayout.add(receipesOutputListScrollPane, BorderLayout.CENTER);
+        downBorderLayout.add(recipesOutputListScrollPane, BorderLayout.CENTER);
         downBorderLayout.add(execute, BorderLayout.SOUTH);
         ingredientsDownGridLayout.add(downBorderLayout);
         ingredientsDownGridLayout.add(ingredientsRightDownGridLayout);
@@ -422,32 +422,32 @@ public class MainWindow extends JFrame {
         mainBorderLayout.add(mainGridLayout);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //KARTA ZARZĄDZANIA PRZEPISAMI//////////////////////////////////////////////////////////////////////////////////
-        manageReceipesMainPanel = new JPanel(new BorderLayout());
-        manageReceipesGridPanel = new JPanel(new GridLayout(1, 2));
-        manageReceipesLeftBorderLayout = new JPanel(new BorderLayout());
-        manageReceipesLeftUpGridPanel = new JPanel(new GridLayout(2, 1));
-        manageReceipesLeftDownGridPanel = new JPanel(new GridLayout(1, 3));
+        manageRecipesMainPanel = new JPanel(new BorderLayout());
+        manageRecipesGridPanel = new JPanel(new GridLayout(1, 2));
+        manageRecipesLeftBorderLayout = new JPanel(new BorderLayout());
+        manageRecipesLeftUpGridPanel = new JPanel(new GridLayout(2, 1));
+        manageRecipesLeftDownGridPanel = new JPanel(new GridLayout(1, 3));
         searchingOptionsBorderLayout = new JPanel(new BorderLayout());
 
-        searchForReceipesTextArea = new JTextField();
+        searchForRecipesTextArea = new JTextField();
         searchingOptionsButton = new JButton(WhatToCook.SelectedPackage.get(80));
         searchingOptionsButton.addActionListener(e -> {
             searchingDialog.setVisible(true);
         });
-        searchForReceipesTextArea.getDocument().addDocumentListener(new DocumentListener() {
+        searchForRecipesTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                refreshGUILists(searchForReceipesTextArea.getText());
+                refreshGUILists(searchForRecipesTextArea.getText());
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                refreshGUILists(searchForReceipesTextArea.getText());
+                refreshGUILists(searchForRecipesTextArea.getText());
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                refreshGUILists(searchForReceipesTextArea.getText());
+                refreshGUILists(searchForRecipesTextArea.getText());
             }
         });
 
@@ -464,8 +464,8 @@ public class MainWindow extends JFrame {
         editRecipe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (receipesList.getSelectedIndex() >= 0) {
-                    String recipeName = receipesListModel.getElementAt(receipesList.getSelectedIndex());
+                if (recipesList.getSelectedIndex() >= 0) {
+                    String recipeName = recipesListModel.getElementAt(recipesList.getSelectedIndex());
                     int index = RecipesList.getIndex(recipeName);
                     if (!isEditionTurnOn) {
 
@@ -479,29 +479,29 @@ public class MainWindow extends JFrame {
         deleteRecipe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (int i = receipesList.getSelectedIndices().length - 1; i >= 0; i--) {
-                    String recipeName = receipesListModel.getElementAt(receipesList.getSelectedIndices()[i]);
+                for (int i = recipesList.getSelectedIndices().length - 1; i >= 0; i--) {
+                    String recipeName = recipesListModel.getElementAt(recipesList.getSelectedIndices()[i]);
                     RecipesList.remove(recipeName);
                 }
                 refreshGUILists();
             }
         });
 
-        receipesListModel = new DefaultListModel<>();
-        receipesList = new JList<>();
-        receipesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        receipesList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        receipesList.setVisibleRowCount(-1);
-        receipesList = new JList<>(receipesListModel);
-        receipesListScrollPane = new JScrollPane(receipesList);
-        receipesList.addMouseListener(new MouseAdapter() {
+        recipesListModel = new DefaultListModel<>();
+        recipesList = new JList<>();
+        recipesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        recipesList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        recipesList.setVisibleRowCount(-1);
+        recipesList = new JList<>(recipesListModel);
+        recipesListScrollPane = new JScrollPane(recipesList);
+        recipesList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    int index = receipesList.getSelectedIndex();
+                    int index = recipesList.getSelectedIndex();
                     int i;
                     for (i = 0; i < RecipesList.recipesList.size(); i++) {
-                        if (receipesListModel.get(index).equals(RecipesList.recipesList.get(i).getName()))
+                        if (recipesListModel.get(index).equals(RecipesList.recipesList.get(i).getName()))
                             break;
                     }
                     shownRecipesList.add(RecipesList.recipesList.get(i), mainTable.getTabCount(), mainTable.getSelectedIndex());
@@ -510,18 +510,18 @@ public class MainWindow extends JFrame {
             }
         });
 
-        manageReceipesLeftUpGridPanel.add(new JLabel(WhatToCook.SelectedPackage.get(16), SwingConstants.CENTER));
-        searchingOptionsBorderLayout.add(searchForReceipesTextArea,BorderLayout.CENTER);
+        manageRecipesLeftUpGridPanel.add(new JLabel(WhatToCook.SelectedPackage.get(16), SwingConstants.CENTER));
+        searchingOptionsBorderLayout.add(searchForRecipesTextArea,BorderLayout.CENTER);
         searchingOptionsBorderLayout.add(searchingOptionsButton,BorderLayout.EAST);
-        manageReceipesLeftUpGridPanel.add(searchingOptionsBorderLayout);
-        manageReceipesLeftBorderLayout.add(manageReceipesLeftUpGridPanel, BorderLayout.NORTH);
-        manageReceipesLeftDownGridPanel.add(newRecipe);
-        manageReceipesLeftDownGridPanel.add(editRecipe);
-        manageReceipesLeftDownGridPanel.add(deleteRecipe);
-        manageReceipesLeftBorderLayout.add(manageReceipesLeftDownGridPanel, BorderLayout.SOUTH);
-        manageReceipesLeftBorderLayout.add(receipesListScrollPane, BorderLayout.CENTER);
-        manageReceipesGridPanel.add(manageReceipesLeftBorderLayout);
-        manageReceipesMainPanel.add(manageReceipesGridPanel, BorderLayout.CENTER);
+        manageRecipesLeftUpGridPanel.add(searchingOptionsBorderLayout);
+        manageRecipesLeftBorderLayout.add(manageRecipesLeftUpGridPanel, BorderLayout.NORTH);
+        manageRecipesLeftDownGridPanel.add(newRecipe);
+        manageRecipesLeftDownGridPanel.add(editRecipe);
+        manageRecipesLeftDownGridPanel.add(deleteRecipe);
+        manageRecipesLeftBorderLayout.add(manageRecipesLeftDownGridPanel, BorderLayout.SOUTH);
+        manageRecipesLeftBorderLayout.add(recipesListScrollPane, BorderLayout.CENTER);
+        manageRecipesGridPanel.add(manageRecipesLeftBorderLayout);
+        manageRecipesMainPanel.add(manageRecipesGridPanel, BorderLayout.CENTER);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //KARTA DO ZARZĄDZANIA SKŁADNIKAMI//////////////////////////////////////////////////////////////////////////////
@@ -615,7 +615,7 @@ public class MainWindow extends JFrame {
 
         mainTable = new JTabbedPane();
         mainTable.addTab(WhatToCook.SelectedPackage.get(8), mainBorderLayout);
-        mainTable.add(WhatToCook.SelectedPackage.get(9), manageReceipesMainPanel);
+        mainTable.add(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel);
         mainTable.add(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout);
         add(mainTable);
         repaint();
@@ -661,7 +661,7 @@ public class MainWindow extends JFrame {
         toShow += "\n\n";
         toShow += WhatToCook.SelectedPackage.get(27) + "\n\n";
         for (int i = 0; i < recipeToShow.getSize(); i++) {
-            toShow += recipeToShow.getIngredient(i).toString() + " " + recipeToShow.getAmmount(i) + " " + recipeToShow.getUnit(i) + "\n";
+            toShow += recipeToShow.getIngredient(i).toString() + " " + recipeToShow.getAmount(i) + " " + recipeToShow.getUnit(i) + "\n";
 
         }
         toShow += "\n\n";
@@ -708,35 +708,35 @@ public class MainWindow extends JFrame {
     }
 
     private void refreshGUILists() {
-        receipesListModel.clear();
+        recipesListModel.clear();
         for (int i = 0; i < RecipesList.recipesList.size(); i++) {
-            receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
+            recipesListModel.addElement(RecipesList.recipesList.get(i).getName());
         }
     }
 
     private void refreshGUILists(String StartWith) {
-        receipesListModel.clear();
+        recipesListModel.clear();
         for (int i = 0; i < RecipesList.recipesList.size(); i++) {
             if(searchingDialog.wholeWords.isSelected() && searchingDialog.caseSensitiveCheckBox.isSelected()) {
                 if (extendedStartsWith(RecipesList.recipesList.get(i).getName().split(" "), StartWith,true)) {
-                    receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
+                    recipesListModel.addElement(RecipesList.recipesList.get(i).getName());
                 }
             }
             if(searchingDialog.wholeWords.isSelected() && !searchingDialog.caseSensitiveCheckBox.isSelected()) {
                 if (extendedStartsWith(RecipesList.recipesList.get(i).getName().split(" "), StartWith,false)) {
-                    receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
+                    recipesListModel.addElement(RecipesList.recipesList.get(i).getName());
                 }
             }
             if(!searchingDialog.wholeWords.isSelected() && searchingDialog.caseSensitiveCheckBox.isSelected())
             {
                 if(RecipesList.recipesList.get(i).getName().startsWith(StartWith)) {
-                    receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
+                    recipesListModel.addElement(RecipesList.recipesList.get(i).getName());
                 }
             }
             if(!searchingDialog.wholeWords.isSelected() && !searchingDialog.caseSensitiveCheckBox.isSelected())
             {
                 if(RecipesList.recipesList.get(i).getName().toLowerCase().startsWith(StartWith.toLowerCase())) {
-                    receipesListModel.addElement(RecipesList.recipesList.get(i).getName());
+                    recipesListModel.addElement(RecipesList.recipesList.get(i).getName());
                 }
             }
         }
@@ -980,11 +980,11 @@ public class MainWindow extends JFrame {
             for (int i = 0; i < RecipesList.recipesList.get(index).getSize(); i++) {
                 String toAdd;
                 toAdd = "● " + RecipesList.recipesList.get(index).getIngredient(i).getName();
-                toAdd += " " + RecipesList.recipesList.get(index).getAmmount(i);
+                toAdd += " " + RecipesList.recipesList.get(index).getAmount(i);
                 toAdd += " " + RecipesList.recipesList.get(index).getUnit(i);
 
                 ingredientsInputInRecipeListModel.addElement(toAdd);
-                ingredientsListInput.add(new ListHandler(RecipesList.recipesList.get(index).getIngredient(i).getName(), RecipesList.recipesList.get(index).getAmmount(i), RecipesList.recipesList.get(index).getUnit(i)));
+                ingredientsListInput.add(new ListHandler(RecipesList.recipesList.get(index).getIngredient(i).getName(), RecipesList.recipesList.get(index).getAmount(i), RecipesList.recipesList.get(index).getUnit(i)));
             }
             if (RecipesList.recipesList.get(index).getParameters().getParameters()[0])
                 NewEditbreakfestCheckBox.setSelected(true);
@@ -1114,8 +1114,8 @@ public class MainWindow extends JFrame {
     private JTabbedPane creatingRecipeTable;
 
     private JScrollPane ingredientsInputListScrollPane;
-    private JScrollPane receipesOutputListScrollPane;
-    private JScrollPane receipesListScrollPane;
+    private JScrollPane recipesOutputListScrollPane;
+    private JScrollPane recipesListScrollPane;
     private JScrollPane ingredientsInputinRecipeListScrollPane;
     private JScrollPane manageIngredientsListScrollPane;
     private JScrollPane recipeTextAreaScrollPane;
@@ -1166,11 +1166,11 @@ public class MainWindow extends JFrame {
     private JPanel newEditAmmountAndUnitGridLayoutUp;
     private JPanel newEditAmmountAndUnitGridLayoutDown;
     private JPanel newEditParametersGrid;
-    private JPanel manageReceipesMainPanel;
-    private JPanel manageReceipesGridPanel;
-    private JPanel manageReceipesLeftBorderLayout;
-    private JPanel manageReceipesLeftUpGridPanel;
-    private JPanel manageReceipesLeftDownGridPanel;
+    private JPanel manageRecipesMainPanel;
+    private JPanel manageRecipesGridPanel;
+    private JPanel manageRecipesLeftBorderLayout;
+    private JPanel manageRecipesLeftUpGridPanel;
+    private JPanel manageRecipesLeftDownGridPanel;
     private JPanel mainBorderLayout;
     private JPanel downBorderLayout;
     private JPanel upBorderLayout;
@@ -1184,7 +1184,7 @@ public class MainWindow extends JFrame {
     private JTextField newEditAmmountTextArea;
     private JTextField newEditUnitTextArea;
     private JTextField recipeNameTextField;
-    private JTextField searchForReceipesTextArea;
+    private JTextField searchForRecipesTextArea;
 
     private JPanel mainGridLayout;
     private JPanel upGridLayout;
@@ -1200,11 +1200,11 @@ public class MainWindow extends JFrame {
     private JList<String> ingredientsInputList;
     private final DefaultListModel<String> ingredientsInputListModel;
 
-    private JList<String> receipesOutputList;
-    private final DefaultListModel<String> receipesOutputListModel;
+    private JList<String> recipesOutputList;
+    private final DefaultListModel<String> recipesOutputListModel;
 
-    private JList<String> receipesList;
-    private final DefaultListModel<String> receipesListModel;
+    private JList<String> recipesList;
+    private final DefaultListModel<String> recipesListModel;
 
     private JList<String> ingredientsInputinRecipeList;
     private DefaultListModel<String> ingredientsInputInRecipeListModel;

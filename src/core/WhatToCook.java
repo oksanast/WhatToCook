@@ -223,7 +223,7 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Średnie");
         polishLanguagePack.add("Trudne");
         polishLanguagePack.add("Przepis: ");//65
-        polishLanguagePack.add("Wykonianie: ");
+        polishLanguagePack.add("Wykonanie: ");
         polishLanguagePack.add("Zmiana przepisu spowoduje zmianę bazy danych przepisów.");
         polishLanguagePack.add("Importuj");
         polishLanguagePack.add("Eksportuj");

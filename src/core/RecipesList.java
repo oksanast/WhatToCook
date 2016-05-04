@@ -114,7 +114,7 @@ public class RecipesList
             {
                 String NameAndBooleans;
                 NameAndBooleans = recipe.getIngredient(i).getName();
-                if(recipe.getAmmount(i).equals(""))
+                if(recipe.getAmount(i).equals(""))
                     NameAndBooleans+=" " + false;
                 else
                     NameAndBooleans+=" " + true;
@@ -123,8 +123,8 @@ public class RecipesList
                 else
                     NameAndBooleans+=" " + true;
                 writer.println(NameAndBooleans);
-                if(!recipe.getAmmount(i).equals(""))
-                    writer.println(recipe.getAmmount(i));
+                if(!recipe.getAmount(i).equals(""))
+                    writer.println(recipe.getAmount(i));
                 if(!recipe.getUnit(i).equals(""))
                     writer.println(recipe.getUnit(i));
             }
