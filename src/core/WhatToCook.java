@@ -31,7 +31,7 @@ public class WhatToCook implements Runnable {
         buildUkrainianLanguage();
         selectedLanguagePack = polishLanguagePack;
         PolishPackage = new LanguagePackage("data/ingredientsPL","data/recipesPL",polishLanguagePack);
-        EnglishPackage = new LanguagePackage("data/ingredientsENG","data/recipesPL",englishLanguagePack);
+        EnglishPackage = new LanguagePackage("data/ingredientsEN","data/recipesEN",englishLanguagePack);
         UkrainianPackage = new LanguagePackage("data/ingredientsUKR","data/recipesUKR",ukrainianLanguagePack);
         SelectedPackage = new LanguagePackage();
 
