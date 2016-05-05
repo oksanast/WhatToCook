@@ -1,7 +1,7 @@
 package auxiliary;
 
 /**
- * Created by Mateusz on 24.04.2016.
+ * Created by WTC-Team on 24.04.2016.
  * Project WhatToCook
  */
 /*

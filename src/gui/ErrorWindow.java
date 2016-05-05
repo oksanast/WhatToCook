@@ -7,7 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Created by Mateusz on 22.04.2016.
+ * Created by WTC-Team on 22.04.2016.
  * Project WhatToCook
  */
 /*

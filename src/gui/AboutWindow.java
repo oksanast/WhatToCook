@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Mateusz on 21.04.2016.
+ * Created by WTC-Team on 21.04.2016.
  * Project WhatToCook
  */
 /*

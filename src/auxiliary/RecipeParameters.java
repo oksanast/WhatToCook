@@ -3,7 +3,7 @@ package auxiliary;
 import java.util.ArrayList;
 
 /**
- * Created by Mateusz on 25.04.2016.
+ * Created by WTC-Team on 25.04.2016.
  * Project WhatToCook
  */
 //PRZECHOWUJE DODATKOWE TAG'I PRZEPISOW

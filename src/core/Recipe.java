@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- * Created by Mateusz on 23.03.2016.
+ * Created by WTC-Team on 23.03.2016.
  * Project WhatToCook
  */
 /*

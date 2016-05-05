@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 /**
- * Created by Mateusz on 23.03.2016.
+ * Created by WTC-Team on 23.03.2016.
  * Project WhatToCook
  */
 /*

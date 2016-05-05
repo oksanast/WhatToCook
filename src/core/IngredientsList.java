@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.util.*;
 
 /**
- * Created by Mateusz on 20.04.2016.
+ * Created by WTC-Team on 20.04.2016.
  * Project WhatToCook
  */
 /*

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Created by Mateusz on 20.03.2016.
+ * Created by WTC-Team on 20.03.2016.
  * Project WhatToCook
  */
 /*

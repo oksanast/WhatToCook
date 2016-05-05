@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Mateusz on 04.05.2016.
+ * Created by WTC-Team on 04.05.2016.
  */
 public class SearchingWindow extends JDialog {
     public SearchingWindow(){

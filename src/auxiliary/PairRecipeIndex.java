@@ -5,7 +5,7 @@ import core.Recipe;
 import java.util.ArrayList;
 
 /**
- * Created by Mateusz on 23.04.2016.
+ * Created by WTC-Team on 23.04.2016.
  * Project WhatToCook
  */
 /*

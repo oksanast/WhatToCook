@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 /**
- * Created by Mateusz on 23.03.2016.
+ * Created by WTC-Team on 23.03.2016.
  * Project WhatToCook
  */
 /*
