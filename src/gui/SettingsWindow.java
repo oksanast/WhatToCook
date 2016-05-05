@@ -154,14 +154,18 @@ class SettingsWindow extends JDialog {
     private void exportSettings() {
         try {
             PrintWriter writer = new PrintWriter(new File("src/cfg"));
-            if (languageComboBox.getSelectedItem() == "Polski") {
+            if (languageComboBox.getSelectedIndex() == 0) {
                 writer.println("polish");
             }
-            if (languageComboBox.getSelectedItem() == "English") {
+            if (languageComboBox.getSelectedIndex() == 1) {
                 writer.println("english");
             }
-            if (languageComboBox.getSelectedItem() == "Ukrainian") {
+            if (languageComboBox.getSelectedIndex() == 2) {
                 writer.println("Ukrainian");
+            }
+            else
+            {
+                System.out.println("error");
             }
             writer.println(toNewCardCheckbox.isSelected());
             writer.println(autoImportIngredientsCheckbox.isSelected());

@@ -32,13 +32,13 @@ public class WhatToCook implements Runnable {
         selectedLanguagePack = polishLanguagePack;
         PolishPackage = new LanguagePackage("data/ingredientsPL","data/recipesPL",polishLanguagePack);
         EnglishPackage = new LanguagePackage("data/ingredientsENG","data/recipesPL",englishLanguagePack);
-        UkrainianPackage = new LanguagePackage("data/ingredientsUKR","data/recipesPL",ukrainianLanguagePack);
+        UkrainianPackage = new LanguagePackage("data/ingredientsUKR","data/recipesUKR",ukrainianLanguagePack);
         SelectedPackage = new LanguagePackage();
 
         Scanner in;
         try
         {
-            in = new Scanner(new File("data/cfg"));
+            in = new Scanner(new File("src/cfg"));
             String language = in.next();
             if(language.equals("english")) {
                 SelectedPackage = EnglishPackage;
@@ -151,6 +151,7 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Save program state:");
         englishLanguagePack.add("Path: ");
         englishLanguagePack.add("Change path");
+        englishLanguagePack.add("Importing error");
         englishLanguagePack.add("It was impossible to read the file with owned ingredients, check its path in the options");
         englishLanguagePack.add("Creating recipe error");
         englishLanguagePack.add("You can create/edit only one recipe in the time");
