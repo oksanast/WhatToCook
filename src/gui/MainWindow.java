@@ -476,7 +476,7 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-        deleteRecipe = new JButton(WhatToCook.SelectedPackage.get(31));
+        deleteRecipe= new JButton(WhatToCook.SelectedPackage.get(31));
         deleteRecipe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -859,6 +859,7 @@ public class MainWindow extends JFrame {
         NewEditEaseToPrepare.addItem(WhatToCook.SelectedPackage.get(62));
         NewEditEaseToPrepare.addItem(WhatToCook.SelectedPackage.get(63));
         NewEditEaseToPrepare.addItem(WhatToCook.SelectedPackage.get(64));
+
         newEditParametersGrid.add(NewEditEaseToPrepare);
 
         editNewExitWithoutSaving = new JButton(WhatToCook.SelectedPackage.get(22));
@@ -1139,6 +1140,9 @@ public class MainWindow extends JFrame {
                 jLabel.setIcon(icon);
                 ImageIcon imageIcon = new ImageIcon(new ImageIcon("data/X_icon.png").getImage().getScaledInstance(10,10,Image.SCALE_DEFAULT));
                 JButton button = new JButton(imageIcon);
+                button.setOpaque(false);
+                button.setContentAreaFilled(false);
+                button.setBorderPainted(false);
                 button.setMargin(new Insets(0, 0, 0, 0));
                 button.addMouseListener(new CloseListener(tab));
                 setLayout(borderLayout);

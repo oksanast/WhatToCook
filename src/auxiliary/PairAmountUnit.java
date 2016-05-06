@@ -11,17 +11,17 @@ package auxiliary;
 public class PairAmountUnit {
     public PairAmountUnit(String ammount,String unit)
     {
-       this.ammount = ammount;
+       this.amount = ammount;
         this.unit = unit;
     }
-    public String getAmmount()
+    public String getAmount()
     {
-        return ammount;
+        return amount;
     }
     public String getUnit()
     {
         return unit;
     }
-    String ammount;
+    String amount;
     String unit;
 }
