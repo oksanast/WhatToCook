@@ -4,6 +4,7 @@ import auxiliary.LanguagePackage;
 import gui.MainWindow;
 
 import javax.swing.*;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -24,11 +25,9 @@ public class WhatToCook implements Runnable {
         new WhatToCook();
     }
     public WhatToCook() {
-        selectedLanguagePack = new ArrayList<>();
         buildPolishLanguage();
         buildEnglishLanguage();
         buildUkrainianLanguage();
-        selectedLanguagePack = polishLanguagePack;
         PolishPackage = new LanguagePackage("data/ingredientsPL","data/recipesPL",polishLanguagePack);
         EnglishPackage = new LanguagePackage("data/ingredientsEN","data/recipesEN",englishLanguagePack);
         UkrainianPackage = new LanguagePackage("data/ingredientsUKR","data/recipesUKR",ukrainianLanguagePack);
@@ -333,12 +332,9 @@ public class WhatToCook implements Runnable {
         ukrainianLanguagePack.add("Шукати в кожному слові");
         ukrainianLanguagePack.add("Бери під увагу великі і малі літери");
     }
-
-
     private static ArrayList<String> polishLanguagePack;
     private static ArrayList<String> englishLanguagePack;
     private static ArrayList<String> ukrainianLanguagePack;
-    private static ArrayList<String> selectedLanguagePack;
     public static MainWindow frame;
     public static String version = "1.7";
 

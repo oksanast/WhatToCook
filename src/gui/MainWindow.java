@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.metal.MetalIconFactory;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -613,10 +614,10 @@ public class MainWindow extends JFrame {
 
         //MENU "ZAKŁADKOWE"
 
-        mainTable = new JTabbedPane();
-        mainTable.addTab(WhatToCook.SelectedPackage.get(8), mainBorderLayout);
-        mainTable.add(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel);
-        mainTable.add(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout);
+        mainTable = new JTabbedPaneCloseButton();
+        mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(8), mainBorderLayout);
+        mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel);
+        mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout);
         add(mainTable);
         repaint();
     }
@@ -738,25 +739,6 @@ public class MainWindow extends JFrame {
                 if(RecipesList.recipesList.get(i).getName().toLowerCase().startsWith(StartWith.toLowerCase())) {
                     recipesListModel.addElement(RecipesList.recipesList.get(i).getName());
                 }
-            }
-        }
-    }
-
-    private void exportTab(Recipe recipeToShow, String toExport) {
-        JFileChooser chooseFile = new JFileChooser();
-        chooseFile.setSelectedFile(new File(recipeToShow.getName() + ".txt"));
-        int save = chooseFile.showSaveDialog(null);
-        if (save == JFileChooser.APPROVE_OPTION) {
-            String filename = chooseFile.getSelectedFile().getPath();
-            PrintWriter writer;
-            try {
-                writer = new PrintWriter(filename, "UTF-8");
-
-                writer.println(toExport);
-
-                writer.close();
-            } catch (FileNotFoundException | UnsupportedEncodingException exception) {
-                System.err.println("Exporting recipe error.");
             }
         }
     }
@@ -1108,9 +1090,109 @@ public class MainWindow extends JFrame {
         }
     }
 
+    private class JTabbedPaneCloseButton extends JTabbedPane {
+
+        private JTabbedPaneCloseButton() {
+            super();
+        }
+
+        /* Override Addtab in order to add the close Button everytime */
+        @Override
+        public void addTab(String title, Icon icon, Component component, String tip) {
+            super.addTab(title, icon, component, tip);
+            int count = this.getTabCount() - 1;
+            setTabComponentAt(count, new CloseButtonTab(component, title, icon));
+        }
+
+        @Override
+        public void addTab(String title, Icon icon, Component component) {
+            addTab(title, icon, component, null);
+        }
+
+        @Override
+        public void addTab(String title, Component component) {
+            addTab(title, null, component);
+        }
+
+        /* addTabNoExit */
+        public void addTabNoExit(String title, Icon icon, Component component, String tip) {
+            super.addTab(title, icon, component, tip);
+        }
+
+        public void addTabNoExit(String title, Icon icon, Component component) {
+            addTabNoExit(title, icon, component, null);
+        }
+
+        public void addTabNoExit(String title, Component component) {
+            addTabNoExit(title, null, component);
+        }
+
+        /* Button */
+        public class CloseButtonTab extends JPanel {
+            private Component tab;
+
+            public CloseButtonTab(final Component tab, String title, Icon icon) {
+                this.tab = tab;
+                setOpaque(false);
+                BorderLayout borderLayout = new BorderLayout();
+                JLabel jLabel = new JLabel(title + " ");
+                jLabel.setIcon(icon);
+                ImageIcon imageIcon = new ImageIcon(new ImageIcon("data/X_icon.png").getImage().getScaledInstance(10,10,Image.SCALE_DEFAULT));
+                JButton button = new JButton(imageIcon);
+                button.setMargin(new Insets(0, 0, 0, 0));
+                button.addMouseListener(new CloseListener(tab));
+                setLayout(borderLayout);
+                add(jLabel,BorderLayout.CENTER);
+                add(button,BorderLayout.EAST);
+            }
+        }
+        /* ClickListener */
+        public class CloseListener implements MouseListener
+        {
+            private Component tab;
+            public CloseListener(Component tab){
+                this.tab=tab;
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(e.getSource() instanceof JButton){
+                    JButton clickedButton = (JButton) e.getSource();
+                    JTabbedPane tabbedPane = (JTabbedPane) clickedButton.getParent().getParent().getParent();
+                    tabbedPane.remove(tab);
+                }
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {}
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+        }
+    }
+    private void exportTab(Recipe recipeToShow, String toExport) {
+        JFileChooser chooseFile = new JFileChooser();
+        chooseFile.setSelectedFile(new File(recipeToShow.getName() + ".txt"));
+        int save = chooseFile.showSaveDialog(null);
+        if (save == JFileChooser.APPROVE_OPTION) {
+            String filename = chooseFile.getSelectedFile().getPath();
+            PrintWriter writer;
+            try {
+                writer = new PrintWriter(filename, "UTF-8");
+
+                writer.println(toExport);
+
+                writer.close();
+            } catch (FileNotFoundException | UnsupportedEncodingException exception) {
+                System.err.println("Exporting recipe error.");
+            }
+        }
+    }
+
 
     //ELEMENTY GUI BAZY SKŁADNIKÓW
-    private JTabbedPane mainTable;
+    private JTabbedPaneCloseButton mainTable;
     private JTabbedPane creatingRecipeTable;
 
     private JScrollPane ingredientsInputListScrollPane;
