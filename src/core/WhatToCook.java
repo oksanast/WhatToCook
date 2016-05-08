@@ -156,6 +156,7 @@ public class WhatToCook implements Runnable {
         englishLanguagePack.add("Searching options");
         englishLanguagePack.add("Search in every word");
         englishLanguagePack.add("Recognize letters size");
+        englishLanguagePack.add("View");
 
     }
 
@@ -244,6 +245,7 @@ public class WhatToCook implements Runnable {
         polishLanguagePack.add("Opcje Wyszukiwania");//80
         polishLanguagePack.add("Szukaj w każdym słowie");
         polishLanguagePack.add("Uzględniaj wielkość liter");
+        polishLanguagePack.add("Widok");
     }
 
     private void buildUkrainianLanguage() {
@@ -331,6 +333,7 @@ public class WhatToCook implements Runnable {
         ukrainianLanguagePack.add("Опції пошуку");//80
         ukrainianLanguagePack.add("Шукати в кожному слові");
         ukrainianLanguagePack.add("Бери під увагу великі і малі літери");
+        ukrainianLanguagePack.add("Widok");
     }
     private static ArrayList<String> polishLanguagePack;
     private static ArrayList<String> englishLanguagePack;

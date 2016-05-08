@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.metal.MetalIconFactory;
+import javax.swing.plaf.synth.SynthButtonUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -56,12 +57,65 @@ public class MainWindow extends JFrame {
         fileMenu = new JMenu(WhatToCook.SelectedPackage.get(0));
         editMenu = new JMenu(WhatToCook.SelectedPackage.get(2));
         helpMenu = new JMenu(WhatToCook.SelectedPackage.get(5));
+        viewMenu = new JMenu(WhatToCook.SelectedPackage.get(83));
         newSubmenu = new JMenu(WhatToCook.SelectedPackage.get(45));
         mainMenu.add(fileMenu);
         mainMenu.add(editMenu);
+        mainMenu.add(viewMenu);
         mainMenu.add(helpMenu);
         fileMenu.add(newSubmenu);
+        showSearchMenu = new JCheckBoxMenuItem(WhatToCook.SelectedPackage.get(8));
+        showRecipesMenu = new JCheckBoxMenuItem(WhatToCook.SelectedPackage.get(9));
+        showIngredientsMenu = new JCheckBoxMenuItem(WhatToCook.SelectedPackage.get(27));
 
+        showSearchMenu.setSelected(true);
+        showRecipesMenu.setSelected(true);
+        showIngredientsMenu.setSelected(true);
+        JTabbedPane pane = new JTabbedPane();
+        showSearchMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!showSearchMenu.isSelected())
+                    mainTable.CloseTabByComponent(mainBorderLayout);
+                else
+                {
+                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(8),mainBorderLayout,0);
+                }
+            }
+        });
+        showRecipesMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!showRecipesMenu.isSelected())
+                    mainTable.CloseTabByComponent(manageRecipesMainPanel);
+                else
+                {
+                    if(mainTable.getTabCount()>=1)
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9),manageRecipesMainPanel,1);
+                    else
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9),manageRecipesMainPanel,0);
+                }
+            }
+        });
+        showIngredientsMenu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!showIngredientsMenu.isSelected())
+                    mainTable.CloseTabByComponent(ingredientsMainGridLayout);
+                else
+                {
+                    if(mainTable.getTabCount()>=2)
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27),ingredientsMainGridLayout,2);
+                    else if (mainTable.getTabCount()==1)
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27),ingredientsMainGridLayout,1);
+                    else
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27),ingredientsMainGridLayout,0);
+                }
+            }
+        });
+        viewMenu.add(showSearchMenu);
+        viewMenu.add(showRecipesMenu);
+        viewMenu.add(showIngredientsMenu);
         settingsDialog = new SettingsWindow();
         aboutDialog = new AboutWindow();
         errorDialog = new ErrorWindow();
@@ -615,6 +669,7 @@ public class MainWindow extends JFrame {
         //MENU "ZAKŁADKOWE"
 
         mainTable = new JTabbedPaneCloseButton();
+        mainTable.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(8), mainBorderLayout);
         mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel);
         mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout);
@@ -1011,9 +1066,9 @@ public class MainWindow extends JFrame {
 
         newEditMainBorderLayout.add(newEditMainGridLayout, BorderLayout.CENTER);
         if (index == -1) {
-            mainTable.addTab(WhatToCook.SelectedPackage.get(17), newEditMainBorderLayout);
+            mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(17), newEditMainBorderLayout);
         } else {
-            mainTable.addTab(RecipesList.recipesList.get(index).getName(), newEditMainBorderLayout);
+            mainTable.addTabNoExit(RecipesList.recipesList.get(index).getName(), newEditMainBorderLayout);
         }
         if (MainWindow.getToNewCard) {
             mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
@@ -1100,9 +1155,11 @@ public class MainWindow extends JFrame {
         /* Override Addtab in order to add the close Button everytime */
         @Override
         public void addTab(String title, Icon icon, Component component, String tip) {
-            super.addTab(title, icon, component, tip);
+            Component titledComponent = component;
+            titledComponent.setName(title);
+            super.addTab(title, icon, titledComponent, tip);
             int count = this.getTabCount() - 1;
-            setTabComponentAt(count, new CloseButtonTab(component, title, icon));
+            setTabComponentAt(count, new CloseButtonTab(titledComponent, title, icon));
         }
 
         @Override
@@ -1123,6 +1180,10 @@ public class MainWindow extends JFrame {
         public void addTabNoExit(String title, Icon icon, Component component) {
             addTabNoExit(title, icon, component, null);
         }
+        public void insertTabNoExit(String title,Component component,int index)
+        {
+            super.insertTab(title,null,component,null,index);
+        }
 
         public void addTabNoExit(String title, Component component) {
             addTabNoExit(title, null, component);
@@ -1136,7 +1197,7 @@ public class MainWindow extends JFrame {
                 this.tab = tab;
                 setOpaque(false);
                 BorderLayout borderLayout = new BorderLayout();
-                JLabel jLabel = new JLabel(title + " ");
+                JLabel jLabel = new JLabel(title + " ",SwingConstants.CENTER);
                 jLabel.setIcon(icon);
                 ImageIcon imageIcon = new ImageIcon(new ImageIcon("data/X_icon.png").getImage().getScaledInstance(10,10,Image.SCALE_DEFAULT));
                 JButton button = new JButton(imageIcon);
@@ -1151,6 +1212,10 @@ public class MainWindow extends JFrame {
             }
         }
         /* ClickListener */
+        public void CloseTabByComponent(Component component)
+        {
+            mainTable.remove(component);
+        }
         public class CloseListener implements MouseListener
         {
             private Component tab;
@@ -1162,7 +1227,9 @@ public class MainWindow extends JFrame {
                 if(e.getSource() instanceof JButton){
                     JButton clickedButton = (JButton) e.getSource();
                     JTabbedPane tabbedPane = (JTabbedPane) clickedButton.getParent().getParent().getParent();
+                    System.out.println(tab.getName());
                     tabbedPane.remove(tab);
+                    tabbedPane.setSelectedIndex(1);
                 }
             }
             @Override
@@ -1282,6 +1349,11 @@ public class MainWindow extends JFrame {
     private JMenu editMenu;
     private JMenu helpMenu;
     private JMenu newSubmenu;
+    private JMenu viewMenu;
+
+    private JCheckBoxMenuItem showSearchMenu;
+    private JCheckBoxMenuItem showRecipesMenu;
+    private JCheckBoxMenuItem showIngredientsMenu;
 
     private JList<String> ingredientsInputList;
     private final DefaultListModel<String> ingredientsInputListModel;

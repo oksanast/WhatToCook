@@ -54,7 +54,6 @@ public class PairRecipeIndex {
         }
         return null;
     }
-
     public int getStartPage(int index)
     {
         for(int i = 0; i < recipesList.size();i++)
