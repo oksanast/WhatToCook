@@ -1249,10 +1249,9 @@ public class MainWindow extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 if(e.getSource() instanceof JButton){
                     JButton clickedButton = (JButton) e.getSource();
-                    JTabbedPane tabbedPane = (JTabbedPane) clickedButton.getParent().getParent().getParent();
                     System.out.println(tab.getName());
-                    tabbedPane.remove(tab);
-                    tabbedPane.setSelectedIndex(1);
+                    mainTable.remove(tab);
+                    mainTable.setSelectedIndex(1);
                 }
             }
             @Override
