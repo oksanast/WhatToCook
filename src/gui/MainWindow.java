@@ -83,26 +83,27 @@ public class MainWindow extends JFrame {
                     mainTable.CloseTabByComponent(mainBorderLayout);
                     mainCardsCount--;
                 } else {
-                    mainCardsCount++;
                     mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(8), mainBorderLayout, 0);
+                    mainCardsCount++;
                 }
             }
         });
         showRecipesMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println(mainCardsCount);
                 if (!showRecipesMenu.isSelected()) {
                     mainTable.CloseTabByComponent(manageRecipesMainPanel);
                     mainCardsCount--;
                 }
                 else {
-                    mainCardsCount++;
-                    if (mainTable.getTabCount() >= 1 && showIngredientsMenu.isSelected())
+                    if (mainCardsCount >= 1 && showIngredientsMenu.isSelected())
                         mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 0);
-                    else if (mainTable.getTabCount() >= 1 && !showIngredientsMenu.isSelected())
+                    else if (mainCardsCount >= 1 && !showIngredientsMenu.isSelected())
                         mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 1);
                     else
                         mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 0);
+                    mainCardsCount++;
                 }
             }
         });
@@ -114,13 +115,13 @@ public class MainWindow extends JFrame {
                     mainCardsCount--;
                 }
                 else {
-                    mainCardsCount++;
-                    if (mainTable.getTabCount() >= 2)
+                    if (mainCardsCount>= 2)
                         mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 2);
-                    else if (mainTable.getTabCount() == 1)
+                    else if (mainCardsCount == 1)
                         mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 1);
                     else
                         mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 0);
+                    mainCardsCount++;
                 }
             }
         });
