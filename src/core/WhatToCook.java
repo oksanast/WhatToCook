@@ -160,6 +160,8 @@ public class WhatToCook {
         englishLanguagePack.add("Search in every word");
         englishLanguagePack.add("Recognize letters size");
         englishLanguagePack.add("View");
+        englishLanguagePack.add("Cards");
+        englishLanguagePack.add("Close all recipes");
 
     }
 
@@ -249,6 +251,8 @@ public class WhatToCook {
         polishLanguagePack.add("Szukaj w każdym słowie");
         polishLanguagePack.add("Uzględniaj wielkość liter");
         polishLanguagePack.add("Widok");
+        polishLanguagePack.add("Karty");
+        polishLanguagePack.add("Zamknij wszystkie przepisy");
     }
 
     private void buildUkrainianLanguage() {
@@ -337,6 +341,8 @@ public class WhatToCook {
         ukrainianLanguagePack.add("Шукати в кожному слові");
         ukrainianLanguagePack.add("Бери під увагу великі і малі літери");
         ukrainianLanguagePack.add("Widok");
+        ukrainianLanguagePack.add("Karty");
+        ukrainianLanguagePack.add("Zamknij wszystkie przepisy");
     }
     private static ArrayList<String> polishLanguagePack;
     private static ArrayList<String> englishLanguagePack;

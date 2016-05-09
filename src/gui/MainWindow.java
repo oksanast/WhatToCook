@@ -51,6 +51,8 @@ public class MainWindow extends JFrame {
         setLocationRelativeTo(null);
         setMinimumSize(new Dimension(340, 400));
 
+        mainCardsCount = 3;
+
         //MENUBAR CREATING/////////////////////////////////////////////////////////////////////////////////////////////
         mainMenu = new JMenuBar();
         setJMenuBar(mainMenu);
@@ -59,11 +61,13 @@ public class MainWindow extends JFrame {
         helpMenu = new JMenu(WhatToCook.SelectedPackage.get(5));
         viewMenu = new JMenu(WhatToCook.SelectedPackage.get(83));
         newSubmenu = new JMenu(WhatToCook.SelectedPackage.get(45));
+        cardsSubmenu = new JMenu(WhatToCook.SelectedPackage.get(84));
         mainMenu.add(fileMenu);
         mainMenu.add(editMenu);
         mainMenu.add(viewMenu);
         mainMenu.add(helpMenu);
         fileMenu.add(newSubmenu);
+        viewMenu.add(cardsSubmenu);
         showSearchMenu = new JCheckBoxMenuItem(WhatToCook.SelectedPackage.get(8));
         showRecipesMenu = new JCheckBoxMenuItem(WhatToCook.SelectedPackage.get(9));
         showIngredientsMenu = new JCheckBoxMenuItem(WhatToCook.SelectedPackage.get(27));
@@ -75,48 +79,54 @@ public class MainWindow extends JFrame {
         showSearchMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!showSearchMenu.isSelected()) {
+                if (!showSearchMenu.isSelected()) {
                     mainTable.CloseTabByComponent(mainBorderLayout);
-                }
-                else
-                {
-                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(8),mainBorderLayout,0);
+                    mainCardsCount--;
+                } else {
+                    mainCardsCount++;
+                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(8), mainBorderLayout, 0);
                 }
             }
         });
         showRecipesMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!showRecipesMenu.isSelected())
+                if (!showRecipesMenu.isSelected()) {
                     mainTable.CloseTabByComponent(manageRecipesMainPanel);
-                else
-                {
-                    if(mainTable.getTabCount()>=1)
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9),manageRecipesMainPanel,1);
+                    mainCardsCount--;
+                }
+                else {
+                    mainCardsCount++;
+                    if (mainTable.getTabCount() >= 1 && showIngredientsMenu.isSelected())
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 0);
+                    else if (mainTable.getTabCount() >= 1 && !showIngredientsMenu.isSelected())
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 1);
                     else
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9),manageRecipesMainPanel,0);
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 0);
                 }
             }
         });
         showIngredientsMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!showIngredientsMenu.isSelected())
+                if (!showIngredientsMenu.isSelected()) {
                     mainTable.CloseTabByComponent(ingredientsMainGridLayout);
-                else
-                {
-                    if(mainTable.getTabCount()>=2)
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27),ingredientsMainGridLayout,2);
-                    else if (mainTable.getTabCount()==1)
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27),ingredientsMainGridLayout,1);
+                    mainCardsCount--;
+                }
+                else {
+                    mainCardsCount++;
+                    if (mainTable.getTabCount() >= 2)
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 2);
+                    else if (mainTable.getTabCount() == 1)
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 1);
                     else
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27),ingredientsMainGridLayout,0);
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 0);
                 }
             }
         });
-        viewMenu.add(showSearchMenu);
-        viewMenu.add(showRecipesMenu);
-        viewMenu.add(showIngredientsMenu);
+        cardsSubmenu.add(showSearchMenu);
+        cardsSubmenu.add(showRecipesMenu);
+        cardsSubmenu.add(showIngredientsMenu);
         settingsDialog = new SettingsWindow();
         aboutDialog = new AboutWindow();
         errorDialog = new ErrorWindow();
@@ -126,17 +136,15 @@ public class MainWindow extends JFrame {
             Scanner in = new Scanner(new File("src/searchSettingsConfig"));
             String line = in.nextLine();
             String splittedLine[] = line.split("=");
-            if(splittedLine[1].equals("true")) {
+            if (splittedLine[1].equals("true")) {
                 searchingDialog.wholeWords.setSelected(true);
-            }
-            else
+            } else
                 searchingDialog.wholeWords.setSelected(false);
             line = in.nextLine();
             splittedLine = line.split("=");
-            if(splittedLine[1].equals("true")) {
+            if (splittedLine[1].equals("true")) {
                 searchingDialog.caseSensitiveCheckBox.setSelected(true);
-            }
-            else
+            } else
                 searchingDialog.caseSensitiveCheckBox.setSelected(false);
         } catch (FileNotFoundException e) {
             System.out.println("Error during loading 'searchSettingsConfig', default settings will be used");
@@ -148,7 +156,25 @@ public class MainWindow extends JFrame {
         Action newIngredientAction = new AbstractAction(WhatToCook.SelectedPackage.get(46)) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainTable.setSelectedIndex(2);
+                if (!showIngredientsMenu.isSelected()) {
+                    if (mainTable.getTabCount() >= 2) {
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 2);
+                        mainTable.setSelectedIndex(2);
+                    } else if (mainTable.getTabCount() == 1) {
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 1);
+                        mainTable.setSelectedIndex(1);
+                    } else {
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 0);
+                        mainTable.setSelectedIndex(0);
+                    }
+                } else {
+                    if (showSearchMenu.isSelected() && showRecipesMenu.isSelected()) {
+                        mainTable.setSelectedIndex(2);
+                    } else if (showSearchMenu.isSelected() || showRecipesMenu.isSelected()) {
+                        mainTable.setSelectedIndex(1);
+                    } else
+                        mainTable.setSelectedIndex(0);
+                }
                 newIngredientTextField.requestFocus();
             }
         };
@@ -226,10 +252,19 @@ public class MainWindow extends JFrame {
                 importIngredientsList();
             }
         };
+        Action closeAllRecipes = new AbstractAction(WhatToCook.SelectedPackage.get(85)) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for(int i = mainTable.getTabCount()-1;i>=mainCardsCount;i--)
+                    mainTable.removeTabAt(i);
+            }
+        };
         fileMenu.addSeparator();
         fileMenu.add(exitAction);
         newSubmenu.add(newIngredientAction);
         newSubmenu.add(newRecipeAction);
+        viewMenu.addSeparator();
+        viewMenu.add(closeAllRecipes);
         editMenu.add(exportIngredientsAction);
         editMenu.add(importIngredientsAction);
         editMenu.addSeparator();
@@ -421,7 +456,6 @@ public class MainWindow extends JFrame {
         });
         removeIngredientButton = new JButton(WhatToCook.SelectedPackage.get(13));
         removeIngredientButton.addActionListener(e -> {
-            int index = ingredientsInputList.getSelectedIndex();
             for (int i = ingredientsInputList.getSelectedIndices().length - 1; i >= 0; i--) {
                 ingredientsInputListModel.removeElementAt(ingredientsInputList.getSelectedIndices()[i]);
             }
@@ -553,7 +587,7 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-        deleteRecipe= new JButton(WhatToCook.SelectedPackage.get(31));
+        deleteRecipe = new JButton(WhatToCook.SelectedPackage.get(31));
         deleteRecipe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -589,8 +623,8 @@ public class MainWindow extends JFrame {
         });
 
         manageRecipesLeftUpGridPanel.add(new JLabel(WhatToCook.SelectedPackage.get(16), SwingConstants.CENTER));
-        searchingOptionsBorderLayout.add(searchForRecipesTextArea,BorderLayout.CENTER);
-        searchingOptionsBorderLayout.add(searchingOptionsButton,BorderLayout.EAST);
+        searchingOptionsBorderLayout.add(searchForRecipesTextArea, BorderLayout.CENTER);
+        searchingOptionsBorderLayout.add(searchingOptionsButton, BorderLayout.EAST);
         manageRecipesLeftUpGridPanel.add(searchingOptionsBorderLayout);
         manageRecipesLeftBorderLayout.add(manageRecipesLeftUpGridPanel, BorderLayout.NORTH);
         manageRecipesLeftDownGridPanel.add(newRecipe);
@@ -796,25 +830,23 @@ public class MainWindow extends JFrame {
     private void refreshGUILists(String StartWith) {
         recipesListModel.clear();
         for (int i = 0; i < RecipesList.recipesList.size(); i++) {
-            if(searchingDialog.wholeWords.isSelected() && searchingDialog.caseSensitiveCheckBox.isSelected()) {
-                if (extendedStartsWith(RecipesList.recipesList.get(i).getName().split(" "), StartWith,true)) {
+            if (searchingDialog.wholeWords.isSelected() && searchingDialog.caseSensitiveCheckBox.isSelected()) {
+                if (extendedStartsWith(RecipesList.recipesList.get(i).getName().split(" "), StartWith, true)) {
                     recipesListModel.addElement(RecipesList.recipesList.get(i).getName());
                 }
             }
-            if(searchingDialog.wholeWords.isSelected() && !searchingDialog.caseSensitiveCheckBox.isSelected()) {
-                if (extendedStartsWith(RecipesList.recipesList.get(i).getName().split(" "), StartWith,false)) {
+            if (searchingDialog.wholeWords.isSelected() && !searchingDialog.caseSensitiveCheckBox.isSelected()) {
+                if (extendedStartsWith(RecipesList.recipesList.get(i).getName().split(" "), StartWith, false)) {
                     recipesListModel.addElement(RecipesList.recipesList.get(i).getName());
                 }
             }
-            if(!searchingDialog.wholeWords.isSelected() && searchingDialog.caseSensitiveCheckBox.isSelected())
-            {
-                if(RecipesList.recipesList.get(i).getName().startsWith(StartWith)) {
+            if (!searchingDialog.wholeWords.isSelected() && searchingDialog.caseSensitiveCheckBox.isSelected()) {
+                if (RecipesList.recipesList.get(i).getName().startsWith(StartWith)) {
                     recipesListModel.addElement(RecipesList.recipesList.get(i).getName());
                 }
             }
-            if(!searchingDialog.wholeWords.isSelected() && !searchingDialog.caseSensitiveCheckBox.isSelected())
-            {
-                if(RecipesList.recipesList.get(i).getName().toLowerCase().startsWith(StartWith.toLowerCase())) {
+            if (!searchingDialog.wholeWords.isSelected() && !searchingDialog.caseSensitiveCheckBox.isSelected()) {
+                if (RecipesList.recipesList.get(i).getName().toLowerCase().startsWith(StartWith.toLowerCase())) {
                     recipesListModel.addElement(RecipesList.recipesList.get(i).getName());
                 }
             }
@@ -828,13 +860,13 @@ public class MainWindow extends JFrame {
         mainTable.removeTabAt(SelectedIndex);
     }
 
-    private boolean extendedStartsWith(String[] words, String start,boolean caseSensitive) {
+    private boolean extendedStartsWith(String[] words, String start, boolean caseSensitive) {
         for (String word : words) {
-            if(!caseSensitive) {
+            if (!caseSensitive) {
                 if (word.toLowerCase().startsWith(start.toLowerCase()))
                     return true;
             }
-            if(caseSensitive) {
+            if (caseSensitive) {
                 if (word.startsWith(start))
                     return true;
             }
@@ -845,12 +877,10 @@ public class MainWindow extends JFrame {
     //FUNKCJA TWORZY KARTĘ DO EDYCJI PRZEPISU
     private void showNewEditMenu(int index) {
         ArrayList<ListHandler> ingredientsListInput = new ArrayList<>();
-        class addIngredientToRecipe implements KeyListener
-        {
+        class addIngredientToRecipe implements KeyListener {
             @Override
             public void keyTyped(KeyEvent e) {
-                if (e.getKeyChar() == KeyEvent.VK_ENTER)
-                {
+                if (e.getKeyChar() == KeyEvent.VK_ENTER) {
                     if (!ingredientInCreatingRecipeComboBox.getSelectedItem().equals("")) {
                         String newForm = "● " + ingredientInCreatingRecipeComboBox.getSelectedItem();
                         newForm += " " + newEditAmmountTextArea.getText() + " " + newEditUnitTextArea.getText();
@@ -870,6 +900,7 @@ public class MainWindow extends JFrame {
                     }
                 }
             }
+
             @Override
             public void keyPressed(KeyEvent e) {
 
@@ -1196,33 +1227,33 @@ public class MainWindow extends JFrame {
         }
 
         /* addTabNoExit */
-        public void addTabNoExit(String title, Icon icon, Component component, String tip) {
+        void addTabNoExit(String title, Icon icon, Component component, String tip) {
             super.addTab(title, icon, component, tip);
         }
 
-        public void addTabNoExit(String title, Icon icon, Component component) {
+        void addTabNoExit(String title, Icon icon, Component component) {
             addTabNoExit(title, icon, component, null);
         }
-        public void insertTabNoExit(String title,Component component,int index)
-        {
-            super.insertTab(title,null,component,null,index);
+
+        void insertTabNoExit(String title, Component component, int index) {
+            super.insertTab(title, null, component, null, index);
         }
 
-        public void addTabNoExit(String title, Component component) {
+        void addTabNoExit(String title, Component component) {
             addTabNoExit(title, null, component);
         }
 
         /* Button */
-        public class CloseButtonTab extends JPanel {
+        class CloseButtonTab extends JPanel {
             private Component tab;
 
-            public CloseButtonTab(final Component tab, String title, Icon icon) {
+            CloseButtonTab(final Component tab, String title, Icon icon) {
                 this.tab = tab;
                 setOpaque(false);
                 BorderLayout borderLayout = new BorderLayout();
-                JLabel jLabel = new JLabel(title + " ",SwingConstants.CENTER);
+                JLabel jLabel = new JLabel(title + " ", SwingConstants.CENTER);
                 jLabel.setIcon(icon);
-                ImageIcon imageIcon = new ImageIcon(new ImageIcon("data/X_icon.png").getImage().getScaledInstance(10,10,Image.SCALE_DEFAULT));
+                ImageIcon imageIcon = new ImageIcon(new ImageIcon("data/X_icon.png").getImage().getScaledInstance(10, 10, Image.SCALE_DEFAULT));
                 JButton button = new JButton(imageIcon);
                 button.setOpaque(false);
                 button.setContentAreaFilled(false);
@@ -1230,40 +1261,51 @@ public class MainWindow extends JFrame {
                 button.setMargin(new Insets(0, 0, 0, 0));
                 button.addMouseListener(new CloseListener(tab));
                 setLayout(borderLayout);
-                add(jLabel,BorderLayout.CENTER);
-                add(button,BorderLayout.EAST);
+                add(jLabel, BorderLayout.CENTER);
+                add(button, BorderLayout.EAST);
             }
         }
+
         /* ClickListener */
-        public void CloseTabByComponent(Component component)
-        {
+        void CloseTabByComponent(Component component) {
             mainTable.remove(component);
         }
-        public class CloseListener implements MouseListener
-        {
+
+        class CloseListener implements MouseListener {
             private Component tab;
-            public CloseListener(Component tab){
-                this.tab=tab;
+
+            CloseListener(Component tab) {
+                this.tab = tab;
             }
+
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(e.getSource() instanceof JButton){
+                if (e.getSource() instanceof JButton) {
                     JButton clickedButton = (JButton) e.getSource();
                     System.out.println(tab.getName());
                     mainTable.remove(tab);
                     mainTable.setSelectedIndex(1);
                 }
             }
+
             @Override
-            public void mousePressed(MouseEvent e) {}
+            public void mousePressed(MouseEvent e) {
+            }
+
             @Override
-            public void mouseReleased(MouseEvent e) {}
+            public void mouseReleased(MouseEvent e) {
+            }
+
             @Override
-            public void mouseEntered(MouseEvent e) {}
+            public void mouseEntered(MouseEvent e) {
+            }
+
             @Override
-            public void mouseExited(MouseEvent e) {}
+            public void mouseExited(MouseEvent e) {
+            }
         }
     }
+
     private void exportTab(Recipe recipeToShow, String toExport) {
         JFileChooser chooseFile = new JFileChooser();
         chooseFile.setSelectedFile(new File(recipeToShow.getName() + ".txt"));
@@ -1371,6 +1413,7 @@ public class MainWindow extends JFrame {
     private JMenu editMenu;
     private JMenu helpMenu;
     private JMenu newSubmenu;
+    private JMenu cardsSubmenu;
     private JMenu viewMenu;
 
     private JCheckBoxMenuItem showSearchMenu;
@@ -1404,4 +1447,6 @@ public class MainWindow extends JFrame {
     public static boolean searchInEveryWord;
     public static boolean searchCaseSensitive;
     private boolean isEditionTurnOn;
+
+    private int mainCardsCount;
 }
