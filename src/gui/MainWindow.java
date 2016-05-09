@@ -75,8 +75,9 @@ public class MainWindow extends JFrame {
         showSearchMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!showSearchMenu.isSelected())
+                if(!showSearchMenu.isSelected()) {
                     mainTable.CloseTabByComponent(mainBorderLayout);
+                }
                 else
                 {
                     mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(8),mainBorderLayout,0);
@@ -120,6 +121,30 @@ public class MainWindow extends JFrame {
         aboutDialog = new AboutWindow();
         errorDialog = new ErrorWindow();
         searchingDialog = new SearchingWindow();
+
+        try {
+            Scanner in = new Scanner(new File("src/searchSettingsConfig"));
+            String line = in.nextLine();
+            String splittedLine[] = line.split("=");
+            if(splittedLine[1].equals("true")) {
+                searchingDialog.wholeWords.setSelected(true);
+            }
+            else
+                searchingDialog.wholeWords.setSelected(false);
+            line = in.nextLine();
+            splittedLine = line.split("=");
+            if(splittedLine[1].equals("true")) {
+                searchingDialog.caseSensitiveCheckBox.setSelected(true);
+            }
+            else
+                searchingDialog.caseSensitiveCheckBox.setSelected(false);
+        } catch (FileNotFoundException e) {
+            System.out.println("Error during loading 'searchSettingsConfig', default settings will be used");
+            searchingDialog.caseSensitiveCheckBox.setSelected(false);
+            searchingDialog.wholeWords.setSelected(true);
+        }
+
+
         Action newIngredientAction = new AbstractAction(WhatToCook.SelectedPackage.get(46)) {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -486,9 +511,7 @@ public class MainWindow extends JFrame {
 
         searchForRecipesTextArea = new JTextField();
         searchingOptionsButton = new JButton(WhatToCook.SelectedPackage.get(80));
-        searchingOptionsButton.addActionListener(e -> {
-            searchingDialog.setVisible(true);
-        });
+        searchingOptionsButton.addActionListener(e -> searchingDialog.setVisible(true));
         searchForRecipesTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {

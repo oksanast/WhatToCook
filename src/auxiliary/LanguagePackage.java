@@ -18,8 +18,9 @@ public class LanguagePackage
             recipesPath = "";
             language = new ArrayList<String>();
         }
-        public LanguagePackage(String ingredientsPath, String recipesPath,ArrayList<String> language)
+        public LanguagePackage(int name_index,String ingredientsPath, String recipesPath,ArrayList<String> language)
         {
+            this.name_index = name_index;
             this.ingredientsPath = ingredientsPath;
             this.recipesPath = recipesPath;
             this.language = language;
@@ -37,6 +38,7 @@ public class LanguagePackage
         {
             return recipesPath;
         }
+        public int GetSelectedLanguage(){return name_index;}
 
         @Override
         public boolean equals(Object o) {
@@ -60,6 +62,7 @@ public class LanguagePackage
             return result;
         }
 
+        private int name_index;
         private String ingredientsPath;
         private String recipesPath;
         private ArrayList<String> language;

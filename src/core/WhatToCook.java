@@ -2,6 +2,7 @@ package core;
 
 import auxiliary.LanguagePackage;
 import gui.MainWindow;
+import gui.SearchingWindow;
 
 import javax.swing.*;
 import java.io.Closeable;
@@ -17,7 +18,7 @@ import java.util.Scanner;
  */
 /*
     KLASA PODSTAWOWA, URUCHOMIENIOWA, SŁUŻY DO UTWORZENIA GŁÓWNEGO OKNA PROGRAMU I PACZEK JĘZYKOWYCH
-    WCZYTUJE PLIK KONFIGURACYJNY "cfg"
+    WCZYTUJE PLIK KONFIGURACYJNY "mainSettingsConfig"
  */
 public class WhatToCook implements Runnable {
 
@@ -28,31 +29,44 @@ public class WhatToCook implements Runnable {
         buildPolishLanguage();
         buildEnglishLanguage();
         buildUkrainianLanguage();
-        PolishPackage = new LanguagePackage("data/ingredientsPL","data/recipesPL",polishLanguagePack);
-        EnglishPackage = new LanguagePackage("data/ingredientsEN","data/recipesEN",englishLanguagePack);
-        UkrainianPackage = new LanguagePackage("data/ingredientsUKR","data/recipesUKR",ukrainianLanguagePack);
+        PolishPackage = new LanguagePackage(0,"data/ingredientsPL","data/recipesPL",polishLanguagePack);
+        EnglishPackage = new LanguagePackage(1,"data/ingredientsEN","data/recipesEN",englishLanguagePack);
+        UkrainianPackage = new LanguagePackage(2,"data/ingredientsUKR","data/recipesUKR",ukrainianLanguagePack);
         SelectedPackage = new LanguagePackage();
 
         Scanner in;
         try
         {
-            in = new Scanner(new File("src/cfg"));
-            String language = in.next();
-            if(language.equals("english")) {
+            in = new Scanner(new File("src/mainSettingsConfig"));
+            String line = in.next();
+            String splittedLine[] = line.split("=");
+            if(splittedLine[1].equals("English")) {
                 SelectedPackage = EnglishPackage;
             }
-            if(language.equals("polish")) {
+            if(splittedLine[1].equals("Polish")) {
                 SelectedPackage = PolishPackage;
             }
-            if(language.equals("Ukrainian")) {
+            if(splittedLine[1].equals("Ukrainian")) {
                 SelectedPackage = UkrainianPackage;
             }
-            MainWindow.getToNewCard = in.nextBoolean();
-            MainWindow.autoLoadIngredients = in.nextBoolean();
+            line = in.next();
+            splittedLine = line.split("=");
+            if(splittedLine[1].equals("true"))
+            MainWindow.getToNewCard = true;
+            else
+            MainWindow.getToNewCard = false;
+
+            line = in.next();
+            splittedLine = line.split("=");
+            if(splittedLine[1].equals("true"))
+                MainWindow.autoLoadIngredients = true;
+            else
+                MainWindow.autoLoadIngredients = false;
         }
         catch (FileNotFoundException | NoSuchElementException e)
         {
-            System.err.println("Error during loading 'cfg' file, program will load with default settings");
+            System.err.println("Error during loading config files file, program will load with default settings");
+            SelectedPackage=PolishPackage;
         }
 
         frame = new MainWindow();

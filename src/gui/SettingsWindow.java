@@ -101,9 +101,9 @@ class SettingsWindow extends JDialog {
                     setVisible(false);
                     toFront();
                 }
-                else languageComboBox.setSelectedIndex(1);
+                else languageComboBox.setSelectedIndex(WhatToCook.SelectedPackage.GetSelectedLanguage());
             }
-            if (languageComboBox.getSelectedItem() == "English") {
+            else if (languageComboBox.getSelectedItem() == "English") {
                 int selection;
                 selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43), JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (selection == JOptionPane.OK_OPTION) {
@@ -118,9 +118,9 @@ class SettingsWindow extends JDialog {
                     setVisible(false);
                     toFront();
                 } else
-                    languageComboBox.setSelectedIndex(0);
+                    languageComboBox.setSelectedIndex(WhatToCook.SelectedPackage.GetSelectedLanguage());
             }
-            if (languageComboBox.getSelectedItem() == "Українська") {
+            else if (languageComboBox.getSelectedItem() == "Українська") {
                 int selection;
                 selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43), JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (selection == JOptionPane.OK_OPTION) {
@@ -135,7 +135,7 @@ class SettingsWindow extends JDialog {
                     setVisible(false);
                     toFront();
                 } else
-                    languageComboBox.setSelectedIndex(0);
+                    languageComboBox.setSelectedIndex(WhatToCook.SelectedPackage.GetSelectedLanguage());
             }
             exportSettings();
         });
@@ -153,22 +153,22 @@ class SettingsWindow extends JDialog {
 
     private void exportSettings() {
         try {
-            PrintWriter writer = new PrintWriter(new File("src/cfg"));
+            PrintWriter writer = new PrintWriter(new File("src/mainSettingsConfig"));
             if (languageComboBox.getSelectedIndex() == 0) {
-                writer.println("polish");
+                writer.println("Language=Polish");
             }
             if (languageComboBox.getSelectedIndex() == 1) {
-                writer.println("english");
+                writer.println("Language=English");
             }
             if (languageComboBox.getSelectedIndex() == 2) {
-                writer.println("Ukrainian");
+                writer.println("Language=Ukrainian");
             }
             else
             {
                 System.out.println("error");
             }
-            writer.println(toNewCardCheckbox.isSelected());
-            writer.println(autoImportIngredientsCheckbox.isSelected());
+            writer.println("AutoNewCardtrue=" + toNewCardCheckbox.isSelected());
+            writer.println("SaveState=" + autoImportIngredientsCheckbox.isSelected());
             writer.close();
 
         } catch (FileNotFoundException e) {
