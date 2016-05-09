@@ -87,7 +87,7 @@ class SettingsWindow extends JDialog {
          }
 
         languageComboBox.addActionListener(e -> {
-            if (languageComboBox.getSelectedItem() == "Polski") {
+            if (languageComboBox.getSelectedItem() == "Polski" && WhatToCook.SelectedPackage.GetSelectedLanguage()!=0) {
                 int selection;
                 selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43), JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (selection == JOptionPane.OK_OPTION) {
@@ -103,7 +103,7 @@ class SettingsWindow extends JDialog {
                 }
                 else languageComboBox.setSelectedIndex(WhatToCook.SelectedPackage.GetSelectedLanguage());
             }
-            else if (languageComboBox.getSelectedItem() == "English") {
+            else if (languageComboBox.getSelectedItem() == "English" && WhatToCook.SelectedPackage.GetSelectedLanguage()!=1) {
                 int selection;
                 selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43), JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (selection == JOptionPane.OK_OPTION) {
@@ -120,7 +120,7 @@ class SettingsWindow extends JDialog {
                 } else
                     languageComboBox.setSelectedIndex(WhatToCook.SelectedPackage.GetSelectedLanguage());
             }
-            else if (languageComboBox.getSelectedItem() == "Українська") {
+            else if (languageComboBox.getSelectedItem() == "Українська" && WhatToCook.SelectedPackage.GetSelectedLanguage()!=2) {
                 int selection;
                 selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43), JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (selection == JOptionPane.OK_OPTION) {

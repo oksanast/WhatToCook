@@ -20,7 +20,7 @@ import java.util.Scanner;
     KLASA PODSTAWOWA, URUCHOMIENIOWA, SŁUŻY DO UTWORZENIA GŁÓWNEGO OKNA PROGRAMU I PACZEK JĘZYKOWYCH
     WCZYTUJE PLIK KONFIGURACYJNY "mainSettingsConfig"
  */
-public class WhatToCook implements Runnable {
+public class WhatToCook {
 
     public static void main(String[] args) {
         new WhatToCook();
@@ -33,7 +33,6 @@ public class WhatToCook implements Runnable {
         EnglishPackage = new LanguagePackage(1,"data/ingredientsEN","data/recipesEN",englishLanguagePack);
         UkrainianPackage = new LanguagePackage(2,"data/ingredientsUKR","data/recipesUKR",ukrainianLanguagePack);
         SelectedPackage = new LanguagePackage();
-
         Scanner in;
         try
         {
@@ -72,16 +71,6 @@ public class WhatToCook implements Runnable {
         frame = new MainWindow();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
-
-
-        new Thread(this).start();
-    }
-
-
-
-
-    public void run()
-    {
 
     }
     private void buildEnglishLanguage()
