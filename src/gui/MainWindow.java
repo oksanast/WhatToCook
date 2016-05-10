@@ -97,10 +97,12 @@ public class MainWindow extends JFrame {
                     mainCardsCount--;
                 }
                 else {
-                    if (mainCardsCount >= 1 && showIngredientsMenu.isSelected())
+                    if (mainCardsCount == 1 && showIngredientsMenu.isSelected())
                         mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 0);
-                    else if (mainCardsCount >= 1 && !showIngredientsMenu.isSelected())
+                    else if (mainCardsCount == 1 && !showIngredientsMenu.isSelected())
                         mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 1);
+                    else if(mainCardsCount>=2)
+                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel,1);
                     else
                         mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 0);
                     mainCardsCount++;
