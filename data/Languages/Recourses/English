@@ -1,0 +1,85 @@
+Exit
+Edit
+Clear inserted ingredients
+Clear search results
+Help
+Options
+About
+Search
+Recipes Database
+Insert ingredients
+Choose ingredients:
+Add ingredients
+Remove ingredients
+Founds receipes
+Search for receipes
+Search
+New Recipe
+Edit Recipe
+Insert Recipe Name
+Write making instrictions below
+Save and Exit
+Exit without saving
+Close the Recipe
+Auto-Move to the new tab
+Language
+General
+Ingredients
+Ingredient Name:
+Add
+Remove
+Remove recipe
+Check input ingredients, name and preparing instructions. Maybe the same recipe is already in the database
+Recipe Error
+Insert recipe name:
+About
+OK
+Authors
+This ingredients can't be deleted, cause it is used in recipes:
+Deleting ingredients error//39 index
+Export Ingredients
+Inport Ingredients
+Are you sure? It will cause restart.
+Confirmation
+Export Recipe
+New
+Ingredient
+Recipe
+Ammount:
+Unit:
+Dish for://51
+Breakfest
+Dessert
+Diner
+Supper
+Snack
+Preparing time:
+Preparing ease:
+Parameters
+Quick//59
+Average
+Long
+Easy
+Average
+Difficult
+Recipe: 
+Instructions: 
+The change of language will cause change of database.
+Import
+Export
+Importing ingredients error
+Following ingredients was not imported, cause they are not in the database
+Ingredients
+Save program state:
+Path: 
+Change path
+Importing error
+It was impossible to read the file with owned ingredients, check its path in the options
+Creating recipe error
+You can create/edit only one recipe in the time
+Searching options
+Search in every word
+Recognize letters size
+View
+Cards
+Close all recipes
