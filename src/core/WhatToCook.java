@@ -26,6 +26,7 @@ public class WhatToCook {
     public static void main(String[] args) {
         new WhatToCook();
     }
+
     public WhatToCook() {
         Scanner languageListFile;
         Scanner languagePathsFile;
@@ -35,43 +36,37 @@ public class WhatToCook {
         try {
             languageListFile = new Scanner(new File("data/Languages/LanguagesList"));
             languagePathsFile = new Scanner(new File("data/Languages/LanguagesPaths"));
-            languagesNames = new ArrayList<>();
+            ArrayList<String> languagesNames = new ArrayList<>();
             ArrayList<String[]> languagesPaths = new ArrayList<>();
-            while(languageListFile.hasNextLine())
-            {
+            while (languageListFile.hasNextLine()) {
                 languagesNames.add(languageListFile.nextLine());
                 languagesPaths.add(languagePathsFile.nextLine().split(" "));
             }
-            for(int i = 0; i  < languagesNames.size(); i++)
-            {
+            for (int i = 0; i < languagesNames.size(); i++) {
                 ArrayList<String> languageData = new ArrayList<>();
                 languageDataFile = new Scanner(new File("data/Languages/Recourses/" + languagesNames.get(i)));
                 int counter = 0;
                 final File[] listOfFiles = new File(languagesPaths.get(i)[1]).listFiles();
-                if(listOfFiles==null)
+                if (listOfFiles == null)
                     continue;
                 try {
-                    Scanner in = new Scanner (new File (languagesPaths.get(i)[0]));
-                }
-                catch (FileNotFoundException e)
-                {
+                    Scanner in = new Scanner(new File(languagesPaths.get(i)[0]));
+                } catch (FileNotFoundException e) {
                     continue;
                 }
-                while(languageDataFile.hasNextLine())
-                {
+                while (languageDataFile.hasNextLine()) {
                     languageData.add(languageDataFile.nextLine());
                     counter++;
                 }
-                if(counter==phrasesCount) {
+                if (counter == phrasesCount) {
                     LanguagesPackages.add(new LanguagePackage(languagesNames.get(i), i, languagesPaths.get(i)[0], languagesPaths.get(i)[1], languageData));
                 }
             }
-        } catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             //TODO WINDOW WITH INFORMATON ABOUT ERROR DURING LOADING LANGUAGE PACKAGES (ONLY CONFIRM)
             System.out.println("Language files not found");
         }
-        if(LanguagesPackages.size()==0) {
+        if (LanguagesPackages.size() == 0) {
             //TODO WINDOW WITH INFORMATION ABOUT ERROR DURING LOADING LANGUAGE PACKAGES (ONLY CONFIRM)
             System.out.println("None aviable languages were find, program is unable to start, if you haven't modified" +
                     "'WhatToCook.jar' please report that bug to the developers team");
@@ -80,31 +75,21 @@ public class WhatToCook {
 
         SelectedPackage = new LanguagePackage();
         Scanner in;
-        try
-        {
+        try {
             in = new Scanner(new File("src/mainSettingsConfig"));
             String line = in.next();
             String splittedLine[] = line.split("=");
             SelectedPackage = LanguagesPackages.get(splittedLine[1]);
             line = in.next();
             splittedLine = line.split("=");
-            if(splittedLine[1].equals("true"))
-            MainWindow.getToNewCard = true;
-            else
-            MainWindow.getToNewCard = false;
-
+            MainWindow.getToNewCard = splittedLine[1].equals("true");
             line = in.next();
             splittedLine = line.split("=");
-            if(splittedLine[1].equals("true"))
-                MainWindow.autoLoadIngredients = true;
-            else
-                MainWindow.autoLoadIngredients = false;
-        }
-        catch (FileNotFoundException | NoSuchElementException e)
-        {
+            MainWindow.autoLoadIngredients = splittedLine[1].equals("true");
+        } catch (FileNotFoundException | NoSuchElementException e) {
             System.err.println("Error during loading config files file, program will load with default settings");
         }
-        if(SelectedPackage == null)
+        if (SelectedPackage == null)
             SelectedPackage = LanguagesPackages.get(0);
 
         frame = new MainWindow();
@@ -113,8 +98,7 @@ public class WhatToCook {
 
     }
 
-    private static ArrayList<String> languagesNames;
-    public static final int phrasesCount = 86;
+    private static final int phrasesCount = 86;
 
     public static MainWindow frame;
     public static String version = "1.9";

@@ -27,68 +27,67 @@ public class RecipesList
         int preparingEase;
         final File[] listOfFiles = new File(WhatToCook.SelectedPackage.GetRecipesPath()).listFiles();
         int i = 0;
-        while (i < listOfFiles.length) {
-            String name;
-            ArrayList<Ingredient> ingredients = new ArrayList<>();
-            ArrayList<PairAmountUnit> ammountsAndUnits = new ArrayList<>();
-            boolean parameters[] = new boolean[5];
-            int ingredientsAmmount;
-            String instructions = "";
+        try {
+            while (i < listOfFiles.length) {
+                String name;
+                ArrayList<Ingredient> ingredients = new ArrayList<> ();
+                ArrayList<PairAmountUnit> ammountsAndUnits = new ArrayList<> ();
+                boolean parameters[] = new boolean[5];
+                int ingredientsAmmount;
+                String instructions = "";
 
-            try{
-                Scanner in = new Scanner(listOfFiles[i]);
-                name = in.nextLine();
-                preparingEase = in.nextInt();
-                preparingTime = in.nextInt();
-                in.nextLine();
-                String parametersString = in.nextLine();
-                String dividedParameters[] = parametersString.split(" ");
-                for(int j = 0; j < 5; j ++) {
-                    parameters[j] = dividedParameters[j].equals("true");
-                }
-                ingredientsAmmount = in.nextInt();
-                in.nextLine();
-                for(int j = 0; j < ingredientsAmmount;j++)
-                {
-                    String nextName = in.nextLine();
-                    String IngredientName = "";
-                    String[] ingredient;
-                    ingredient = nextName.split(" ");
-                    for(int k = 0;k < ingredient.length-2;k++) {
-                        IngredientName += ingredient[k];
-                        if(k<ingredient.length-3)
-                            IngredientName+=" ";
+                try {
+                    Scanner in = new Scanner (listOfFiles[i]);
+                    name = in.nextLine ();
+                    preparingEase = in.nextInt ();
+                    preparingTime = in.nextInt ();
+                    in.nextLine ();
+                    String parametersString = in.nextLine ();
+                    String dividedParameters[] = parametersString.split (" ");
+                    for (int j = 0; j < 5; j++) {
+                        parameters[j] = dividedParameters[j].equals ("true");
                     }
-                    Ingredient newIngredient = new Ingredient(IngredientName);
-                    ingredients.add(newIngredient);
+                    ingredientsAmmount = in.nextInt ();
+                    in.nextLine ();
+                    for (int j = 0; j < ingredientsAmmount; j++) {
+                        String nextName = in.nextLine ();
+                        String IngredientName = "";
+                        String[] ingredient;
+                        ingredient = nextName.split (" ");
+                        for (int k = 0; k < ingredient.length - 2; k++) {
+                            IngredientName += ingredient[k];
+                            if (k < ingredient.length - 3)
+                                IngredientName += " ";
+                        }
+                        Ingredient newIngredient = new Ingredient (IngredientName);
+                        ingredients.add (newIngredient);
 
-                    String ammount = "";
-                    String unit = "";
-                    if(ingredient[ingredient.length-2].equals("true"))
-                        ammount = in.nextLine();
-                    if(ingredient[ingredient.length-1].equals("true"))
-                        unit = in.nextLine();
+                        String ammount = "";
+                        String unit = "";
+                        if (ingredient[ingredient.length - 2].equals ("true"))
+                            ammount = in.nextLine ();
+                        if (ingredient[ingredient.length - 1].equals ("true"))
+                            unit = in.nextLine ();
 
-                    ammountsAndUnits.add(new PairAmountUnit(ammount,unit));
+                        ammountsAndUnits.add (new PairAmountUnit (ammount, unit));
 
 
+                    }
+                    while (in.hasNextLine ()) {
+                        instructions += in.nextLine ();
+                    }
+                    recipesList.add (new Recipe (name, ingredients, ammountsAndUnits, instructions, new RecipeParameters (parameters, preparingEase, preparingTime)));
+                    Collections.sort (recipesList);
+                    in.close ();
+                } catch (FileNotFoundException e) {
 
                 }
-                while(in.hasNextLine())
-                {
-                    instructions+=in.nextLine();
-                }
-                recipesList.add(new Recipe(name,ingredients,ammountsAndUnits,instructions,new RecipeParameters(parameters,preparingEase,preparingTime)));
-                Collections.sort(recipesList);
-                in.close();
+                i++;
             }
-            catch (FileNotFoundException e)
-            {
+        }catch (NullPointerException e)
+        {
 
-            }
-            i++;
         }
-
 
     }
     static public void add(Recipe recipe)

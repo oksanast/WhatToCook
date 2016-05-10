@@ -14,7 +14,7 @@ import java.util.*;
     KLASA "STATYCZNA", PONIEKĄD ABSKTRAKCYJNA, SLUŻY DO OBSŁUGI LISTY PRZEPISÓW, NIE TWORZY OBIEKTÓW
     BO POTRZEBNA JEST TYLKO JEDNA TAKA LISTA
  */
-public class IngredientsList {
+public class IngredientsList{
 
     static public void initialize()
     {
