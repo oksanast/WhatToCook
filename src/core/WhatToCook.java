@@ -5,9 +5,11 @@ import auxiliary.LanguagePackageList;
 import gui.MainWindow;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -44,17 +46,36 @@ public class WhatToCook {
             {
                 ArrayList<String> languageData = new ArrayList<>();
                 languageDataFile = new Scanner(new File("data/Languages/Recourses/" + languagesNames.get(i)));
+                int counter = 0;
+                final File[] listOfFiles = new File(languagesPaths.get(i)[1]).listFiles();
+                if(listOfFiles==null)
+                    continue;
+                try {
+                    Scanner in = new Scanner (new File (languagesPaths.get(i)[0]));
+                }
+                catch (FileNotFoundException e)
+                {
+                    continue;
+                }
                 while(languageDataFile.hasNextLine())
                 {
                     languageData.add(languageDataFile.nextLine());
+                    counter++;
                 }
-                LanguagesPackages.add(new LanguagePackage(languagesNames.get(i),i,languagesPaths.get(i)[0],languagesPaths.get(i)[1],languageData));
+                if(counter==phrasesCount) {
+                    LanguagesPackages.add(new LanguagePackage(languagesNames.get(i), i, languagesPaths.get(i)[0], languagesPaths.get(i)[1], languageData));
+                }
             }
-            System.out.println(LanguagesPackages.get(1).GetRecipesPath());
         } catch (FileNotFoundException e)
         {
             //TODO WINDOW WITH INFORMATON ABOUT ERROR DURING LOADING LANGUAGE PACKAGES (ONLY CONFIRM)
             System.out.println("Language files not found");
+        }
+        if(LanguagesPackages.size()==0) {
+            //TODO WINDOW WITH INFORMATION ABOUT ERROR DURING LOADING LANGUAGE PACKAGES (ONLY CONFIRM)
+            System.out.println("None aviable languages were find, program is unable to start, if you haven't modified" +
+                    "'WhatToCook.jar' please report that bug to the developers team");
+            System.exit(1);
         }
 
         SelectedPackage = new LanguagePackage();
@@ -83,6 +104,8 @@ public class WhatToCook {
         {
             System.err.println("Error during loading config files file, program will load with default settings");
         }
+        if(SelectedPackage == null)
+            SelectedPackage = LanguagesPackages.get(0);
 
         frame = new MainWindow();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -90,7 +113,8 @@ public class WhatToCook {
 
     }
 
-    public static ArrayList<String> languagesNames;
+    private static ArrayList<String> languagesNames;
+    public static final int phrasesCount = 86;
 
     public static MainWindow frame;
     public static String version = "1.9";

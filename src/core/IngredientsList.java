@@ -23,7 +23,7 @@ public class IngredientsList {
         String tmp;
         IngredientsList.clear();
         try {
-            in = new Scanner(new File(WhatToCook.SelectedPackage.GetIngredientsPath()));
+            in = new Scanner (new File (WhatToCook.SelectedPackage.GetIngredientsPath ()));
             while(in.hasNextLine())
             {
                 tmp = in.nextLine();

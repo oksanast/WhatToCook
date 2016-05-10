@@ -16,4 +16,14 @@ public class LanguagePackageList extends ArrayList<LanguagePackage>{
         }
         return null;
     }
+    public boolean add(LanguagePackage toAdd)
+    {
+        super.add(toAdd);
+        languagesNames.add(toAdd.getName());
+        return true;
+    }
+
+    public String getLanguageName(int i){return languagesNames.get(i);}
+    public int getLanguageNameSize(){return languagesNames.size();}
+    private ArrayList<String> languagesNames = new ArrayList<>();
 }

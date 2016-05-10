@@ -1,3 +1,4 @@
+File
 Exit
 Edit
 Clear inserted ingredients
@@ -36,7 +37,7 @@ About
 OK
 Authors
 This ingredients can't be deleted, cause it is used in recipes:
-Deleting ingredients error//39 index
+Deleting ingredients error
 Export Ingredients
 Inport Ingredients
 Are you sure? It will cause restart.
@@ -47,7 +48,7 @@ Ingredient
 Recipe
 Ammount:
 Unit:
-Dish for://51
+Dish for:
 Breakfest
 Dessert
 Diner

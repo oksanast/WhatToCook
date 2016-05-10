@@ -29,9 +29,9 @@ class SettingsWindow extends JDialog {
         setLocationRelativeTo(null);
         mainTable = new JTabbedPane();
         languageComboBox = new JComboBox<>();
-        for(int i = 0; i < WhatToCook.languagesNames.size();i++)
+        for(int i = 0; i < WhatToCook.LanguagesPackages.getLanguageNameSize();i++)
         {
-            languageComboBox.addItem(WhatToCook.languagesNames.get(i));
+            languageComboBox.addItem(WhatToCook.LanguagesPackages.getLanguageName(i));
         }
         languageComboBox.setToolTipText(WhatToCook.SelectedPackage.get(67));
         mainGridLayout = new JPanel(new GridLayout(3 , 2));
@@ -76,9 +76,9 @@ class SettingsWindow extends JDialog {
         mainGridLayout.add(languageComboBox);
 
         mainTable.addTab(WhatToCook.SelectedPackage.get(26), mainGridLayout);
-        for(int i = 0; i < WhatToCook.languagesNames.size();i++)
+        for(int i = 0; i < WhatToCook.LanguagesPackages.getLanguageNameSize();i++)
         {
-            if(WhatToCook.SelectedPackage.getName().equals(WhatToCook.languagesNames.get(i)))
+            if(WhatToCook.SelectedPackage.getName().equals(WhatToCook.LanguagesPackages.getLanguageName(i)))
                 languageComboBox.setSelectedIndex(i);
         }
         languageComboBox.addActionListener(e -> {
