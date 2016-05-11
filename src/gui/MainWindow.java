@@ -1239,7 +1239,7 @@ public class MainWindow extends JFrame {
                 BorderLayout borderLayout = new BorderLayout();
                 JLabel jLabel = new JLabel(title + " ", SwingConstants.CENTER);
                 jLabel.setIcon(icon);
-                ImageIcon imageIcon = new ImageIcon(new ImageIcon("data/X_icon.png").getImage().getScaledInstance(10, 10, Image.SCALE_DEFAULT));
+                ImageIcon imageIcon = new ImageIcon(new ImageIcon("data/graphics/X_icon.png").getImage().getScaledInstance(10, 10, Image.SCALE_DEFAULT));
                 JButton button = new JButton(imageIcon);
                 button.setOpaque(false);
                 button.setContentAreaFilled(false);
