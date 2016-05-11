@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -16,9 +17,10 @@ import java.util.*;
  */
 public class IngredientsList{
 
+
     static public void initialize()
     {
-        IngredientsList = new ArrayList<>();
+        IngredientsList = new TreeSet<>();
         Scanner in;
         String tmp;
         IngredientsList.clear();
@@ -29,7 +31,6 @@ public class IngredientsList{
                 tmp = in.nextLine();
                 Ingredient toAdd = new Ingredient(tmp);
                 addIngredient(toAdd);
-                Collections.sort(IngredientsList);
             }
             in.close();
         } catch (FileNotFoundException e)
@@ -40,17 +41,7 @@ public class IngredientsList{
 
     static public void addIngredient(Ingredient newIngredient)
     {
-        boolean exist = false;
-
-        for(Ingredient ingredient : IngredientsList) {
-            if (newIngredient.equals(ingredient)) {
-                exist = true;
-                break;
-            }
-        }
-        if(!exist) {
             IngredientsList.add(newIngredient);
-            Collections.sort(IngredientsList);
 
             PrintWriter writer;
 
@@ -65,31 +56,22 @@ public class IngredientsList{
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
-        }
     }
     static public void removeIngredient(String name)
     {
-        for(int i = 0; i < IngredientsList.size();i++)
-        {
-            if(IngredientsList.get(i).getName().equals(name))
-            {
-                IngredientsList.remove(i);
-                PrintWriter writer;
+        IngredientsList.remove(new Ingredient(name));
+        PrintWriter writer;
 
-                try
-                {
-                    writer = new PrintWriter(new File(WhatToCook.SelectedPackage.GetIngredientsPath()));
-                    for(Ingredient ingredient : IngredientsList)
-                    {
-                        writer.println(ingredient.getName());
-                    }
-                    writer.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                break;
+        try
+        {
+            writer = new PrintWriter(new File(WhatToCook.SelectedPackage.GetIngredientsPath()));
+            for(Ingredient ingredient : IngredientsList)
+            {
+                writer.println(ingredient.getName());
             }
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
     static public void rebuildModel(DefaultListModel<String> toInsert)
@@ -110,20 +92,24 @@ public class IngredientsList{
     }
     static public boolean contain(Ingredient toCheck)
     {
-        for(Ingredient ingredient : IngredientsList)
+        return IngredientsList.contains(toCheck);
+    }
+    static public void exportToFile(String filename)
+    {
+        PrintWriter writer;
+        try {
+            writer = new PrintWriter(filename, "UTF-8");
+            for (Ingredient toExport : IngredientsList)
+                writer.println(toExport.getName());
+            writer.close();
+        } catch (FileNotFoundException | UnsupportedEncodingException e)
         {
-            if(ingredient.equals(toCheck))
-                return true;
+
         }
-        return false;
     }
     static public int Size()
     {
         return IngredientsList.size();
     }
-    static public Ingredient Get(int i)
-    {
-        return IngredientsList.get(i);
-    }
-    private static  List<Ingredient> IngredientsList;
+    private static  SortedSet<Ingredient> IngredientsList;
 }

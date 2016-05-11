@@ -1142,16 +1142,7 @@ public class MainWindow extends JFrame {
         int save = chooseFile.showSaveDialog(null);
         if (save == JFileChooser.APPROVE_OPTION) {
             String filename = chooseFile.getSelectedFile().getPath();
-            PrintWriter writer;
-            try {
-                writer = new PrintWriter(filename, "UTF-8");
-                for (int i = 0; i < IngredientsList.Size(); i++) {
-                    writer.println(IngredientsList.Get(i).getName());
-                }
-                writer.close();
-            } catch (FileNotFoundException | UnsupportedEncodingException e) {
-                System.err.println("Internal program error, can't export ingredients list to demanded localization");
-            }
+            IngredientsList.exportToFile(filename);
         }
     }
 
