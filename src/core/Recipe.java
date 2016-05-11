@@ -32,10 +32,7 @@ public class Recipe implements Comparable<Recipe>
     {
         return instructions;
     }
-    public Ingredient getIngredient(int i)
-    {
-        return ingredients.get(i);
-    }
+    public Ingredient getIngredient(int i){return ingredients.get(i);}
     public String getAmount(int i){return ingredientsAmountAndUnits.get(i).getAmount();}
     public String getUnit(int i){return ingredientsAmountAndUnits.get(i).getUnit();}
     public RecipeParameters getParameters() {return parameters;}

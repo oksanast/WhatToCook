@@ -5,6 +5,7 @@ import auxiliary.PairAmountUnit;
 import auxiliary.RecipeParameters;
 import core.*;
 import auxiliary.PairRecipeIndex;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -20,6 +21,10 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
  * Created by WTC-Team on 20.03.2016.
@@ -52,6 +57,7 @@ public class MainWindow extends JFrame {
         setMinimumSize(new Dimension(340, 400));
 
         mainCardsCount = 3;
+        inEdit = null;
 
         //MENUBAR CREATING/////////////////////////////////////////////////////////////////////////////////////////////
         mainMenu = new JMenuBar();
@@ -187,9 +193,9 @@ public class MainWindow extends JFrame {
                 if (!isEditionTurnOn) {
 
                     isEditionTurnOn = true;
-                    showNewEditMenu();
+                    showNewEditMenu(null);
                 } else {
-                    JOptionPane.showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(79), WhatToCook.SelectedPackage.get(78), JOptionPane.ERROR_MESSAGE);
+                    showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(79), WhatToCook.SelectedPackage.get(78), JOptionPane.ERROR_MESSAGE);
                 }
             }
         };
@@ -347,7 +353,7 @@ public class MainWindow extends JFrame {
                 in.close();
 
             } catch (FileNotFoundException | NullPointerException exception) {
-                JOptionPane.showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(77), WhatToCook.SelectedPackage.get(76), JOptionPane.ERROR_MESSAGE);
+                showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(77), WhatToCook.SelectedPackage.get(76), JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -571,9 +577,9 @@ public class MainWindow extends JFrame {
             if (!isEditionTurnOn) {
 
                 isEditionTurnOn = true;
-                showNewEditMenu();
+                showNewEditMenu(null);
             } else
-                JOptionPane.showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(79), WhatToCook.SelectedPackage.get(78), JOptionPane.ERROR_MESSAGE);
+                showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(79), WhatToCook.SelectedPackage.get(78), JOptionPane.ERROR_MESSAGE);
         });
         editRecipe = new JButton(WhatToCook.SelectedPackage.get(18));
         editRecipe.addActionListener(new ActionListener() {
@@ -585,7 +591,8 @@ public class MainWindow extends JFrame {
                     if (!isEditionTurnOn) {
 
                         isEditionTurnOn = true;
-                        showNewEditMenu(index);
+                        inEdit = RecipesList.getRecipe(recipesList.getSelectedValue());
+                        showNewEditMenu(RecipesList.getRecipe(recipesList.getSelectedValue()));
                     }
                 }
             }
@@ -596,9 +603,13 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 for (int i = recipesList.getSelectedIndices().length - 1; i >= 0; i--) {
                     String recipeName = recipesListModel.getElementAt(recipesList.getSelectedIndices()[i]);
-                    RecipesList.remove(recipeName);
+                    if((inEdit==null) || (inEdit!=null && !inEdit.getName().equals(recipeName))) {
+                        RecipesList.remove(recipeName);
+                    }
+                    else
+                    JOptionPane.showMessageDialog(null,WhatToCook.SelectedPackage.get(86),WhatToCook.SelectedPackage.get(87), JOptionPane.ERROR_MESSAGE);
                 }
-                refreshGUILists();
+                refreshGUILists(searchForRecipesTextArea.getText());
             }
         });
 
@@ -724,7 +735,7 @@ public class MainWindow extends JFrame {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //ODŚWIEŻENIE INTERFEJSU
 
-        refreshGUILists();
+        refreshGUILists(searchForRecipesTextArea.getText());
 
         //MENU "ZAKŁADKOWE"
 
@@ -878,7 +889,7 @@ public class MainWindow extends JFrame {
     }
 
     //FUNKCJA TWORZY KARTĘ DO EDYCJI PRZEPISU
-    private void showNewEditMenu(int index) {
+    private void showNewEditMenu(Recipe recipe) {
         ArrayList<ListHandler> ingredientsListInput = new ArrayList<>();
         class addIngredientToRecipe implements KeyListener {
             @Override
@@ -979,13 +990,14 @@ public class MainWindow extends JFrame {
             isEditionTurnOn = false;
             mainTable.removeTabAt(mainTable.getSelectedIndex());
             mainTable.setSelectedIndex(1);
+            inEdit=null;
         });
         editNewExitWithSaving = new JButton(WhatToCook.SelectedPackage.get(21));
         editNewExitWithSaving.addActionListener(e -> {
             String name1 = recipeNameTextField.getText();
             String instructions = instructionsInsertTextArea.getText();
-            ArrayList<Ingredient> ingredients = new ArrayList<>();
-            ArrayList<PairAmountUnit> ammountsAndUnits = new ArrayList<>();
+            ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+            ArrayList<PairAmountUnit> ammountsAndUnits = new ArrayList<PairAmountUnit>();
             for (ListHandler handler : ingredientsListInput) {
                 Ingredient ingredient;
                 ingredient = new Ingredient(handler.getIngredient());
@@ -999,24 +1011,26 @@ public class MainWindow extends JFrame {
             parameters[3] = NewEditsupperCheckBox.isSelected();
             parameters[4] = NewEditsnackCheckBox.isSelected();
             Recipe newRecipe1 = new Recipe(name1, ingredients, ammountsAndUnits, instructions, new RecipeParameters(parameters, NewEditEaseToPrepare.getSelectedIndex(), NewEditPreparingTimeComboBox.getSelectedIndex()));
-            if (index < 0) {
+            if (recipe==null) {
                 if ((!name1.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty()) && (!RecipesList.isRecipe(newRecipe1))) {
                     RecipesList.add(newRecipe1);
-                    refreshGUILists();
+                    refreshGUILists(searchForRecipesTextArea.getText());
                     isEditionTurnOn = false;
                     mainTable.removeTabAt(mainTable.getSelectedIndex());
+                    inEdit=null;
                     mainTable.setSelectedIndex(1);
                 } else
                     JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(32), WhatToCook.SelectedPackage.get(33), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
             }
-            if (index >= 0) if ((!name1.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty())) {
-                if (RecipesList.recipesList.get(index).getName().equals(name1) || (!RecipesList.isRecipe(newRecipe1))) {
-                    RecipesList.remove(RecipesList.recipesList.get(index).getName());
+            else if ((!name1.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty())) {
+                if (recipe.getName().equals(name1) || (!RecipesList.isRecipe(newRecipe1))) {
+                    RecipesList.remove(recipe.getName());
                     RecipesList.add(newRecipe1);
-                    refreshGUILists();
+                    refreshGUILists(searchForRecipesTextArea.getText());
                     isEditionTurnOn = false;
                     mainTable.removeTabAt(mainTable.getSelectedIndex());
                     mainTable.setSelectedIndex(1);
+                    inEdit=null;
                 }
             } else
                 JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(32), WhatToCook.SelectedPackage.get(33), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
@@ -1069,30 +1083,30 @@ public class MainWindow extends JFrame {
         newEditTopGridLayout.add(recipeNameTextField);
         newEditMainUpBorderLayout.add(newEditTopGridLayout, BorderLayout.NORTH);
 
-        if (index >= 0) {
-            recipeNameTextField.setText(RecipesList.recipesList.get(index).getName());
-            instructionsInsertTextArea.setText(RecipesList.recipesList.get(index).getRecipe());
-            for (int i = 0; i < RecipesList.recipesList.get(index).getSize(); i++) {
+        if (recipe!=null) {
+            recipeNameTextField.setText(recipe.getName());
+            instructionsInsertTextArea.setText(recipe.getRecipe());
+            for (int i = 0; i < recipe.getSize(); i++) {
                 String toAdd;
-                toAdd = "● " + RecipesList.recipesList.get(index).getIngredient(i).getName();
-                toAdd += " " + RecipesList.recipesList.get(index).getAmount(i);
-                toAdd += " " + RecipesList.recipesList.get(index).getUnit(i);
+                toAdd = "● " + recipe.getIngredient(i).getName();
+                toAdd += " " + recipe.getAmount(i);
+                toAdd += " " + recipe.getUnit(i);
 
                 ingredientsInputInRecipeListModel.addElement(toAdd);
-                ingredientsListInput.add(new ListHandler(RecipesList.recipesList.get(index).getIngredient(i).getName(), RecipesList.recipesList.get(index).getAmount(i), RecipesList.recipesList.get(index).getUnit(i)));
+                ingredientsListInput.add(new ListHandler(recipe.getIngredient(i).getName(), recipe.getAmount(i), recipe.getUnit(i)));
             }
-            if (RecipesList.recipesList.get(index).getParameters().getParameters()[0])
+            if (recipe.getParameters().getParameters()[0])
                 NewEditbreakfestCheckBox.setSelected(true);
-            if (RecipesList.recipesList.get(index).getParameters().getParameters()[1])
+            if (recipe.getParameters().getParameters()[1])
                 NewEditdessertCheckBox.setSelected(true);
-            if (RecipesList.recipesList.get(index).getParameters().getParameters()[2])
+            if (recipe.getParameters().getParameters()[2])
                 NewEditdinerCheckBox.setSelected(true);
-            if (RecipesList.recipesList.get(index).getParameters().getParameters()[3])
+            if (recipe.getParameters().getParameters()[3])
                 NewEditsupperCheckBox.setSelected(true);
-            if (RecipesList.recipesList.get(index).getParameters().getParameters()[4])
+            if (recipe.getParameters().getParameters()[4])
                 NewEditsnackCheckBox.setSelected(true);
-            NewEditEaseToPrepare.setSelectedIndex(RecipesList.recipesList.get(index).getParameters().getPreparingEase());
-            NewEditPreparingTimeComboBox.setSelectedIndex(RecipesList.recipesList.get(index).getParameters().getPreparingTime());
+            NewEditEaseToPrepare.setSelectedIndex(recipe.getParameters().getPreparingEase());
+            NewEditPreparingTimeComboBox.setSelectedIndex(recipe.getParameters().getPreparingTime());
             repaint();
         }
 
@@ -1122,19 +1136,15 @@ public class MainWindow extends JFrame {
         newEditMainGridLayout.add(newEditMainDownBorderLayout);
 
         newEditMainBorderLayout.add(newEditMainGridLayout, BorderLayout.CENTER);
-        if (index == -1) {
+        if (recipe == null) {
             mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(17), newEditMainBorderLayout);
         } else {
-            mainTable.addTabNoExit(RecipesList.recipesList.get(index).getName(), newEditMainBorderLayout);
+            mainTable.addTabNoExit(recipe.getName(), newEditMainBorderLayout);
         }
         if (MainWindow.getToNewCard) {
             mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
         }
 
-    }
-
-    private void showNewEditMenu() {
-        showNewEditMenu(-1);
     }
 
     private void exportIngredientsList() {
@@ -1443,4 +1453,6 @@ public class MainWindow extends JFrame {
     private boolean isEditionTurnOn;
 
     private int mainCardsCount;
+
+    private Recipe inEdit;
 }

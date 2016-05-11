@@ -154,6 +154,13 @@ public class RecipesList
         }
         return i;
     }
+    static public Recipe getRecipe(String name)
+    {
+        for(Recipe toReturn : recipesList) {
+            if(toReturn.getName().equals(name)) return toReturn;
+        }
+        return null;
+    }
     static public void remove(String toDelete)
     {
         for(int i = 0; i < recipesList.size();i++)

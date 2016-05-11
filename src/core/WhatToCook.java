@@ -98,7 +98,7 @@ public class WhatToCook {
 
     }
 
-    private static final int phrasesCount = 86;
+    private static final int phrasesCount = 88;
 
     public static MainWindow frame;
     public static String version = "1.9";
