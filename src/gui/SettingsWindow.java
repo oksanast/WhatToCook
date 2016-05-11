@@ -119,12 +119,13 @@ class SettingsWindow extends JDialog {
         try {
             PrintWriter writer = new PrintWriter(new File("src/mainSettingsConfig"));
             writer.println("Language=" + languageComboBox.getSelectedItem().toString());
-            writer.println("AutoNewCardtrue=" + toNewCardCheckbox.isSelected());
+            writer.println("AutoNewCard=" + toNewCardCheckbox.isSelected());
             writer.println("SaveState=" + autoImportIngredientsCheckbox.isSelected());
             writer.close();
 
         } catch (FileNotFoundException e) {
-            System.err.println("It was impossible to export settings");
+            System.err.println("It was impossible to export settings, because is was impossible to find " +
+                    "'mainSettingsConfig'");
         }
 
     }
