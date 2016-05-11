@@ -31,7 +31,6 @@ public class WhatToCook {
         Scanner languageListFile;
         Scanner languagePathsFile;
         Scanner languageDataFile;
-
         LanguagesPackages = new LanguagePackageList();
         try {
             languageListFile = new Scanner(new File("data/Languages/LanguagesList"));
@@ -59,17 +58,14 @@ public class WhatToCook {
                     counter++;
                 }
                 if (counter == phrasesCount) {
-                    LanguagesPackages.add(new LanguagePackage(languagesNames.get(i), i, languagesPaths.get(i)[0], languagesPaths.get(i)[1], languageData));
+                    LanguagesPackages.add(new LanguagePackage(languagesNames.get(i), i, languagesPaths.get(i)[0], languagesPaths.get(i)[1],languagesPaths.get(i)[2], languageData));
                 }
             }
         } catch (FileNotFoundException e) {
-            //TODO WINDOW WITH INFORMATON ABOUT ERROR DURING LOADING LANGUAGE PACKAGES (ONLY CONFIRM)
             System.out.println("Language files not found");
         }
         if (LanguagesPackages.size() == 0) {
-            //TODO WINDOW WITH INFORMATION ABOUT ERROR DURING LOADING LANGUAGE PACKAGES (ONLY CONFIRM)
-            System.out.println("None aviable languages were find, program is unable to start, if you haven't modified" +
-                    "'WhatToCook.jar' please report that bug to the developers team");
+            JOptionPane.showMessageDialog(null,"It was impossbile to load any language.","Languages loading error - Critical", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
 

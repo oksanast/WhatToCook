@@ -82,55 +82,46 @@ public class MainWindow extends JFrame {
         showRecipesMenu.setSelected(true);
         showIngredientsMenu.setSelected(true);
         JTabbedPane pane = new JTabbedPane();
-        showSearchMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!showSearchMenu.isSelected()) {
-                    mainTable.CloseTabByComponent(mainBorderLayout);
-                    mainCardsCount--;
-                } else {
-                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(8), mainBorderLayout, 0);
-                    mainCardsCount++;
-                }
+        showSearchMenu.addActionListener(e -> {
+            if (!showSearchMenu.isSelected()) {
+                mainTable.CloseTabByComponent(mainBorderLayout);
+                mainCardsCount--;
+            } else {
+                mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(8), mainBorderLayout, 0);
+                mainCardsCount++;
             }
         });
-        showRecipesMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(mainCardsCount);
-                if (!showRecipesMenu.isSelected()) {
-                    mainTable.CloseTabByComponent(manageRecipesMainPanel);
-                    mainCardsCount--;
-                }
-                else {
-                    if (mainCardsCount == 1 && showIngredientsMenu.isSelected())
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 0);
-                    else if (mainCardsCount == 1 && !showIngredientsMenu.isSelected())
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 1);
-                    else if(mainCardsCount>=2)
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel,1);
-                    else
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 0);
-                    mainCardsCount++;
-                }
+        showRecipesMenu.addActionListener(e -> {
+            System.out.println(mainCardsCount);
+            if (!showRecipesMenu.isSelected()) {
+                mainTable.CloseTabByComponent(manageRecipesMainPanel);
+                mainCardsCount--;
+            }
+            else {
+                if (mainCardsCount == 1 && showIngredientsMenu.isSelected())
+                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 0);
+                else if (mainCardsCount == 1 && !showIngredientsMenu.isSelected())
+                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 1);
+                else if(mainCardsCount>=2)
+                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel,1);
+                else
+                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 0);
+                mainCardsCount++;
             }
         });
-        showIngredientsMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!showIngredientsMenu.isSelected()) {
-                    mainTable.CloseTabByComponent(ingredientsMainGridLayout);
-                    mainCardsCount--;
-                }
-                else {
-                    if (mainCardsCount>= 2)
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 2);
-                    else if (mainCardsCount == 1)
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 1);
-                    else
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 0);
-                    mainCardsCount++;
-                }
+        showIngredientsMenu.addActionListener(e -> {
+            if (!showIngredientsMenu.isSelected()) {
+                mainTable.CloseTabByComponent(ingredientsMainGridLayout);
+                mainCardsCount--;
+            }
+            else {
+                if (mainCardsCount>= 2)
+                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 2);
+                else if (mainCardsCount == 1)
+                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 1);
+                else
+                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 0);
+                mainCardsCount++;
             }
         });
         cardsSubmenu.add(showSearchMenu);
@@ -215,23 +206,13 @@ public class MainWindow extends JFrame {
                 int i = ingredientsInputListModel.getSize() - 1;
                 for (; i >= 0; i--)
                     ingredientsInputListModel.removeElementAt(i);
-                if (MainWindow.autoLoadIngredients) {
-                    String name;
-                    try {
-                        Scanner in = new Scanner(new File("data/ownedIngredients"));
-                        while (in.hasNextLine()) {
-                            name = in.nextLine();
-                            Ingredient toAdd = new Ingredient(name);
-
-                            if (IngredientsList.contain(toAdd))
-                                ingredientsInputListModel.addElement("● " + name);
-                        }
-                        in.close();
-
-                    } catch (FileNotFoundException | NullPointerException exception) {
-                        System.err.println("Internal program error, 'ownedIngredients' not found");
-                    }
+                try {
+                    PrintWriter writer = new PrintWriter(new File(WhatToCook.SelectedPackage.GetOwnedIngredientsPath()));
+                    writer.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
                 }
+
             }
         };
         Action clearReceipesAction = new AbstractAction(WhatToCook.SelectedPackage.get(4)) {
@@ -339,10 +320,11 @@ public class MainWindow extends JFrame {
         ingredientsInputList.setVisibleRowCount(-1);
         ingredientsInputList = new JList<>(ingredientsInputListModel);
         ingredientsInputListScrollPane = new JScrollPane(ingredientsInputList);
+        //WCZYTYWANIE SKLADNIKOW POSIADANYCH NA POCZATKU PROGRAMU
         if (MainWindow.autoLoadIngredients) {
             String name;
             try {
-                Scanner in = new Scanner(new File("data/ownedIngredients"));
+                Scanner in = new Scanner(new File(WhatToCook.SelectedPackage.GetOwnedIngredientsPath()));
                 while (in.hasNextLine()) {
                     name = in.nextLine();
                     Ingredient toAdd = new Ingredient(name);
@@ -454,7 +436,7 @@ public class MainWindow extends JFrame {
             }
             PrintWriter writer;
             try {
-                writer = new PrintWriter("data/ownedIngredients", "UTF-8");
+                writer = new PrintWriter(WhatToCook.SelectedPackage.GetOwnedIngredientsPath(), "UTF-8");
                 for (int i = 0; i < ingredientsInputListModel.size(); i++)
                     writer.println(ingredientsInputListModel.get(i).substring(2));
 
@@ -470,7 +452,7 @@ public class MainWindow extends JFrame {
             }
             PrintWriter writer;
             try {
-                writer = new PrintWriter("data/ownedIngredients", "UTF-8");
+                writer = new PrintWriter(WhatToCook.SelectedPackage.GetOwnedIngredientsPath(), "UTF-8");
                 for (int i = 0; i < ingredientsInputListModel.size(); i++)
                     writer.println(ingredientsInputListModel.get(i).substring(2));
 

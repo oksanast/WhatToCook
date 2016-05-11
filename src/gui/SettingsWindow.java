@@ -52,7 +52,7 @@ class SettingsWindow extends JDialog {
             {
                 PrintWriter writer;
                 try {
-                    writer = new PrintWriter(new File("src/ownedIngredients"));
+                    writer = new PrintWriter(new File(WhatToCook.SelectedPackage.GetOwnedIngredientsPath()));
                     writer.close();
                 } catch (FileNotFoundException exception)
                 {

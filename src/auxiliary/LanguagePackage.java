@@ -18,12 +18,13 @@ public class LanguagePackage
             recipesPath = "";
             language = new ArrayList<String>();
         }
-        public LanguagePackage(String name, int name_index,String ingredientsPath, String recipesPath,ArrayList<String> language)
+        public LanguagePackage(String name, int name_index,String ingredientsPath, String recipesPath, String ownedIngredientsPath, ArrayList<String> language)
         {
             this.name = name;
             this.name_index = name_index;
             this.ingredientsPath = ingredientsPath;
             this.recipesPath = recipesPath;
+            this.ownedIngredientsPath = ownedIngredientsPath;
             this.language = language;
         }
         public String getName(){return name;}
@@ -39,6 +40,7 @@ public class LanguagePackage
         {
             return recipesPath;
         }
+        public String GetOwnedIngredientsPath() {return ownedIngredientsPath;}
         public int GetSelectedLanguage(){return name_index;}
 
         @Override
@@ -66,6 +68,7 @@ public class LanguagePackage
         private int name_index;
         private String ingredientsPath;
         private String recipesPath;
+        private String ownedIngredientsPath;
         private String name;
         private ArrayList<String> language;
     }
