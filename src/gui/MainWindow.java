@@ -8,6 +8,7 @@ import auxiliary.PairRecipeIndex;
 import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -268,7 +269,7 @@ public class MainWindow extends JFrame {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //KARTA WYSZUKIWANIA////////////////////////////////////////////////////////////////////////////////////////////
         ingredientsDownGridLayout = new JPanel(new GridLayout(1, 2));
-        ingredientsRightDownGridLayout = new JPanel(new GridLayout(10, 1));
+        ingredientsRightDownGridLayout = new JPanel(new GridLayout(11, 1));
 
 
         mainBorderLayout = new JPanel(new BorderLayout());
@@ -486,6 +487,9 @@ public class MainWindow extends JFrame {
                 }
             }
         });
+
+        spareIngredientsCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(91));
+
         ingredientsRightDownGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(50), SwingConstants.CENTER));
         breakfestCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(51));
         dessertCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(52));
@@ -509,6 +513,7 @@ public class MainWindow extends JFrame {
         EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(63));
         EaseToPrepare.addItem(WhatToCook.SelectedPackage.get(64));
         ingredientsRightDownGridLayout.add(EaseToPrepare);
+        ingredientsRightDownGridLayout.add(spareIngredientsCheckBox);
         //PANELS AND OBJECTS LOCATION
         upRightGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(11), SwingConstants.CENTER));
         upRightGridLayout.add(ingredientInSearchComboBox);
@@ -635,7 +640,7 @@ public class MainWindow extends JFrame {
         //KARTA DO ZARZĄDZANIA SKŁADNIKAMI//////////////////////////////////////////////////////////////////////////////
         ingredientsMainGridLayout = new JPanel(new GridLayout(1, 2));
         ingredientsRightBorderLayout = new JPanel(new BorderLayout());
-        ingredientsRightGridLayout = new JPanel(new GridLayout(4, 1));
+        ingredientsRightGridLayout = new JPanel(new GridLayout(5, 1));
         manageIngredientsInputListModel = new DefaultListModel<>();
         manageIngredientsInputList = new JList<>();
         manageIngredientsInputList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -706,11 +711,44 @@ public class MainWindow extends JFrame {
             }
 
         });
+        spareIngredientsMainBorderLayout = new JPanel(new BorderLayout());
+        spareIngredientsMainGridLayout = new JPanel(new GridLayout(1,2));
+        spareIngredientsLeftGridLayout = new JPanel(new GridLayout(2,1));
+        spareIngredientsUpBorderLayout = new JPanel(new BorderLayout());
+
+        spareIngredientsAddButton=new JButton(WhatToCook.SelectedPackage.get(88));
+        spareIngredientsRemoveButton = new JButton(WhatToCook.SelectedPackage.get(89));
+
+        spareIngredientsComboBox = new JComboBox<>();
+
+        spareIngredientsInputListModel = new DefaultListModel<>();
+        spareIngredientsInputList = new JList<>();
+        spareIngredientsInputList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        spareIngredientsInputList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        spareIngredientsInputList.setVisibleRowCount(-1);
+        spareIngredientsInputList = new JList<>(spareIngredientsInputListModel);
+
+        spareIngredientsListScrollPane = new JScrollPane(spareIngredientsInputList);
+
+
+        spareIngredientsListScrollPane.setBorder(new EmptyBorder(5,5,5,5));
+        spareIngredientsUpBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(90),SwingConstants.CENTER),BorderLayout.NORTH);
+
+        spareIngredientsMainGridLayout.add(spareIngredientsComboBox);
+        spareIngredientsLeftGridLayout.add(spareIngredientsAddButton);
+        spareIngredientsLeftGridLayout.add(spareIngredientsRemoveButton);
+
         ingredientsRightGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(28), SwingConstants.CENTER));
         ingredientsRightGridLayout.add(newIngredientTextField);
         ingredientsRightGridLayout.add(newIngredientButton);
         ingredientsRightGridLayout.add(removeIngredientsButton);
 
+        spareIngredientsMainBorderLayout.add(spareIngredientsListScrollPane,BorderLayout.CENTER);
+
+        spareIngredientsMainGridLayout.add(spareIngredientsLeftGridLayout);
+        spareIngredientsUpBorderLayout.add(spareIngredientsMainGridLayout,BorderLayout.CENTER);
+        spareIngredientsMainBorderLayout.add(spareIngredientsUpBorderLayout, BorderLayout.NORTH);
+        ingredientsRightBorderLayout.add(spareIngredientsMainBorderLayout,BorderLayout.CENTER);
         ingredientsRightBorderLayout.add(ingredientsRightGridLayout, BorderLayout.NORTH);
         ingredientsMainGridLayout.add(manageIngredientsListScrollPane);
         ingredientsMainGridLayout.add(ingredientsRightBorderLayout);
@@ -742,7 +780,7 @@ public class MainWindow extends JFrame {
         recipeTextArea.setLineWrap(true);
 
         String toShow = "";
-        toShow += WhatToCook.SelectedPackage.get(65) + recipeToShow.getName() + WhatToCook.endl + WhatToCook.endl + WhatToCook.endl;
+        toShow += WhatToCook.SelectedPackage.get(65) +" "+recipeToShow.getName() + WhatToCook.endl + WhatToCook.endl + WhatToCook.endl;
         toShow += WhatToCook.SelectedPackage.get(57) + " ";
         if (recipeToShow.getParameters().getPreparingEase() == 0)
             toShow += WhatToCook.SelectedPackage.get(62);
@@ -1346,17 +1384,20 @@ public class MainWindow extends JFrame {
     private JScrollPane manageIngredientsListScrollPane;
     private JScrollPane recipeTextAreaScrollPane;
     private JScrollPane instructionAreaJScrollPane;
+    private JScrollPane spareIngredientsListScrollPane;
 
     private JCheckBox breakfestCheckBox;
     private JCheckBox dessertCheckBox;
     private JCheckBox dinerCheckBox;
     private JCheckBox supperCheckBox;
     private JCheckBox snackCheckBox;
+    private JCheckBox spareIngredientsCheckBox;
 
     private JComboBox<String> ingredientInSearchComboBox;
     private JComboBox<String> ingredientInCreatingRecipeComboBox;
     private JComboBox<String> PreparingTimeComboBox;
     private JComboBox<String> EaseToPrepare;
+    private JComboBox<String> spareIngredientsComboBox;
 
     private JButton newIngredientButton;
     private JButton removeIngredientsButton;
@@ -1373,6 +1414,8 @@ public class MainWindow extends JFrame {
     private JButton newEditAddIngredientButton;
     private JButton newEditRemoveIngredientButton;
     private JButton searchingOptionsButton;
+    private JButton spareIngredientsAddButton;
+    private JButton spareIngredientsRemoveButton;
 
     private JPanel ingredientsMainGridLayout;
     private JPanel ingredientsRightBorderLayout;
@@ -1402,6 +1445,11 @@ public class MainWindow extends JFrame {
     private JPanel upBorderLayout;
     private JPanel importExportInSearchGrid;
     private JPanel searchingOptionsBorderLayout;
+
+    private JPanel spareIngredientsMainBorderLayout;
+    private JPanel spareIngredientsUpBorderLayout;
+    private JPanel spareIngredientsMainGridLayout;
+    private JPanel spareIngredientsLeftGridLayout;
 
     private JTextArea recipeTextArea;
     private JTextArea instructionsInsertTextArea;
@@ -1443,6 +1491,9 @@ public class MainWindow extends JFrame {
 
     private JList<String> manageIngredientsInputList;
     private final DefaultListModel<String> manageIngredientsInputListModel;
+
+    private JList<String> spareIngredientsInputList;
+    private final DefaultListModel<String> spareIngredientsInputListModel;
 
     private SettingsWindow settingsDialog;
     private AboutWindow aboutDialog;
