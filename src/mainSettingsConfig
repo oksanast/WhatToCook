@@ -1,3 +1,6 @@
 Language=Polski
 AutoNewCard=true
 SaveState=true
+SearchCard=true
+RecipesCard=true
+IngredientsCard=true

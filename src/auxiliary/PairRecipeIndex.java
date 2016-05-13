@@ -39,10 +39,12 @@ public class PairRecipeIndex {
     }
     public void remove(int index)
     {
-        for(int i = 0; i < recipesList.size();i++)
+        int i = 0;
+        for(;i < recipesList.size();i++)
         {
             if(recipesList.get(i).index==index)
                 recipesList.remove(i);
+
         }
     }
     public Recipe getRecipe(int index)

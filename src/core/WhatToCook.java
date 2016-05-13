@@ -71,6 +71,7 @@ public class WhatToCook {
 
         SelectedPackage = new LanguagePackage();
         Scanner in;
+        cards = new boolean[3];
         try {
             in = new Scanner(new File("src/mainSettingsConfig"));
             String line = in.next();
@@ -82,19 +83,32 @@ public class WhatToCook {
             line = in.next();
             splittedLine = line.split("=");
             MainWindow.autoLoadIngredients = splittedLine[1].equals("true");
+            line = in.next();
+            splittedLine = line.split("=");
+            cards[0] = splittedLine[1].equals("true");
+            line = in.next();
+            splittedLine = line.split("=");
+            cards[1] = splittedLine[1].equals("true");
+            line = in.next();
+            splittedLine = line.split("=");
+            cards[2] = splittedLine[1].equals("true");
         } catch (FileNotFoundException | NoSuchElementException e) {
             System.err.println("Error during loading config files file, program will load with default settings");
         }
         if (SelectedPackage == null)
             SelectedPackage = LanguagesPackages.get(0);
 
-        frame = new MainWindow();
+        frame = new MainWindow(cards);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
     }
 
-    private static final int phrasesCount = 88;
+    private static final int phrasesCount = 88;//ZMIANA PRZY DODANIU SLOWA
+
+    static boolean cards[];
+
+    public static boolean[] getCards() {return cards;}
 
     public static MainWindow frame;
     public static String version = "1.9";

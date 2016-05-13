@@ -89,7 +89,7 @@ class SettingsWindow extends JDialog {
                 if(selection == JOptionPane.OK_OPTION) {
                     WhatToCook.SelectedPackage = WhatToCook.LanguagesPackages.get(languageComboBox.getSelectedIndex());
                     WhatToCook.frame.dispose();
-                    WhatToCook.frame = new MainWindow();
+                    WhatToCook.frame = new MainWindow(WhatToCook.getCards());
                     WhatToCook.frame.setVisible(true);
                     WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                     setTitle(WhatToCook.SelectedPackage.get(6));
@@ -115,12 +115,15 @@ class SettingsWindow extends JDialog {
         return toNewCardCheckbox.isSelected();
     }
 
-    private void exportSettings() {
+    public void exportSettings() {
         try {
             PrintWriter writer = new PrintWriter(new File("src/mainSettingsConfig"));
             writer.println("Language=" + languageComboBox.getSelectedItem().toString());
             writer.println("AutoNewCard=" + toNewCardCheckbox.isSelected());
             writer.println("SaveState=" + autoImportIngredientsCheckbox.isSelected());
+            writer.println("SearchCard=" + WhatToCook.frame.getShowSearchMenuStatus());
+            writer.println("RecipesCard=" + WhatToCook.frame.getShowRecipesMenuStatus());
+            writer.println("IngredientsCard=" + WhatToCook.frame.getShowIngredientsMenu());
             writer.close();
 
         } catch (FileNotFoundException e) {

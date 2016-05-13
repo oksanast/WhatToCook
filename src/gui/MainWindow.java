@@ -36,7 +36,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
  */
 public class MainWindow extends JFrame {
 
-    public MainWindow() {
+    public MainWindow(boolean[] cards) {
         //LEPSZY WYGLAD DLA WINDOWS'A
         String platform = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
         try {
@@ -56,7 +56,7 @@ public class MainWindow extends JFrame {
         setLocationRelativeTo(null);
         setMinimumSize(new Dimension(340, 400));
 
-        mainCardsCount = 3;
+        mainCardsCount = getTruthsAmmount(cards);
         inEdit = null;
 
         //MENUBAR CREATING/////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,6 +68,7 @@ public class MainWindow extends JFrame {
         viewMenu = new JMenu(WhatToCook.SelectedPackage.get(83));
         newSubmenu = new JMenu(WhatToCook.SelectedPackage.get(45));
         cardsSubmenu = new JMenu(WhatToCook.SelectedPackage.get(84));
+
         mainMenu.add(fileMenu);
         mainMenu.add(editMenu);
         mainMenu.add(viewMenu);
@@ -78,9 +79,9 @@ public class MainWindow extends JFrame {
         showRecipesMenu = new JCheckBoxMenuItem(WhatToCook.SelectedPackage.get(9));
         showIngredientsMenu = new JCheckBoxMenuItem(WhatToCook.SelectedPackage.get(27));
 
-        showSearchMenu.setSelected(true);
-        showRecipesMenu.setSelected(true);
-        showIngredientsMenu.setSelected(true);
+        showSearchMenu.setSelected(cards[0]);
+        showRecipesMenu.setSelected(cards[1]);
+        showIngredientsMenu.setSelected(cards[2]);
         JTabbedPane pane = new JTabbedPane();
         showSearchMenu.addActionListener(e -> {
             if (!showSearchMenu.isSelected()) {
@@ -90,32 +91,32 @@ public class MainWindow extends JFrame {
                 mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(8), mainBorderLayout, 0);
                 mainCardsCount++;
             }
+            settingsDialog.exportSettings();
         });
         showRecipesMenu.addActionListener(e -> {
             System.out.println(mainCardsCount);
             if (!showRecipesMenu.isSelected()) {
                 mainTable.CloseTabByComponent(manageRecipesMainPanel);
                 mainCardsCount--;
-            }
-            else {
+            } else {
                 if (mainCardsCount == 1 && showIngredientsMenu.isSelected())
                     mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 0);
                 else if (mainCardsCount == 1 && !showIngredientsMenu.isSelected())
                     mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 1);
-                else if(mainCardsCount>=2)
-                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel,1);
+                else if (mainCardsCount >= 2)
+                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 1);
                 else
                     mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel, 0);
                 mainCardsCount++;
             }
+            settingsDialog.exportSettings();
         });
         showIngredientsMenu.addActionListener(e -> {
             if (!showIngredientsMenu.isSelected()) {
                 mainTable.CloseTabByComponent(ingredientsMainGridLayout);
                 mainCardsCount--;
-            }
-            else {
-                if (mainCardsCount>= 2)
+            } else {
+                if (mainCardsCount >= 2)
                     mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 2);
                 else if (mainCardsCount == 1)
                     mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 1);
@@ -123,6 +124,7 @@ public class MainWindow extends JFrame {
                     mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 0);
                 mainCardsCount++;
             }
+            settingsDialog.exportSettings();
         });
         cardsSubmenu.add(showSearchMenu);
         cardsSubmenu.add(showRecipesMenu);
@@ -245,7 +247,7 @@ public class MainWindow extends JFrame {
         Action closeAllRecipes = new AbstractAction(WhatToCook.SelectedPackage.get(85)) {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for(int i = mainTable.getTabCount()-1;i>=mainCardsCount;i--)
+                for (int i = mainTable.getTabCount() - 1; i >= mainCardsCount; i--)
                     mainTable.removeTabAt(i);
             }
         };
@@ -569,7 +571,6 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (recipesList.getSelectedIndex() >= 0) {
                     String recipeName = recipesListModel.getElementAt(recipesList.getSelectedIndex());
-                    int index = RecipesList.getIndex(recipeName);
                     if (!isEditionTurnOn) {
 
                         isEditionTurnOn = true;
@@ -585,11 +586,10 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 for (int i = recipesList.getSelectedIndices().length - 1; i >= 0; i--) {
                     String recipeName = recipesListModel.getElementAt(recipesList.getSelectedIndices()[i]);
-                    if((inEdit==null) || (inEdit!=null && !inEdit.getName().equals(recipeName))) {
+                    if ((inEdit == null) || (inEdit != null && !inEdit.getName().equals(recipeName))) {
                         RecipesList.remove(recipeName);
-                    }
-                    else
-                    JOptionPane.showMessageDialog(null,WhatToCook.SelectedPackage.get(86),WhatToCook.SelectedPackage.get(87), JOptionPane.ERROR_MESSAGE);
+                    } else
+                        JOptionPane.showMessageDialog(null, WhatToCook.SelectedPackage.get(86), WhatToCook.SelectedPackage.get(87), JOptionPane.ERROR_MESSAGE);
                 }
                 refreshGUILists(searchForRecipesTextArea.getText());
             }
@@ -723,9 +723,12 @@ public class MainWindow extends JFrame {
 
         mainTable = new JTabbedPaneCloseButton();
         mainTable.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(8), mainBorderLayout);
-        mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel);
-        mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout);
+        if (cards[0])
+            mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(8), mainBorderLayout);
+        if (cards[1])
+            mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(9), manageRecipesMainPanel);
+        if (cards[2])
+            mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout);
         add(mainTable);
         repaint();
     }
@@ -972,7 +975,7 @@ public class MainWindow extends JFrame {
             isEditionTurnOn = false;
             mainTable.removeTabAt(mainTable.getSelectedIndex());
             mainTable.setSelectedIndex(1);
-            inEdit=null;
+            inEdit = null;
         });
         editNewExitWithSaving = new JButton(WhatToCook.SelectedPackage.get(21));
         editNewExitWithSaving.addActionListener(e -> {
@@ -993,18 +996,17 @@ public class MainWindow extends JFrame {
             parameters[3] = NewEditsupperCheckBox.isSelected();
             parameters[4] = NewEditsnackCheckBox.isSelected();
             Recipe newRecipe1 = new Recipe(name1, ingredients, ammountsAndUnits, instructions, new RecipeParameters(parameters, NewEditEaseToPrepare.getSelectedIndex(), NewEditPreparingTimeComboBox.getSelectedIndex()));
-            if (recipe==null) {
+            if (recipe == null) {
                 if ((!name1.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty()) && (!RecipesList.isRecipe(newRecipe1))) {
                     RecipesList.add(newRecipe1);
                     refreshGUILists(searchForRecipesTextArea.getText());
                     isEditionTurnOn = false;
                     mainTable.removeTabAt(mainTable.getSelectedIndex());
-                    inEdit=null;
+                    inEdit = null;
                     mainTable.setSelectedIndex(1);
                 } else
                     JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(32), WhatToCook.SelectedPackage.get(33), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-            }
-            else if ((!name1.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty())) {
+            } else if ((!name1.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty())) {
                 if (recipe.getName().equals(name1) || (!RecipesList.isRecipe(newRecipe1))) {
                     RecipesList.remove(recipe.getName());
                     RecipesList.add(newRecipe1);
@@ -1012,7 +1014,7 @@ public class MainWindow extends JFrame {
                     isEditionTurnOn = false;
                     mainTable.removeTabAt(mainTable.getSelectedIndex());
                     mainTable.setSelectedIndex(1);
-                    inEdit=null;
+                    inEdit = null;
                 }
             } else
                 JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(32), WhatToCook.SelectedPackage.get(33), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
@@ -1065,7 +1067,7 @@ public class MainWindow extends JFrame {
         newEditTopGridLayout.add(recipeNameTextField);
         newEditMainUpBorderLayout.add(newEditTopGridLayout, BorderLayout.NORTH);
 
-        if (recipe!=null) {
+        if (recipe != null) {
             recipeNameTextField.setText(recipe.getName());
             instructionsInsertTextArea.setText(recipe.getRecipe());
             for (int i = 0; i < recipe.getSize(); i++) {
@@ -1312,6 +1314,27 @@ public class MainWindow extends JFrame {
     }
 
 
+    public boolean getShowSearchMenuStatus() {
+        return showSearchMenu.isSelected();
+    }
+
+    public boolean getShowRecipesMenuStatus() {
+        return showRecipesMenu.isSelected();
+    }
+
+    public boolean getShowIngredientsMenu() {
+        return showIngredientsMenu.isSelected();
+    }
+
+    private int getTruthsAmmount(boolean[] toCount) {
+        int counter = 0;
+        for (boolean b : toCount) {
+            if (b)
+                counter++;
+        }
+        return counter;
+    }
+
     //ELEMENTY GUI BAZY SKŁADNIKÓW
     private JTabbedPaneCloseButton mainTable;
     private JTabbedPane creatingRecipeTable;
@@ -1434,7 +1457,7 @@ public class MainWindow extends JFrame {
     public static boolean searchCaseSensitive;
     private boolean isEditionTurnOn;
 
-    private int mainCardsCount;
+    int mainCardsCount;
 
     private Recipe inEdit;
 }
