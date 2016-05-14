@@ -1416,6 +1416,11 @@ public class MainWindow extends JFrame {
         return counter;
     }
 
+    public boolean getSpareIngredientsCheckButtonValue()
+    {
+        return spareIngredientsCheckBox.isSelected();
+    }
+
     //ELEMENTY GUI BAZY SKŁADNIKÓW
     private JTabbedPaneCloseButton mainTable;
     private JTabbedPane creatingRecipeTable;

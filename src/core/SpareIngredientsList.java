@@ -82,5 +82,13 @@ public class SpareIngredientsList {
             return result.substring(0,result.length()-1);
         return result;
     }
+    public static boolean containSpareIngredient(Ingredient spare,Ingredient main) {
+        SpareIngredients s = getElementByIngredient(main);
+        for(Ingredient i : s.getSpareIngredients()) {
+            if(i.getName().equals(spare.getName()))
+                return true;
+        }
+        return false;
+    }
     public static ArrayList<SpareIngredients> spareIngredientslist;
 }
