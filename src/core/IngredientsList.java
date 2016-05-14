@@ -22,16 +22,20 @@ public class IngredientsList{
     {
         IngredientsList = new TreeSet<>();
         Scanner in;
-        String tmp;
+        String[] tmp;
+        String line;
         IngredientsList.clear();
         try {
             in = new Scanner (new File (WhatToCook.SelectedPackage.GetIngredientsPath ()));
-            while(in.hasNextLine())
-            {
-                tmp = in.nextLine();
-                Ingredient toAdd = new Ingredient(tmp);
+            while(in.hasNextLine()) {
+                line = in.nextLine();
+                tmp = line.split("/");
+                Ingredient toAdd = new Ingredient(tmp[0]);
                 SpareIngredientsList.add(toAdd);
-                addIngredient(toAdd);
+                IngredientsList.add(toAdd);
+                    for (int i = 1; i < tmp.length; i++) {
+                        SpareIngredientsList.addSpareIngredient(new Ingredient(tmp[i]), toAdd);
+                    }
             }
             in.close();
         } catch (FileNotFoundException e)
@@ -42,38 +46,32 @@ public class IngredientsList{
 
     static public void addIngredient(Ingredient newIngredient)
     {
-            IngredientsList.add(newIngredient);
-
-            PrintWriter writer;
-
-            try
-            {
-                writer = new PrintWriter(new File(WhatToCook.SelectedPackage.GetIngredientsPath()));
-                for(Ingredient ingredient : IngredientsList)
-                {
-                    writer.println(ingredient.getName());
-                }
-                writer.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            if(IngredientsList.add(newIngredient))
+                SpareIngredientsList.add(newIngredient);
+            rewriteFile();
     }
-    static public void removeIngredient(String name)
+    static public void rewriteFile()
     {
-        IngredientsList.remove(new Ingredient(name));
         PrintWriter writer;
-
+        String toPrint;
         try
         {
             writer = new PrintWriter(new File(WhatToCook.SelectedPackage.GetIngredientsPath()));
             for(Ingredient ingredient : IngredientsList)
             {
-                writer.println(ingredient.getName());
+                toPrint = ingredient.getName()+"/";
+                toPrint += SpareIngredientsList.getAllSpareIngredients(ingredient);
+                writer.println(toPrint);
             }
             writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+    static public void removeIngredient(String name)
+    {
+        IngredientsList.remove(new Ingredient(name));
+        rewriteFile();
     }
     static public void rebuildModel(DefaultListModel<String> toInsert)
     {

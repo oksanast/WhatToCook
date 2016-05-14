@@ -3,6 +3,7 @@ package core;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 
 /**
  * Created by WTC-Team on 14.05.2016.
@@ -31,8 +32,10 @@ public class SpareIngredientsList {
     public static void rebuildListModel(DefaultListModel<String> model,Ingredient ingredient) {
         model.clear();
         SpareIngredients si = getElementByIngredient(ingredient);
-        for(Ingredient i : si.getSpareIngredients())
-            model.addElement(i.getName());
+        if (si != null) {
+            for (Ingredient i : si.getSpareIngredients())
+                model.addElement(i.getName());
+        }
     }
 
     public static void rebuildComboBox(JComboBox<String> comboBox,Ingredient ingredient){
@@ -54,11 +57,30 @@ public class SpareIngredientsList {
     }
     public static void addSpareIngredient(Ingredient spare,Ingredient main){
         SpareIngredients s = getElementByIngredient(main);
-        s.addSpareIngredient(spare);
+            if (s != null) {
+                s.addSpareIngredient(spare);
+            }
     }
     public static void removeSpareIngredient(Ingredient spare, Ingredient main) {
         SpareIngredients s = getElementByIngredient(main);
-        s.removeSpareIngredient(spare);
+        if (s != null) {
+            s.removeSpareIngredient(spare);
+        }
+    }
+    public static String getAllSpareIngredients(Ingredient ingredient)
+    {
+        String result = "";
+        boolean atLeastOne=false;
+        SpareIngredients s = getElementByIngredient(ingredient);
+        if (s != null) {
+            for(Ingredient i : s.getSpareIngredients()) {
+                atLeastOne=true;
+                result+=i.getName()+"/";
+            }
+        }
+        if(atLeastOne)
+            return result.substring(0,result.length()-1);
+        return result;
     }
     public static ArrayList<SpareIngredients> spareIngredientslist;
 }

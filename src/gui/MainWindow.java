@@ -690,6 +690,14 @@ public class MainWindow extends JFrame {
 
             }
         });
+
+        spareIngredientsInputListModel = new DefaultListModel<>();
+        spareIngredientsInputList = new JList<>();
+        spareIngredientsInputList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        spareIngredientsInputList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        spareIngredientsInputList.setVisibleRowCount(-1);
+        spareIngredientsInputList = new JList<>(spareIngredientsInputListModel);
+
         removeIngredientsButton = new JButton(WhatToCook.SelectedPackage.get(30));
         removeIngredientsButton.addActionListener(e -> {
             boolean ifExist = false;
@@ -709,6 +717,8 @@ public class MainWindow extends JFrame {
                 IngredientsList.rebuildModel(manageIngredientsInputListModel);
                 IngredientsList.reloadComboBox(ingredientInSearchComboBox);
                 IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
+                spareIngredientsInputListModel.clear();
+                spareIngredientsComboBox.removeAllItems();
             } else {
                 errorDialog.refresh(recipesContainIngredient, WhatToCook.SelectedPackage.get(38), WhatToCook.SelectedPackage.get(39));
                 errorDialog.setVisible(true);
@@ -726,12 +736,6 @@ public class MainWindow extends JFrame {
 
         spareIngredientsComboBox = new JComboBox<>();
 
-        spareIngredientsInputListModel = new DefaultListModel<>();
-        spareIngredientsInputList = new JList<>();
-        spareIngredientsInputList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        spareIngredientsInputList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        spareIngredientsInputList.setVisibleRowCount(-1);
-        spareIngredientsInputList = new JList<>(spareIngredientsInputListModel);
 
         spareIngredientsListScrollPane = new JScrollPane(spareIngredientsInputList);
 
@@ -740,8 +744,10 @@ public class MainWindow extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if(!e.getValueIsAdjusting()) {
-                    SpareIngredientsList.rebuildListModel(spareIngredientsInputListModel,new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length-1])));
-                    SpareIngredientsList.rebuildComboBox(spareIngredientsComboBox,new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length-1])));
+                    if (manageIngredientsInputList.getSelectedIndices().length >= 1) {
+                        SpareIngredientsList.rebuildListModel(spareIngredientsInputListModel, new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length - 1])));
+                        SpareIngredientsList.rebuildComboBox(spareIngredientsComboBox, new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length - 1])));
+                    }
                 }
             }
         });
@@ -755,6 +761,7 @@ public class MainWindow extends JFrame {
             {
                 spareIngredientsInputListModel.addElement(spareIngredientsComboBox.getSelectedItem().toString());
                 SpareIngredientsList.addSpareIngredient(new Ingredient(spareIngredientsComboBox.getSelectedItem().toString()),new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length-1])));
+                IngredientsList.rewriteFile();
             }
 
         });
@@ -763,6 +770,7 @@ public class MainWindow extends JFrame {
             for(int i = spareIngredientsInputList.getSelectedIndices().length - 1;i>=0;i--) {
                 SpareIngredientsList.removeSpareIngredient(new Ingredient(spareIngredientsInputListModel.getElementAt(spareIngredientsInputList.getSelectedIndices()[i])),new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length-1])));
                 spareIngredientsInputListModel.removeElementAt(spareIngredientsInputList.getSelectedIndices()[i]);
+                IngredientsList.rewriteFile();
             }
         });
 
