@@ -89,6 +89,15 @@ public class IngredientsList{
             comboBox.addItem(ingredient.getName());
         }
     }
+    static public void reloadComboBox(JComboBox<String> comboBox,ArrayList<Ingredient> toHide)
+    {
+        comboBox.removeAllItems();
+        for(Ingredient ingredient : IngredientsList)
+        {
+            if(!toHide.contains(ingredient))
+            comboBox.addItem(ingredient.getName());
+        }
+    }
     static public boolean contain(Ingredient toCheck)
     {
         return IngredientsList.contains(toCheck);

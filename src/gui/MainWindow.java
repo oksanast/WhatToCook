@@ -657,7 +657,11 @@ public class MainWindow extends JFrame {
         newIngredientButton.addActionListener(e -> {
             if (!newIngredientTextField.getText().equals("")) {
                 Ingredient toAdd = new Ingredient(newIngredientTextField.getText());
-                IngredientsList.addIngredient(toAdd);
+                if(toAdd.getName().charAt(toAdd.getName().length()-1)!='/') {
+                    IngredientsList.addIngredient(toAdd);
+                }
+                else
+                    showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(92), WhatToCook.SelectedPackage.get(93), JOptionPane.ERROR_MESSAGE);
             }
             newIngredientTextField.setText("");
             IngredientsList.rebuildModel(manageIngredientsInputListModel);
@@ -671,7 +675,12 @@ public class MainWindow extends JFrame {
                 if (e.getKeyChar() == KeyEvent.VK_ENTER) {
                     if (!newIngredientTextField.getText().equals("")) {
                         Ingredient toAdd = new Ingredient(newIngredientTextField.getText());
-                        IngredientsList.addIngredient(toAdd);
+                        if(toAdd.getName().charAt(toAdd.getName().length()-1)!='/') {
+                            IngredientsList.addIngredient(toAdd);
+                        }
+                        else
+                            showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(92), WhatToCook.SelectedPackage.get(93), JOptionPane.ERROR_MESSAGE);
+
                     }
                     newIngredientTextField.setText("");
                     IngredientsList.rebuildModel(manageIngredientsInputListModel);
@@ -771,7 +780,9 @@ public class MainWindow extends JFrame {
             }
         });
 
-        spareIngredientsListScrollPane.setBorder(new EmptyBorder(5,5,5,5));
+        //spareIngredientsListScrollPane.setBorder(new EmptyBorder(5,5,5,5));
+        spareIngredientsListScrollPane.setBorder(BorderFactory.createMatteBorder(5,5,5,5,Color.GRAY));
+
         spareIngredientsUpBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(90),SwingConstants.CENTER),BorderLayout.NORTH);
 
         spareIngredientsMainGridLayout.add(spareIngredientsComboBox);
@@ -989,7 +1000,6 @@ public class MainWindow extends JFrame {
             }
         }
         addIngredientToRecipe addIngredientKeyListener = new addIngredientToRecipe();
-        //ingredientInCreatingRecipeComboBox.addKeyListener(addIngredientKeyListener);
         creatingRecipeTable = new JTabbedPane();
         newEditMainBorderLayout = new JPanel(new BorderLayout());
         newEditMainGridLayout = new JPanel(new GridLayout(2, 1));
@@ -1275,11 +1285,11 @@ public class MainWindow extends JFrame {
         /* Override Addtab in order to add the close Button everytime */
         @Override
         public void addTab(String title, Icon icon, Component component, String tip) {
-            Component titledComponent = component;
-            titledComponent.setName(title);
-            super.addTab(title, icon, titledComponent, tip);
+            //Component titledComponent = component;
+            component.setName(title);
+            super.addTab(title, icon, component, tip);
             int count = this.getTabCount() - 1;
-            setTabComponentAt(count, new CloseButtonTab(titledComponent, title, icon));
+            setTabComponentAt(count, new CloseButtonTab(component, title, icon));
         }
 
         @Override
@@ -1348,7 +1358,6 @@ public class MainWindow extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 if (e.getSource() instanceof JButton) {
                     JButton clickedButton = (JButton) e.getSource();
-                    System.out.println(tab.getName());
                     mainTable.remove(tab);
                     mainTable.setSelectedIndex(1);
                 }
