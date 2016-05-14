@@ -721,6 +721,8 @@ public class MainWindow extends JFrame {
             }
             if (!ifExist) {
                 if (manageIngredientsInputList.getSelectedIndex() >= 0) {
+                    SpareIngredientsList.removeSpareIngredientFromEverywhere(new Ingredient(manageIngredientsInputList.getSelectedValue()));
+                    SpareIngredientsList.removeElement(new Ingredient(manageIngredientsInputList.getSelectedValue()));
                     IngredientsList.removeIngredient(manageIngredientsInputList.getSelectedValue());
                 }
                 IngredientsList.rebuildModel(manageIngredientsInputListModel);

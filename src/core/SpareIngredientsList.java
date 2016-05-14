@@ -105,5 +105,19 @@ public class SpareIngredientsList {
         }
         return false;
     }
+    public static void removeElement(Ingredient main) {
+        for(SpareIngredients s : spareIngredientslist){
+            if(s.getName().equals(main.getName()))
+            {
+                spareIngredientslist.remove(s);
+                break;
+            }
+        }
+    }
+    public static void removeSpareIngredientFromEverywhere(Ingredient spare) {
+        for(SpareIngredients s : spareIngredientslist) {
+            s.getSpareIngredients().remove(spare);
+        }
+    }
     public static ArrayList<SpareIngredients> spareIngredientslist;
 }
