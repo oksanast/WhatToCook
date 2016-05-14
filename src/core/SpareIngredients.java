@@ -13,25 +13,29 @@ import java.util.TreeSet;
     dzięki implementacji comparable w "ingredient"
 
  */
-public class SpareIngredients {
-    public SpareIngredients(Ingredient ingredient) {
+class SpareIngredients {
+
+    SpareIngredients(Ingredient ingredient) {
         this.ingredient = ingredient;
         spareIngredients = new TreeSet<>();
     }
+
     public String getName() {
         return ingredient.getName();
     }
-    public void addSpareIngredient(Ingredient ingredient) {
+
+    void addSpareIngredient(Ingredient ingredient) {
         spareIngredients.add(ingredient);
     }
 
-    public void removeSpareIngredient(Ingredient ingredient) {
+    void removeSpareIngredient(Ingredient ingredient) {
         spareIngredients.remove(ingredient);
     }
-    public SortedSet<Ingredient> getSpareIngredients() {
+
+    SortedSet<Ingredient> getSpareIngredients() {
         return spareIngredients;
     }
     public Ingredient ingredient;
-    public SortedSet<Ingredient> spareIngredients;
+    private SortedSet<Ingredient> spareIngredients;
 }
 

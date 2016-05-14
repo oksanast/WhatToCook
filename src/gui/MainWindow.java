@@ -740,14 +740,11 @@ public class MainWindow extends JFrame {
         spareIngredientsListScrollPane = new JScrollPane(spareIngredientsInputList);
 
 
-        manageIngredientsInputList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if(!e.getValueIsAdjusting()) {
-                    if (manageIngredientsInputList.getSelectedIndices().length >= 1) {
-                        SpareIngredientsList.rebuildListModel(spareIngredientsInputListModel, new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length - 1])));
-                        SpareIngredientsList.rebuildComboBox(spareIngredientsComboBox, new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length - 1])));
-                    }
+        manageIngredientsInputList.addListSelectionListener(e -> {
+            if(!e.getValueIsAdjusting()) {
+                if (manageIngredientsInputList.getSelectedIndices().length >= 1) {
+                    SpareIngredientsList.rebuildListModel(spareIngredientsInputListModel, new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length - 1])));
+                    SpareIngredientsList.rebuildComboBox(spareIngredientsComboBox, new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length - 1])));
                 }
             }
         });
@@ -1062,8 +1059,8 @@ public class MainWindow extends JFrame {
         editNewExitWithSaving.addActionListener(e -> {
             String name1 = recipeNameTextField.getText();
             String instructions = instructionsInsertTextArea.getText();
-            ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
-            ArrayList<PairAmountUnit> ammountsAndUnits = new ArrayList<PairAmountUnit>();
+            ArrayList<Ingredient> ingredients = new ArrayList<>();
+            ArrayList<PairAmountUnit> ammountsAndUnits = new ArrayList<>();
             for (ListHandler handler : ingredientsListInput) {
                 Ingredient ingredient;
                 ingredient = new Ingredient(handler.getIngredient());
@@ -1395,15 +1392,15 @@ public class MainWindow extends JFrame {
     }
 
 
-    public boolean getShowSearchMenuStatus() {
+    boolean getShowSearchMenuStatus() {
         return showSearchMenu.isSelected();
     }
 
-    public boolean getShowRecipesMenuStatus() {
+    boolean getShowRecipesMenuStatus() {
         return showRecipesMenu.isSelected();
     }
 
-    public boolean getShowIngredientsMenu() {
+    boolean getShowIngredientsMenu() {
         return showIngredientsMenu.isSelected();
     }
 

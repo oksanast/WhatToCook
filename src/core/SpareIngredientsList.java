@@ -12,7 +12,8 @@ import java.util.SortedSet;
 /*
     Klasa typu rozbudowana lista - Analogiczna do "IngredientsList" i "RecipesList"
     Służy obsłudze listy składników alternatywnych
-    Nie zawiera odczytu/zapisu do pliku, jest to zintegrowane z klasą IngredientsList
+    Nie zawiera odczytu/zapisu do pliku, jest to zintegrowane z klasą IngredientsList, jest to błąd
+    pod względem podejścia obiektowego, ale inaczej trzeba by robić kolejne pliki ze składnikami
  */
 public class SpareIngredientsList {
 
@@ -51,6 +52,9 @@ public class SpareIngredientsList {
             comboBox.addItem(i.getName());
         }
     }
+    /*
+        Pobiera element klasy "SpareIngredients" na podstawie składnika bazowego
+     */
     private static SpareIngredients getElementByIngredient(Ingredient ingredient)
     {
         for(SpareIngredients s : spareIngredientslist)
@@ -72,6 +76,9 @@ public class SpareIngredientsList {
             s.removeSpareIngredient(spare);
         }
     }
+    /* Funkcja do wypisywania składników alternatywnych danego składnika do ciągu znaków, wykorzystywana przy wypisywaniu
+        do pliku
+     */
     public static String getAllSpareIngredients(Ingredient ingredient)
     {
         String result = "";
@@ -87,6 +94,9 @@ public class SpareIngredientsList {
             return result.substring(0,result.length()-1);
         return result;
     }
+    /*  Najważniejsza funckja do wyszukiwania, sprawdza czy dany składnik "main" może być zastopiąny przez składnik
+        "spare"
+    */
     public static boolean containSpareIngredient(Ingredient spare,Ingredient main) {
         SpareIngredients s = getElementByIngredient(main);
         for(Ingredient i : s.getSpareIngredients()) {
