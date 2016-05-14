@@ -9,6 +9,11 @@ import java.util.SortedSet;
  * Created by WTC-Team on 14.05.2016.
  * Project WhatToCook
  */
+/*
+    Klasa typu rozbudowana lista - Analogiczna do "IngredientsList" i "RecipesList"
+    Służy obsłudze listy składników alternatywnych
+    Nie zawiera odczytu/zapisu do pliku, jest to zintegrowane z klasą IngredientsList
+ */
 public class SpareIngredientsList {
 
     public static void initialize() {

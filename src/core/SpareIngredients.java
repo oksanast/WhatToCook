@@ -8,6 +8,11 @@ import java.util.TreeSet;
  * Created by WTC-Team on 14.05.2016.
  * Project WhatToCook
  */
+/*  KLASA "REKODROWA", przechowuje rekordy typu składnik - lista składników dla niego alternatywnych
+    Każdy składnik może pojawić się tylko raz więc przechowywane są one w zbiorze, posortowanym alfabetycznie
+    dzięki implementacji comparable w "ingredient"
+
+ */
 public class SpareIngredients {
     public SpareIngredients(Ingredient ingredient) {
         this.ingredient = ingredient;
