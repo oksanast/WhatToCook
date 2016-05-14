@@ -2,6 +2,8 @@ package core;
 
 import java.text.Collator;
 import java.util.Locale;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Created by WTC-Team on 23.03.2016.
@@ -13,7 +15,6 @@ import java.util.Locale;
 public class Ingredient implements Comparable<Ingredient> {
     public Ingredient(String name) {
         this.name = name;
-
     }
 
     public String getName() {
@@ -40,10 +41,10 @@ public class Ingredient implements Comparable<Ingredient> {
     }
 
     private String name;
-
     @Override
     public int compareTo(Ingredient o) {
         Collator c = Collator.getInstance(Locale.getDefault());
         return c.compare(this.getName(),o.getName());
     }
+
 }

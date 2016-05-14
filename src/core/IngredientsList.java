@@ -30,6 +30,7 @@ public class IngredientsList{
             {
                 tmp = in.nextLine();
                 Ingredient toAdd = new Ingredient(tmp);
+                SpareIngredientsList.add(toAdd);
                 addIngredient(toAdd);
             }
             in.close();
@@ -106,6 +107,9 @@ public class IngredientsList{
         {
 
         }
+    }
+    static public SortedSet<Ingredient> getSet(){
+        return IngredientsList;
     }
     static public int Size()
     {

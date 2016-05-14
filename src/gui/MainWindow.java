@@ -12,6 +12,8 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.metal.MetalIconFactory;
 import javax.swing.plaf.synth.SynthButtonUI;
 import java.awt.*;
@@ -47,7 +49,7 @@ public class MainWindow extends JFrame {
             System.out.println("WindowsLookAndFeel is not supported, it's not a problem, you're probably running not windows os");
             System.out.println("If you're running windows and see that information contact developers team");
         }
-
+        SpareIngredientsList.initialize();
         RecipesList.initialize();
         IngredientsList.initialize();
 
@@ -648,7 +650,9 @@ public class MainWindow extends JFrame {
         manageIngredientsInputList.setVisibleRowCount(-1);
         manageIngredientsInputList = new JList<>(manageIngredientsInputListModel);
         manageIngredientsListScrollPane = new JScrollPane(manageIngredientsInputList);
+
         IngredientsList.rebuildModel(manageIngredientsInputListModel);
+
         newIngredientButton = new JButton(WhatToCook.SelectedPackage.get(29));
         newIngredientButton.addActionListener(e -> {
             if (!newIngredientTextField.getText().equals("")) {
@@ -719,6 +723,7 @@ public class MainWindow extends JFrame {
         spareIngredientsAddButton=new JButton(WhatToCook.SelectedPackage.get(88));
         spareIngredientsRemoveButton = new JButton(WhatToCook.SelectedPackage.get(89));
 
+
         spareIngredientsComboBox = new JComboBox<>();
 
         spareIngredientsInputListModel = new DefaultListModel<>();
@@ -730,6 +735,36 @@ public class MainWindow extends JFrame {
 
         spareIngredientsListScrollPane = new JScrollPane(spareIngredientsInputList);
 
+
+        manageIngredientsInputList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if(!e.getValueIsAdjusting()) {
+                    SpareIngredientsList.rebuildListModel(spareIngredientsInputListModel,new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length-1])));
+                    SpareIngredientsList.rebuildComboBox(spareIngredientsComboBox,new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length-1])));
+                }
+            }
+        });
+
+        spareIngredientsAddButton.addActionListener(e ->{
+            boolean exist = false;
+            for(int i = 0;i<spareIngredientsInputListModel.getSize();i++)
+                if(spareIngredientsInputListModel.getElementAt(i).equals(spareIngredientsComboBox.getSelectedItem().toString()))
+                    exist=true;
+            if(exist==false)
+            {
+                spareIngredientsInputListModel.addElement(spareIngredientsComboBox.getSelectedItem().toString());
+                SpareIngredientsList.addSpareIngredient(new Ingredient(spareIngredientsComboBox.getSelectedItem().toString()),new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length-1])));
+            }
+
+        });
+
+        spareIngredientsRemoveButton.addActionListener(e ->{
+            for(int i = spareIngredientsInputList.getSelectedIndices().length - 1;i>=0;i--) {
+                SpareIngredientsList.removeSpareIngredient(new Ingredient(spareIngredientsInputListModel.getElementAt(spareIngredientsInputList.getSelectedIndices()[i])),new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length-1])));
+                spareIngredientsInputListModel.removeElementAt(spareIngredientsInputList.getSelectedIndices()[i]);
+            }
+        });
 
         spareIngredientsListScrollPane.setBorder(new EmptyBorder(5,5,5,5));
         spareIngredientsUpBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(90),SwingConstants.CENTER),BorderLayout.NORTH);
