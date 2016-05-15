@@ -53,6 +53,42 @@ public class MainWindow extends JFrame {
         RecipesList.initialize();
         IngredientsList.initialize();
 
+        getContentPane().setBackground(Color.ORANGE);
+
+        UIManager.put("Button.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("ToggleButton.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("RadioButton.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("CheckBox.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("ColorChooser.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("ComboBox.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("Label.font",new Font("Comic Sans MS",Font.PLAIN,20));
+        UIManager.put("List.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("MenuBar.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("MenuItem.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("RadioButtonMenuItem.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("CheckBoxMenuItem.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("Menu.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("PopupMenu.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("OptionPane.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("Panel.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("ProgressBar.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("ScrollPane.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("Viewport.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("TabbedPane.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("Table.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("TableHeader.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("TextField.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("PasswordField.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("TextArea.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("TextPane.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("EditorPane.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("TitledBorder.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("ToolBar.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("ToolTip.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("Tree.font",new Font("Comic Sans MS",Font.PLAIN,12));
+
+
+
         setSize(450, 600);
         setResizable(true);
         setTitle("WhatToCook");
@@ -61,7 +97,6 @@ public class MainWindow extends JFrame {
 
         mainCardsCount = getTruthsAmmount(cards);
         inEdit = null;
-
         //MENUBAR CREATING/////////////////////////////////////////////////////////////////////////////////////////////
         mainMenu = new JMenuBar();
         setJMenuBar(mainMenu);
@@ -198,6 +233,7 @@ public class MainWindow extends JFrame {
         Action settingsAction = new AbstractAction(WhatToCook.SelectedPackage.get(6)) {
             public void actionPerformed(ActionEvent event) {
                 settingsDialog.setVisible(true);
+
             }
         };
 
@@ -821,6 +857,7 @@ public class MainWindow extends JFrame {
         if (cards[2])
             mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout);
         add(mainTable);
+        pack();
         repaint();
     }
 
@@ -1330,6 +1367,7 @@ public class MainWindow extends JFrame {
                 setOpaque(false);
                 BorderLayout borderLayout = new BorderLayout();
                 JLabel jLabel = new JLabel(title + " ", SwingConstants.CENTER);
+                jLabel.setFont(new Font("Comic Sans MS",Font.PLAIN,12));
                 jLabel.setIcon(icon);
                 ImageIcon imageIcon = new ImageIcon(new ImageIcon("data/graphics/X_icon.png").getImage().getScaledInstance(10, 10, Image.SCALE_DEFAULT));
                 JButton button = new JButton(imageIcon);

@@ -65,6 +65,7 @@ class SettingsWindow extends JDialog {
                 WhatToCook.frame.exportOwnedIngredients();
             }
             exportSettings();
+
         });
         autoImportIngredientsCheckbox.setSelected(MainWindow.autoLoadIngredients);
 
@@ -103,7 +104,8 @@ class SettingsWindow extends JDialog {
             }
             exportSettings();
         });
-        add(mainTable);
+         add(mainTable);
+         pack();
 
     }
 
