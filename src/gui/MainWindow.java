@@ -41,9 +41,8 @@ public class MainWindow extends JFrame {
 
     public MainWindow(boolean[] cards) {
         //LEPSZY WYGLAD DLA WINDOWS'A
-        String platform = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
         try {
-            UIManager.setLookAndFeel(platform);
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             SwingUtilities.updateComponentTreeUI(MainWindow.this);
         } catch (Exception e) {
             System.out.println("WindowsLookAndFeel is not supported, it's not a problem, you're probably running not windows os");
