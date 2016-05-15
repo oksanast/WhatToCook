@@ -857,6 +857,9 @@ public class MainWindow extends JFrame {
             mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout);
         add(mainTable);
         pack();
+        if(size==8) {
+            setSize(250,300);
+        }
         repaint();
     }
 

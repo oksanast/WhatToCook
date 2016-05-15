@@ -87,16 +87,19 @@ class SettingsWindow extends JDialog {
          lookGridLayout = new JPanel(new GridLayout(3,1));
          JButton colorChooseButton = new JButton(WhatToCook.SelectedPackage.get(95));
          colorChooseButton.addActionListener(e ->{
-             MainWindow.backgroundColor = JColorChooser.showDialog(null,WhatToCook.SelectedPackage.get(95),MainWindow.backgroundColor);
-             WhatToCook.frame.dispose();
-             WhatToCook.frame = new MainWindow(WhatToCook.getCards());
-             WhatToCook.frame.setVisible(true);
-             WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-             setTitle(WhatToCook.SelectedPackage.get(6));
-             repaint();
-             setVisible(false);
-             toFront();
-             exportSettings();
+             Color newColor = JColorChooser.showDialog(null,WhatToCook.SelectedPackage.get(95),MainWindow.backgroundColor);
+             if(newColor!=null) {
+                 MainWindow.backgroundColor = newColor;
+                 WhatToCook.frame.dispose();
+                 WhatToCook.frame = new MainWindow(WhatToCook.getCards());
+                 WhatToCook.frame.setVisible(true);
+                 WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                 setTitle(WhatToCook.SelectedPackage.get(6));
+                 repaint();
+                 setVisible(false);
+                 toFront();
+                 exportSettings();
+             }
          });
          lookGridLayout.add(colorChooseButton);
 
