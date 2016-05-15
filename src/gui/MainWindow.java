@@ -196,69 +196,49 @@ public class MainWindow extends JFrame {
         }
 
 
-        Action newIngredientAction = new AbstractAction(WhatToCook.SelectedPackage.get(46)) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!showIngredientsMenu.isSelected()) {
-                    if (mainTable.getTabCount() >= 2) {
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 2);
-                        mainTable.setSelectedIndex(2);
-                    } else if (mainTable.getTabCount() == 1) {
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 1);
-                        mainTable.setSelectedIndex(1);
-                    } else {
-                        mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 0);
-                        mainTable.setSelectedIndex(0);
-                    }
+        JMenuItem newIngredientAction = new JMenuItem(WhatToCook.SelectedPackage.get(46));
+        newIngredientAction.addActionListener(e -> {
+            if (!showIngredientsMenu.isSelected()) {
+                if (mainTable.getTabCount() >= 2) {
+                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 2);
+                    mainTable.setSelectedIndex(2);
+                } else if (mainTable.getTabCount() == 1) {
+                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 1);
+                    mainTable.setSelectedIndex(1);
                 } else {
-                    if (showSearchMenu.isSelected() && showRecipesMenu.isSelected()) {
-                        mainTable.setSelectedIndex(2);
-                    } else if (showSearchMenu.isSelected() || showRecipesMenu.isSelected()) {
-                        mainTable.setSelectedIndex(1);
-                    } else
-                        mainTable.setSelectedIndex(0);
+                    mainTable.insertTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout, 0);
+                    mainTable.setSelectedIndex(0);
                 }
-                newIngredientTextField.requestFocus();
+            } else {
+                if (showSearchMenu.isSelected() && showRecipesMenu.isSelected()) {
+                    mainTable.setSelectedIndex(2);
+                } else if (showSearchMenu.isSelected() || showRecipesMenu.isSelected()) {
+                    mainTable.setSelectedIndex(1);
+                } else
+                    mainTable.setSelectedIndex(0);
             }
-        };
-        /*Action newRecipeAction = new AbstractAction(WhatToCook.SelectedPackage.get(47)) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!isEditionTurnOn) {
-
-                    isEditionTurnOn = true;
-                    showNewEditMenu(null);
-                } else {
-                    showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(79), WhatToCook.SelectedPackage.get(78), JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        };*/
+            newIngredientTextField.requestFocus();
+        });
+        newIngredientAction.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         JMenuItem newRecipeAction = new JMenuItem(WhatToCook.SelectedPackage.get(47));
-        newRecipeAction.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!isEditionTurnOn) {
+        newRecipeAction.addActionListener(e -> {
+            if (!isEditionTurnOn) {
 
-                    isEditionTurnOn = true;
-                    showNewEditMenu(null);
-                } else {
-                    showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(79), WhatToCook.SelectedPackage.get(78), JOptionPane.ERROR_MESSAGE);
-                }
+                isEditionTurnOn = true;
+                showNewEditMenu(null);
+            } else {
+                showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(79), WhatToCook.SelectedPackage.get(78), JOptionPane.ERROR_MESSAGE);
             }
         });
-        newRecipeAction.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-        Action settingsAction = new AbstractAction(WhatToCook.SelectedPackage.get(6)) {
-            public void actionPerformed(ActionEvent event) {
-                settingsDialog.setVisible(true);
-
-            }
-        };
-
-        Action exitAction = new AbstractAction(WhatToCook.SelectedPackage.get(1)) {
-            public void actionPerformed(ActionEvent event) {
-                System.exit(0);
-            }
-        };
+        newRecipeAction.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        JMenuItem settingsAction = new JMenuItem(WhatToCook.SelectedPackage.get(6));
+        settingsAction.addActionListener(event -> settingsDialog.setVisible(true));
+        settingsAction.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        JMenuItem exitAction = new JMenuItem(WhatToCook.SelectedPackage.get(1));
+        exitAction.addActionListener(e ->{
+            System.exit(0);
+        });
+        exitAction.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         Action clearIngredientsAction = new AbstractAction(WhatToCook.SelectedPackage.get(3)) {
             public void actionPerformed(ActionEvent event) {
                 int i = ingredientsInputListModel.getSize() - 1;
