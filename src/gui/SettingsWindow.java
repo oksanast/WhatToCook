@@ -166,8 +166,45 @@ class SettingsWindow extends JDialog {
          lookGridLayout.add(fontGridLayout);
          lookGridLayout.add(sizeGridLayout);
 
+
+         advancedGridLayout = new JPanel(new GridLayout(3,2));
+
+         JLabel chooseThemeLabel = new JLabel(WhatToCook.SelectedPackage.get(103),SwingConstants.CENTER);
+         chooseThemeLabel.setFont(new Font(MainWindow.font,Font.PLAIN,MainWindow.size));
+
+         themeComboBox = new JComboBox<>();
+         themeComboBox.addItem(WhatToCook.SelectedPackage.get(101));
+         themeComboBox.addItem(WhatToCook.SelectedPackage.get(102));
+
+         if(MainWindow.theme.equals("Platform"))
+             themeComboBox.setSelectedIndex(0);
+         else if(MainWindow.theme.equals("Metal"))
+             themeComboBox.setSelectedIndex(1);
+
+         themeComboBox.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 if(themeComboBox.getSelectedIndex()==0)
+                     MainWindow.theme = "Platform";
+                 else if (themeComboBox.getSelectedIndex()==1)
+                     MainWindow.theme = "Metal";
+                 WhatToCook.frame.dispose();
+                 WhatToCook.frame = new MainWindow(WhatToCook.getCards());
+                 WhatToCook.frame.setVisible(true);
+                 WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                 setTitle(WhatToCook.SelectedPackage.get(6));
+                 repaint();
+                 setVisible(false);
+                 toFront();
+                 exportSettings();
+             }
+         });
+         advancedGridLayout.add(chooseThemeLabel);
+         advancedGridLayout.add(themeComboBox);
+
         mainTable.addTab(WhatToCook.SelectedPackage.get(26), mainGridLayout);
          mainTable.addTab(WhatToCook.SelectedPackage.get(94),lookGridLayout);
+         mainTable.add(WhatToCook.SelectedPackage.get(104),advancedGridLayout);
         for(int i = 0; i < WhatToCook.LanguagesPackages.getLanguageNameSize();i++)
         {
             if(WhatToCook.SelectedPackage.getName().equals(WhatToCook.LanguagesPackages.getLanguageName(i)))
@@ -220,6 +257,12 @@ class SettingsWindow extends JDialog {
             writer.println("Font=" + MainWindow.font);
             writer.println("Size=" + MainWindow.size);
             writer.println("Color="+MainWindow.backgroundColor.toString());
+            String theme = "";
+            if(themeComboBox.getSelectedIndex()==0)
+                theme = "Platform";
+            else if(themeComboBox.getSelectedIndex()==1)
+                theme = "Metal";
+            writer.println("Theme="+theme);
             writer.close();
 
         } catch (FileNotFoundException e) {
@@ -228,10 +271,12 @@ class SettingsWindow extends JDialog {
         }
 
     }
+    JPanel advancedGridLayout;
     JPanel lookGridLayout;
 
     JComboBox<String> fontComboBox;
     JComboBox<String> sizeComboBox;
+    JComboBox<String> themeComboBox;
 
     private JPanel fontGridLayout;
     private JPanel sizeGridLayout;

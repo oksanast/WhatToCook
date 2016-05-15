@@ -106,21 +106,26 @@ public class WhatToCook {
             int g = Integer.parseInt(splittedLine[4]);
             int b = Integer.parseInt(splittedLine[6].substring(0,splittedLine[6].length()-1));
             MainWindow.backgroundColor = new Color(r,g,b);
+            line = in.nextLine();
+            splittedLine = line.split("=");
+            MainWindow.theme = splittedLine[1];
+
         } catch (FileNotFoundException | NoSuchElementException e) {
             System.err.println("Error during loading config files file, program will load with default settings");
             MainWindow.font = "Comic Sans MS";
             MainWindow.size = 12;
+            MainWindow.theme = "Platform";
+            MainWindow.backgroundColor = new Color(255,255,255);
         }
         if (SelectedPackage == null)
             SelectedPackage = LanguagesPackages.get(0);
-
         frame = new MainWindow(cards);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
     }
-
-    private static final int phrasesCount = 101;//ZMIANA PRZY DODANIU SLOWA
+    //TODO ZMIANA PRZY KAZDYM DODANIU SLOWA
+    private static final int phrasesCount = 105;
 
     static boolean cards[];
 

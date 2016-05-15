@@ -27,6 +27,7 @@ import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static java.awt.event.ActionEvent.*;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
@@ -40,13 +41,17 @@ import static javax.swing.JOptionPane.showMessageDialog;
 public class MainWindow extends JFrame {
 
     public MainWindow(boolean[] cards) {
-        //LEPSZY WYGLAD DLA WINDOWS'A
+
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            if(theme.equals("Platform")) {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            }
+            if(theme.equals("Metal")) {
+                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            }
             SwingUtilities.updateComponentTreeUI(MainWindow.this);
         } catch (Exception e) {
-            System.out.println("WindowsLookAndFeel is not supported, it's not a problem, you're probably running not windows os");
-            System.out.println("If you're running windows and see that information contact developers team");
+
         }
         SpareIngredientsList.initialize();
         RecipesList.initialize();
@@ -216,7 +221,7 @@ public class MainWindow extends JFrame {
                 newIngredientTextField.requestFocus();
             }
         };
-        Action newRecipeAction = new AbstractAction(WhatToCook.SelectedPackage.get(47)) {
+        /*Action newRecipeAction = new AbstractAction(WhatToCook.SelectedPackage.get(47)) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!isEditionTurnOn) {
@@ -227,7 +232,21 @@ public class MainWindow extends JFrame {
                     showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(79), WhatToCook.SelectedPackage.get(78), JOptionPane.ERROR_MESSAGE);
                 }
             }
-        };
+        };*/
+        JMenuItem newRecipeAction = new JMenuItem(WhatToCook.SelectedPackage.get(47));
+        newRecipeAction.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!isEditionTurnOn) {
+
+                    isEditionTurnOn = true;
+                    showNewEditMenu(null);
+                } else {
+                    showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(79), WhatToCook.SelectedPackage.get(78), JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        newRecipeAction.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         Action settingsAction = new AbstractAction(WhatToCook.SelectedPackage.get(6)) {
             public void actionPerformed(ActionEvent event) {
                 settingsDialog.setVisible(true);
@@ -269,6 +288,7 @@ public class MainWindow extends JFrame {
                 aboutDialog.setVisible(true);
             }
         };
+
         Action exportIngredientsAction = new AbstractAction(WhatToCook.SelectedPackage.get(40)) {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1611,4 +1631,6 @@ public class MainWindow extends JFrame {
     static public String font;
 
     static public int size;
+
+    static public String theme;
 }
