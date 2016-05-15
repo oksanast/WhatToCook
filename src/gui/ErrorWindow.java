@@ -20,7 +20,6 @@ class ErrorWindow extends JDialog {
     {
         setModal(true);
         setResizable(false);
-        Height = 160;
         setLocationRelativeTo(null);
         JPanel mainBorderLayout = new JPanel(new BorderLayout());
         ErrorMessage = "";
@@ -39,14 +38,12 @@ class ErrorWindow extends JDialog {
         for(String toPrint : errorsList)
         {
             ErrorMessage+="<br>" + toPrint;
-            Height +=12;
         }
         ErrorMessage+="</hmlt>";
         ErrorMessageLabel.setText(ErrorMessage);
-        setSize(300,Height);
         repaint();
+        pack();
     }
     private JLabel ErrorMessageLabel;
     private String ErrorMessage;
-    private int Height;
 }

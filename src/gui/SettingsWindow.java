@@ -1,9 +1,12 @@
 package gui;
 
 import core.WhatToCook;
+import sun.applet.Main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -69,19 +72,102 @@ class SettingsWindow extends JDialog {
         });
         autoImportIngredientsCheckbox.setSelected(MainWindow.autoLoadIngredients);
         JLabel newCardLabel = new JLabel(WhatToCook.SelectedPackage.get(24), SwingConstants.CENTER);
-         newCardLabel.setFont(new Font("Comic Sans MS",Font.PLAIN,12));
+         newCardLabel.setFont(new Font(MainWindow.font,Font.PLAIN,MainWindow.size));
         mainGridLayout.add(newCardLabel);
         mainGridLayout.add(toNewCardCheckbox);
          JLabel saveStateLabel = new JLabel(WhatToCook.SelectedPackage.get(73),SwingConstants.CENTER);
-         saveStateLabel.setFont(new Font("Comic Sans MS",Font.PLAIN,12));
+         saveStateLabel.setFont(new Font(MainWindow.font,Font.PLAIN,MainWindow.size));
         mainGridLayout.add(saveStateLabel);
         mainGridLayout.add(autoImportIngredientsCheckbox);
          JLabel languageLabel = new JLabel(WhatToCook.SelectedPackage.get(25), SwingConstants.CENTER);
-         languageLabel.setFont(new Font("Comic Sans MS",Font.PLAIN,12));
+         languageLabel.setFont(new Font(MainWindow.font,Font.PLAIN,MainWindow.size));
         mainGridLayout.add(languageLabel);
         mainGridLayout.add(languageComboBox);
 
+         lookGridLayout = new JPanel(new GridLayout(3,1));
+         JButton colorChooseButton = new JButton(WhatToCook.SelectedPackage.get(95));
+         colorChooseButton.addActionListener(e ->{
+             MainWindow.backgroundColor = JColorChooser.showDialog(null,WhatToCook.SelectedPackage.get(95),MainWindow.backgroundColor);
+             WhatToCook.frame.dispose();
+             WhatToCook.frame = new MainWindow(WhatToCook.getCards());
+             WhatToCook.frame.setVisible(true);
+             WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+             setTitle(WhatToCook.SelectedPackage.get(6));
+             repaint();
+             setVisible(false);
+             toFront();
+             exportSettings();
+         });
+         lookGridLayout.add(colorChooseButton);
+
+         fontGridLayout = new JPanel(new GridLayout(1,2));
+         sizeGridLayout = new JPanel(new GridLayout(1,2));
+         JLabel fontSizeLabel = new JLabel(WhatToCook.SelectedPackage.get(100),SwingConstants.CENTER);
+         fontSizeLabel.setFont(new Font(MainWindow.font,Font.PLAIN,MainWindow.size));
+         fontGridLayout.add(fontSizeLabel);
+         JLabel sizeGridLabel = new JLabel(WhatToCook.SelectedPackage.get(99),SwingConstants.CENTER);
+         sizeGridLabel.setFont(new Font(MainWindow.font,Font.PLAIN,MainWindow.size));
+         sizeGridLayout.add(sizeGridLabel);
+
+         fontComboBox = new JComboBox<>();
+         fontComboBox.addItem("Arial");
+         fontComboBox.addItem("Comic Sans MS");
+         for(int i = 0; i < fontComboBox.getItemCount();i++){
+             if(MainWindow.font.equals(fontComboBox.getItemAt(i)))
+                 fontComboBox.setSelectedIndex(i);
+         }
+         fontComboBox.addActionListener(e -> {
+             if(!MainWindow.font.equals(fontComboBox.getSelectedItem())) {
+                 MainWindow.font = fontComboBox.getSelectedItem().toString();
+                 WhatToCook.frame.dispose();
+                 WhatToCook.frame = new MainWindow(WhatToCook.getCards());
+                 WhatToCook.frame.setVisible(true);
+                 WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                 setTitle(WhatToCook.SelectedPackage.get(6));
+                 repaint();
+                 setVisible(false);
+                 toFront();
+                 exportSettings();
+             }
+         });
+         sizeComboBox = new JComboBox<>();
+         sizeComboBox.addItem(WhatToCook.SelectedPackage.get(96));
+         sizeComboBox.addItem(WhatToCook.SelectedPackage.get(97));
+         sizeComboBox.addItem(WhatToCook.SelectedPackage.get(98));
+
+         if(MainWindow.size==8)
+             sizeComboBox.setSelectedIndex(0);
+         if(MainWindow.size==12)
+             sizeComboBox.setSelectedIndex(1);
+         if(MainWindow.size==16)
+             sizeComboBox.setSelectedIndex(2);
+
+         sizeComboBox.addActionListener(e -> {
+             if(sizeComboBox.getSelectedIndex()==0)
+                 MainWindow.size = 8;
+             else if(sizeComboBox.getSelectedIndex()==1)
+                 MainWindow.size = 12;
+             else if(sizeComboBox.getSelectedIndex()==2)
+                 MainWindow.size = 16;
+             WhatToCook.frame.dispose();
+             WhatToCook.frame = new MainWindow(WhatToCook.getCards());
+             WhatToCook.frame.setVisible(true);
+             WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+             setTitle(WhatToCook.SelectedPackage.get(6));
+             repaint();
+             setVisible(false);
+             toFront();
+             exportSettings();
+         });
+
+         fontGridLayout.add(fontComboBox);
+         sizeGridLayout.add(sizeComboBox);
+
+         lookGridLayout.add(fontGridLayout);
+         lookGridLayout.add(sizeGridLayout);
+
         mainTable.addTab(WhatToCook.SelectedPackage.get(26), mainGridLayout);
+         mainTable.addTab(WhatToCook.SelectedPackage.get(94),lookGridLayout);
         for(int i = 0; i < WhatToCook.LanguagesPackages.getLanguageNameSize();i++)
         {
             if(WhatToCook.SelectedPackage.getName().equals(WhatToCook.LanguagesPackages.getLanguageName(i)))
@@ -91,7 +177,7 @@ class SettingsWindow extends JDialog {
             if(languageComboBox.getSelectedIndex()!=WhatToCook.SelectedPackage.GetSelectedLanguage())
             {
                 int selection;
-                selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43), JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE);
+                selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if(selection == JOptionPane.OK_OPTION) {
                     WhatToCook.SelectedPackage = WhatToCook.LanguagesPackages.get(languageComboBox.getSelectedIndex());
                     WhatToCook.frame.dispose();
@@ -131,6 +217,9 @@ class SettingsWindow extends JDialog {
             writer.println("SearchCard=" + WhatToCook.frame.getShowSearchMenuStatus());
             writer.println("RecipesCard=" + WhatToCook.frame.getShowRecipesMenuStatus());
             writer.println("IngredientsCard=" + WhatToCook.frame.getShowIngredientsMenu());
+            writer.println("Font=" + MainWindow.font);
+            writer.println("Size=" + MainWindow.size);
+            writer.println("Color="+MainWindow.backgroundColor.toString());
             writer.close();
 
         } catch (FileNotFoundException e) {
@@ -139,6 +228,13 @@ class SettingsWindow extends JDialog {
         }
 
     }
+    JPanel lookGridLayout;
+
+    JComboBox<String> fontComboBox;
+    JComboBox<String> sizeComboBox;
+
+    private JPanel fontGridLayout;
+    private JPanel sizeGridLayout;
 
     JComboBox<String> languageComboBox;
     JTabbedPane mainTable;

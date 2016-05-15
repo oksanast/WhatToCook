@@ -52,40 +52,39 @@ public class MainWindow extends JFrame {
         SpareIngredientsList.initialize();
         RecipesList.initialize();
         IngredientsList.initialize();
+        getContentPane().setBackground(backgroundColor);
 
-        getContentPane().setBackground(Color.ORANGE);
-
-        UIManager.put("Button.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("ToggleButton.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("RadioButton.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("CheckBox.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("ColorChooser.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("ComboBox.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("Label.font",new Font("Comic Sans MS",Font.PLAIN,18));
-        UIManager.put("List.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("MenuBar.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("MenuItem.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("RadioButtonMenuItem.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("CheckBoxMenuItem.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("Menu.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("PopupMenu.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("OptionPane.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("Panel.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("ProgressBar.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("ScrollPane.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("Viewport.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("TabbedPane.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("Table.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("TableHeader.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("TextField.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("PasswordField.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("TextArea.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("TextPane.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("EditorPane.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("TitledBorder.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("ToolBar.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("ToolTip.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("Tree.font",new Font("Comic Sans MS",Font.PLAIN,12));
+        UIManager.put("Button.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("ToggleButton.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("RadioButton.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("CheckBox.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("ColorChooser.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("ComboBox.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("Label.font",new Font(font,Font.PLAIN,(int) (size + size*0.5)));
+        UIManager.put("List.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("MenuBar.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("MenuItem.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("RadioButtonMenuItem.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("CheckBoxMenuItem.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("Menu.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("PopupMenu.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("OptionPane.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("Panel.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("ProgressBar.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("ScrollPane.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("Viewport.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("TabbedPane.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("Table.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("TableHeader.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("TextField.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("PasswordField.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("TextArea.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("TextPane.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("EditorPane.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("TitledBorder.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("ToolBar.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("ToolTip.font",new Font(font,Font.PLAIN,size));
+        UIManager.put("Tree.font",new Font(font,Font.PLAIN,size));
 
 
 
@@ -645,6 +644,7 @@ public class MainWindow extends JFrame {
         recipesList.setVisibleRowCount(-1);
         recipesList = new JList<>(recipesListModel);
         recipesListScrollPane = new JScrollPane(recipesList);
+        recipesListScrollPane.setBorder(BorderFactory.createMatteBorder(5,5,5,5,backgroundColor));
         recipesList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -819,7 +819,7 @@ public class MainWindow extends JFrame {
         });
 
         //spareIngredientsListScrollPane.setBorder(new EmptyBorder(5,5,5,5));
-        spareIngredientsListScrollPane.setBorder(BorderFactory.createMatteBorder(5,5,5,5,Color.GRAY));
+        spareIngredientsListScrollPane.setBorder(BorderFactory.createMatteBorder(5,5,5,5,backgroundColor));
 
         spareIngredientsUpBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(90),SwingConstants.CENTER),BorderLayout.NORTH);
 
@@ -911,6 +911,7 @@ public class MainWindow extends JFrame {
         final String toExport = toShow;
         recipeTextAreaScrollPane = new JScrollPane(recipeTextArea);
         recipesBorderLayout.add(recipeTextAreaScrollPane, BorderLayout.CENTER);
+        recipeTextAreaScrollPane.setBorder(BorderFactory.createMatteBorder(5,5,5,5,backgroundColor));
         mainTable.addTab(recipeToShow.getName(), recipesBorderLayout);
         if (MainWindow.getToNewCard) {
             mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
@@ -1367,7 +1368,7 @@ public class MainWindow extends JFrame {
                 setOpaque(false);
                 BorderLayout borderLayout = new BorderLayout();
                 JLabel jLabel = new JLabel(title + " ", SwingConstants.CENTER);
-                jLabel.setFont(new Font("Comic Sans MS",Font.PLAIN,12));
+                jLabel.setFont(new Font(font,Font.PLAIN,12));
                 jLabel.setIcon(icon);
                 ImageIcon imageIcon = new ImageIcon(new ImageIcon("data/graphics/X_icon.png").getImage().getScaledInstance(10, 10, Image.SCALE_DEFAULT));
                 JButton button = new JButton(imageIcon);
@@ -1605,4 +1606,10 @@ public class MainWindow extends JFrame {
     int mainCardsCount;
 
     private Recipe inEdit;
+
+    static public Color backgroundColor;
+
+    static public String font;
+
+    static public int size;
 }
