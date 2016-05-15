@@ -61,7 +61,7 @@ public class MainWindow extends JFrame {
         UIManager.put("CheckBox.font",new Font("Comic Sans MS",Font.PLAIN,12));
         UIManager.put("ColorChooser.font",new Font("Comic Sans MS",Font.PLAIN,12));
         UIManager.put("ComboBox.font",new Font("Comic Sans MS",Font.PLAIN,12));
-        UIManager.put("Label.font",new Font("Comic Sans MS",Font.PLAIN,20));
+        UIManager.put("Label.font",new Font("Comic Sans MS",Font.PLAIN,18));
         UIManager.put("List.font",new Font("Comic Sans MS",Font.PLAIN,12));
         UIManager.put("MenuBar.font",new Font("Comic Sans MS",Font.PLAIN,12));
         UIManager.put("MenuItem.font",new Font("Comic Sans MS",Font.PLAIN,12));

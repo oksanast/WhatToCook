@@ -68,12 +68,17 @@ class SettingsWindow extends JDialog {
 
         });
         autoImportIngredientsCheckbox.setSelected(MainWindow.autoLoadIngredients);
-
-        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(24), SwingConstants.CENTER));
+        JLabel newCardLabel = new JLabel(WhatToCook.SelectedPackage.get(24), SwingConstants.CENTER);
+         newCardLabel.setFont(new Font("Comic Sans MS",Font.PLAIN,12));
+        mainGridLayout.add(newCardLabel);
         mainGridLayout.add(toNewCardCheckbox);
-        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(73),SwingConstants.CENTER));
+         JLabel saveStateLabel = new JLabel(WhatToCook.SelectedPackage.get(73),SwingConstants.CENTER);
+         saveStateLabel.setFont(new Font("Comic Sans MS",Font.PLAIN,12));
+        mainGridLayout.add(saveStateLabel);
         mainGridLayout.add(autoImportIngredientsCheckbox);
-        mainGridLayout.add(new JLabel(WhatToCook.SelectedPackage.get(25), SwingConstants.CENTER));
+         JLabel languageLabel = new JLabel(WhatToCook.SelectedPackage.get(25), SwingConstants.CENTER);
+         languageLabel.setFont(new Font("Comic Sans MS",Font.PLAIN,12));
+        mainGridLayout.add(languageLabel);
         mainGridLayout.add(languageComboBox);
 
         mainTable.addTab(WhatToCook.SelectedPackage.get(26), mainGridLayout);
