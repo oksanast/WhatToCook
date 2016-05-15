@@ -57,7 +57,10 @@ public class MainWindow extends JFrame {
         RecipesList.initialize();
         IngredientsList.initialize();
         getContentPane().setBackground(backgroundColor);
-
+        try {
+            getRootPane().putClientProperty("apple.awt.fullscreenable", true);
+        }
+        catch (Exception e) {}
         UIManager.put("Button.font",new Font(font,Font.PLAIN,size));
         UIManager.put("ToggleButton.font",new Font(font,Font.PLAIN,size));
         UIManager.put("RadioButton.font",new Font(font,Font.PLAIN,size));
@@ -123,7 +126,6 @@ public class MainWindow extends JFrame {
         showSearchMenu.setSelected(cards[0]);
         showRecipesMenu.setSelected(cards[1]);
         showIngredientsMenu.setSelected(cards[2]);
-        JTabbedPane pane = new JTabbedPane();
         showSearchMenu.addActionListener(e -> {
             if (!showSearchMenu.isSelected()) {
                 mainTable.CloseTabByComponent(mainBorderLayout);
@@ -235,9 +237,7 @@ public class MainWindow extends JFrame {
         settingsAction.addActionListener(event -> settingsDialog.setVisible(true));
         settingsAction.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         JMenuItem exitAction = new JMenuItem(WhatToCook.SelectedPackage.get(1));
-        exitAction.addActionListener(e ->{
-            System.exit(0);
-        });
+        exitAction.addActionListener(e -> System.exit(0));
         exitAction.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         Action clearIngredientsAction = new AbstractAction(WhatToCook.SelectedPackage.get(3)) {
             public void actionPerformed(ActionEvent event) {
@@ -607,17 +607,13 @@ public class MainWindow extends JFrame {
                 showMessageDialog(new JFrame(), WhatToCook.SelectedPackage.get(79), WhatToCook.SelectedPackage.get(78), JOptionPane.ERROR_MESSAGE);
         });
         editRecipe = new JButton(WhatToCook.SelectedPackage.get(18));
-        editRecipe.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (recipesList.getSelectedIndex() >= 0) {
-                    String recipeName = recipesListModel.getElementAt(recipesList.getSelectedIndex());
-                    if (!isEditionTurnOn) {
+        editRecipe.addActionListener(e -> {
+            if (recipesList.getSelectedIndex() >= 0) {
+                if (!isEditionTurnOn) {
 
-                        isEditionTurnOn = true;
-                        inEdit = RecipesList.getRecipe(recipesList.getSelectedValue());
-                        showNewEditMenu(RecipesList.getRecipe(recipesList.getSelectedValue()));
-                    }
+                    isEditionTurnOn = true;
+                    inEdit = RecipesList.getRecipe(recipesList.getSelectedValue());
+                    showNewEditMenu(RecipesList.getRecipe(recipesList.getSelectedValue()));
                 }
             }
         });
@@ -800,7 +796,7 @@ public class MainWindow extends JFrame {
             for(int i = 0;i<spareIngredientsInputListModel.getSize();i++)
                 if(spareIngredientsInputListModel.getElementAt(i).equals(spareIngredientsComboBox.getSelectedItem().toString()))
                     exist=true;
-            if(exist==false)
+            if(!exist)
             {
                 spareIngredientsInputListModel.addElement(spareIngredientsComboBox.getSelectedItem().toString());
                 SpareIngredientsList.addSpareIngredient(new Ingredient(spareIngredientsComboBox.getSelectedItem().toString()),new Ingredient(manageIngredientsInputListModel.getElementAt(manageIngredientsInputList.getSelectedIndices()[manageIngredientsInputList.getSelectedIndices().length-1])));
@@ -950,12 +946,14 @@ public class MainWindow extends JFrame {
         });
     }
 
-    private void refreshGUILists() {
+    /*
+        *Funkcja nieużywana, zastąpiona tą poniżej
+        private void refreshGUILists() {
         recipesListModel.clear();
         for (int i = 0; i < RecipesList.recipesList.size(); i++) {
             recipesListModel.addElement(RecipesList.recipesList.get(i).getName());
         }
-    }
+    }*/
 
     private void refreshGUILists(String StartWith) {
         recipesListModel.clear();
