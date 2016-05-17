@@ -132,7 +132,7 @@ public class WhatToCook {
 
     }
     //TODO ZMIANA PRZY KAZDYM DODANIU SLOWA
-    private static final int phrasesCount = 106;
+    private static final int phrasesCount = 108;
 
     private static boolean cards[];
 

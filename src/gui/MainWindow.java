@@ -112,10 +112,12 @@ public class MainWindow extends JFrame {
         viewMenu = new JMenu(WhatToCook.SelectedPackage.get(83));
         newSubmenu = new JMenu(WhatToCook.SelectedPackage.get(45));
         cardsSubmenu = new JMenu(WhatToCook.SelectedPackage.get(84));
+        toolsMenu = new JMenu(WhatToCook.SelectedPackage.get(106));
 
         mainMenu.add(fileMenu);
         mainMenu.add(editMenu);
         mainMenu.add(viewMenu);
+        mainMenu.add(toolsMenu);
         mainMenu.add(helpMenu);
         fileMenu.add(newSubmenu);
         viewMenu.add(cardsSubmenu);
@@ -288,12 +290,20 @@ public class MainWindow extends JFrame {
                     mainTable.removeTabAt(i);
             }
         };
+        JMenuItem ToBuyListAction = new JMenuItem(WhatToCook.SelectedPackage.get(107));
+        ToBuyListAction.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO
+            }
+        });
         fileMenu.addSeparator();
         fileMenu.add(exitAction);
         newSubmenu.add(newIngredientAction);
         newSubmenu.add(newRecipeAction);
         viewMenu.addSeparator();
         viewMenu.add(closeAllRecipes);
+        toolsMenu.add(ToBuyListAction);
         editMenu.add(exportIngredientsAction);
         editMenu.add(importIngredientsAction);
         editMenu.addSeparator();
@@ -1573,6 +1583,7 @@ public class MainWindow extends JFrame {
     private JMenu newSubmenu;
     private JMenu cardsSubmenu;
     private JMenu viewMenu;
+    private JMenu toolsMenu;
 
     private JCheckBoxMenuItem showSearchMenu;
     private JCheckBoxMenuItem showRecipesMenu;
