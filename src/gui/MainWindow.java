@@ -877,6 +877,7 @@ public class MainWindow extends JFrame {
             setSize(450,600);
         }
         repaint();
+
     }
 
     //FUNCKJA OTWIERA NOWĄ KARTĘ Z KONKRETNYM PRZEPISEM
@@ -1503,7 +1504,10 @@ public class MainWindow extends JFrame {
     {
         return spareIngredientsCheckBox.isSelected();
     }
-
+    public void openSettings(int i) {
+        settingsDialog.mainTable.setSelectedIndex(i);
+        settingsDialog.setVisible(true);
+    }
     //ELEMENTY GUI BAZY SKŁADNIKÓW
     private JTabbedPaneCloseButton mainTable;
     private JTabbedPane creatingRecipeTable;
@@ -1654,4 +1658,5 @@ public class MainWindow extends JFrame {
     static public String theme;
 
     public static boolean biggerLabels;
+
 }

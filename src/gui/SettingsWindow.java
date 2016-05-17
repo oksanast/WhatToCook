@@ -90,15 +90,7 @@ class SettingsWindow extends JDialog {
              Color newColor = JColorChooser.showDialog(null,WhatToCook.SelectedPackage.get(95),MainWindow.backgroundColor);
              if(newColor!=null) {
                  MainWindow.backgroundColor = newColor;
-                 WhatToCook.frame.dispose();
-                 WhatToCook.frame = new MainWindow(WhatToCook.getCards());
-                 WhatToCook.frame.setVisible(true);
-                 WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                 setTitle(WhatToCook.SelectedPackage.get(6));
-                 repaint();
-                 setVisible(false);
-                 toFront();
-                 exportSettings();
+                 reload();
              }
          });
          lookGridLayout.add(colorChooseButton);
@@ -122,15 +114,7 @@ class SettingsWindow extends JDialog {
          fontComboBox.addActionListener(e -> {
              if(!MainWindow.font.equals(fontComboBox.getSelectedItem())) {
                  MainWindow.font = fontComboBox.getSelectedItem().toString();
-                 WhatToCook.frame.dispose();
-                 WhatToCook.frame = new MainWindow(WhatToCook.getCards());
-                 WhatToCook.frame.setVisible(true);
-                 WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                 setTitle(WhatToCook.SelectedPackage.get(6));
-                 repaint();
-                 setVisible(false);
-                 toFront();
-                 exportSettings();
+                 reload();
              }
          });
          sizeComboBox = new JComboBox<>();
@@ -152,15 +136,7 @@ class SettingsWindow extends JDialog {
                  MainWindow.size = 12;
              else if(sizeComboBox.getSelectedIndex()==2)
                  MainWindow.size = 16;
-             WhatToCook.frame.dispose();
-             WhatToCook.frame = new MainWindow(WhatToCook.getCards());
-             WhatToCook.frame.setVisible(true);
-             WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-             setTitle(WhatToCook.SelectedPackage.get(6));
-             repaint();
-             setVisible(false);
-             toFront();
-             exportSettings();
+             reload();
          });
 
          fontGridLayout.add(fontComboBox);
@@ -188,15 +164,7 @@ class SettingsWindow extends JDialog {
              @Override
              public void actionPerformed(ActionEvent e) {
                  MainWindow.biggerLabels = biggerLabelsCheckBox.isSelected();
-                 WhatToCook.frame.dispose();
-                 WhatToCook.frame = new MainWindow(WhatToCook.getCards());
-                 WhatToCook.frame.setVisible(true);
-                 WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                 setTitle(WhatToCook.SelectedPackage.get(6));
-                 repaint();
-                 setVisible(false);
-                 toFront();
-                 exportSettings();
+                 reload();
              }
          });
 
@@ -213,15 +181,7 @@ class SettingsWindow extends JDialog {
                      MainWindow.theme = "Platform";
                  else if (themeComboBox.getSelectedIndex()==1)
                      MainWindow.theme = "Metal";
-                 WhatToCook.frame.dispose();
-                 WhatToCook.frame = new MainWindow(WhatToCook.getCards());
-                 WhatToCook.frame.setVisible(true);
-                 WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                 setTitle(WhatToCook.SelectedPackage.get(6));
-                 repaint();
-                 setVisible(false);
-                 toFront();
-                 exportSettings();
+                 reload();
              }
          });
          advancedGridLayout.add(chooseThemeLabel);
@@ -244,20 +204,12 @@ class SettingsWindow extends JDialog {
                 selection = JOptionPane.showConfirmDialog(null, WhatToCook.SelectedPackage.get(42), WhatToCook.SelectedPackage.get(43), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if(selection == JOptionPane.OK_OPTION) {
                     WhatToCook.SelectedPackage = WhatToCook.LanguagesPackages.get(languageComboBox.getSelectedIndex());
-                    WhatToCook.frame.dispose();
-                    WhatToCook.frame = new MainWindow(WhatToCook.getCards());
-                    WhatToCook.frame.setVisible(true);
-                    WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-                    setTitle(WhatToCook.SelectedPackage.get(6));
-                    repaint();
-                    setVisible(false);
-                    toFront();
+                    reload();
                 }
                 else
                     languageComboBox.setSelectedIndex(WhatToCook.SelectedPackage.GetSelectedLanguage());
 
             }
-            exportSettings();
         });
          add(mainTable);
          pack();
@@ -270,6 +222,19 @@ class SettingsWindow extends JDialog {
 
     public boolean getToNewCardCheckbox() {
         return toNewCardCheckbox.isSelected();
+    }
+
+    public void reload() {
+        WhatToCook.frame.dispose();
+        WhatToCook.frame = new MainWindow(WhatToCook.getCards());
+        WhatToCook.frame.setVisible(true);
+        WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setTitle(WhatToCook.SelectedPackage.get(6));
+        repaint();
+        setVisible(false);
+        toFront();
+        exportSettings();
+        WhatToCook.frame.openSettings(mainTable.getSelectedIndex());
     }
 
     public void exportSettings() {
