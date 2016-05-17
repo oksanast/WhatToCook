@@ -179,6 +179,28 @@ class SettingsWindow extends JDialog {
          themeComboBox.addItem(WhatToCook.SelectedPackage.get(101));
          themeComboBox.addItem(WhatToCook.SelectedPackage.get(102));
 
+         JLabel biggerLabelsLabel = new JLabel(WhatToCook.SelectedPackage.get(105),SwingConstants.CENTER);
+         biggerLabelsLabel.setFont(new Font(MainWindow.font,Font.PLAIN,MainWindow.size));
+
+         biggerLabelsCheckBox = new JCheckBox();
+         biggerLabelsCheckBox.setSelected(MainWindow.biggerLabels);
+         biggerLabelsCheckBox.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 MainWindow.biggerLabels = biggerLabelsCheckBox.isSelected();
+                 WhatToCook.frame.dispose();
+                 WhatToCook.frame = new MainWindow(WhatToCook.getCards());
+                 WhatToCook.frame.setVisible(true);
+                 WhatToCook.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                 setTitle(WhatToCook.SelectedPackage.get(6));
+                 repaint();
+                 setVisible(false);
+                 toFront();
+                 exportSettings();
+             }
+         });
+
+
          if(MainWindow.theme.equals("Platform"))
              themeComboBox.setSelectedIndex(0);
          else if(MainWindow.theme.equals("Metal"))
@@ -204,6 +226,8 @@ class SettingsWindow extends JDialog {
          });
          advancedGridLayout.add(chooseThemeLabel);
          advancedGridLayout.add(themeComboBox);
+         advancedGridLayout.add(biggerLabelsLabel);
+         advancedGridLayout.add(biggerLabelsCheckBox);
 
         mainTable.addTab(WhatToCook.SelectedPackage.get(26), mainGridLayout);
          mainTable.addTab(WhatToCook.SelectedPackage.get(94),lookGridLayout);
@@ -266,6 +290,7 @@ class SettingsWindow extends JDialog {
             else if(themeComboBox.getSelectedIndex()==1)
                 theme = "Metal";
             writer.println("Theme="+theme);
+            writer.println("BiggerLabels="+MainWindow.biggerLabels);
             writer.close();
 
         } catch (FileNotFoundException e) {
@@ -289,6 +314,7 @@ class SettingsWindow extends JDialog {
     JPanel mainGridLayout;
     JCheckBox toNewCardCheckbox;
     JCheckBox autoImportIngredientsCheckbox;
+    JCheckBox biggerLabelsCheckBox;
 
 
 }

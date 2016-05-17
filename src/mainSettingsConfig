@@ -4,7 +4,8 @@ SaveState=true
 SearchCard=true
 RecipesCard=true
 IngredientsCard=true
-Font=Arial
+Font=Comic Sans MS
 Size=12
 Color=java.awt.Color[r=255,g=153,b=0]
 Theme=Platform
+BiggerLabels=true

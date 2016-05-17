@@ -50,9 +50,7 @@ public class MainWindow extends JFrame {
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             }
             SwingUtilities.updateComponentTreeUI(MainWindow.this);
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
         SpareIngredientsList.initialize();
         RecipesList.initialize();
         IngredientsList.initialize();
@@ -67,7 +65,10 @@ public class MainWindow extends JFrame {
         UIManager.put("CheckBox.font",new Font(font,Font.PLAIN,size));
         UIManager.put("ColorChooser.font",new Font(font,Font.PLAIN,size));
         UIManager.put("ComboBox.font",new Font(font,Font.PLAIN,size));
+        if(biggerLabels)
         UIManager.put("Label.font",new Font(font,Font.PLAIN,(int) (size + size*0.5)));
+        else
+            UIManager.put("Label.font",new Font(font,Font.PLAIN,(int) (size)));
         UIManager.put("List.font",new Font(font,Font.PLAIN,size));
         UIManager.put("MenuBar.font",new Font(font,Font.PLAIN,size));
         UIManager.put("MenuItem.font",new Font(font,Font.PLAIN,size));
@@ -96,7 +97,6 @@ public class MainWindow extends JFrame {
 
 
         setSize(450, 600);
-        setResizable(true);
         setTitle("WhatToCook");
         setLocationRelativeTo(null);
         setMinimumSize(new Dimension(340, 400));
@@ -852,9 +852,15 @@ public class MainWindow extends JFrame {
         if (cards[2])
             mainTable.addTabNoExit(WhatToCook.SelectedPackage.get(27), ingredientsMainGridLayout);
         add(mainTable);
-        pack();
+        if(size==16) {
+            pack();
+        }
+        setResizable(true);
         if(size==8) {
             setSize(250,300);
+        }
+        if(size==12) {
+            setSize(450,600);
         }
         repaint();
     }
@@ -1614,4 +1620,6 @@ public class MainWindow extends JFrame {
     static public int size;
 
     static public String theme;
+
+    public static boolean biggerLabels;
 }

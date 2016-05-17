@@ -109,6 +109,12 @@ public class WhatToCook {
             line = in.nextLine();
             splittedLine = line.split("=");
             MainWindow.theme = splittedLine[1];
+            line = in.nextLine();
+            splittedLine = line.split("=");
+            if(splittedLine[1].equals("false"))
+                MainWindow.biggerLabels = false;
+            else
+                MainWindow.biggerLabels = true;
 
         } catch (FileNotFoundException | NoSuchElementException e) {
             System.err.println("Error during loading config files file, program will load with default settings");
@@ -116,6 +122,7 @@ public class WhatToCook {
             MainWindow.size = 12;
             MainWindow.theme = "Platform";
             MainWindow.backgroundColor = new Color(255,255,255);
+            MainWindow.biggerLabels = true;
         }
         if (SelectedPackage == null)
             SelectedPackage = LanguagesPackages.get(0);
@@ -125,7 +132,7 @@ public class WhatToCook {
 
     }
     //TODO ZMIANA PRZY KAZDYM DODANIU SLOWA
-    private static final int phrasesCount = 105;
+    private static final int phrasesCount = 106;
 
     private static boolean cards[];
 
