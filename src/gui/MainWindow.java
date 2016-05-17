@@ -49,6 +49,9 @@ public class MainWindow extends JFrame {
             if(theme.equals("Metal")) {
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             }
+            if(theme.equals("Nimbus")) {
+                UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            }
             SwingUtilities.updateComponentTreeUI(MainWindow.this);
         } catch (Exception e) {}
         SpareIngredientsList.initialize();
