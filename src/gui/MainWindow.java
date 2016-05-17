@@ -54,6 +54,7 @@ public class MainWindow extends JFrame {
         SpareIngredientsList.initialize();
         RecipesList.initialize();
         IngredientsList.initialize();
+        ToBuyIngredientsList.initialize();
         getContentPane().setBackground(backgroundColor);
         try {
             getRootPane().putClientProperty("apple.awt.fullscreenable", true);
@@ -178,6 +179,7 @@ public class MainWindow extends JFrame {
         aboutDialog = new AboutWindow();
         errorDialog = new ErrorWindow();
         searchingDialog = new SearchingWindow();
+        shoppingListDialog = new ToBuyListWindow();
 
         try {
             Scanner in = new Scanner(new File("src/searchSettingsConfig"));
@@ -295,6 +297,8 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TODO
+                shoppingListDialog.refresh();
+                shoppingListDialog.setVisible(true);
             }
         });
         fileMenu.addSeparator();
@@ -933,6 +937,22 @@ public class MainWindow extends JFrame {
 
         JPopupMenu showRecipePopup;
         showRecipePopup = new JPopupMenu();
+        Action addToBuyListAction = new AbstractAction(WhatToCook.SelectedPackage.get(108)) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for(int i = 0; i < recipeToShow.getSize();i++)
+                {
+                    Ingredient ingredient = recipeToShow.getIngredient(i);
+                    boolean contain = false;
+                    for(int j = 0; j < ingredientsInputListModel.getSize();j++) {
+                        if(ingredientsInputListModel.get(j).equals(ingredient.getName()))
+                            contain = true;
+                    }
+                    if(!contain)
+                        ToBuyIngredientsList.add(recipeToShow.getIngredient(i));
+                }
+            }
+        };
         Action exportRecipeAction = new AbstractAction(WhatToCook.SelectedPackage.get(44)) {
             public void actionPerformed(ActionEvent event) {
                 exportTab(recipeToShow, toExport);
@@ -943,7 +963,7 @@ public class MainWindow extends JFrame {
                 closeTab();
             }
         };
-
+        showRecipePopup.add(addToBuyListAction);
         showRecipePopup.add(exportRecipeAction);
         showRecipePopup.add(closeRecipeAction);
         recipeTextArea.addMouseListener(new MouseAdapter() {
@@ -1611,6 +1631,7 @@ public class MainWindow extends JFrame {
     private AboutWindow aboutDialog;
     private ErrorWindow errorDialog;
     private SearchingWindow searchingDialog;
+    private ToBuyListWindow shoppingListDialog;
 
     private PairRecipeIndex shownRecipesList;
 
