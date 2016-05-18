@@ -25,6 +25,7 @@ public class TimerWindow extends JDialog {
                 if(timer!=null) {
                     timer.interrupt();
                 }
+                startButton.setEnabled(true);
                 super.windowClosing(e);
             }
         });
@@ -61,8 +62,11 @@ public class TimerWindow extends JDialog {
 
         startButton = new JButton(WhatToCook.SelectedPackage.get(114));
         startButton.addActionListener(e -> {
-            timer = new Timer();
-            timer.start();
+            if(value>0) {
+                timer = new Timer();
+                timer.start();
+                startButton.setEnabled(false);
+            }
 
         });
 
@@ -70,10 +74,12 @@ public class TimerWindow extends JDialog {
         resetButton.addActionListener(e -> {
             if(timer!=null) {
                 timer.interrupt();
+                startButton.setEnabled(true);
             }
             else {
                 value=0;
                 mainScreen.setText("<html><center>"+"0:00"+"</center></html>");
+                startButton.setEnabled(true);
             }
         });
 
