@@ -183,6 +183,7 @@ public class MainWindow extends JFrame {
         errorDialog = new ErrorWindow();
         searchingDialog = new SearchingWindow();
         shoppingListDialog = new ToBuyListWindow();
+        timerDialog = new TimerWindow();
 
         try {
             Scanner in = new Scanner(new File("src/searchSettingsConfig"));
@@ -227,6 +228,14 @@ public class MainWindow extends JFrame {
                     mainTable.setSelectedIndex(0);
             }
             newIngredientTextField.requestFocus();
+        });
+
+        JMenuItem timerOpenAction = new JMenuItem(WhatToCook.SelectedPackage.get(113));
+        timerOpenAction.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timerDialog.setVisible(true);
+            }
         });
         newIngredientAction.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         JMenuItem newRecipeAction = new JMenuItem(WhatToCook.SelectedPackage.get(47));
@@ -313,6 +322,7 @@ public class MainWindow extends JFrame {
         viewMenu.addSeparator();
         viewMenu.add(closeAllRecipes);
         toolsMenu.add(ToBuyListAction);
+        toolsMenu.add(timerOpenAction);
         editMenu.add(exportIngredientsAction);
         editMenu.add(importIngredientsAction);
         editMenu.addSeparator();
@@ -1639,6 +1649,7 @@ public class MainWindow extends JFrame {
     private ErrorWindow errorDialog;
     private SearchingWindow searchingDialog;
     private ToBuyListWindow shoppingListDialog;
+    private TimerWindow timerDialog;
 
     private PairRecipeIndex shownRecipesList;
 
