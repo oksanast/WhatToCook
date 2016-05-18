@@ -918,6 +918,9 @@ public class MainWindow extends JFrame {
         recipeTextArea.setEditable(false);
         recipeTextArea.setLineWrap(true);
 
+        JPanel downBorderLayout = new JPanel(new BorderLayout());
+        JPanel downRightGridLayout = new JPanel(new GridLayout(1,2));
+
         String toShow = "";
         toShow += WhatToCook.SelectedPackage.get(65) +" "+recipeToShow.getName() + WhatToCook.endl + WhatToCook.endl + WhatToCook.endl;
         toShow += WhatToCook.SelectedPackage.get(57) + " ";
@@ -956,11 +959,33 @@ public class MainWindow extends JFrame {
         toShow += WhatToCook.endl + WhatToCook.endl;
         toShow += WhatToCook.SelectedPackage.get(66) + WhatToCook.endl + WhatToCook.endl + recipeToShow.getRecipe();
 
+        JComboBox<String> linkedRecipesListCheckBox = new JComboBox<>();
+        for(int i = 0; i < recipeToShow.getLinkedRecipes().size();i++) {
+            linkedRecipesListCheckBox.addItem(recipeToShow.getLinkedRecipes().get(i));
+        }
+        JButton openLinkedRecipe = new JButton(WhatToCook.SelectedPackage.get(117));
+        openLinkedRecipe.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(RecipesList.getRecipe(linkedRecipesListCheckBox.getSelectedItem().toString())!=null)
+                    showRecipe(RecipesList.getRecipe(linkedRecipesListCheckBox.getSelectedItem().toString()));
+            }
+        });
+
+
+        downRightGridLayout.add(linkedRecipesListCheckBox);
+        downRightGridLayout.add(openLinkedRecipe);
+        JLabel linkedRecipesLabel = new JLabel(WhatToCook.SelectedPackage.get(116),SwingConstants.CENTER);
+        linkedRecipesLabel.setFont(new Font(MainWindow.font,Font.PLAIN,14));
+        downBorderLayout.add(linkedRecipesLabel,BorderLayout.CENTER);
+        downBorderLayout.add(downRightGridLayout,BorderLayout.EAST);
+
         recipeTextArea.setText(toShow);
         final String toExport = toShow;
         recipeTextAreaScrollPane = new JScrollPane(recipeTextArea);
         recipesBorderLayout.add(recipeTextAreaScrollPane, BorderLayout.CENTER);
-        recipeTextAreaScrollPane.setBorder(BorderFactory.createMatteBorder(5,5,5,5,backgroundColor));
+        recipesBorderLayout.add(downBorderLayout,BorderLayout.SOUTH);
+        //recipeTextAreaScrollPane.setBorder(BorderFactory.createMatteBorder(5,5,5,5,backgroundColor));
         mainTable.addTab(recipeToShow.getName(), recipesBorderLayout);
         if (MainWindow.getToNewCard) {
             mainTable.setSelectedIndex(mainTable.getTabCount() - 1);
