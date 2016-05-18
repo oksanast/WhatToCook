@@ -37,22 +37,25 @@ public class LinkedRecipes {
     }
 
     public static void addLinking(int recipe1index, int recipe2index) {
-        Recipe recipe1 = recipesList.get(recipe1index);
-        Recipe recipe2 = recipesList.get(recipe2index);
+        if (recipe1index >= 0) {
+            Recipe recipe1 = recipesList.get(recipe1index);
+            Recipe recipe2 = recipesList.get(recipe2index);
 
-        if (!recipe1.getLinkedRecipes().contains(recipe2.getName())) {
-            recipe1.getLinkedRecipes().add(recipe2.getName());
-            recipe2.getLinkedRecipes().add(recipe1.getName());
+            if (!recipe1.getLinkedRecipes().contains(recipe2.getName())) {
+                recipe1.getLinkedRecipes().add(recipe2.getName());
+                recipe2.getLinkedRecipes().add(recipe1.getName());
+            }
         }
     }
 
+    //Drugi arg jest indexem na liście przepisów linkowanych do przepisu pod pierwszym argumentem!
     public static void deleteLinking(int recipe1index, int recipe2index) {
         ArrayList<String> tmp = new ArrayList<String>();
 
         Recipe recipe1 = recipesList.get(recipe1index);
         Recipe recipe2 = recipesList.get(recipe2index);
 
-        recipe1.getLinkedRecipes().remove(recipe2.getName());
+        recipe1.getLinkedRecipes().remove(recipe2index);
         recipe2.getLinkedRecipes().remove(recipe1.getName());
     }
 }

@@ -63,6 +63,7 @@ public class LinkedRecipesPanel {
         for (int i = 0; i < recipesList.get(markedRecipe).getLinkedRecipes().size(); i++) {
             temp = recipesList.get(markedRecipe).getLinkedRecipes().get(i);
             button = new JRadioButton(temp);
+            button.setMnemonic(i);
             linkedRecipesArea.add(button);
             linkedRecipesButtonGroup.add(button);
         }
@@ -83,7 +84,8 @@ public class LinkedRecipesPanel {
         JButton delLinkingButton = new JButton("Usuń");
         delLinkingButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                deleteLinking(markedRecipe, allRecipes.getSelectedIndex());
+                ButtonModel button = linkedRecipesButtonGroup.getSelection();
+                deleteLinking(markedRecipe, button.getMnemonic());
                 showLinkedRecipes();
             }
         });
@@ -94,4 +96,5 @@ public class LinkedRecipesPanel {
     private static JPanel linkedRecipesArea;
     private static JPanel linkedRecipesPanel;
     private static ButtonGroup linkedRecipesButtonGroup = new ButtonGroup();
+    private static String checkedRecipe = new String();
 }
