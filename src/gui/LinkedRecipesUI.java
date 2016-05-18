@@ -24,7 +24,7 @@ import static javax.swing.SwingConstants.NORTH;
 /**
  * Created by WTC-Team on 2016-05-17.
  */
-public class LinkedRecipesPanel {
+public class LinkedRecipesUI {
 
     public static void manageLinkedRecipes(JPanel manageRecipesAndLinkedPanel) {
         linkedRecipesPanel = new JPanel();

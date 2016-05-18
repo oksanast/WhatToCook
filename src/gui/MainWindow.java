@@ -21,7 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static gui.LinkedRecipesPanel.showLinkedRecipes;
+import static gui.LinkedRecipesUI.showLinkedRecipes;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
@@ -635,7 +635,7 @@ public class MainWindow extends JFrame {
         manageRecipesLeftBorderLayout.add(manageRecipesLeftDownGridPanel, BorderLayout.SOUTH);
 
         manageRecipesAndLinkedPanel.add(recipesListScrollPane);
-        LinkedRecipesPanel.manageLinkedRecipes(manageRecipesAndLinkedPanel);
+        LinkedRecipesUI.manageLinkedRecipes(manageRecipesAndLinkedPanel);
 
         manageRecipesLeftBorderLayout.add(manageRecipesAndLinkedPanel, BorderLayout.CENTER);
         manageRecipesGridPanel.add(manageRecipesLeftBorderLayout);
