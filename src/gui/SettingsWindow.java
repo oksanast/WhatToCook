@@ -161,12 +161,9 @@ class SettingsWindow extends JDialog {
 
          biggerLabelsCheckBox = new JCheckBox();
          biggerLabelsCheckBox.setSelected(MainWindow.biggerLabels);
-         biggerLabelsCheckBox.addActionListener(new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-                 MainWindow.biggerLabels = biggerLabelsCheckBox.isSelected();
-                 reload();
-             }
+         biggerLabelsCheckBox.addActionListener(e -> {
+             MainWindow.biggerLabels = biggerLabelsCheckBox.isSelected();
+             reload();
          });
 
 
@@ -177,17 +174,14 @@ class SettingsWindow extends JDialog {
          else if(MainWindow.theme.equals("Nimbus"))
              themeComboBox.setSelectedIndex(2);
 
-         themeComboBox.addActionListener(new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-                 if(themeComboBox.getSelectedIndex()==0)
-                     MainWindow.theme = "Platform";
-                 else if (themeComboBox.getSelectedIndex()==1)
-                     MainWindow.theme = "Metal";
-                 else if (themeComboBox.getSelectedIndex()==2)
-                     MainWindow.theme = "Nimbus";
-                 reload();
-             }
+         themeComboBox.addActionListener(e -> {
+             if(themeComboBox.getSelectedIndex()==0)
+                 MainWindow.theme = "Platform";
+             else if (themeComboBox.getSelectedIndex()==1)
+                 MainWindow.theme = "Metal";
+             else if (themeComboBox.getSelectedIndex()==2)
+                 MainWindow.theme = "Nimbus";
+             reload();
          });
          advancedGridLayout.add(chooseThemeLabel);
          advancedGridLayout.add(themeComboBox);
