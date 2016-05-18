@@ -682,6 +682,20 @@ public class MainWindow extends JFrame {
             }
         });
 
+        recipesList.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                markedRecipe = recipesList.getSelectedIndex();
+                showLinkedRecipes();
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                markedRecipe = recipesList.getSelectedIndex();
+                showLinkedRecipes();
+            }
+        });
+
         manageRecipesLeftUpGridPanel.add(new JLabel(WhatToCook.SelectedPackage.get(16), SwingConstants.CENTER));
         searchingOptionsBorderLayout.add(searchForRecipesTextArea, BorderLayout.CENTER);
         searchingOptionsBorderLayout.add(searchingOptionsButton, BorderLayout.EAST);
