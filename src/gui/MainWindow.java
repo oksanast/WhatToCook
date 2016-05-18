@@ -21,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static gui.LinkedRecipesPanel.showLinkedRecipes;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
@@ -609,6 +610,7 @@ public class MainWindow extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 markedRecipe = recipesList.getSelectedIndex();
+                showLinkedRecipes();
                 if (e.getClickCount() == 2) {
                     int index = recipesList.getSelectedIndex();
                     int i;
