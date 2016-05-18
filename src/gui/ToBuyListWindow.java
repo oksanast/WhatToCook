@@ -73,7 +73,8 @@ public class ToBuyListWindow extends JDialog {
         add(mainBorderLayout);
     }
     public void refresh() {
-        if(ingredientsListModel.getSize()>0) {
+        if(ToBuyIngredientsList.size()>0) {
+            System.out.println("tak");
             ingredientsListModel.clear();
             mainBorderLayout.add(ingredientsScrollPane, BorderLayout.CENTER);
             for (Ingredient i : ToBuyIngredientsList.getSet()) {

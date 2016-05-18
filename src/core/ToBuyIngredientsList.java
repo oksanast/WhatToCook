@@ -28,6 +28,7 @@ public class ToBuyIngredientsList {
         for(Ingredient i : toBuyList) {
             System.out.println(i.getName());
         }
+        System.out.println(WhatToCook.endl);
     }
     public static int size() {
         return toBuyList.size();
