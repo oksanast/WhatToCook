@@ -6,6 +6,6 @@ RecipesCard=true
 IngredientsCard=true
 Font=Arial
 Size=12
-Color=java.awt.Color[r=102,g=204,b=255]
+Color=java.awt.Color[r=255,g=153,b=0]
 Theme=Platform
 BiggerLabels=true

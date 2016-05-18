@@ -663,7 +663,7 @@ public class MainWindow extends JFrame {
         recipesList.setVisibleRowCount(-1);
         recipesList = new JList<>(recipesListModel);
         recipesListScrollPane = new JScrollPane(recipesList);
-        recipesListScrollPane.setBorder(BorderFactory.createMatteBorder(5,5,5,5,backgroundColor));
+        //recipesListScrollPane.setBorder(BorderFactory.createMatteBorder(5,5,5,5,backgroundColor));
         recipesList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -858,7 +858,7 @@ public class MainWindow extends JFrame {
         });
 
         //spareIngredientsListScrollPane.setBorder(new EmptyBorder(5,5,5,5));
-        spareIngredientsListScrollPane.setBorder(BorderFactory.createMatteBorder(5,5,5,5,backgroundColor));
+        //spareIngredientsListScrollPane.setBorder(BorderFactory.createMatteBorder(5,5,5,5,backgroundColor));
 
         spareIngredientsUpBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(90),SwingConstants.CENTER),BorderLayout.NORTH);
 
@@ -1692,5 +1692,6 @@ public class MainWindow extends JFrame {
     static public String theme;
 
     public static boolean biggerLabels;
+    public static boolean bordersAroundLists;
 
 }

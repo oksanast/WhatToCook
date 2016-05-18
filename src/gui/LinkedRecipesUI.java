@@ -37,7 +37,7 @@ public class LinkedRecipesUI {
         JLabel panelName = new JLabel("Przepisy powiązane", JLabel.CENTER);
         manage.add(panelName);
             //Lista dost. przepisów
-        allRecipes = new JComboBox();
+        allRecipes = new JComboBox<>();
         for (int i = 0; i < recipesList.size(); i++)
             allRecipes.addItem(recipesList.get(i).getName());
         manage.add(allRecipes);
@@ -51,7 +51,7 @@ public class LinkedRecipesUI {
 
         //Dodanie przestrzeni na przepisy powiązane
         linkedRecipesArea = new JPanel();
-        linkedRecipesArea.setLayout(new GridLayout(20, 1));
+        linkedRecipesArea.setLayout(new GridLayout(16, 1));
 
         linkedRecipesPanel.add(linkedRecipesArea, BorderLayout.CENTER);
     }
@@ -75,8 +75,12 @@ public class LinkedRecipesUI {
 
         addLinkingButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                addLinking(markedRecipe, allRecipes.getSelectedIndex());
-                showLinkedRecipes();
+                if(markedRecipe>=0) {
+                    if (recipesList.get(markedRecipe).getLinkedRecipes().size() < 16 && !recipesList.get(markedRecipe).getName().equals(allRecipes.getSelectedItem())) {
+                        addLinking(markedRecipe, allRecipes.getSelectedIndex());
+                        showLinkedRecipes();
+                    }
+                }
             }
         });
         panel.add(addLinkingButton);
@@ -85,14 +89,17 @@ public class LinkedRecipesUI {
         delLinkingButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ButtonModel button = linkedRecipesButtonGroup.getSelection();
-                deleteLinking(markedRecipe, button.getMnemonic());
-                showLinkedRecipes();
+                linkedRecipesButtonGroup.clearSelection();
+                if(button!=null) {
+                    deleteLinking(markedRecipe, button.getMnemonic());
+                    showLinkedRecipes();
+                }
             }
         });
         panel.add(delLinkingButton);
     }
 
-    private static JComboBox allRecipes;
+    private static JComboBox<String> allRecipes;
     private static JPanel linkedRecipesArea;
     private static JPanel linkedRecipesPanel;
     private static ButtonGroup linkedRecipesButtonGroup = new ButtonGroup();
