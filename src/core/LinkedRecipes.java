@@ -40,8 +40,10 @@ public class LinkedRecipes {
         Recipe recipe1 = recipesList.get(recipe1index);
         Recipe recipe2 = recipesList.get(recipe2index);
 
-        recipe1.getLinkedRecipes().add(recipe2.getName());
-        recipe2.getLinkedRecipes().add(recipe1.getName());
+        if (!recipe1.getLinkedRecipes().contains(recipe2.getName())) {
+            recipe1.getLinkedRecipes().add(recipe2.getName());
+            recipe2.getLinkedRecipes().add(recipe1.getName());
+        }
     }
 
     public static void deleteLinking(int recipe1index, int recipe2index) {
