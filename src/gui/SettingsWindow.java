@@ -154,6 +154,7 @@ class SettingsWindow extends JDialog {
          themeComboBox = new JComboBox<>();
          themeComboBox.addItem(WhatToCook.SelectedPackage.get(101));
          themeComboBox.addItem(WhatToCook.SelectedPackage.get(102));
+         themeComboBox.addItem(WhatToCook.SelectedPackage.get(112));
 
          JLabel biggerLabelsLabel = new JLabel(WhatToCook.SelectedPackage.get(105),SwingConstants.CENTER);
          biggerLabelsLabel.setFont(new Font(MainWindow.font,Font.PLAIN,MainWindow.size));
@@ -173,6 +174,8 @@ class SettingsWindow extends JDialog {
              themeComboBox.setSelectedIndex(0);
          else if(MainWindow.theme.equals("Metal"))
              themeComboBox.setSelectedIndex(1);
+         else if(MainWindow.theme.equals("Nimbus"))
+             themeComboBox.setSelectedIndex(2);
 
          themeComboBox.addActionListener(new ActionListener() {
              @Override
@@ -181,6 +184,8 @@ class SettingsWindow extends JDialog {
                      MainWindow.theme = "Platform";
                  else if (themeComboBox.getSelectedIndex()==1)
                      MainWindow.theme = "Metal";
+                 else if (themeComboBox.getSelectedIndex()==2)
+                     MainWindow.theme = "Nimbus";
                  reload();
              }
          });
@@ -254,6 +259,8 @@ class SettingsWindow extends JDialog {
                 theme = "Platform";
             else if(themeComboBox.getSelectedIndex()==1)
                 theme = "Metal";
+            else if(themeComboBox.getSelectedIndex()==2)
+                theme = "Nimbus";
             writer.println("Theme="+theme);
             writer.println("BiggerLabels="+MainWindow.biggerLabels);
             writer.close();
