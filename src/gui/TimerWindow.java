@@ -28,7 +28,6 @@ public class TimerWindow extends JDialog {
                 super.windowClosing(e);
             }
         });
-        isOperating = false;
 
         value = 0;
         mainBorderLayout = new JPanel(new BorderLayout());
@@ -39,10 +38,8 @@ public class TimerWindow extends JDialog {
         plusButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!isOperating) {
                     value+=60;
                     refresh();
-                }
             }
         });
 
@@ -51,7 +48,7 @@ public class TimerWindow extends JDialog {
         minusButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!isOperating && value>0) {
+                if(value>0) {
                     value-=60;
                     if(value<0) {
                         value = 0;
@@ -63,7 +60,6 @@ public class TimerWindow extends JDialog {
         });
 
         startButton = new JButton(WhatToCook.SelectedPackage.get(114));
-        startButton.setMargin(new Insets(2,2,2,2));
         startButton.addActionListener(e -> {
             timer = new Timer();
             timer.start();
@@ -121,7 +117,6 @@ public class TimerWindow extends JDialog {
     private JPanel plusMinusGridLayout;
     private JPanel mainBorderLayout;
 
-    private boolean isOperating;
 
     public int value;
 
