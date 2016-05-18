@@ -10,6 +10,7 @@ import jdk.nashorn.internal.scripts.JO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -350,7 +351,6 @@ public class MainWindow extends JFrame {
 
         ingredientInSearchComboBox = new JComboBox<>();
         IngredientsList.reloadComboBox(ingredientInSearchComboBox);
-
         ingredientInSearchComboBox.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -407,6 +407,7 @@ public class MainWindow extends JFrame {
 
 
         importIngredientsInSearch = new JButton(WhatToCook.SelectedPackage.get(68));
+        importIngredientsInSearch.setBorder(new LineBorder(upGridLayout.getBackground(),2));
         importIngredientsInSearch.addActionListener(e ->
         {
             JFileChooser chooseFile = new JFileChooser();
@@ -439,6 +440,7 @@ public class MainWindow extends JFrame {
             }
         });
         exportIngredientsInSearch = new JButton(WhatToCook.SelectedPackage.get(69));
+        exportIngredientsInSearch.setBorder(new LineBorder(upGridLayout.getBackground(),2));
         exportIngredientsInSearch.addActionListener(e ->
         {
             JFileChooser chooseFile = new JFileChooser();
@@ -463,6 +465,7 @@ public class MainWindow extends JFrame {
         ingredientInCreatingRecipeComboBox = new JComboBox<>();
         IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
         execute = new JButton(WhatToCook.SelectedPackage.get(15));
+        execute.setBorder(new LineBorder(upGridLayout.getBackground(),2));
         execute.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 recipesOutputListModel.clear();
@@ -488,6 +491,7 @@ public class MainWindow extends JFrame {
             }
         });
         addIngredientButton = new JButton(WhatToCook.SelectedPackage.get(12));
+        addIngredientButton.setBorder(new LineBorder(upGridLayout.getBackground(),2));
         addIngredientButton.addActionListener(e -> {
             String newForm = "● " + ingredientInSearchComboBox.getSelectedItem();
             boolean exist = false;
@@ -512,6 +516,7 @@ public class MainWindow extends JFrame {
             }
         });
         removeIngredientButton = new JButton(WhatToCook.SelectedPackage.get(13));
+        removeIngredientButton.setBorder(new LineBorder(upGridLayout.getBackground(),2));
         removeIngredientButton.addActionListener(e -> {
             for (int i = ingredientsInputList.getSelectedIndices().length - 1; i >= 0; i--) {
                 ingredientsInputListModel.removeElementAt(ingredientsInputList.getSelectedIndices()[i]);
