@@ -10,7 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * Created by Mateusz on 18.05.2016.
+ * Created by WTC-Team on 18.05.2016.
  * Project InferenceEngine
  */
 public class TimerWindow extends JDialog {

@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 /**
- * Created by Mateusz on 17.05.2016.
+ * Created by WTC-Team on 17.05.2016.
  * Project WhatToCook
  */
 public class ToBuyListWindow extends JDialog {
