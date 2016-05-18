@@ -42,10 +42,13 @@ public class ToBuyListWindow extends JDialog {
         mainBorderLayout.add(new JLabel(WhatToCook.SelectedPackage.get(107),SwingConstants.CENTER),BorderLayout.NORTH);
         mainBorderLayout.add(ingredientsScrollPane,BorderLayout.CENTER);
 
+        addNewIngredients = new JLabel("<html><center>" + WhatToCook.SelectedPackage.get(111)+ "</center></html>",SwingConstants.CENTER);
+        addNewIngredients.setFont(new Font(MainWindow.font,Font.PLAIN,MainWindow.size));
+
         clearListButton = new JButton(WhatToCook.SelectedPackage.get(109));
         clearListButton.addActionListener(e -> {
             ToBuyIngredientsList.clear();
-            refresh();
+            this.refresh();
         });
 
         exportListButton = new JButton(WhatToCook.SelectedPackage.get(110));
@@ -74,17 +77,15 @@ public class ToBuyListWindow extends JDialog {
     }
     public void refresh() {
         if(ToBuyIngredientsList.size()>0) {
-            System.out.println("tak");
             ingredientsListModel.clear();
-            mainBorderLayout.add(ingredientsScrollPane, BorderLayout.CENTER);
             for (Ingredient i : ToBuyIngredientsList.getSet()) {
                 ingredientsListModel.addElement(i.getName());
             }
+            mainBorderLayout.remove(addNewIngredients);
+            mainBorderLayout.add(ingredientsScrollPane,BorderLayout.CENTER);
         }
         else {
-            addNewIngredients = new JLabel("<html><center>" + WhatToCook.SelectedPackage.get(111)+ "</center></html>",SwingConstants.CENTER);
-            addNewIngredients.setFont(new Font(MainWindow.font,Font.PLAIN,MainWindow.size));
-
+            mainBorderLayout.remove(ingredientsScrollPane);
             mainBorderLayout.add(addNewIngredients,BorderLayout.CENTER);
         }
         revalidate();
