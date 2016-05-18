@@ -95,7 +95,7 @@ public class MainWindow extends JFrame {
 
 
 
-        setSize(450, 600);
+        setSize(500, 600);
         setTitle("WhatToCook");
         setLocationRelativeTo(null);
         setMinimumSize(new Dimension(340, 400));
@@ -457,7 +457,6 @@ public class MainWindow extends JFrame {
         ingredientInCreatingRecipeComboBox = new JComboBox<>();
         IngredientsList.reloadComboBox(ingredientInCreatingRecipeComboBox);
         execute = new JButton(WhatToCook.SelectedPackage.get(15));
-        execute.setBorder(new LineBorder(upGridLayout.getBackground(),2));
         execute.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 recipesOutputListModel.clear();

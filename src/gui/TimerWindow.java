@@ -67,7 +67,15 @@ public class TimerWindow extends JDialog {
         });
 
         resetButton = new JButton(WhatToCook.SelectedPackage.get(115));
-        resetButton.addActionListener(e -> timer.interrupt());
+        resetButton.addActionListener(e -> {
+            if(timer!=null) {
+                timer.interrupt();
+            }
+            else {
+                value=0;
+                mainScreen.setText("<html><center>"+"0:00"+"</center></html>");
+            }
+        });
 
         mainScreen = new JLabel("<html><center>" + "0:00" + "</center></html>",SwingConstants.CENTER);
         mainScreen.setFont(new Font(MainWindow.font,Font.PLAIN,96));
@@ -83,8 +91,8 @@ public class TimerWindow extends JDialog {
     }
     public void refresh() {
         String toShow = value/60 +":" + value%60;
-        if(toShow.length()<4) {
-            mainScreen.setText("<html><center>" + value / 60 + ":" + value % 60 +"0"+ "</center></html>");
+        if((""+value%60).length()<2) {
+            mainScreen.setText("<html><center>" + value / 60 + ":" + "0" +value % 60 + "</center></html>");
         }
         else
             mainScreen.setText("<html><center>" + value / 60 + ":" + value % 60 + "</center></html>");
