@@ -22,7 +22,9 @@ public class TimerWindow extends JDialog {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                timer.interrupt();
+                if(timer!=null) {
+                    timer.interrupt();
+                }
                 super.windowClosing(e);
             }
         });
@@ -61,6 +63,7 @@ public class TimerWindow extends JDialog {
         });
 
         startButton = new JButton(WhatToCook.SelectedPackage.get(114));
+        startButton.setMargin(new Insets(2,2,2,2));
         startButton.addActionListener(e -> {
             timer = new Timer();
             timer.start();
