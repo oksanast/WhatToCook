@@ -227,12 +227,7 @@ public class MainWindow extends JFrame {
         });
 
         JMenuItem timerOpenAction = new JMenuItem(WhatToCook.SelectedPackage.get(113));
-        timerOpenAction.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                timerDialog.setVisible(true);
-            }
-        });
+        timerOpenAction.addActionListener(e -> timerDialog.setVisible(true));
         newIngredientAction.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         JMenuItem newRecipeAction = new JMenuItem(WhatToCook.SelectedPackage.get(47));
         newRecipeAction.addActionListener(e -> {
@@ -301,13 +296,10 @@ public class MainWindow extends JFrame {
             }
         };
         JMenuItem ToBuyListAction = new JMenuItem(WhatToCook.SelectedPackage.get(107));
-        ToBuyListAction.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO
-                shoppingListDialog.refresh();
-                shoppingListDialog.setVisible(true);
-            }
+        ToBuyListAction.addActionListener(e -> {
+            //TODO
+            shoppingListDialog.refresh();
+            shoppingListDialog.setVisible(true);
         });
         fileMenu.addSeparator();
         fileMenu.add(settingsAction);
@@ -653,6 +645,8 @@ public class MainWindow extends JFrame {
                         JOptionPane.showMessageDialog(null, WhatToCook.SelectedPackage.get(86), WhatToCook.SelectedPackage.get(87), JOptionPane.ERROR_MESSAGE);
                 }
                 refreshGUILists(searchForRecipesTextArea.getText());
+                LinkedRecipesUI.refreshComboBox();
+                repaint();
             }
         });
 
@@ -964,12 +958,9 @@ public class MainWindow extends JFrame {
             linkedRecipesListCheckBox.addItem(recipeToShow.getLinkedRecipes().get(i));
         }
         JButton openLinkedRecipe = new JButton(WhatToCook.SelectedPackage.get(117));
-        openLinkedRecipe.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(RecipesList.getRecipe(linkedRecipesListCheckBox.getSelectedItem().toString())!=null)
-                    showRecipe(RecipesList.getRecipe(linkedRecipesListCheckBox.getSelectedItem().toString()));
-            }
+        openLinkedRecipe.addActionListener(e -> {
+            if(RecipesList.getRecipe(linkedRecipesListCheckBox.getSelectedItem().toString())!=null)
+                showRecipe(RecipesList.getRecipe(linkedRecipesListCheckBox.getSelectedItem().toString()));
         });
 
 
@@ -1220,6 +1211,7 @@ public class MainWindow extends JFrame {
                 if ((!name1.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty()) && (!RecipesList.isRecipe(newRecipe1))) {
                     RecipesList.add(newRecipe1);
                     refreshGUILists(searchForRecipesTextArea.getText());
+                    LinkedRecipesUI.refreshComboBox();
                     isEditionTurnOn = false;
                     mainTable.removeTabAt(mainTable.getSelectedIndex());
                     inEdit = null;
@@ -1231,6 +1223,7 @@ public class MainWindow extends JFrame {
                     RecipesList.remove(recipe.getName());
                     RecipesList.add(newRecipe1);
                     refreshGUILists(searchForRecipesTextArea.getText());
+                    LinkedRecipesUI.refreshComboBox();
                     isEditionTurnOn = false;
                     mainTable.removeTabAt(mainTable.getSelectedIndex());
                     mainTable.setSelectedIndex(1);

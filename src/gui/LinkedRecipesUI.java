@@ -56,6 +56,12 @@ public class LinkedRecipesUI {
         linkedRecipesPanel.add(linkedRecipesArea, BorderLayout.CENTER);
     }
 
+    public static void refreshComboBox() {
+        allRecipes.removeAllItems();
+        for (int i = 0; i < recipesList.size(); i++)
+            allRecipes.addItem(recipesList.get(i).getName());
+    }
+
     public static void showLinkedRecipes() {
         String temp;
         JRadioButton button;
