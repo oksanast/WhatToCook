@@ -188,27 +188,48 @@ public class RecipesList
     }
     static public boolean checkWithIngredientsList(ArrayList<Ingredient> aviableIngredients,int index,boolean parameters[],int ease,int time)
     {
-        boolean contains;
-        for(int i = 0; i < recipesList.get(index).getSize();i++)
-        {
-            contains = false;
-            for (Ingredient aviableIngredient : aviableIngredients)
-                if (recipesList.get(index).getIngredient(i).equals(aviableIngredient))
-                    contains = true;
-
-            if(!contains)
-                return false;
-        }
-        if(recipesList.get(index).getParameters().getPreparingEase()<=ease && recipesList.get(index).getParameters().getPreparingTime()<=time) {
-            for(int i = 0; i < 5;i++)
-            {
-                if(recipesList.get(index).getParameters().getParameters()[i]==true && parameters[i]==false)
+        if(!WhatToCook.frame.getSpareIngredientsCheckButtonValue()) {
+            boolean contains;
+            for (int i = 0; i < recipesList.get(index).getSize(); i++) {
+                contains = false;
+                for (Ingredient aviableIngredient : aviableIngredients)
+                    if (recipesList.get(index).getIngredient(i).equals(aviableIngredient))
+                        contains = true;
+                if (!contains)
                     return false;
             }
-            return true;
+            if (recipesList.get(index).getParameters().getPreparingEase() <= ease && recipesList.get(index).getParameters().getPreparingTime() <= time) {
+                for (int i = 0; i < 5; i++) {
+                    if (recipesList.get(index).getParameters().getParameters()[i] == true && parameters[i] == false)
+                        return false;
+                }
+                return true;
+            } else
+                return false;
         }
-        else
-            return false;
+        else {
+            boolean contains;
+            for (int i = 0; i < recipesList.get(index).getSize(); i++) {
+                contains = false;
+                for (Ingredient aviableIngredient : aviableIngredients)
+                    if (recipesList.get(index).getIngredient(i).equals(aviableIngredient))
+                        contains = true;
+                for (Ingredient aviableIngredient : aviableIngredients)
+                    if(SpareIngredientsList.containSpareIngredient(aviableIngredient,recipesList.get(index).getIngredient(i)))
+                        contains = true;
+                if (!contains)
+                    return false;
+            }
+            if (recipesList.get(index).getParameters().getPreparingEase() <= ease && recipesList.get(index).getParameters().getPreparingTime() <= time) {
+                for (int i = 0; i < 5; i++) {
+                    if (recipesList.get(index).getParameters().getParameters()[i] == true && parameters[i] == false)
+                        return false;
+                }
+                return true;
+            } else
+                return false;
+        }
+
 
     }
 

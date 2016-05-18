@@ -1,7 +1,4 @@
 package auxiliary;
-
-import java.util.ArrayList;
-
 /**
  * Created by WTC-Team on 25.04.2016.
  * Project WhatToCook

@@ -3,9 +3,11 @@ package core;
 import auxiliary.LanguagePackage;
 import auxiliary.LanguagePackageList;
 import gui.MainWindow;
+import sun.applet.Main;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -74,39 +76,65 @@ public class WhatToCook {
         cards = new boolean[3];
         try {
             in = new Scanner(new File("src/mainSettingsConfig"));
-            String line = in.next();
+            String line = in.nextLine();
             String splittedLine[] = line.split("=");
             SelectedPackage = LanguagesPackages.get(splittedLine[1]);
-            line = in.next();
+            line = in.nextLine();
             splittedLine = line.split("=");
             MainWindow.getToNewCard = splittedLine[1].equals("true");
-            line = in.next();
+            line = in.nextLine();
             splittedLine = line.split("=");
             MainWindow.autoLoadIngredients = splittedLine[1].equals("true");
-            line = in.next();
+            line = in.nextLine();
             splittedLine = line.split("=");
             cards[0] = splittedLine[1].equals("true");
-            line = in.next();
+            line = in.nextLine();
             splittedLine = line.split("=");
             cards[1] = splittedLine[1].equals("true");
-            line = in.next();
+            line = in.nextLine();
             splittedLine = line.split("=");
             cards[2] = splittedLine[1].equals("true");
+            line = in.nextLine();
+            splittedLine = line.split("=");
+            MainWindow.font = splittedLine[1];
+            line = in.nextLine();
+            splittedLine = line.split("=");
+            MainWindow.size = Integer.parseInt(splittedLine[1]);
+            line = in.nextLine();
+            splittedLine = line.split("[=,/]");
+            int r = Integer.parseInt(splittedLine[2]);
+            int g = Integer.parseInt(splittedLine[4]);
+            int b = Integer.parseInt(splittedLine[6].substring(0,splittedLine[6].length()-1));
+            MainWindow.backgroundColor = new Color(r,g,b);
+            line = in.nextLine();
+            splittedLine = line.split("=");
+            MainWindow.theme = splittedLine[1];
+            line = in.nextLine();
+            splittedLine = line.split("=");
+            if(splittedLine[1].equals("false"))
+                MainWindow.biggerLabels = false;
+            else
+                MainWindow.biggerLabels = true;
+
         } catch (FileNotFoundException | NoSuchElementException e) {
             System.err.println("Error during loading config files file, program will load with default settings");
+            MainWindow.font = "Comic Sans MS";
+            MainWindow.size = 12;
+            MainWindow.theme = "Platform";
+            MainWindow.backgroundColor = new Color(255,255,255);
+            MainWindow.biggerLabels = true;
         }
         if (SelectedPackage == null)
             SelectedPackage = LanguagesPackages.get(0);
-
         frame = new MainWindow(cards);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
     }
+    //TODO ZMIANA PRZY KAZDYM DODANIU SLOWA
+    private static final int phrasesCount = 116;
 
-    private static final int phrasesCount = 92;//ZMIANA PRZY DODANIU SLOWA
-
-    static boolean cards[];
+    private static boolean cards[];
 
     public static boolean[] getCards() {return cards;}
 

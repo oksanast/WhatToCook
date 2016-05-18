@@ -29,5 +29,6 @@ public class AboutWindow extends JDialog{
         mainBorderLayout.add(description,BorderLayout.CENTER);
         mainBorderLayout.add(name,BorderLayout.NORTH);
         add(mainBorderLayout);
+        pack();
     }
 }

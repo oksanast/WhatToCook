@@ -12,23 +12,20 @@ import java.io.PrintWriter;
 
 /**
  * Created by WTC-Team on 04.05.2016.
+ * Project WhatToCook
  */
-public class SearchingWindow extends JDialog {
-    public SearchingWindow(){
+class SearchingWindow extends JDialog {
+    SearchingWindow(){
         setSize(200,100);
         setLocationRelativeTo(null);
         setModal(true);
         setTitle(WhatToCook.SelectedPackage.get(80));
         JPanel mainPanel = new JPanel(new GridLayout(2,1));
         wholeWords = new JCheckBox(WhatToCook.SelectedPackage.get(81));
-        wholeWords.addActionListener(e -> {
-            exportSettings();
-        });
+        wholeWords.addActionListener(e -> exportSettings());
         wholeWords.setSelected(true);
         caseSensitiveCheckBox = new JCheckBox(WhatToCook.SelectedPackage.get(82));
-        caseSensitiveCheckBox.addActionListener(e -> {
-            exportSettings();
-        });
+        caseSensitiveCheckBox.addActionListener(e -> exportSettings());
         mainPanel.add(wholeWords);
         mainPanel.add(caseSensitiveCheckBox);
 
@@ -46,6 +43,6 @@ public class SearchingWindow extends JDialog {
         }
 
     }
-    public JCheckBox caseSensitiveCheckBox;
-    public JCheckBox wholeWords;
+    JCheckBox caseSensitiveCheckBox;
+    JCheckBox wholeWords;
 }
