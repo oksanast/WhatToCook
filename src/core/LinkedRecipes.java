@@ -12,7 +12,7 @@ import static core.RecipesList.recipesList;
 import static core.WhatToCook.endl;
 
 /**
- * Created by Radek on 2016-05-18.
+ * Created by WTC-Team on 2016-05-18.
  */
 public class LinkedRecipes {
 

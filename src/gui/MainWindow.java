@@ -636,10 +636,8 @@ public class MainWindow extends JFrame {
 
         manageRecipesAndLinkedPanel.add(recipesListScrollPane);
         LinkedRecipesPanel.manageLinkedRecipes(manageRecipesAndLinkedPanel);
-       // manageRecipesAndLinkedPanel.add(newRecipe);
 
         manageRecipesLeftBorderLayout.add(manageRecipesAndLinkedPanel, BorderLayout.CENTER);
-        //manageRecipesLeftBorderLayout.add(recipesListScrollPane, BorderLayout.CENTER);
         manageRecipesGridPanel.add(manageRecipesLeftBorderLayout);
         manageRecipesMainPanel.add(manageRecipesGridPanel, BorderLayout.CENTER);
 
@@ -1477,7 +1475,7 @@ public class MainWindow extends JFrame {
     private JPanel newEditParametersGrid;
     private JPanel manageRecipesMainPanel;
     private JPanel manageRecipesGridPanel;
-    private JPanel manageRecipesAndLinkedPanel;    /////////////////////////////................................
+    private JPanel manageRecipesAndLinkedPanel;
     private JPanel manageRecipesLeftBorderLayout;
     private JPanel manageRecipesLeftUpGridPanel;
     private JPanel manageRecipesLeftDownGridPanel;

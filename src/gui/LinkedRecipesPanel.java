@@ -22,7 +22,7 @@ import static gui.MainWindow.markedRecipe;
 import static javax.swing.SwingConstants.NORTH;
 
 /**
- * Created by Radek on 2016-05-17.
+ * Created by WTC-Team on 2016-05-17.
  */
 public class LinkedRecipesPanel {
 
@@ -96,5 +96,4 @@ public class LinkedRecipesPanel {
     private static JPanel linkedRecipesArea;
     private static JPanel linkedRecipesPanel;
     private static ButtonGroup linkedRecipesButtonGroup = new ButtonGroup();
-    private static String checkedRecipe = new String();
 }
