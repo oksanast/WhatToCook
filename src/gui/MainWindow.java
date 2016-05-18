@@ -5,18 +5,14 @@ import auxiliary.PairAmountUnit;
 import auxiliary.RecipeParameters;
 import core.*;
 import auxiliary.PairRecipeIndex;
-import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.metal.MetalIconFactory;
-import javax.swing.plaf.synth.SynthButtonUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -25,8 +21,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import static java.awt.event.ActionEvent.*;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -609,6 +603,8 @@ public class MainWindow extends JFrame {
         manageRecipesLeftDownGridPanel = new JPanel(new GridLayout(1, 3));
         searchingOptionsBorderLayout = new JPanel(new BorderLayout());
 
+        manageRecipesAndLinkedPanel = new JPanel(new GridLayout(1, 2));
+
         searchForRecipesTextArea = new JTextField();
         searchingOptionsButton = new JButton(WhatToCook.SelectedPackage.get(80));
         searchingOptionsButton.addActionListener(e -> searchingDialog.setVisible(true));
@@ -675,6 +671,7 @@ public class MainWindow extends JFrame {
         recipesList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                markedRecipe = recipesList.getSelectedIndex();
                 if (e.getClickCount() == 2) {
                     int index = recipesList.getSelectedIndex();
                     int i;
@@ -697,7 +694,13 @@ public class MainWindow extends JFrame {
         manageRecipesLeftDownGridPanel.add(editRecipe);
         manageRecipesLeftDownGridPanel.add(deleteRecipe);
         manageRecipesLeftBorderLayout.add(manageRecipesLeftDownGridPanel, BorderLayout.SOUTH);
-        manageRecipesLeftBorderLayout.add(recipesListScrollPane, BorderLayout.CENTER);
+
+        manageRecipesAndLinkedPanel.add(recipesListScrollPane);
+        LinkedRecipesPanel.manageLinkedRecipes(manageRecipesAndLinkedPanel);
+       // manageRecipesAndLinkedPanel.add(newRecipe);
+
+        manageRecipesLeftBorderLayout.add(manageRecipesAndLinkedPanel, BorderLayout.CENTER);
+        //manageRecipesLeftBorderLayout.add(recipesListScrollPane, BorderLayout.CENTER);
         manageRecipesGridPanel.add(manageRecipesLeftBorderLayout);
         manageRecipesMainPanel.add(manageRecipesGridPanel, BorderLayout.CENTER);
 
@@ -1590,6 +1593,7 @@ public class MainWindow extends JFrame {
     private JPanel newEditParametersGrid;
     private JPanel manageRecipesMainPanel;
     private JPanel manageRecipesGridPanel;
+    private JPanel manageRecipesAndLinkedPanel;    /////////////////////////////................................
     private JPanel manageRecipesLeftBorderLayout;
     private JPanel manageRecipesLeftUpGridPanel;
     private JPanel manageRecipesLeftDownGridPanel;
@@ -1657,6 +1661,8 @@ public class MainWindow extends JFrame {
     private TimerWindow timerDialog;
 
     private PairRecipeIndex shownRecipesList;
+
+    public static int markedRecipe = -1;
 
     public static boolean getToNewCard;
     public static boolean autoLoadIngredients;

@@ -37,11 +37,16 @@ public class Recipe implements Comparable<Recipe>
     public String getUnit(int i){return ingredientsAmountAndUnits.get(i).getUnit();}
     public RecipeParameters getParameters() {return parameters;}
     public int getSize(){return ingredients.size();}
+    public ArrayList getLinkedRecipes() {
+        return LinkedRecipes;
+    }
+
     private String name;
     private ArrayList<Ingredient> ingredients;
     private ArrayList<PairAmountUnit> ingredientsAmountAndUnits;
     private String instructions;
     private RecipeParameters parameters;
+    private ArrayList<Recipe> LinkedRecipes;
 
     @Override
     public int compareTo(Recipe o) {
