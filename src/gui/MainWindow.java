@@ -22,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static gui.LinkedRecipesUI.showLinkedRecipes;
 import static java.awt.event.ActionEvent.*;
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -667,6 +668,7 @@ public class MainWindow extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 markedRecipe = recipesList.getSelectedIndex();
+                showLinkedRecipes();
                 if (e.getClickCount() == 2) {
                     int index = recipesList.getSelectedIndex();
                     int i;
@@ -691,11 +693,9 @@ public class MainWindow extends JFrame {
         manageRecipesLeftBorderLayout.add(manageRecipesLeftDownGridPanel, BorderLayout.SOUTH);
 
         manageRecipesAndLinkedPanel.add(recipesListScrollPane);
-        LinkedRecipesPanel.manageLinkedRecipes(manageRecipesAndLinkedPanel);
-       // manageRecipesAndLinkedPanel.add(newRecipe);
+        LinkedRecipesUI.manageLinkedRecipes(manageRecipesAndLinkedPanel);
 
         manageRecipesLeftBorderLayout.add(manageRecipesAndLinkedPanel, BorderLayout.CENTER);
-        //manageRecipesLeftBorderLayout.add(recipesListScrollPane, BorderLayout.CENTER);
         manageRecipesGridPanel.add(manageRecipesLeftBorderLayout);
         manageRecipesMainPanel.add(manageRecipesGridPanel, BorderLayout.CENTER);
 
@@ -1588,7 +1588,7 @@ public class MainWindow extends JFrame {
     private JPanel newEditParametersGrid;
     private JPanel manageRecipesMainPanel;
     private JPanel manageRecipesGridPanel;
-    private JPanel manageRecipesAndLinkedPanel;    /////////////////////////////................................
+    private JPanel manageRecipesAndLinkedPanel;
     private JPanel manageRecipesLeftBorderLayout;
     private JPanel manageRecipesLeftUpGridPanel;
     private JPanel manageRecipesLeftDownGridPanel;

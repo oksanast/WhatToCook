@@ -7,10 +7,12 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.StyleContext;
 import javax.swing.JComboBox;
+import javax.swing.JScrollPane;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 
 import static core.LinkedRecipes.addLinking;
@@ -20,12 +22,12 @@ import static gui.MainWindow.markedRecipe;
 import static javax.swing.SwingConstants.NORTH;
 
 /**
- * Created by Radek on 2016-05-17.
+ * Created by WTC-Team on 2016-05-17.
  */
-public class LinkedRecipesPanel {
+public class LinkedRecipesUI {
 
     public static void manageLinkedRecipes(JPanel manageRecipesAndLinkedPanel) {
-        JPanel linkedRecipesPanel = new JPanel();
+        linkedRecipesPanel = new JPanel();
         linkedRecipesPanel.setLayout(new BorderLayout());
         manageRecipesAndLinkedPanel.add(linkedRecipesPanel);
 
@@ -46,16 +48,35 @@ public class LinkedRecipesPanel {
 
         //Dodanie "panelu zarządzania" do panelu ogólnie do przepisów powiązanych
         linkedRecipesPanel.add(manage, BorderLayout.NORTH);
+
         //Dodanie przestrzeni na przepisy powiązane
-        JScrollPane linkedRecipes = new JScrollPane();
-        linkedRecipesPanel.add(linkedRecipes, BorderLayout.CENTER);
+        linkedRecipesArea = new JPanel();
+        linkedRecipesArea.setLayout(new GridLayout(20, 1));
+
+        linkedRecipesPanel.add(linkedRecipesArea, BorderLayout.CENTER);
+    }
+
+    public static void showLinkedRecipes() {
+        String temp;
+        JRadioButton button;
+        linkedRecipesArea.removeAll();
+        for (int i = 0; i < recipesList.get(markedRecipe).getLinkedRecipes().size(); i++) {
+            temp = recipesList.get(markedRecipe).getLinkedRecipes().get(i);
+            button = new JRadioButton(temp);
+            button.setMnemonic(i);
+            linkedRecipesArea.add(button);
+            linkedRecipesButtonGroup.add(button);
+        }
+        linkedRecipesArea.updateUI();
     }
 
     private static void linkedRecipesButtons(JPanel panel) {
         JButton addLinkingButton = new JButton("Dodaj");
+
         addLinkingButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 addLinking(markedRecipe, allRecipes.getSelectedIndex());
+                showLinkedRecipes();
             }
         });
         panel.add(addLinkingButton);
@@ -63,11 +84,16 @@ public class LinkedRecipesPanel {
         JButton delLinkingButton = new JButton("Usuń");
         delLinkingButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                deleteLinking(markedRecipe, allRecipes.getSelectedIndex());
+                ButtonModel button = linkedRecipesButtonGroup.getSelection();
+                deleteLinking(markedRecipe, button.getMnemonic());
+                showLinkedRecipes();
             }
         });
         panel.add(delLinkingButton);
     }
 
     private static JComboBox allRecipes;
+    private static JPanel linkedRecipesArea;
+    private static JPanel linkedRecipesPanel;
+    private static ButtonGroup linkedRecipesButtonGroup = new ButtonGroup();
 }

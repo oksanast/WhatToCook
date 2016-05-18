@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
+import static core.LinkedRecipes.readLinkedRecipes;
+
 /**
  * Created by WTC-Team on 23.03.2016.
  * Project WhatToCook
@@ -84,6 +86,7 @@ public class RecipesList
                 }
                 i++;
             }
+            readLinkedRecipes();
         }catch (NullPointerException e)
         {
 
