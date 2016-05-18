@@ -955,7 +955,6 @@ public class MainWindow extends JFrame {
                     if(!contain)
                         ToBuyIngredientsList.add(recipeToShow.getIngredient(i));
                 }
-                ToBuyIngredientsList.toStringAll();
             }
         };
         Action exportRecipeAction = new AbstractAction(WhatToCook.SelectedPackage.get(44)) {
