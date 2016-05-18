@@ -305,6 +305,8 @@ public class MainWindow extends JFrame {
             }
         });
         fileMenu.addSeparator();
+        fileMenu.add(settingsAction);
+        fileMenu.addSeparator();
         fileMenu.add(exitAction);
         newSubmenu.add(newIngredientAction);
         newSubmenu.add(newRecipeAction);
@@ -316,8 +318,6 @@ public class MainWindow extends JFrame {
         editMenu.addSeparator();
         editMenu.add(clearIngredientsAction);
         editMenu.add(clearReceipesAction);
-        editMenu.addSeparator();
-        editMenu.add(settingsAction);
         helpMenu.add(aboutAction);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //KARTA WYSZUKIWANIA////////////////////////////////////////////////////////////////////////////////////////////
