@@ -107,6 +107,7 @@ class SettingsWindow extends JDialog {
          fontComboBox = new JComboBox<>();
          fontComboBox.addItem("Arial");
          fontComboBox.addItem("Comic Sans MS");
+         fontComboBox.addItem("Courier");
          for(int i = 0; i < fontComboBox.getItemCount();i++){
              if(MainWindow.font.equals(fontComboBox.getItemAt(i)))
                  fontComboBox.setSelectedIndex(i);
