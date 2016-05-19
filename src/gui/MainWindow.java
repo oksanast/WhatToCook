@@ -639,12 +639,22 @@ public class MainWindow extends JFrame {
                 for (int i = recipesList.getSelectedIndices().length - 1; i >= 0; i--) {
                     String recipeName = recipesListModel.getElementAt(recipesList.getSelectedIndices()[i]);
                     if ((inEdit == null) || (inEdit != null && !inEdit.getName().equals(recipeName))) {
+                        for(int j = 0; j < RecipesList.size();j++) {
+                            for(int k = 0; k < RecipesList.recipesList.get(j).getLinkedRecipes().size();k++) {
+                                if(RecipesList.recipesList.get(j).getLinkedRecipes().get(k).equals(recipeName))
+                                {
+                                    RecipesList.recipesList.get(j).getLinkedRecipes().remove(k);
+                                }
+                            }
+                        }
                         RecipesList.remove(recipeName);
+
                     } else
                         JOptionPane.showMessageDialog(null, WhatToCook.SelectedPackage.get(86), WhatToCook.SelectedPackage.get(87), JOptionPane.ERROR_MESSAGE);
                 }
                 refreshGUILists(searchForRecipesTextArea.getText());
                 LinkedRecipesUI.refreshComboBox();
+
                 repaint();
             }
         });
