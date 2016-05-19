@@ -2,8 +2,6 @@ package core;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedSet;
 
 /**
  * Created by WTC-Team on 14.05.2016.
@@ -46,10 +44,9 @@ public class SpareIngredientsList {
 
     public static void rebuildComboBox(JComboBox<String> comboBox,Ingredient ingredient){
         comboBox.removeAllItems();
-        for(Ingredient i : IngredientsList.getSet())
-        {
-            if(!i.getName().equals(ingredient.getName()))
-            comboBox.addItem(i.getName());
+        for (Ingredient i : IngredientsList.getSet()) {
+            if (!i.getName().equals(ingredient.getName()))
+                comboBox.addItem(i.getName());
         }
     }
     /*
@@ -79,7 +76,7 @@ public class SpareIngredientsList {
     /* Funkcja do wypisywania składników alternatywnych danego składnika do ciągu znaków, wykorzystywana przy wypisywaniu
         do pliku
      */
-    public static String getAllSpareIngredients(Ingredient ingredient)
+    static String getAllSpareIngredients(Ingredient ingredient)
     {
         String result = "";
         boolean atLeastOne=false;
@@ -97,12 +94,14 @@ public class SpareIngredientsList {
     /*  Najważniejsza funckja do wyszukiwania, sprawdza czy dany składnik "main" może być zastopiąny przez składnik
         "spare"
     */
-    public static boolean containSpareIngredient(Ingredient spare,Ingredient main) {
+    static boolean containSpareIngredient(Ingredient spare,Ingredient main) {
         SpareIngredients s = getElementByIngredient(main);
-        for(Ingredient i : s.getSpareIngredients()) {
-            if(i.getName().equals(spare.getName()))
-                return true;
-        }
+            if (s != null) {
+                for (Ingredient i : s.getSpareIngredients()) {
+                    if (i.getName().equals(spare.getName()))
+                        return true;
+                }
+            }
         return false;
     }
     public static void removeElement(Ingredient main) {
@@ -119,5 +118,5 @@ public class SpareIngredientsList {
             s.getSpareIngredients().remove(spare);
         }
     }
-    public static ArrayList<SpareIngredients> spareIngredientslist;
+    private static ArrayList<SpareIngredients> spareIngredientslist;
 }

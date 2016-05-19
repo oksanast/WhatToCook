@@ -2,8 +2,6 @@ package core;
 
 import java.text.Collator;
 import java.util.Locale;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * Created by WTC-Team on 23.03.2016.

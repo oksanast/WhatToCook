@@ -16,10 +16,9 @@ import static core.WhatToCook.endl;
  */
 public class LinkedRecipes {
 
-    public static void readLinkedRecipes() {
+    static void readLinkedRecipes() {
         ArrayList<String> temp_list;
         String source = WhatToCook.SelectedPackage.GetRecipesPath()+"/linked/linkedRecipes";
-        //String source = "data/recipesPL/linked/linkedRecipes";
         String curr_line;
         int number_of_recipes;
         Recipe temp_recipe;
@@ -85,7 +84,7 @@ public class LinkedRecipes {
         for (j = 0; j < recipesList.size(); j++) {
             recipe = recipesList.get(j);
             if (recipe.getLinkedRecipes().size() > 0) {
-                if (content != "")
+                if (!content.equals(""))
                     content += endl;
                 content += recipe.getName();
                 content += endl;

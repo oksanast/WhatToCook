@@ -7,13 +7,9 @@ import core.*;
 import auxiliary.PairRecipeIndex;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -24,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import static gui.LinkedRecipesUI.showLinkedRecipes;
-import static java.awt.event.ActionEvent.*;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
@@ -50,7 +45,9 @@ public class MainWindow extends JFrame {
                 UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
             }
             SwingUtilities.updateComponentTreeUI(MainWindow.this);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            System.out.println("None of the look-and-feel themes can be loaded, please check your java installation");
+        }
         SpareIngredientsList.initialize();
         RecipesList.initialize();
         IngredientsList.initialize();
@@ -59,7 +56,9 @@ public class MainWindow extends JFrame {
         try {
             getRootPane().putClientProperty("apple.awt.fullscreenable", true);
         }
-        catch (Exception e) {}
+        catch (Exception e) {
+            System.out.println("Fullscrenable can't be set, propably you're not running mac os x");
+        }
         UIManager.put("Button.font",new Font(font,Font.PLAIN,size));
         UIManager.put("ToggleButton.font",new Font(font,Font.PLAIN,size));
         UIManager.put("RadioButton.font",new Font(font,Font.PLAIN,size));
@@ -69,7 +68,7 @@ public class MainWindow extends JFrame {
         if(biggerLabels)
         UIManager.put("Label.font",new Font(font,Font.PLAIN,(int) (size + size*0.5)));
         else
-            UIManager.put("Label.font",new Font(font,Font.PLAIN,(int) (size)));
+            UIManager.put("Label.font",new Font(font,Font.PLAIN,(size)));
         UIManager.put("List.font",new Font(font,Font.PLAIN,size));
         UIManager.put("MenuBar.font",new Font(font,Font.PLAIN,size));
         UIManager.put("MenuItem.font",new Font(font,Font.PLAIN,size));
@@ -915,7 +914,6 @@ public class MainWindow extends JFrame {
         recipeTextArea.setEditable(false);
         recipeTextArea.setLineWrap(true);
 
-        JPanel downBorderLayout = new JPanel(new BorderLayout());
         JPanel downGridLayout = new JPanel(new GridLayout(1,3));
 
         String toShow = "";
@@ -1446,10 +1444,8 @@ public class MainWindow extends JFrame {
 
         /* Button */
         class CloseButtonTab extends JPanel {
-            private Component tab;
 
             CloseButtonTab(final Component tab, String title, Icon icon) {
-                this.tab = tab;
                 setOpaque(false);
                 BorderLayout borderLayout = new BorderLayout();
                 JLabel jLabel = new JLabel(title + " ", SwingConstants.CENTER);
@@ -1483,7 +1479,6 @@ public class MainWindow extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getSource() instanceof JButton) {
-                    JButton clickedButton = (JButton) e.getSource();
                     mainTable.remove(tab);
                     mainTable.setSelectedIndex(1);
                 }
@@ -1552,7 +1547,7 @@ public class MainWindow extends JFrame {
     {
         return spareIngredientsCheckBox.isSelected();
     }
-    public void openSettings(int i) {
+    void openSettings(int i) {
         settingsDialog.mainTable.setSelectedIndex(i);
         settingsDialog.setVisible(true);
     }

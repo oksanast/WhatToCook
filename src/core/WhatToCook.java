@@ -3,15 +3,12 @@ package core;
 import auxiliary.LanguagePackage;
 import auxiliary.LanguagePackageList;
 import gui.MainWindow;
-import sun.applet.Main;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -51,7 +48,7 @@ public class WhatToCook {
                 if (listOfFiles == null)
                     continue;
                 try {
-                    Scanner in = new Scanner(new File(languagesPaths.get(i)[0]));
+                    new Scanner(new File(languagesPaths.get(i)[0]));
                 } catch (FileNotFoundException e) {
                     continue;
                 }
@@ -111,10 +108,7 @@ public class WhatToCook {
             MainWindow.theme = splittedLine[1];
             line = in.nextLine();
             splittedLine = line.split("=");
-            if(splittedLine[1].equals("false"))
-                MainWindow.biggerLabels = false;
-            else
-                MainWindow.biggerLabels = true;
+            MainWindow.biggerLabels = !splittedLine[1].equals("false");
 
         } catch (FileNotFoundException | NoSuchElementException e) {
             System.err.println("Error during loading config files file, program will load with default settings");

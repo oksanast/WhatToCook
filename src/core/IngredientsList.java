@@ -110,12 +110,11 @@ public class IngredientsList{
             for (Ingredient toExport : IngredientsList)
                 writer.println(toExport.getName());
             writer.close();
-        } catch (FileNotFoundException | UnsupportedEncodingException e)
-        {
-
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+            System.out.println("Ingredients file not found");
         }
     }
-    static public SortedSet<Ingredient> getSet(){
+    static SortedSet<Ingredient> getSet(){
         return IngredientsList;
     }
     static public int Size()

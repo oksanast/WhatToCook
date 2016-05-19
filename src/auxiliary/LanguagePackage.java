@@ -16,7 +16,7 @@ public class LanguagePackage
         {
             ingredientsPath = "";
             recipesPath = "";
-            language = new ArrayList<String>();
+            language = new ArrayList<>();
         }
         public LanguagePackage(String name, int name_index,String ingredientsPath, String recipesPath, String ownedIngredientsPath, ArrayList<String> language)
         {

@@ -49,19 +49,17 @@ public class PairRecipeIndex {
     }
     public Recipe getRecipe(int index)
     {
-        for(int i = 0; i < recipesList.size();i++)
-        {
-            if(recipesList.get(i).index==index)
-                return recipesList.get(i).recipe;
+        for (NumeratedRecipe aRecipesList : recipesList) {
+            if (aRecipesList.index == index)
+                return aRecipesList.recipe;
         }
         return null;
     }
     public int getStartPage(int index)
     {
-        for(int i = 0; i < recipesList.size();i++)
-        {
-            if(recipesList.get(i).index==index)
-                return recipesList.get(i).startPage;
+        for (NumeratedRecipe aRecipesList : recipesList) {
+            if (aRecipesList.index == index)
+                return aRecipesList.startPage;
         }
         return 1;
     }

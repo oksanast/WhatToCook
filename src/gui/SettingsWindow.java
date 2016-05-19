@@ -168,12 +168,17 @@ class SettingsWindow extends JDialog {
          });
 
 
-         if(MainWindow.theme.equals("Platform"))
-             themeComboBox.setSelectedIndex(0);
-         else if(MainWindow.theme.equals("Metal"))
-             themeComboBox.setSelectedIndex(1);
-         else if(MainWindow.theme.equals("Nimbus"))
-             themeComboBox.setSelectedIndex(2);
+         switch (MainWindow.theme) {
+             case "Platform":
+                 themeComboBox.setSelectedIndex(0);
+                 break;
+             case "Metal":
+                 themeComboBox.setSelectedIndex(1);
+                 break;
+             case "Nimbus":
+                 themeComboBox.setSelectedIndex(2);
+                 break;
+         }
 
          themeComboBox.addActionListener(e -> {
              if(themeComboBox.getSelectedIndex()==0)
@@ -216,15 +221,7 @@ class SettingsWindow extends JDialog {
 
     }
 
-    public String getLanguage() {
-        return (String) languageComboBox.getSelectedItem();
-    }
-
-    public boolean getToNewCardCheckbox() {
-        return toNewCardCheckbox.isSelected();
-    }
-
-    public void reload() {
+    private void reload() {
         WhatToCook.frame.dispose();
         WhatToCook.frame = new MainWindow(WhatToCook.getCards());
         WhatToCook.frame.setVisible(true);
@@ -237,7 +234,7 @@ class SettingsWindow extends JDialog {
         WhatToCook.frame.openSettings(mainTable.getSelectedIndex());
     }
 
-    public void exportSettings() {
+    void exportSettings() {
         try {
             PrintWriter writer = new PrintWriter(new File("src/mainSettingsConfig"));
             writer.println("Language=" + languageComboBox.getSelectedItem().toString());

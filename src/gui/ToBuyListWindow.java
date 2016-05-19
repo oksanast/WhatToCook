@@ -75,7 +75,7 @@ public class ToBuyListWindow extends JDialog {
         mainBorderLayout.add(downGridLayout,BorderLayout.SOUTH);
         add(mainBorderLayout);
     }
-    public void refresh() {
+    void refresh() {
         if(ToBuyIngredientsList.size()>0) {
             ingredientsListModel.clear();
             for (Ingredient i : ToBuyIngredientsList.getSet()) {

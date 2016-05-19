@@ -40,7 +40,7 @@ public class Recipe implements Comparable<Recipe>
     public ArrayList<String> getLinkedRecipes() {
         return LinkedRecipes;
     }
-    public void setLinkedRecipes(ArrayList<String> linkedRecipes) {
+    void setLinkedRecipes(ArrayList<String> linkedRecipes) {
         LinkedRecipes = linkedRecipes;
     }
 
