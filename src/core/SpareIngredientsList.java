@@ -44,9 +44,10 @@ public class SpareIngredientsList {
 
     public static void rebuildComboBox(JComboBox<String> comboBox,Ingredient ingredient){
         comboBox.removeAllItems();
-        for (Ingredient i : IngredientsList.getSet()) {
-            if (!i.getName().equals(ingredient.getName()))
-                comboBox.addItem(i.getName());
+        for(Ingredient i : IngredientsList.getSet())
+        {
+            if(!i.getName().equals(ingredient.getName()))
+            comboBox.addItem(i.getName());
         }
     }
     /*
@@ -96,12 +97,12 @@ public class SpareIngredientsList {
     */
     static boolean containSpareIngredient(Ingredient spare,Ingredient main) {
         SpareIngredients s = getElementByIngredient(main);
-            if (s != null) {
-                for (Ingredient i : s.getSpareIngredients()) {
-                    if (i.getName().equals(spare.getName()))
-                        return true;
-                }
+        if (s != null) {
+            for (Ingredient i : s.getSpareIngredients()) {
+                if (i.getName().equals(spare.getName()))
+                    return true;
             }
+        }
         return false;
     }
     public static void removeElement(Ingredient main) {
