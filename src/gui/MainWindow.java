@@ -809,6 +809,10 @@ public class MainWindow extends JFrame {
         spareIngredientsMainGridLayout = new JPanel(new GridLayout(1,2));
         spareIngredientsLeftGridLayout = new JPanel(new GridLayout(2,1));
         spareIngredientsUpBorderLayout = new JPanel(new BorderLayout());
+        spareIngredientsInputList.setBackground(spareIngredientsMainBorderLayout.getBackground());
+
+        DefaultListCellRenderer renderer = (DefaultListCellRenderer)spareIngredientsInputList.getCellRenderer();
+        renderer.setHorizontalAlignment(JLabel.CENTER);
 
         spareIngredientsAddButton=new JButton(WhatToCook.SelectedPackage.get(88));
         spareIngredientsRemoveButton = new JButton(WhatToCook.SelectedPackage.get(89));

@@ -18,7 +18,8 @@ public class LinkedRecipes {
 
     public static void readLinkedRecipes() {
         ArrayList<String> temp_list;
-        String source = "data/recipesPL/linked/linkedRecipesPL";
+        String source = WhatToCook.SelectedPackage.GetRecipesPath()+"/linked/linkedRecipes";
+        //String source = "data/recipesPL/linked/linkedRecipes";
         String curr_line;
         int number_of_recipes;
         Recipe temp_recipe;
@@ -75,7 +76,8 @@ public class LinkedRecipes {
     }
 
     public static void saveLinkings() {
-        String out = "data/recipesPL/linked/linkedRecipesPL";
+        String out = WhatToCook.SelectedPackage.GetRecipesPath()+"/linked/linkedRecipes";
+        //String out = "data/recipesPL/linked/linkedRecipes";
         String content = "";
         String linkRecipe;
         Recipe recipe;
