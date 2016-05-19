@@ -7,6 +7,7 @@ import core.*;
 import auxiliary.PairRecipeIndex;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
@@ -701,7 +702,6 @@ public class MainWindow extends JFrame {
 
         manageRecipesAndLinkedPanel.add(recipesListScrollPane);
         LinkedRecipesUI.manageLinkedRecipes(manageRecipesAndLinkedPanel);
-
         manageRecipesLeftBorderLayout.add(manageRecipesAndLinkedPanel, BorderLayout.CENTER);
         manageRecipesGridPanel.add(manageRecipesLeftBorderLayout);
         manageRecipesMainPanel.add(manageRecipesGridPanel, BorderLayout.CENTER);
@@ -916,7 +916,7 @@ public class MainWindow extends JFrame {
         recipeTextArea.setLineWrap(true);
 
         JPanel downBorderLayout = new JPanel(new BorderLayout());
-        JPanel downRightGridLayout = new JPanel(new GridLayout(1,2));
+        JPanel downGridLayout = new JPanel(new GridLayout(1,3));
 
         String toShow = "";
         toShow += WhatToCook.SelectedPackage.get(65) +" "+recipeToShow.getName() + WhatToCook.endl + WhatToCook.endl + WhatToCook.endl;
@@ -951,7 +951,6 @@ public class MainWindow extends JFrame {
         toShow += WhatToCook.SelectedPackage.get(27) + WhatToCook.endl + WhatToCook.endl;
         for (int i = 0; i < recipeToShow.getSize(); i++) {
             toShow += recipeToShow.getIngredient(i).toString() + " " + recipeToShow.getAmount(i) + " " + recipeToShow.getUnit(i) + WhatToCook.endl;
-
         }
         toShow += WhatToCook.endl + WhatToCook.endl;
         toShow += WhatToCook.SelectedPackage.get(66) + WhatToCook.endl + WhatToCook.endl + recipeToShow.getRecipe();
@@ -965,20 +964,18 @@ public class MainWindow extends JFrame {
             if(RecipesList.getRecipe(linkedRecipesListCheckBox.getSelectedItem().toString())!=null)
                 showRecipe(RecipesList.getRecipe(linkedRecipesListCheckBox.getSelectedItem().toString()));
         });
-
-
-        downRightGridLayout.add(linkedRecipesListCheckBox);
-        downRightGridLayout.add(openLinkedRecipe);
         JLabel linkedRecipesLabel = new JLabel(WhatToCook.SelectedPackage.get(116),SwingConstants.CENTER);
         linkedRecipesLabel.setFont(new Font(MainWindow.font,Font.PLAIN,14));
-        downBorderLayout.add(linkedRecipesLabel,BorderLayout.CENTER);
-        downBorderLayout.add(downRightGridLayout,BorderLayout.EAST);
-
+        downGridLayout.add(linkedRecipesLabel);
+        downGridLayout.add(linkedRecipesListCheckBox);
+        downGridLayout.add(openLinkedRecipe);
+        //downBorderLayout.add(downGridLayout,BorderLayout.CENTER);
+        recipesBorderLayout.add(downGridLayout,BorderLayout.SOUTH);
         recipeTextArea.setText(toShow);
         final String toExport = toShow;
         recipeTextAreaScrollPane = new JScrollPane(recipeTextArea);
         recipesBorderLayout.add(recipeTextAreaScrollPane, BorderLayout.CENTER);
-        recipesBorderLayout.add(downBorderLayout,BorderLayout.SOUTH);
+        //recipesBorderLayout.add(downBorderLayout,BorderLayout.SOUTH);
         //recipeTextAreaScrollPane.setBorder(BorderFactory.createMatteBorder(5,5,5,5,backgroundColor));
         mainTable.addTab(recipeToShow.getName(), recipesBorderLayout);
         if (MainWindow.getToNewCard) {

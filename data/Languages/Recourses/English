@@ -12,13 +12,13 @@ Insert ingredients
 Choose ingredients:
 Add ingredients
 Remove ingredients
-Founds receipes
-Search for receipes
+Founds recipes
+Search for recipes
 Search
 New Recipe
 Edit Recipe
 Insert Recipe Name
-Write making instrictions below
+Write making instructions below
 Save and Exit
 Exit without saving
 Close the Recipe
@@ -39,19 +39,19 @@ Authors
 This ingredients can't be deleted, cause it is used in recipes:
 Deleting ingredients error
 Export Ingredients
-Inport Ingredients
+Import Ingredients
 Are you sure? It will cause restart.
 Confirmation
 Export Recipe
 New
 Ingredient
 Recipe
-Ammount:
+Amount:
 Unit:
 Dish for:
-Breakfest
+Breakfast
 Dessert
-Diner
+Dinner
 Supper
 Snack
 Preparing time:
@@ -63,8 +63,8 @@ Long
 Easy
 Average
 Difficult
-Recipe: 
-Instructions: 
+Recipe:
+Instructions:
 The change of language will cause change of database.
 Import
 Export
@@ -72,7 +72,7 @@ Importing ingredients error
 Following ingredients was not imported, cause they are not in the database
 Ingredients
 Save program state:
-Path: 
+Path:
 Change path
 Importing error
 It was impossible to read the file with owned ingredients, check its path in the options
@@ -84,7 +84,7 @@ Recognize letters size
 View
 Cards
 Close all recipes
-You can't delete recipe that is being eddited now.
+You can't delete recipe that is being edited now.
 Deleting recipe error.
 Add
 Delete

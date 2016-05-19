@@ -2,6 +2,7 @@ package gui;
 
 import core.RecipesList;
 import core.LinkedRecipes;
+import core.WhatToCook;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -23,6 +24,7 @@ import static javax.swing.SwingConstants.NORTH;
 
 /**
  * Created by WTC-Team on 2016-05-17.
+ * Project WhatToCook
  */
 public class LinkedRecipesUI {
 
@@ -34,7 +36,7 @@ public class LinkedRecipesUI {
         //Cześć z tytułem, listą dostępnych przepisów i przyciskami do dodawania i usuwania
         JPanel manage = new JPanel(new GridLayout(3, 1));
             //Tytuł
-        JLabel panelName = new JLabel("Przepisy powiązane", JLabel.CENTER);
+        JLabel panelName = new JLabel(WhatToCook.SelectedPackage.get(116), JLabel.CENTER);
         manage.add(panelName);
             //Lista dost. przepisów
         allRecipes = new JComboBox<>();
@@ -48,6 +50,9 @@ public class LinkedRecipesUI {
 
         //Dodanie "panelu zarządzania" do panelu ogólnie do przepisów powiązanych
         linkedRecipesPanel.add(manage, BorderLayout.NORTH);
+        amountLabel = new JLabel();
+        amountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        linkedRecipesPanel.add(amountLabel,BorderLayout.SOUTH);
 
         //Dodanie przestrzeni na przepisy powiązane
         linkedRecipesArea = new JPanel();
@@ -74,15 +79,17 @@ public class LinkedRecipesUI {
             linkedRecipesButtonGroup.add(button);
         }
         linkedRecipesArea.updateUI();
+        amountLabel.setText(RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size() + "/16");
     }
 
     private static void linkedRecipesButtons(JPanel panel) {
-        JButton addLinkingButton = new JButton("Dodaj");
+        JButton addLinkingButton = new JButton(WhatToCook.SelectedPackage.get(88));
 
         addLinkingButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(markedRecipe!=null) {
-                    if (RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size() < 16 && !RecipesList.getRecipe(markedRecipe).getName().equals(allRecipes.getSelectedItem())) {
+                    if (RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size() < 16 && !RecipesList.getRecipe
+                            (markedRecipe).getName().equals(allRecipes.getSelectedItem())) {
                         addLinking(markedRecipe, allRecipes.getSelectedItem().toString());
                         showLinkedRecipes();
                     }
@@ -91,7 +98,7 @@ public class LinkedRecipesUI {
         });
         panel.add(addLinkingButton);
 
-        JButton delLinkingButton = new JButton("Usuń");
+        JButton delLinkingButton = new JButton(WhatToCook.SelectedPackage.get(89));
         delLinkingButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ButtonModel button = linkedRecipesButtonGroup.getSelection();
@@ -105,6 +112,7 @@ public class LinkedRecipesUI {
         panel.add(delLinkingButton);
     }
 
+    private static JLabel amountLabel;
     private static JComboBox<String> allRecipes;
     private static JPanel linkedRecipesArea;
     private static JPanel linkedRecipesPanel;
