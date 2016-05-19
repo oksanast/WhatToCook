@@ -297,7 +297,6 @@ public class MainWindow extends JFrame {
         };
         JMenuItem ToBuyListAction = new JMenuItem(WhatToCook.SelectedPackage.get(107));
         ToBuyListAction.addActionListener(e -> {
-            //TODO
             shoppingListDialog.refresh();
             shoppingListDialog.setVisible(true);
         });
