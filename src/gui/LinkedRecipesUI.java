@@ -66,8 +66,8 @@ public class LinkedRecipesUI {
         String temp;
         JRadioButton button;
         linkedRecipesArea.removeAll();
-        for (int i = 0; i < recipesList.get(markedRecipe).getLinkedRecipes().size(); i++) {
-            temp = recipesList.get(markedRecipe).getLinkedRecipes().get(i);
+        for (int i = 0; i < RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size(); i++) {
+            temp = RecipesList.getRecipe(markedRecipe).getLinkedRecipes().get(i);
             button = new JRadioButton(temp);
             button.setMnemonic(i);
             linkedRecipesArea.add(button);
@@ -81,9 +81,9 @@ public class LinkedRecipesUI {
 
         addLinkingButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(markedRecipe>=0) {
-                    if (recipesList.get(markedRecipe).getLinkedRecipes().size() < 16 && !recipesList.get(markedRecipe).getName().equals(allRecipes.getSelectedItem())) {
-                        addLinking(markedRecipe, allRecipes.getSelectedIndex());
+                if(markedRecipe!=null) {
+                    if (RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size() < 16 && !RecipesList.getRecipe(markedRecipe).getName().equals(allRecipes.getSelectedItem())) {
+                        addLinking(markedRecipe, allRecipes.getSelectedItem().toString());
                         showLinkedRecipes();
                     }
                 }

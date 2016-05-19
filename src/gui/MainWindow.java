@@ -660,7 +660,7 @@ public class MainWindow extends JFrame {
         recipesList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                markedRecipe = recipesList.getSelectedIndex();
+                markedRecipe = recipesList.getSelectedValue();
                 showLinkedRecipes();
                 if (e.getClickCount() == 2) {
                     int index = recipesList.getSelectedIndex();
@@ -678,13 +678,13 @@ public class MainWindow extends JFrame {
         recipesList.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                markedRecipe = recipesList.getSelectedIndex();
+                markedRecipe = recipesList.getSelectedValue();
                 showLinkedRecipes();
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                markedRecipe = recipesList.getSelectedIndex();
+                markedRecipe = recipesList.getSelectedValue();
                 showLinkedRecipes();
             }
         });
@@ -1692,7 +1692,7 @@ public class MainWindow extends JFrame {
 
     private PairRecipeIndex shownRecipesList;
 
-    public static int markedRecipe = -1;
+    public static String markedRecipe = null;
 
     public static boolean getToNewCard;
     public static boolean autoLoadIngredients;

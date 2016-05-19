@@ -40,25 +40,25 @@ public class LinkedRecipes {
         }
     }
 
-    public static void addLinking(int recipe1index, int recipe2index) {
-        if (recipe1index >= 0) {
-            Recipe recipe1 = recipesList.get(recipe1index);
-            Recipe recipe2 = recipesList.get(recipe2index);
+    public static void addLinking(String nameRecipe1, String nameRecipe2) {
+        //if (recipe1index >= 0) {
+            Recipe recipe1 = RecipesList.getRecipe(nameRecipe1);
+            Recipe recipe2 = RecipesList.getRecipe(nameRecipe2);
 
             if (!recipe1.getLinkedRecipes().contains(recipe2.getName())) {
                 recipe1.getLinkedRecipes().add(recipe2.getName());
                 recipe2.getLinkedRecipes().add(recipe1.getName());
             }
             saveLinkings();
-        }
+        //}
     }
 
     //Drugi arg jest indexem na liście przepisów linkowanych do przepisu pod pierwszym argumentem!
-    public static void deleteLinking(int recipe1index, int recipe2index) {
+    public static void deleteLinking(String nameRecipe1, int recipe2index) {
         if (recipesList.size() == 0) System.out.println("Nie ma żadnych przepisów?!");
         ArrayList<String> tmp = new ArrayList<String>();
 
-        Recipe recipe1 = recipesList.get(recipe1index);
+        Recipe recipe1 = RecipesList.getRecipe(nameRecipe1);
 
         int i = 0;
         Recipe recipe2 = recipesList.get(0);
