@@ -1,10 +1,10 @@
 package core;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static core.RecipesList.getRecipe;
@@ -18,7 +18,7 @@ public class LinkedRecipes {
 
     static void readLinkedRecipes() {
         ArrayList<String> temp_list;
-        String source = WhatToCook.SelectedPackage.GetRecipesPath()+"/linked/linkedRecipes";
+        String source = "data/recipesPL"+"/linked/linkedRecipes";
         String curr_line;
         int number_of_recipes;
         Recipe temp_recipe;
@@ -75,7 +75,7 @@ public class LinkedRecipes {
     }
 
     public static void saveLinkings() {
-        String out = WhatToCook.SelectedPackage.GetRecipesPath()+"/linked/linkedRecipes";
+        String out = "data/recipesPL"+"/linked/linkedRecipes";
         //String out = "data/recipesPL/linked/linkedRecipes";
         String content = "";
         String linkRecipe;

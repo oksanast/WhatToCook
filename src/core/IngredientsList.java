@@ -1,11 +1,16 @@
 package core;
 
-import javax.swing.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.Scanner;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Created by WTC-Team on 20.04.2016.
@@ -26,7 +31,7 @@ public class IngredientsList{
         String line;
         IngredientsList.clear();
         try {
-            in = new Scanner (new File (WhatToCook.SelectedPackage.GetIngredientsPath ()));
+            in = new Scanner (new File ("data/ingredients/ingredientsPL"));
             while(in.hasNextLine()) {
                 line = in.nextLine();
                 tmp = line.split("/");
@@ -56,7 +61,7 @@ public class IngredientsList{
         String toPrint;
         try
         {
-            writer = new PrintWriter(new File(WhatToCook.SelectedPackage.GetIngredientsPath()));
+            writer = new PrintWriter(new File("data/ingredients/ingredientsPL"));
             for(Ingredient ingredient : IngredientsList)
             {
                 toPrint = ingredient.getName()+"/";
@@ -73,40 +78,49 @@ public class IngredientsList{
         IngredientsList.remove(new Ingredient(name));
         rewriteFile();
     }
-    static public void rebuildModel(DefaultListModel<String> toInsert)
+    static public void rebuildModel(ListView<String> toInsert)
     {
-        toInsert.clear();
+        toInsert.getItems().clear();
         for(Ingredient ingredient : IngredientsList)
         {
-            toInsert.addElement(ingredient.getName());
+            toInsert.getItems().add(ingredient.getName());
         }
     }
-    static public void reloadComboBox(JComboBox<String> comboBox)
+   /* static public void reloadComboBox(ComboBox<String> comboBox)
     {
-        comboBox.removeAllItems();
+        comboBox.getItems().removeAll();
         for(Ingredient ingredient : IngredientsList)
         {
-            comboBox.addItem(ingredient.getName());
+            comboBox.getItems().add(ingredient.getName());
         }
     }
-    static public void reloadComboBox(JComboBox<String> comboBox,ArrayList<Ingredient> toHide)
+    */
+/*
+    static public void reloadComboBox(ComboBox<String> comboBox,ArrayList<Ingredient> toHide)
     {
-        comboBox.removeAllItems();
+        comboBox.getItems().removeAll();
         for(Ingredient ingredient : IngredientsList)
         {
             if(!toHide.contains(ingredient))
-            comboBox.addItem(ingredient.getName());
+            comboBox.getItems().add(ingredient.getName());
         }
+    }*/
+    static public ObservableList<String> getObservableCollection() {
+        ObservableList<String> toReturn = FXCollections.observableArrayList();
+        for(Ingredient i : IngredientsList) {
+            toReturn.add(i.getName());
+        }
+        return toReturn;
     }
     static public boolean contain(Ingredient toCheck)
     {
         return IngredientsList.contains(toCheck);
     }
-    static public void exportToFile(String filename)
+    static public void exportToFile(File file)
     {
         PrintWriter writer;
         try {
-            writer = new PrintWriter(filename, "UTF-8");
+            writer = new PrintWriter(file, "UTF-8");
             for (Ingredient toExport : IngredientsList)
                 writer.println(toExport.getName());
             writer.close();

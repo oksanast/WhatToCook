@@ -2,6 +2,9 @@ package core;
 
 import auxiliary.PairAmountUnit;
 import auxiliary.RecipeParameters;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -27,7 +30,7 @@ public class RecipesList
         recipesList.clear();
         int preparingTime;
         int preparingEase;
-        final File[] listOfFiles = new File(WhatToCook.SelectedPackage.GetRecipesPath()).listFiles();
+        final File[] listOfFiles = new File("data/recipesPL").listFiles();
         int i = 0;
             if (listOfFiles != null) {
                 while (i < listOfFiles.length) {
@@ -61,7 +64,7 @@ public class RecipesList
                                 if (k < ingredient.length - 3)
                                     IngredientName += " ";
                             }
-                            Ingredient newIngredient = new Ingredient (IngredientName);
+                            Ingredient newIngredient = new Ingredient(IngredientName);
                             ingredients.add (newIngredient);
 
                             String ammount = "";
@@ -71,18 +74,18 @@ public class RecipesList
                             if (ingredient[ingredient.length - 1].equals ("true"))
                                 unit = in.nextLine ();
 
-                            ammountsAndUnits.add (new PairAmountUnit (ammount, unit));
+                            ammountsAndUnits.add (new PairAmountUnit(ammount, unit));
 
 
                         }
                         while (in.hasNextLine ()) {
                             instructions += in.nextLine ();
                         }
-                        recipesList.add (new Recipe (name, ingredients, ammountsAndUnits, instructions, new RecipeParameters (parameters, preparingEase, preparingTime)));
+                        recipesList.add (new Recipe(name, ingredients, ammountsAndUnits, instructions, new RecipeParameters(parameters, preparingEase, preparingTime)));
                         Collections.sort (recipesList);
                         in.close ();
                     } catch (FileNotFoundException | NullPointerException e) {
-                        System.out.println("Recipes folder error");
+                        //System.out.println("Recipes folder error");
                     }
                     i++;
                 }
@@ -95,7 +98,7 @@ public class RecipesList
         recipesList.add(recipe);
         Collections.sort(recipesList);
         String filename;
-        filename = WhatToCook.SelectedPackage.GetRecipesPath() +"/"+ recipe.getName();
+        filename = "data/recipesPL" +"/"+ recipe.getName();
         try {
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename)));
            writer.println(recipe.getName());
@@ -157,7 +160,7 @@ public class RecipesList
         {
             String path;
             if(toDelete.equals(recipesList.get(i).getName())) {
-                path = WhatToCook.SelectedPackage.GetRecipesPath() + "/" + recipesList.get(i).getName();
+                path = "data/recipesPL" + "/" + recipesList.get(i).getName();
                 recipesList.remove(i);
                 File fileToDelete = new File(path);
                 fileToDelete.delete();
@@ -173,9 +176,9 @@ public class RecipesList
     {
         return recipesList.get(i).getName();
     }
-    static public boolean checkWithIngredientsList(ArrayList<Ingredient> aviableIngredients,int index,boolean parameters[],int ease,int time)
+    static public boolean checkWithIngredientsList(ArrayList<Ingredient> aviableIngredients, int index, boolean parameters[], int ease, int time,boolean spareIngredients)
     {
-        if(!WhatToCook.frame.getSpareIngredientsCheckButtonValue()) {
+        if(!spareIngredients) {
             boolean contains;
             for (int i = 0; i < recipesList.get(index).getSize(); i++) {
                 contains = false;
@@ -218,6 +221,59 @@ public class RecipesList
         }
 
 
+    }
+    static public void getObservableList(ListView<String> toRebuild) {
+        toRebuild.getItems().removeAll();
+        for(Recipe r : recipesList) {
+            toRebuild.getItems().add(r.getName());
+        }
+    }
+    static public ObservableList<String> getObservableList(String beg,boolean caseSensitive, boolean searchInEveryWorld) {
+        ObservableList<String> toRebuild = FXCollections.observableArrayList();
+        toRebuild.removeAll();
+        if(caseSensitive && !searchInEveryWorld) {
+            for (Recipe r : recipesList) {
+                if (r.getName().startsWith(beg)) {
+                    toRebuild.add(r.getName());
+                }
+            }
+        }
+        else if(!caseSensitive && !searchInEveryWorld) {
+            for (Recipe r : recipesList) {
+                if (r.getName().toLowerCase().startsWith(beg.toLowerCase())) {
+                    toRebuild.add(r.getName());
+                }
+            }
+        }
+        else if(caseSensitive && searchInEveryWorld) {
+            for(Recipe r: recipesList) {
+                if(extendedStartsWith(r.getName().split(" "),beg,true)) {
+                    toRebuild.add(r.getName());
+                }
+            }
+
+        }
+        else if(!caseSensitive && searchInEveryWorld) {
+            for(Recipe r: recipesList) {
+                if(extendedStartsWith(r.getName().split(" "),beg,false)) {
+                    toRebuild.add(r.getName());
+                }
+            }
+        }
+        return toRebuild;
+    }
+    private static boolean extendedStartsWith(String[] words, String start, boolean caseSensitive) {
+        for (String word : words) {
+            if (!caseSensitive) {
+                if (word.toLowerCase().startsWith(start.toLowerCase()))
+                    return true;
+            }
+            if (caseSensitive) {
+                if (word.startsWith(start))
+                    return true;
+            }
+        }
+        return false;
     }
 
     static public ArrayList<Recipe> recipesList;

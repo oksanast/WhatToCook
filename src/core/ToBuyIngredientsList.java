@@ -1,5 +1,8 @@
 package core;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -27,6 +30,14 @@ public class ToBuyIngredientsList {
     }
     public static SortedSet<Ingredient> getSet() {
         return toBuyList;
+    }
+
+    public static ObservableList<String> getObservableList() {
+        ObservableList<String> list = FXCollections.observableArrayList();
+        for(Ingredient i : toBuyList) {
+            list.add(i.getName());
+        }
+        return list;
     }
 
     private static SortedSet<Ingredient> toBuyList;

@@ -1,5 +1,7 @@
 package core;
 
+import javafx.scene.control.ListView;
+
 import javax.swing.*;
 import java.util.ArrayList;
 
@@ -33,16 +35,16 @@ public class SpareIngredientsList {
         spareIngredientslist.add(new SpareIngredients(ingredient));
     }
 
-    public static void rebuildListModel(DefaultListModel<String> model,Ingredient ingredient) {
-        model.clear();
+    public static void rebuildListModel(ListView<String> model, Ingredient ingredient) {
+        model.getItems().clear();
         SpareIngredients si = getElementByIngredient(ingredient);
         if (si != null) {
             for (Ingredient i : si.getSpareIngredients())
-                model.addElement(i.getName());
+                model.getItems().add(i.getName());
         }
     }
 
-    public static void rebuildComboBox(JComboBox<String> comboBox,Ingredient ingredient){
+    public static void rebuildComboBox(JComboBox<String> comboBox, Ingredient ingredient){
         comboBox.removeAllItems();
         for(Ingredient i : IngredientsList.getSet())
         {
@@ -62,7 +64,7 @@ public class SpareIngredientsList {
         }
         return null;
     }
-    public static void addSpareIngredient(Ingredient spare,Ingredient main){
+    public static void addSpareIngredient(Ingredient spare, Ingredient main){
         SpareIngredients s = getElementByIngredient(main);
             if (s != null) {
                 s.addSpareIngredient(spare);
@@ -95,7 +97,7 @@ public class SpareIngredientsList {
     /*  Najważniejsza funckja do wyszukiwania, sprawdza czy dany składnik "main" może być zastopiąny przez składnik
         "spare"
     */
-    static boolean containSpareIngredient(Ingredient spare,Ingredient main) {
+    static boolean containSpareIngredient(Ingredient spare, Ingredient main) {
         SpareIngredients s = getElementByIngredient(main);
         if (s != null) {
             for (Ingredient i : s.getSpareIngredients()) {
