@@ -7,8 +7,6 @@ import core.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -26,7 +24,6 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -155,18 +152,15 @@ public class MainStage extends Application {
         });
 
         MenuItem teamMenuItem = new MenuItem("Autorzy");
-        teamMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                AboutWindow teamStage = new AboutWindow();
-                try {
-                    teamStage.start(primaryStage);
-                } catch (Exception e) {
-                    System.out.println("Internal error, please report it");
-
-                }
+        teamMenuItem.setOnAction(event -> {
+            AboutWindow teamStage = new AboutWindow();
+            try {
+                teamStage.start(primaryStage);
+            } catch (Exception e) {
+                System.out.println("Internal error, please report it");
 
             }
+
         });
 
         searchingCard.setSelected(true);
@@ -458,12 +452,7 @@ public class MainStage extends Application {
         //searchingOptionsInRecipesDatabaseButton.setMaxHeight(Double.MAX_VALUE);
         searchingOptionsInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
 
-        searchingOptionsInRecipesDatabaseButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                    searchOptions.refresh();
-            }
-        });
+        searchingOptionsInRecipesDatabaseButton.setOnAction(event -> searchOptions.refresh());
 
         recipesInRecipesDatabaseList = new ListView<>();
         searchInRecipesDatabase.textProperty().addListener((observable, oldValue, newValue) -> {
