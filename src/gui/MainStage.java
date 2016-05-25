@@ -7,6 +7,8 @@ import core.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -780,7 +782,7 @@ public class MainStage extends Application {
         primaryStage.show();
 
     }
-
+/*
     private void showRecipe(Recipe recipeToShow) {
         Tab showRecipeTab = new Tab(recipeToShow.getName());
         BorderPane showRecipeMainBorderPane = new BorderPane();
@@ -853,8 +855,109 @@ public class MainStage extends Application {
         showRecipeTab.setContent(showRecipeMainBorderPane);
         mainTable.getTabs().add(showRecipeTab);
         mainTable.getSelectionModel().select(showRecipeTab);
-    }
+    }*/
 
+    public void showRecipe(Recipe toShow) {
+        GridPane showRecipeGridPane = new GridPane();
+        //showRecipeGridPane.setGridLinesVisible(true);
+        ColumnConstraints columnInShowRecipe = new ColumnConstraints();
+        columnInShowRecipe.setPercentWidth(25);
+        RowConstraints rowInShowRecipe = new RowConstraints();
+        rowInShowRecipe.setPercentHeight(10);
+        for(int i = 0; i < 4; i++)
+            showRecipeGridPane.getColumnConstraints().add(columnInShowRecipe);
+        for(int i = 0; i < 10;i++)
+            showRecipeGridPane.getRowConstraints().add(rowInShowRecipe);
+
+        TextArea instructionsInRecipe = new TextArea();
+        instructionsInRecipe.setEditable(false);
+        instructionsInRecipe.setWrapText(true);
+        instructionsInRecipe.setText(toShow.getRecipe());
+
+        showRecipeGridPane.add(instructionsInRecipe,0,6,4,6);
+
+        Label youWillNeedLabel = new Label("Będziesz potrzebować:");
+        youWillNeedLabel.setMaxWidth(Double.MAX_VALUE);
+        youWillNeedLabel.setAlignment(Pos.CENTER);
+        youWillNeedLabel.setTextAlignment(TextAlignment.CENTER);
+        String tmp = "";
+        if (toShow.getParameters().getPreparingEase() == 0)
+            tmp = "Łatwo";
+        if (toShow.getParameters().getPreparingEase() == 1)
+            tmp = "Średnio";
+        if (toShow.getParameters().getPreparingEase() == 2)
+            tmp = "Trudno";
+        Label preparingEaseLabel = new Label("Łatwość przygotowywania: "+ tmp);
+        preparingEaseLabel.setMaxWidth(Double.MAX_VALUE);
+        preparingEaseLabel.setAlignment(Pos.CENTER);
+        preparingEaseLabel.setTextAlignment(TextAlignment.CENTER);
+        tmp = "";
+        if (toShow.getParameters().getPreparingTime() == 0)
+            tmp = "Krótko";
+        if (toShow.getParameters().getPreparingTime() == 1)
+            tmp = "Średnio";
+        if (toShow.getParameters().getPreparingTime() == 2)
+            tmp = "Długo";
+        Label preparingTimeLabel = new Label("Czas przygotowywania: " + tmp);
+        preparingTimeLabel.setMaxWidth(Double.MAX_VALUE);
+        preparingTimeLabel.setAlignment(Pos.CENTER);
+        preparingTimeLabel.setTextAlignment(TextAlignment.CENTER);
+
+        Label howToPrepareLabel = new Label("Przygotowanie:");
+        howToPrepareLabel.setMaxWidth(Double.MAX_VALUE);
+        howToPrepareLabel.setAlignment(Pos.CENTER);
+        howToPrepareLabel.setTextAlignment(TextAlignment.CENTER);
+
+        Label seeAlso = new Label("Zobacz również:");
+        seeAlso.setMaxWidth(Double.MAX_VALUE);
+        seeAlso.setAlignment(Pos.CENTER);
+        seeAlso.setTextAlignment(TextAlignment.CENTER);
+
+        ComboBox<String> linkedRecipesInShowRecipe = new ComboBox<>();
+
+        ObservableList<String> linkedRecipesList = FXCollections.observableArrayList();
+
+        for(int i = 0; i < toShow.getLinkedRecipes().size();i++) {
+            linkedRecipesList.add(toShow.getLinkedRecipes().get(i));
+        }
+        linkedRecipesInShowRecipe.setItems(linkedRecipesList);
+
+        linkedRecipesInShowRecipe.setMaxWidth(Double.MAX_VALUE);
+        Button openLinkedRecipe = new Button("Otwórz");
+        openLinkedRecipe.setMaxWidth(Double.MAX_VALUE);
+        openLinkedRecipe.setAlignment(Pos.CENTER);
+        openLinkedRecipe.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(linkedRecipesInShowRecipe.getSelectionModel().getSelectedItem()!=null) {
+                    showRecipe(RecipesList.getRecipe(linkedRecipesInShowRecipe.getSelectionModel().getSelectedItem()));
+                }
+            }
+        });
+        showRecipeGridPane.add(youWillNeedLabel,0,0,2,1);
+        showRecipeGridPane.add(preparingTimeLabel,2,1,2,1);
+        showRecipeGridPane.add(preparingEaseLabel,2,2,2,1);
+        showRecipeGridPane.add(seeAlso,2,3,2,1);
+        showRecipeGridPane.add(linkedRecipesInShowRecipe,2,4,1,1);
+        showRecipeGridPane.add(openLinkedRecipe,3,4,1,1);
+        showRecipeGridPane.add(howToPrepareLabel,0,5,2,1);
+
+        ListView<String> ingredientsInShowRecipeList = new ListView<>();
+
+        ObservableList<String> ingredientsInShowRecipeObservableList = FXCollections.observableArrayList();
+
+        for(int i = 0; i < toShow.getSize();i++)
+            ingredientsInShowRecipeObservableList.add(toShow.getIngredient(i).toString());
+        ingredientsInShowRecipeList.setItems(ingredientsInShowRecipeObservableList);
+
+        showRecipeGridPane.add(ingredientsInShowRecipeList,0,1,2,4);
+
+        Tab showRecipeTab = new Tab(toShow.getName());
+        showRecipeTab.setClosable(true);
+        showRecipeTab.setContent(showRecipeGridPane);
+        mainTable.getTabs().add(showRecipeTab);
+        mainTable.getSelectionModel().select(showRecipeTab);
+    }
     private boolean isFalse(boolean parameters[], int n) {
         for (int i = 0; i < n; i++) {
             if (parameters[i]) {
