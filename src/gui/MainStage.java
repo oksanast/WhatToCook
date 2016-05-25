@@ -5,8 +5,12 @@ import auxiliary.PairAmountUnit;
 import auxiliary.RecipeParameters;
 import core.*;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,8 +25,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import sun.awt.image.ImageWatched;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -465,24 +471,70 @@ public class MainStage extends Application {
             }
         });
 
+        linkedRecipesAmmmount = new Label("0/6");
+        linkedRecipesAmmmount.setAlignment(Pos.CENTER);
+        linkedRecipesAmmmount.setTextAlignment(TextAlignment.CENTER);
+        linkedRecipesAmmmount.setMaxWidth(Double.MAX_VALUE);
+
+
+        linkedRecipesGridPane = new GridPane();
+        RowConstraints linkedRecipesRow = new RowConstraints();
+        linkedRecipesRow.setPercentHeight(14);
+        for(int i = 0; i < 6; i++) {
+            linkedRecipesGridPane.getRowConstraints().add(linkedRecipesRow);
+        }
+        ColumnConstraints linkedRecipesColumn = new ColumnConstraints();
+        linkedRecipesColumn.setPercentWidth(100);
+        linkedRecipesGridPane.getColumnConstraints().add(linkedRecipesColumn);
+        recipesDatabaseGridPane.add(linkedRecipesGridPane,2,5,2,8);
+        recipesDatabaseGridPane.add(linkedRecipesAmmmount,2,12,2,1);
+
+        recipesInRecipesDatabaseList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                markedRecipe = recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem();
+                linkedRecipesToggleGroup.selectToggle(null);
+                refreshLinkedRecipes();
+
+            }
+        });
         Label linkedRecipesInRecipesDatabaseLabel = new Label("Przepisy powiązane:");
-        linkedRecipesInRecipesDatabaseLabel.setMaxHeight(Double.MAX_VALUE);
         linkedRecipesInRecipesDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
         linkedRecipesInRecipesDatabaseLabel.setAlignment(Pos.CENTER);
 
-        ComboBox<String> linkedRecipesInRecipesDatabaseComboBox = new ComboBox<>();
-        linkedRecipesInRecipesDatabaseComboBox.setMaxHeight(Double.MAX_VALUE);
+        linkedRecipesInRecipesDatabaseComboBox = new ComboBox<>();
         linkedRecipesInRecipesDatabaseComboBox.setMaxWidth(Double.MAX_VALUE);
+        linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
 
         Button addLinkedRecipeInRecipesDatabaseButton = new Button("Dodaj");
-        //addLinkedRecipeInRecipesDatabaseButton.setMaxHeight(Double.MAX_VALUE);
         addLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
+        addLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
+            if(markedRecipe!=null) {
+                if (RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size()<6 && !RecipesList.getRecipe
+                        (markedRecipe).getName().equals(linkedRecipesInRecipesDatabaseComboBox.getSelectionModel().getSelectedItem())) {
+                    LinkedRecipes.addLinking(markedRecipe,linkedRecipesInRecipesDatabaseComboBox.getSelectionModel().getSelectedItem());
+                    refreshLinkedRecipes();
+                    LinkedRecipes.saveLinkings();
+                }
+            }
+        });
         Button removeLinkedRecipeInRecipesDatabaseButton = new Button("Usuń");
-        //removeLinkedRecipeInRecipesDatabaseButton.setMaxHeight(Double.MAX_VALUE);
         removeLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
+        removeLinkedRecipeInRecipesDatabaseButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(linkedRecipesToggleGroup.getSelectedToggle()!=null) {
+                    RadioButton button = (RadioButton) linkedRecipesToggleGroup.getSelectedToggle();
+                    String recipeName = button.getText();
+                    LinkedRecipes.deleteLinking(markedRecipe,recipeName);
+                    refreshLinkedRecipes();
+                    LinkedRecipes.saveLinkings();
+                }
+
+            }
+        });
 
         Button addRecipeInRecipesDatabaseButton = new Button("Nowy Przepis");
-        // addRecipeInRecipesDatabaseButton.setMaxHeight(Double.MAX_VALUE);
         addRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
 
         addRecipeInRecipesDatabaseButton.setOnAction(event -> {
@@ -505,10 +557,12 @@ public class MainStage extends Application {
             if (inEdit == null) {
                 RecipesList.remove(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
                 recipesInRecipesDatabaseList.setItems(RecipesList.getObservableList(searchInRecipesDatabase.getText(), WhatToCook.caseSensitiveSearch, WhatToCook.searchInEveryWord));
+                linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
             } else {
                 if (!inEdit.getName().equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
                     RecipesList.remove(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
                     recipesInRecipesDatabaseList.setItems(RecipesList.getObservableList(searchInRecipesDatabase.getText(), WhatToCook.caseSensitiveSearch, WhatToCook.searchInEveryWord));
+                    linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
                 } else {
                     Alert cantDeleteRecipe = new Alert(Alert.AlertType.ERROR);
                     cantDeleteRecipe.setTitle("Błąd usuwania przepisu");
@@ -806,7 +860,6 @@ public class MainStage extends Application {
     }
 
     private void showNewEditMenu(Recipe recipe) {
-        //TODO
         Tab newEditMenuTab;
         if (recipe != null) {
             newEditMenuTab = new Tab(recipe.getName());
@@ -1044,6 +1097,7 @@ public class MainStage extends Application {
                     isEditionTurnOn = false;
                     mainTable.getTabs().remove(newEditMenuTab);
                     mainTable.getSelectionModel().select(1);
+                    linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
                     inEdit = null;
                 } else {
                     Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
@@ -1060,6 +1114,7 @@ public class MainStage extends Application {
                     isEditionTurnOn = false;
                     mainTable.getTabs().remove(newEditMenuTab);
                     mainTable.getSelectionModel().select(1);
+                    linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
                     inEdit = null;
                 } else {
                     Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
@@ -1091,6 +1146,21 @@ public class MainStage extends Application {
         mainTable.getSelectionModel().select(newEditMenuTab);
     }
 
+    private void refreshLinkedRecipes() {
+        linkedRecipesToggleGroup.getToggles().removeAll();
+        RadioButton linkedRecipeButton;
+        linkedRecipesGridPane.getChildren().clear();
+        String temp;
+        for(int i = 0;i < RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size();i++) {
+            temp = RecipesList.getRecipe(markedRecipe).getLinkedRecipes().get(i);
+            linkedRecipeButton = new RadioButton(temp);
+            linkedRecipesToggleGroup.getToggles().add(linkedRecipeButton);
+            linkedRecipesGridPane.add(linkedRecipeButton,0,i,2,1);
+            linkedRecipesAmmmount.setText(RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size() + "/6");
+        }
+    }
+
+    private GridPane linkedRecipesGridPane;
 
     private TabPane mainTable;
 
@@ -1104,13 +1174,11 @@ public class MainStage extends Application {
     private ListView<String> ingredientsInIngredientsDatabaseList;
 
     private ComboBox<String> chooseIngredientsInSearchComboBox;
-
     private ComboBox<String> spareIngredientsInIngredientsDatabaseComboBox;
-
     private ComboBox<String> ingredientsInNewEditMenuComboBox;
-
     private ComboBox<String> preparingTimeInSearchComboBox;
     private ComboBox<String> preparingEaseInSearchComboBox;
+    private ComboBox<String> linkedRecipesInRecipesDatabaseComboBox;
 
     private CheckBox breakfestInSearchCheckBox;
     private CheckBox dinerInSearchCheckBox;
@@ -1126,5 +1194,11 @@ public class MainStage extends Application {
     private TextField searchInRecipesDatabase;
 
     private int mainCardsCount = 3;
+
+    private String markedRecipe = null;
+
+    private ToggleGroup linkedRecipesToggleGroup = new ToggleGroup();
+
+    private Label linkedRecipesAmmmount;
 
 }

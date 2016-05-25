@@ -228,6 +228,13 @@ public class RecipesList
             toRebuild.getItems().add(r.getName());
         }
     }
+    static public ObservableList<String> getObservableList() {
+        ObservableList<String> toExport = FXCollections.observableArrayList();
+        for(Recipe r : recipesList) {
+            toExport.add(r.getName());
+        }
+        return toExport;
+    }
     static public ObservableList<String> getObservableList(String beg,boolean caseSensitive, boolean searchInEveryWorld) {
         ObservableList<String> toRebuild = FXCollections.observableArrayList();
         toRebuild.removeAll();

@@ -18,7 +18,7 @@ public class LinkedRecipes {
 
     static void readLinkedRecipes() {
         ArrayList<String> temp_list;
-        String source = "data/recipesPL"+"/linked/linkedRecipes";
+        String source = "data/recipesPL"+"/linked/linkedRecipesPL";
         String curr_line;
         int number_of_recipes;
         Recipe temp_recipe;
@@ -64,7 +64,7 @@ public class LinkedRecipes {
         Boolean stop = false;
         while ((i < recipesList.size()) && !stop) {
             recipe2 = recipesList.get(i);
-            stop = recipe2.getName() == recipe1.getLinkedRecipes().get(recipe2index);
+            stop = recipe2.getName().equals(recipe1.getLinkedRecipes().get(recipe2index));
             i++;
         }
 
@@ -73,9 +73,28 @@ public class LinkedRecipes {
 
         saveLinkings();
     }
+    public static void deleteLinking(String nameRecipe1, String recipe2name) {
+        if (recipesList.size() == 0) System.out.println("Nie ma żadnych przepisów?!");
+
+        Recipe recipe1 = RecipesList.getRecipe(nameRecipe1);
+
+        int i = 0;
+        Recipe recipe2 = recipesList.get(0);
+        Boolean stop = false;
+        while ((i < recipesList.size()) && !stop) {
+            recipe2 = recipesList.get(i);
+            stop = recipe2.getName().equals(recipe2name);
+            i++;
+        }
+
+        recipe1.getLinkedRecipes().remove(recipe2name);
+        recipe2.getLinkedRecipes().remove(recipe1.getName());
+
+        saveLinkings();
+    }
 
     public static void saveLinkings() {
-        String out = "data/recipesPL"+"/linked/linkedRecipes";
+        String out = "data/recipesPL"+"/linked/linkedRecipesPL";
         //String out = "data/recipesPL/linked/linkedRecipes";
         String content = "";
         String linkRecipe;
