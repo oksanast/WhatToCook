@@ -13,12 +13,20 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -619,11 +627,34 @@ public class MainStage extends Application {
         removeIngredientInIngredientsDatabaseButton.setMaxWidth(Double.MAX_VALUE);
 
         removeIngredientInIngredientsDatabaseButton.setOnAction(event -> {
-            IngredientsList.removeIngredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem());
-            IngredientsList.rebuildModel(ingredientsInIngredientsDatabaseList);
-            ingredientsInNewEditMenuComboBox.setItems(IngredientsList.getObservableCollection());
-            chooseIngredientsInSearchComboBox.setItems(IngredientsList.getObservableCollection());
-            spareIngredientsInIngredientsDatabaseComboBox.setItems(IngredientsList.getObservableCollection());
+            boolean ifExist = false;
+            ArrayList<String> recipesContainIngredient = new ArrayList<>();
+            for (int i = 0; i < RecipesList.size(); i++) {
+                for (int j = 0; j < RecipesList.recipesList.get(i).getSize(); j++) {
+                    if(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem().equals(RecipesList.recipesList.get(i).getIngredient(j).getName())) {
+                        ifExist = true;
+                        recipesContainIngredient.add(RecipesList.recipesList.get(i).getName());
+                    }
+                }
+            }
+            if(!ifExist) {
+                IngredientsList.removeIngredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem());
+                IngredientsList.rebuildModel(ingredientsInIngredientsDatabaseList);
+                ingredientsInNewEditMenuComboBox.setItems(IngredientsList.getObservableCollection());
+                chooseIngredientsInSearchComboBox.setItems(IngredientsList.getObservableCollection());
+                spareIngredientsInIngredientsDatabaseComboBox.setItems(IngredientsList.getObservableCollection());
+            }
+            else {
+                Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
+                cantCreateRecipe.setTitle("Błąd usuwania składnika");
+                cantCreateRecipe.setHeaderText("Nie można usunąć składnika");
+                String cantdelete = "";
+                for(String i : recipesContainIngredient) {
+                    cantdelete+= i;
+                }
+                cantCreateRecipe.setContentText("Składnik jest wykorzystywany w przepisach na:" + WhatToCook.endl + cantdelete);
+                cantCreateRecipe.showAndWait();
+            }
         });
 
         Label spareIngredientsInIngredientsDatabaseLabel = new Label("Składniki Alternatywne:");
@@ -816,7 +847,6 @@ public class MainStage extends Application {
         Label instructionsNewEditMenuLabel = new Label("Napisz instrukcję przygotowywania posiłku");
         instructionsNewEditMenuLabel.setMaxWidth(Double.MAX_VALUE);
         instructionsNewEditMenuLabel.setAlignment(Pos.CENTER);
-
         TextArea instructionsNewEditMenuTextArea = new TextArea();
         instructionsNewEditMenuTextArea.setMaxHeight(Double.MAX_VALUE);
         instructionsNewEditMenuTextArea.setMaxWidth(Double.MAX_VALUE);
@@ -1026,7 +1056,12 @@ public class MainStage extends Application {
                     mainTable.getTabs().remove(newEditMenuTab);
                     mainTable.getSelectionModel().select(1);
                     inEdit = null;
-
+                } else {
+                    Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
+                    cantCreateRecipe.setTitle("Błąd tworzenia przepisu");
+                    cantCreateRecipe.setHeaderText("Nie można utworzyć nowego przepisu.");
+                    cantCreateRecipe.setContentText("Przepis musi zawierać nazwę, opis i conajmniej jeden składnik");
+                    cantCreateRecipe.showAndWait();
                 }
             } else if ((!name1.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty())) {
                 if (recipe.getName().equals(name1) || (!RecipesList.isRecipe(newRecipe1))) {
@@ -1037,8 +1072,13 @@ public class MainStage extends Application {
                     mainTable.getTabs().remove(newEditMenuTab);
                     mainTable.getSelectionModel().select(1);
                     inEdit = null;
+                } else {
+                    Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
+                    cantCreateRecipe.setTitle("Błąd tworzenia przepisu");
+                    cantCreateRecipe.setHeaderText("Nie można utworzyć nowego przepisu.");
+                    cantCreateRecipe.setContentText("Przepis musi zawierać nazwę, opis i conajmniej jeden składnik");
+                    cantCreateRecipe.showAndWait();
                 }
-
             }
 
 
