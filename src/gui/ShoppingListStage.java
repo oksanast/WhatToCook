@@ -30,11 +30,6 @@ public class ShoppingListStage extends Application {
         shoppingListStage.setTitle("Lista Zakupów");
         mainBorderPane = new BorderPane();
 
-        Label shoppingListLabel = new Label("Lista Zakupów");
-        shoppingListLabel.setMaxWidth(Double.MAX_VALUE);
-        shoppingListLabel.setMaxHeight(Double.MAX_VALUE);
-        shoppingListLabel.setAlignment(Pos.CENTER);
-        mainBorderPane.setTop(shoppingListLabel);
         noItemsLabel = new Label("Aby dodać nowe składniki do listy kliknij prawym przyciskiem myszy na otwarty przepis i wybierz \"Dodaj do Zakupów\"");
         noItemsLabel.setMaxHeight(Double.MAX_VALUE);
         noItemsLabel.setMaxWidth(Double.MAX_VALUE);

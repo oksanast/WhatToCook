@@ -5,12 +5,8 @@ import auxiliary.PairAmountUnit;
 import auxiliary.RecipeParameters;
 import core.*;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -28,7 +24,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import sun.awt.image.ImageWatched;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -489,14 +484,11 @@ public class MainStage extends Application {
         recipesDatabaseGridPane.add(linkedRecipesGridPane,2,5,2,8);
         recipesDatabaseGridPane.add(linkedRecipesAmmmount,2,12,2,1);
 
-        recipesInRecipesDatabaseList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                markedRecipe = recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem();
-                linkedRecipesToggleGroup.selectToggle(null);
-                refreshLinkedRecipes();
+        recipesInRecipesDatabaseList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            markedRecipe = recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem();
+            linkedRecipesToggleGroup.selectToggle(null);
+            refreshLinkedRecipes();
 
-            }
         });
         Label linkedRecipesInRecipesDatabaseLabel = new Label("Przepisy powiązane:");
         linkedRecipesInRecipesDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
@@ -510,6 +502,7 @@ public class MainStage extends Application {
         addLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
         addLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
             if(markedRecipe!=null) {
+                //noinspection ConstantConditions
                 if (RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size()<6 && !RecipesList.getRecipe
                         (markedRecipe).getName().equals(linkedRecipesInRecipesDatabaseComboBox.getSelectionModel().getSelectedItem())) {
                     LinkedRecipes.addLinking(markedRecipe,linkedRecipesInRecipesDatabaseComboBox.getSelectionModel().getSelectedItem());
@@ -520,18 +513,15 @@ public class MainStage extends Application {
         });
         Button removeLinkedRecipeInRecipesDatabaseButton = new Button("Usuń");
         removeLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
-        removeLinkedRecipeInRecipesDatabaseButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(linkedRecipesToggleGroup.getSelectedToggle()!=null) {
-                    RadioButton button = (RadioButton) linkedRecipesToggleGroup.getSelectedToggle();
-                    String recipeName = button.getText();
-                    LinkedRecipes.deleteLinking(markedRecipe,recipeName);
-                    refreshLinkedRecipes();
-                    LinkedRecipes.saveLinkings();
-                }
-
+        removeLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
+            if(linkedRecipesToggleGroup.getSelectedToggle()!=null) {
+                RadioButton button = (RadioButton) linkedRecipesToggleGroup.getSelectedToggle();
+                String recipeName = button.getText();
+                LinkedRecipes.deleteLinking(markedRecipe,recipeName);
+                refreshLinkedRecipes();
+                LinkedRecipes.saveLinkings();
             }
+
         });
 
         Button addRecipeInRecipesDatabaseButton = new Button("Nowy Przepis");
@@ -1154,14 +1144,13 @@ public class MainStage extends Application {
         mainGridNewEditMenuTab.add(exitWithoutSavingButton, 2, 15, 2, 1);
         mainGridNewEditMenuTab.add(newEditMenuTabPane, 2, 1, 2, 7);
 
-        //mainGridNewEditMenuTab.setGridLinesVisible(true);
-
         newEditMenuTab.setContent(mainGridNewEditMenuTab);
         newEditMenuTab.setClosable(false);
         mainTable.getTabs().add(mainCardsCount, newEditMenuTab);
         mainTable.getSelectionModel().select(newEditMenuTab);
     }
 
+    @SuppressWarnings ("ConstantConditions")
     private void refreshLinkedRecipes() {
         linkedRecipesToggleGroup.getToggles().removeAll();
         RadioButton linkedRecipeButton;

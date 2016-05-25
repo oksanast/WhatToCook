@@ -43,12 +43,12 @@ public class SearchOptionsStage extends Application {
         searchOptionsStage.initModality(Modality.APPLICATION_MODAL);
         searchOptionsStage.setScene(mainScene);
     }
-    public void refresh() {
+    void refresh() {
         caseSensitive.selectedProperty().setValue(WhatToCook.caseSensitiveSearch);
         searchInEveryWord.selectedProperty().setValue(WhatToCook.searchInEveryWord);
         searchOptionsStage.show();
     }
     private CheckBox caseSensitive;
     private CheckBox searchInEveryWord;
-    Stage searchOptionsStage;
+    private Stage searchOptionsStage;
 }
