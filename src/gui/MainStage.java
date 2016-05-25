@@ -555,14 +555,30 @@ public class MainStage extends Application {
         removeRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
         removeRecipeInRecipesDatabaseButton.setOnAction(event -> {
             if (inEdit == null) {
+                for(int j = 0; j < RecipesList.size();j++) {
+                    for(int k = 0; k < RecipesList.recipesList.get(j).getLinkedRecipes().size();k++) {
+                        if(RecipesList.recipesList.get(j).getLinkedRecipes().get(k).equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
+                            RecipesList.recipesList.get(j).getLinkedRecipes().remove(k);
+                        }
+                    }
+                }
                 RecipesList.remove(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
                 recipesInRecipesDatabaseList.setItems(RecipesList.getObservableList(searchInRecipesDatabase.getText(), WhatToCook.caseSensitiveSearch, WhatToCook.searchInEveryWord));
                 linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
+                LinkedRecipes.saveLinkings();
             } else {
                 if (!inEdit.getName().equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
+                    for(int j = 0; j < RecipesList.size();j++) {
+                        for(int k = 0; k < RecipesList.recipesList.get(j).getLinkedRecipes().size();k++) {
+                            if(RecipesList.recipesList.get(j).getLinkedRecipes().get(k).equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
+                                RecipesList.recipesList.get(j).getLinkedRecipes().remove(k);
+                            }
+                        }
+                    }
                     RecipesList.remove(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
                     recipesInRecipesDatabaseList.setItems(RecipesList.getObservableList(searchInRecipesDatabase.getText(), WhatToCook.caseSensitiveSearch, WhatToCook.searchInEveryWord));
                     linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
+                    LinkedRecipes.saveLinkings();
                 } else {
                     Alert cantDeleteRecipe = new Alert(Alert.AlertType.ERROR);
                     cantDeleteRecipe.setTitle("Błąd usuwania przepisu");
@@ -1151,12 +1167,14 @@ public class MainStage extends Application {
         RadioButton linkedRecipeButton;
         linkedRecipesGridPane.getChildren().clear();
         String temp;
-        for(int i = 0;i < RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size();i++) {
-            temp = RecipesList.getRecipe(markedRecipe).getLinkedRecipes().get(i);
-            linkedRecipeButton = new RadioButton(temp);
-            linkedRecipesToggleGroup.getToggles().add(linkedRecipeButton);
-            linkedRecipesGridPane.add(linkedRecipeButton,0,i,2,1);
-            linkedRecipesAmmmount.setText(RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size() + "/6");
+        if(markedRecipe!=null) {
+            for (int i = 0; i < RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size(); i++) {
+                temp = RecipesList.getRecipe(markedRecipe).getLinkedRecipes().get(i);
+                linkedRecipeButton = new RadioButton(temp);
+                linkedRecipesToggleGroup.getToggles().add(linkedRecipeButton);
+                linkedRecipesGridPane.add(linkedRecipeButton, 0, i, 2, 1);
+                linkedRecipesAmmmount.setText(RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size() + "/6");
+            }
         }
     }
 
