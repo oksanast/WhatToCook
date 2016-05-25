@@ -146,6 +146,21 @@ public class MainStage extends Application {
             }
         });
 
+        MenuItem teamMenuItem = new MenuItem("Autorzy");
+        teamMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                AboutWindow teamStage = new AboutWindow();
+                try {
+                    teamStage.start(primaryStage);
+                } catch (Exception e) {
+                    System.out.println("Internal error, please report it");
+
+                }
+
+            }
+        });
+
         searchingCard.setSelected(true);
         recipesDatabaseCard.setSelected(true);
         ingredientsCard.setSelected(true);
@@ -207,6 +222,7 @@ public class MainStage extends Application {
         });
 
         toolsMenu.getItems().add(shoppingListMenuItem);
+        helpMenu.getItems().add(teamMenuItem);
         mainMenu.getMenus().addAll(fileMenu, editMenu, viewMenu, toolsMenu, helpMenu);
 
         SpareIngredientsList.initialize();
