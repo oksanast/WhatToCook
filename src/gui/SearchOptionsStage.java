@@ -11,8 +11,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * Created by Mateusz on 24.05.2016.
- * Project WhatToCookFX
+ * Created by WTC-Team on 24.05.2016.
+ * Project WhatToCook
  */
 public class SearchOptionsStage extends Application {
     @Override

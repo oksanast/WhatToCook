@@ -21,8 +21,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 /**
- * Created by Mateusz on 24.05.2016.
- * Project WhatToCookFX
+ * Created by WTC-Team on 24.05.2016.
+ * Project WhatToCook
  */
 public class ShoppingListStage extends Application {
     @Override

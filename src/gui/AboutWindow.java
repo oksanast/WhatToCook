@@ -13,7 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * Created by Mateusz on 25.05.2016.
+ * Created by WTC-Team on 25.05.2016.
  * Project WhatToCook
  */
 public class AboutWindow extends Application {
@@ -47,6 +47,6 @@ public class AboutWindow extends Application {
         mainStage.show();
     }
 
-    Stage mainStage;
-    Scene mainScene;
+    private Stage mainStage;
+    private Scene mainScene;
 }

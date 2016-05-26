@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Created by Mateusz on 22.05.2016.
+ * Created by WTC-Team on 22.05.2016.
  * Project InferenceEngine
  */
 public class MainStage extends Application {
@@ -54,7 +54,6 @@ public class MainStage extends Application {
         Menu helpMenu = new Menu("Pomoc");
 
 
-        //setUserAgentStylesheet(STYLESHEET_CASPIAN);
 
         //TWORZENIE OKIEN DIALOGOWYCH
         ShoppingListStage shoppinglist = new ShoppingListStage();
