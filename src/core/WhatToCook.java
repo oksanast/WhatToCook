@@ -10,8 +10,8 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
- * Created by Mateusz on 22.05.2016.
- * Project InferenceEngine
+ * Created by WTC-Team on 22.05.2016.
+ * Project WhatToCook
  */
 public class WhatToCook extends Application {
     @Override

@@ -3,19 +3,34 @@ package core;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * Created by Mateusz on 17.05.2016.
+ * Created by WTC-Team on 17.05.2016.
  * Project WhatToCook
  */
 public class ToBuyIngredientsList {
     public static void initialize() {
         toBuyList = new TreeSet<>();
+        try {
+            Scanner in = new Scanner(new File("data/toBuyList/shoppingList"));
+            while(in.hasNextLine()) {
+                add(new Ingredient(in.nextLine()));
+            }
+            in.close();
+        } catch (FileNotFoundException e) {
+
+        }
+
     }
     public static void add(Ingredient ingredient) {
         toBuyList.add(ingredient);
+        export();
     }
 
     public static void add(String s) {
@@ -38,6 +53,18 @@ public class ToBuyIngredientsList {
             list.add(i.getName());
         }
         return list;
+    }
+
+    private static void export() {
+        try {
+            PrintWriter writer = new PrintWriter(new File("data/toBuyList/shoppingList"));
+            for(Ingredient i : toBuyList) {
+                writer.println(i.getName());
+            }
+            writer.close();
+
+        } catch (FileNotFoundException e) {
+        }
     }
 
     private static SortedSet<Ingredient> toBuyList;

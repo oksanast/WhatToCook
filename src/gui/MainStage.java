@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -247,7 +248,7 @@ public class MainStage extends Application {
         GridPane searchingGridPane = new GridPane();
         searchingGridPane.setVgap(5);
         searchingGridPane.setHgap(5);
-        searchingGridPane.setPadding(new Insets(10, 10, 10, 10));
+        searchingGridPane.setPadding(new Insets(10,0,10,0));
         //searchingGridPane.setAlignment(Pos.CENTER);
         ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(25);
@@ -305,10 +306,29 @@ public class MainStage extends Application {
         addIngredientInSearchButton.setMaxWidth(Double.MAX_VALUE);
        // addIngredientInSearchButton.setMaxHeight(Double.MAX_VALUE);
 
+        try {
+            Scanner in = new Scanner(new File("data/ownedIngredients/ownedIngredients"));
+            while(in.hasNextLine()) {
+                ingredientsInSearchList.getItems().add(in.nextLine());
+            }
+            in.close();
+        } catch (FileNotFoundException e) {
+
+        }
+
         addIngredientInSearchButton.setOnAction(event -> {
             if (chooseIngredientsInSearchComboBox.getSelectionModel().getSelectedItem() != null) {
                 if (!ingredientsInSearchList.getItems().contains(chooseIngredientsInSearchComboBox.getSelectionModel().getSelectedItem()))
                     ingredientsInSearchList.getItems().add(chooseIngredientsInSearchComboBox.getSelectionModel().getSelectedItem());
+                try {
+                    PrintWriter writer = new PrintWriter(new File("data/ownedIngredients/ownedIngredients"));
+                    for(String i : ingredientsInSearchList.getItems()) {
+                        writer.println(i);
+                    }
+                    writer.close();
+                } catch (FileNotFoundException e) {
+
+                }
             }
         });
 
@@ -319,6 +339,15 @@ public class MainStage extends Application {
         removeIngredientInSearchButton.setOnAction(event -> {
             if (ingredientsInSearchList.getSelectionModel().getSelectedIndex() >= 0)
                 ingredientsInSearchList.getItems().remove(ingredientsInSearchList.getSelectionModel().getSelectedIndex());
+            try {
+                PrintWriter writer = new PrintWriter(new File("data/ownedIngredients/ownedIngredients"));
+                for(String i : ingredientsInSearchList.getItems()) {
+                    writer.println(i);
+                }
+                writer.close();
+            } catch (FileNotFoundException e) {
+
+            }
         });
 
         Button importIngredientsInSearchButton = new Button("Importuj");
@@ -502,7 +531,7 @@ public class MainStage extends Application {
         linkedRecipesInRecipesDatabaseComboBox.setMaxWidth(Double.MAX_VALUE);
         linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
 
-        Button addLinkedRecipeInRecipesDatabaseButton = new Button("Dodaj");
+        Button addLinkedRecipeInRecipesDatabaseButton = new Button("Dodaj Powiązanie");
         addLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
         addLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
             if(markedRecipe!=null) {
@@ -515,7 +544,7 @@ public class MainStage extends Application {
                 }
             }
         });
-        Button removeLinkedRecipeInRecipesDatabaseButton = new Button("Usuń");
+        Button removeLinkedRecipeInRecipesDatabaseButton = new Button("Usuń Powiązanie");
         removeLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
         removeLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
             if(linkedRecipesToggleGroup.getSelectedToggle()!=null) {
@@ -584,14 +613,19 @@ public class MainStage extends Application {
         });
 
         Button editRecipeInRecipesDatabaseButton = new Button("Edytuj Przepis");
-        //editRecipeInRecipesDatabaseButton.setMaxHeight(Double.MAX_VALUE);
         editRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
 
         editRecipeInRecipesDatabaseButton.setOnAction(event -> {
-            if (!isEditionTurnOn) {
+            if (!isEditionTurnOn && markedRecipe!=null) {
                 isEditionTurnOn = true;
                 inEdit = RecipesList.getRecipe(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
                 showNewEditMenu(RecipesList.getRecipe(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem()));
+            } else if (markedRecipe == null) {
+                Alert chooseRecipeToEdit = new Alert(Alert.AlertType.INFORMATION);
+                chooseRecipeToEdit.setTitle("Wybierz przepis do edycji");
+                chooseRecipeToEdit.setHeaderText(null);
+                chooseRecipeToEdit.setContentText("Przepis do edycji należy wybrać z listy powyżej.");
+                chooseRecipeToEdit.showAndWait();
             } else {
                 Alert cantEditRecipe = new Alert(Alert.AlertType.ERROR);
                 cantEditRecipe.setTitle("Błąd edycji przepisu");
@@ -956,7 +990,24 @@ public class MainStage extends Application {
             ingredientsInShowRecipeObservableList.add(toShow.getIngredient(i).toString());
         ingredientsInShowRecipeList.setItems(ingredientsInShowRecipeObservableList);
 
-        showRecipeGridPane.add(ingredientsInShowRecipeList,0,1,2,4);
+        showRecipeGridPane.add(ingredientsInShowRecipeList,0,1,2,3);
+
+        Button addToShoppingList = new Button("Dodaj brakujące do zakupów");
+        addToShoppingList.setMaxWidth(Double.MAX_VALUE);
+        addToShoppingList.setOnAction(event -> {
+            for (int i = 0; i < toShow.getSize(); i++) {
+                Ingredient ingredient = toShow.getIngredient(i);
+                boolean contain = false;
+                for (int j = 0; j < ingredientsInSearchList.getItems().size(); j++) {
+                    if (ingredientsInSearchList.getItems().get(j).equals(ingredient.getName()))
+                        contain = true;
+                }
+                if (!contain)
+                    ToBuyIngredientsList.add(toShow.getIngredient(i));
+            }
+        });
+
+        showRecipeGridPane.add(addToShoppingList,0,4,2,1);
 
         Tab showRecipeTab = new Tab(toShow.getName());
         showRecipeTab.setClosable(true);
