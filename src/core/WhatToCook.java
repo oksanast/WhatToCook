@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class WhatToCook extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
+        System.out.println(System.getProperty("user.home"));
         whatToCookStage = new MainStage();
         whatToCookStage.start(primaryStage);
     }
