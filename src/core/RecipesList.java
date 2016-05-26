@@ -30,7 +30,7 @@ public class RecipesList
         recipesList.clear();
         int preparingTime;
         int preparingEase;
-        final File[] listOfFiles = new File("data/recipes").listFiles();
+        final File[] listOfFiles = new File(WhatToCook.path + "/data/recipes").listFiles();
         int i = 0;
             if (listOfFiles != null) {
                 while (i < listOfFiles.length) {
@@ -98,7 +98,7 @@ public class RecipesList
         recipesList.add(recipe);
         Collections.sort(recipesList);
         String filename;
-        filename = "data/recipes" +"/"+ recipe.getName();
+        filename = WhatToCook.path + "/data/recipes" +"/"+ recipe.getName();
         try {
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename)));
            writer.println(recipe.getName());
@@ -160,7 +160,7 @@ public class RecipesList
         {
             String path;
             if(toDelete.equals(recipesList.get(i).getName())) {
-                path = "data/recipes" + "/" + recipesList.get(i).getName();
+                path = WhatToCook.path + "/data/recipes" + "/" + recipesList.get(i).getName();
                 recipesList.remove(i);
                 File fileToDelete = new File(path);
                 fileToDelete.delete();

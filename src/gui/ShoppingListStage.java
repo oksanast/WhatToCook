@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.TextAlignment;
@@ -29,6 +30,7 @@ public class ShoppingListStage extends Application {
         shoppingListStage = new Stage();
         shoppingListStage.setTitle("Lista Zakupów");
         mainBorderPane = new BorderPane();
+        shoppingListStage.getIcons().add(new Image("file:data/icon.png"));
 
         noItemsLabel = new Label("Aby dodać nowe składniki do listy kliknij prawym przyciskiem myszy na otwarty przepis i wybierz \"Dodaj do Zakupów\"");
         noItemsLabel.setMaxHeight(Double.MAX_VALUE);

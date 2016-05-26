@@ -18,7 +18,7 @@ public class ToBuyIngredientsList {
     public static void initialize() {
         toBuyList = new TreeSet<>();
         try {
-            Scanner in = new Scanner(new File("data/toBuyList/shoppingList"));
+            Scanner in = new Scanner(new File(WhatToCook.path + "/data/toBuyList/shoppingList"));
             while(in.hasNextLine()) {
                 add(new Ingredient(in.nextLine()));
             }
@@ -57,7 +57,7 @@ public class ToBuyIngredientsList {
 
     private static void export() {
         try {
-            PrintWriter writer = new PrintWriter(new File("data/toBuyList/shoppingList"));
+            PrintWriter writer = new PrintWriter(new File(WhatToCook.path + "/data/toBuyList/shoppingList"));
             for(Ingredient i : toBuyList) {
                 writer.println(i.getName());
             }

@@ -31,7 +31,7 @@ public class IngredientsList{
         String line;
         IngredientsList.clear();
         try {
-            in = new Scanner (new File ("data/ingredients/ingredients"));
+            in = new Scanner (new File (WhatToCook.path + "/data/ingredients/ingredients"));
             while(in.hasNextLine()) {
                 line = in.nextLine();
                 tmp = line.split("/");
@@ -61,7 +61,7 @@ public class IngredientsList{
         String toPrint;
         try
         {
-            writer = new PrintWriter(new File("data/ingredients/ingredients"));
+            writer = new PrintWriter(new File(WhatToCook.path + "/data/ingredients/ingredients"));
             for(Ingredient ingredient : IngredientsList)
             {
                 toPrint = ingredient.getName()+"/";

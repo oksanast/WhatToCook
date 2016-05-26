@@ -4,6 +4,7 @@ import core.WhatToCook;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Modality;
@@ -17,6 +18,7 @@ public class SearchOptionsStage extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         searchOptionsStage = new Stage();
+        searchOptionsStage.getIcons().add(new Image("file:data/icon.png"));
         GridPane mainGridPane = new GridPane();
         RowConstraints mainGridPaneRow = new RowConstraints();
         mainGridPaneRow.setPercentHeight(50);

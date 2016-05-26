@@ -20,6 +20,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -41,6 +42,7 @@ public class MainStage extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("WhatToCook");
+        primaryStage.getIcons().add(new Image("file:data/icon.png"));
         BorderPane mainLayout = new BorderPane();
         mainTable = new TabPane();
         MenuBar mainMenu = new MenuBar();
@@ -307,7 +309,7 @@ public class MainStage extends Application {
        // addIngredientInSearchButton.setMaxHeight(Double.MAX_VALUE);
 
         try {
-            Scanner in = new Scanner(new File("data/ownedIngredients/ownedIngredients"));
+            Scanner in = new Scanner(new File(WhatToCook.path + "data/ownedIngredients/ownedIngredients"));
             while(in.hasNextLine()) {
                 ingredientsInSearchList.getItems().add(in.nextLine());
             }
@@ -321,7 +323,7 @@ public class MainStage extends Application {
                 if (!ingredientsInSearchList.getItems().contains(chooseIngredientsInSearchComboBox.getSelectionModel().getSelectedItem()))
                     ingredientsInSearchList.getItems().add(chooseIngredientsInSearchComboBox.getSelectionModel().getSelectedItem());
                 try {
-                    PrintWriter writer = new PrintWriter(new File("data/ownedIngredients/ownedIngredients"));
+                    PrintWriter writer = new PrintWriter(new File(WhatToCook.path + "data/ownedIngredients/ownedIngredients"));
                     for(String i : ingredientsInSearchList.getItems()) {
                         writer.println(i);
                     }
@@ -340,7 +342,7 @@ public class MainStage extends Application {
             if (ingredientsInSearchList.getSelectionModel().getSelectedIndex() >= 0)
                 ingredientsInSearchList.getItems().remove(ingredientsInSearchList.getSelectionModel().getSelectedIndex());
             try {
-                PrintWriter writer = new PrintWriter(new File("data/ownedIngredients/ownedIngredients"));
+                PrintWriter writer = new PrintWriter(new File(WhatToCook.path + "data/ownedIngredients/ownedIngredients"));
                 for(String i : ingredientsInSearchList.getItems()) {
                     writer.println(i);
                 }
