@@ -7,7 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/data" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/data/recipesEN" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/data/recipesUKR" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/data/recipesPL" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/data/recipes" type="java-resource" />
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />

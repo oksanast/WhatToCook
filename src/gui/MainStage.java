@@ -74,7 +74,7 @@ public class MainStage extends Application {
                 cantCreateRecipe.showAndWait();
             }
         });
-        MenuItem newIngredient = new MenuItem("Ingredient");
+        MenuItem newIngredient = new MenuItem("Składnik");
         newIngredient.setOnAction(event -> mainTable.getSelectionModel().select(2));
         MenuItem exit = new MenuItem("Wyjście");
         exit.setOnAction(event -> System.exit(0));
@@ -84,6 +84,7 @@ public class MainStage extends Application {
         exportAllIngredients.setOnAction(event -> {
             FileChooser chooseFile = new FileChooser();
             chooseFile.setTitle("Wybierz lokalizacje zapisu");
+            chooseFile.setInitialFileName("składniki.txt");
             File saveFile = chooseFile.showSaveDialog(primaryStage);
             if (saveFile != null) {
                 IngredientsList.exportToFile(saveFile);
@@ -246,7 +247,7 @@ public class MainStage extends Application {
         GridPane searchingGridPane = new GridPane();
         searchingGridPane.setVgap(5);
         searchingGridPane.setHgap(5);
-        searchingGridPane.setPadding(new Insets(10, 0, 10, 0));
+        searchingGridPane.setPadding(new Insets(10, 10, 10, 10));
         //searchingGridPane.setAlignment(Pos.CENTER);
         ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(25);
@@ -302,7 +303,7 @@ public class MainStage extends Application {
 
         Button addIngredientInSearchButton = new Button("Dodaj składnik");
         addIngredientInSearchButton.setMaxWidth(Double.MAX_VALUE);
-        addIngredientInSearchButton.setMaxHeight(Double.MAX_VALUE);
+       // addIngredientInSearchButton.setMaxHeight(Double.MAX_VALUE);
 
         addIngredientInSearchButton.setOnAction(event -> {
             if (chooseIngredientsInSearchComboBox.getSelectionModel().getSelectedItem() != null) {
@@ -313,19 +314,19 @@ public class MainStage extends Application {
 
         Button removeIngredientInSearchButton = new Button("Usuń składnik");
         removeIngredientInSearchButton.setMaxWidth(Double.MAX_VALUE);
-        removeIngredientInSearchButton.setMaxHeight(Double.MAX_VALUE);
+       // removeIngredientInSearchButton.setMaxHeight(Double.MAX_VALUE);
 
         removeIngredientInSearchButton.setOnAction(event -> {
             if (ingredientsInSearchList.getSelectionModel().getSelectedIndex() >= 0)
                 ingredientsInSearchList.getItems().remove(ingredientsInSearchList.getSelectionModel().getSelectedIndex());
         });
 
-        Button importIngredientsInSearchButton = new Button("Importuj składniki");
-        importIngredientsInSearchButton.setMaxHeight(Double.MAX_VALUE);
+        Button importIngredientsInSearchButton = new Button("Importuj");
+        //importIngredientsInSearchButton.setMaxHeight(Double.MAX_VALUE);
         importIngredientsInSearchButton.setMaxWidth(Double.MAX_VALUE);
-        Button exportIngredientsInSearchButoon = new Button("Eskportuj składniki");
+        Button exportIngredientsInSearchButoon = new Button("Eksportuj");
         exportIngredientsInSearchButoon.setMaxWidth(Double.MAX_VALUE);
-        exportIngredientsInSearchButoon.setMaxHeight(Double.MAX_VALUE);
+        //exportIngredientsInSearchButoon.setMaxHeight(Double.MAX_VALUE);
 
         Label foundRecipesInSearchLabel = new Label("Znalezione przepisy");
         foundRecipesInSearchLabel.setAlignment(Pos.CENTER);
@@ -428,7 +429,8 @@ public class MainStage extends Application {
         recipesDatabaseTab = new Tab("Baza Przepisów");
         recipesDatabaseTab.setClosable(false);
         GridPane recipesDatabaseGridPane = new GridPane();
-        recipesDatabaseGridPane.setHgap(2);
+        recipesDatabaseGridPane.setHgap(5);
+        recipesDatabaseGridPane.setVgap(5);
 
         ColumnConstraints columnInRecipesDatabase = new ColumnConstraints();
         columnInRecipesDatabase.setPercentWidth(25);
@@ -627,6 +629,8 @@ public class MainStage extends Application {
         ingredientsDatabaseTab = new Tab("Składniki");
         GridPane ingredientsDatabaseGridPane = new GridPane();
         ColumnConstraints columnInIgredientsDatabase = new ColumnConstraints();
+        ingredientsDatabaseGridPane.setVgap(5);
+        ingredientsDatabaseGridPane.setHgap(5);
         columnInIgredientsDatabase.setPercentWidth(25);
         ingredientsDatabaseGridPane.getColumnConstraints().add(columnInIgredientsDatabase);
         ingredientsDatabaseGridPane.getColumnConstraints().add(columnInIgredientsDatabase);
@@ -937,9 +941,11 @@ public class MainStage extends Application {
         showRecipeGridPane.add(youWillNeedLabel,0,0,2,1);
         showRecipeGridPane.add(preparingTimeLabel,2,1,2,1);
         showRecipeGridPane.add(preparingEaseLabel,2,2,2,1);
-        showRecipeGridPane.add(seeAlso,2,3,2,1);
-        showRecipeGridPane.add(linkedRecipesInShowRecipe,2,4,1,1);
-        showRecipeGridPane.add(openLinkedRecipe,3,4,1,1);
+        if(toShow.getLinkedRecipes().size()>0) {
+            showRecipeGridPane.add(seeAlso, 2, 3, 2, 1);
+            showRecipeGridPane.add(linkedRecipesInShowRecipe, 2, 4, 1, 1);
+            showRecipeGridPane.add(openLinkedRecipe, 3, 4, 1, 1);
+        }
         showRecipeGridPane.add(howToPrepareLabel,0,5,2,1);
 
         ListView<String> ingredientsInShowRecipeList = new ListView<>();

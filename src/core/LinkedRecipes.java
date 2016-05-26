@@ -18,7 +18,7 @@ public class LinkedRecipes {
 
     static void readLinkedRecipes() {
         ArrayList<String> temp_list;
-        String source = "data/recipesPL"+"/linked/linkedRecipesPL";
+        String source = "data/recipes"+"/linked/linkedRecipes";
         String curr_line;
         int number_of_recipes;
         Recipe temp_recipe;
@@ -94,7 +94,7 @@ public class LinkedRecipes {
     }
 
     public static void saveLinkings() {
-        String out = "data/recipesPL"+"/linked/linkedRecipesPL";
+        String out = "data/recipes"+"/linked/linkedRecipes";
         //String out = "data/recipesPL/linked/linkedRecipes";
         String content = "";
         String linkRecipe;
