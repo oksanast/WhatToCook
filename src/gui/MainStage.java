@@ -353,9 +353,48 @@ public class MainStage extends Application {
         Button importIngredientsInSearchButton = new Button("Importuj");
         //importIngredientsInSearchButton.setMaxHeight(Double.MAX_VALUE);
         importIngredientsInSearchButton.setMaxWidth(Double.MAX_VALUE);
+
+        importIngredientsInSearchButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                FileChooser chooseFile = new FileChooser();
+                chooseFile.setTitle("Wybierz plik z posiadanymi składnikami");
+                File openFile = chooseFile.showOpenDialog(primaryStage);
+                if (openFile != null) {
+                    try {
+                        Scanner in = new Scanner(openFile);
+                        while(in.hasNextLine())
+                            ingredientsInSearchList.getItems().add(in.nextLine());
+
+                    } catch (FileNotFoundException e) {
+                    }
+                }
+            }
+        });
+
         Button exportIngredientsInSearchButoon = new Button("Eksportuj");
         exportIngredientsInSearchButoon.setMaxWidth(Double.MAX_VALUE);
         //exportIngredientsInSearchButoon.setMaxHeight(Double.MAX_VALUE);
+        exportIngredientsInSearchButoon.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                FileChooser chooseFile = new FileChooser();
+                chooseFile.setTitle("Wybierz lokalizacje zapisu");
+                chooseFile.setInitialFileName("Posiadane Składniki.txt");
+                File saveFile = chooseFile.showSaveDialog(primaryStage);
+                if (saveFile != null) {
+                    try {
+                        PrintWriter writer = new PrintWriter(saveFile);
+                        for(String s : ingredientsInSearchList.getItems()) {
+                            writer.println(s);
+                        }
+                        writer.close();
+                    } catch (FileNotFoundException e) {
+
+                    }
+                }
+            }
+        });
 
         Label foundRecipesInSearchLabel = new Label("Znalezione przepisy");
         foundRecipesInSearchLabel.setAlignment(Pos.CENTER);
