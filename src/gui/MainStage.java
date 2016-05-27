@@ -60,6 +60,7 @@ public class MainStage extends Application {
         SearchOptionsStage searchOptions = new SearchOptionsStage();
         shoppinglist.start(primaryStage);
         searchOptions.start(primaryStage);
+        TimerStage timerWindow = new TimerStage();
 
         Menu newMenu = new Menu("Nowy");
 
@@ -229,7 +230,16 @@ public class MainStage extends Application {
             }
         });
 
+        MenuItem timeMenuItem = new MenuItem("Minutnik");
+        timeMenuItem.setOnAction(event -> {
+            try {
+                timerWindow.start(primaryStage);
+            } catch (Exception e) {
+
+            }
+        });
         toolsMenu.getItems().add(shoppingListMenuItem);
+        toolsMenu.getItems().add(timeMenuItem);
         helpMenu.getItems().add(teamMenuItem);
         mainMenu.getMenus().addAll(fileMenu, editMenu, viewMenu, toolsMenu, helpMenu);
 
@@ -285,7 +295,6 @@ public class MainStage extends Application {
         insertIngredientsLabel.setId("insertIngredientsText");
         HBox insertIngredientsLabelHBox = new HBox();
         insertIngredientsLabelHBox.setAlignment(Pos.CENTER);
-        insertIngredientsLabelHBox.getChildren().add(insertIngredientsLabel);
         searchingGridPane.add(insertIngredientsLabelHBox, 0, 0, 4, 1);
 
         ingredientsInSearchList = new ListView<>();
