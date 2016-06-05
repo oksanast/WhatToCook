@@ -63,6 +63,7 @@ public class WhatToCook extends Application {
                 PrintWriter createCfg = new PrintWriter(new File(path+"/data/cfg"));
                 createCfg.println("searchInEveryWord=true");
                 createCfg.println("caseSensitive=false");
+                createCfg.println("language=Polski");
                 createCfg.close();
             }
 
@@ -84,10 +85,14 @@ public class WhatToCook extends Application {
             line = in.nextLine();
             dividedLine = line.split("=");
             caseSensitiveSearch = dividedLine[1].equals("true");
+            line = in.nextLine();
+            dividedLine = line.split("=");
+            LanguagePackage.language = dividedLine[1];
             in.close();
         } catch (FileNotFoundException e) {
             System.out.println("Concig file not found, program will run with default settings");
         }
+        Dictionary.initialize();
         launch(args);
     }
 
@@ -97,15 +102,29 @@ public class WhatToCook extends Application {
 
     public static void exportSettings() {
         try {
-            PrintWriter out = new PrintWriter(new File(WhatToCook.path + "data/cfg"));
+            PrintWriter out = new PrintWriter(new File(WhatToCook.path + "/data/cfg"));
             out.println("searchInEveryWord=" + searchInEveryWord);
             out.println("caseSensitive=" + caseSensitiveSearch);
+            out.println("language=" + LanguagePackage.language);
             out.close();
         } catch (FileNotFoundException e) {
 
         }
 
     }
+    public static void exportSettings(String nextLanguage) {
+        try {
+            PrintWriter out = new PrintWriter(new File(WhatToCook.path + "/data/cfg"));
+            out.println("searchInEveryWord=" + searchInEveryWord);
+            out.println("caseSensitive=" + caseSensitiveSearch);
+            out.println("language=" + nextLanguage);
+            out.close();
+        } catch (FileNotFoundException e) {
+
+        }
+
+    }
+
     //ZMIENNE KONFIGURACYJNE
     public static boolean caseSensitiveSearch = true;
     public static boolean searchInEveryWord = false;

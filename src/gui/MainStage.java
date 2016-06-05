@@ -7,8 +7,6 @@ import core.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -38,6 +36,7 @@ import java.util.Scanner;
  * Created by WTC-Team on 22.05.2016.
  * Project InferenceEngine
  */
+
 public class MainStage extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -47,42 +46,47 @@ public class MainStage extends Application {
         mainTable = new TabPane();
         MenuBar mainMenu = new MenuBar();
 
-        Menu fileMenu = new Menu("Plik");
-        Menu editMenu = new Menu("Edycja");
-        Menu viewMenu = new Menu("Widok");
-        Menu toolsMenu = new Menu("Narzędzia");
-        Menu helpMenu = new Menu("Pomoc");
-
-
+        Menu fileMenu = new Menu(LanguagePackage.getWord("Plik"));
+        Menu editMenu = new Menu(LanguagePackage.getWord("Edycja"));
+        Menu viewMenu = new Menu(LanguagePackage.getWord("Widok"));
+        Menu toolsMenu = new Menu(LanguagePackage.getWord("Narzędzia"));
+        Menu helpMenu = new Menu(LanguagePackage.getWord("Pomoc"));
 
         //TWORZENIE OKIEN DIALOGOWYCH
         ShoppingListStage shoppinglist = new ShoppingListStage();
         SearchOptionsStage searchOptions = new SearchOptionsStage();
         shoppinglist.start(primaryStage);
         searchOptions.start(primaryStage);
+        SettingsStage settingsWindows = new SettingsStage();
+        settingsWindows.start(primaryStage);
         TimerStage timerWindow = new TimerStage();
 
-        Menu newMenu = new Menu("Nowy");
+        Menu newMenu = new Menu(LanguagePackage.getWord("Nowy"));
 
-        MenuItem newRecipe = new MenuItem("Przepis");
+        MenuItem newRecipe = new MenuItem(LanguagePackage.getWord("Przepis"));
         newRecipe.setOnAction(event -> {
             if (!isEditionTurnOn) {
                 isEditionTurnOn = true;
                 showNewEditMenu(null);
             } else {
                 Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
-                cantCreateRecipe.setTitle("Błąd tworzenia przepisu");
-                cantCreateRecipe.setHeaderText("Nie można utworzyć nowego przepisu.");
-                cantCreateRecipe.setContentText("W jednym momencie może być tworzony albo edytowany tylko jeden przepis");
+                cantCreateRecipe.setTitle(LanguagePackage.getWord("Błąd tworzenia przepisu"));
+                cantCreateRecipe.setHeaderText(LanguagePackage.getWord("Nie można utworzyć nowego przepisu."));
+                cantCreateRecipe.setContentText(LanguagePackage.getWord("W jednym momencie może być tworzony albo edytowany tylko jeden przepis"));
                 cantCreateRecipe.showAndWait();
             }
         });
-        MenuItem newIngredient = new MenuItem("Składnik");
+        MenuItem newIngredient = new MenuItem(LanguagePackage.getWord("Składnik"));
         newIngredient.setOnAction(event -> mainTable.getSelectionModel().select(2));
-        MenuItem exit = new MenuItem("Wyjście");
+        MenuItem exit = new MenuItem(LanguagePackage.getWord("Wyjście"));
         exit.setOnAction(event -> System.exit(0));
 
-        MenuItem exportAllIngredients = new MenuItem("Eksportuj Składniki");
+        MenuItem exportAllIngredients = new MenuItem(LanguagePackage.getWord("Eksportuj Składniki"));
+
+        MenuItem settingsMenuItem = new MenuItem(LanguagePackage.getWord("Opcje"));
+        settingsMenuItem.setOnAction(event -> {
+            settingsWindows.refresh();
+        });
 
         exportAllIngredients.setOnAction(event -> {
             FileChooser chooseFile = new FileChooser();
@@ -94,7 +98,7 @@ public class MainStage extends Application {
             }
         });
 
-        MenuItem importAllIngredients = new MenuItem("Importuj Składniki");
+        MenuItem importAllIngredients = new MenuItem(LanguagePackage.getWord("Importuj Składniki"));
         importAllIngredients.setOnAction(event -> {
             FileChooser chooseFile = new FileChooser();
             chooseFile.setTitle("Wybierz plik ze składnikami");
@@ -120,24 +124,26 @@ public class MainStage extends Application {
             }
         });
 
-        MenuItem clearInsertIngredients = new MenuItem("Wyczyść wprowadzone składniki");
+        MenuItem clearInsertIngredients = new MenuItem(LanguagePackage.getWord("Wyczyść wprowadzone składniki"));
         clearInsertIngredients.setOnAction(event -> {
             for (int i = ingredientsInSearchList.getItems().size() - 1; i >= 0; i--) {
                 ingredientsInSearchList.getItems().remove(i);
             }
         });
-        MenuItem clearFoundRecipes = new MenuItem("Wyczyść wyniki wyszukiwania");
+        MenuItem clearFoundRecipes = new MenuItem(LanguagePackage.getWord("Wyczyść wyniki wyszukiwania"));
         clearFoundRecipes.setOnAction(event -> foundRecipesInSearchList.setItems(FXCollections.emptyObservableList()));
 
-        Menu cardsMenu = new Menu("Karty");
+        Menu cardsMenu = new Menu(LanguagePackage.getWord("Karty"));
 
-        CheckMenuItem searchingCard = new CheckMenuItem("Wyszukiwanie");
-        CheckMenuItem recipesDatabaseCard = new CheckMenuItem("Baza Przepisów");
-        CheckMenuItem ingredientsCard = new CheckMenuItem("Składniki");
+        CheckMenuItem searchingCard = new CheckMenuItem(LanguagePackage.getWord("Wyszukiwanie"));
+        CheckMenuItem recipesDatabaseCard = new CheckMenuItem(LanguagePackage.getWord("Baza Przepisów"));
+        CheckMenuItem ingredientsCard = new CheckMenuItem(LanguagePackage.getWord("Składniki"));
 
         newMenu.getItems().add(newRecipe);
         newMenu.getItems().add(newIngredient);
         fileMenu.getItems().add(newMenu);
+        fileMenu.getItems().add(new SeparatorMenuItem());
+        fileMenu.getItems().add(settingsMenuItem);
         fileMenu.getItems().add(new SeparatorMenuItem());
         fileMenu.getItems().add(exit);
 
@@ -147,7 +153,7 @@ public class MainStage extends Application {
         editMenu.getItems().add(clearInsertIngredients);
         editMenu.getItems().add(clearFoundRecipes);
 
-        MenuItem closeAllRecipes = new MenuItem("Zamknij wszystkie przepisy");
+        MenuItem closeAllRecipes = new MenuItem(LanguagePackage.getWord("Zamknij wszystkie przepisy"));
         closeAllRecipes.setOnAction(event -> {
             if (isEditionTurnOn) {
                 for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount + 1; i--)
@@ -158,7 +164,7 @@ public class MainStage extends Application {
             }
         });
 
-        MenuItem teamMenuItem = new MenuItem("Autorzy");
+        MenuItem teamMenuItem = new MenuItem(LanguagePackage.getWord("Autorzy"));
         teamMenuItem.setOnAction(event -> {
             AboutWindow teamStage = new AboutWindow();
             try {
@@ -221,7 +227,7 @@ public class MainStage extends Application {
         viewMenu.getItems().add(new SeparatorMenuItem());
         viewMenu.getItems().add(closeAllRecipes);
 
-        MenuItem shoppingListMenuItem = new MenuItem("Lista Zakupów");
+        MenuItem shoppingListMenuItem = new MenuItem(LanguagePackage.getWord("Lista Zakupów"));
         shoppingListMenuItem.setOnAction(event -> {
             try {
                 shoppinglist.refresh();
@@ -230,11 +236,11 @@ public class MainStage extends Application {
             }
         });
 
-        MenuItem timeMenuItem = new MenuItem("Minutnik");
+        MenuItem timeMenuItem = new MenuItem(LanguagePackage.getWord("Minutnik"));
         timeMenuItem.setOnAction(event -> {
             try {
                 timerWindow.start(primaryStage);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         });
@@ -254,7 +260,7 @@ public class MainStage extends Application {
 
         //TWORZENIE KARTY WYSZUKIWANIA PRZEPISOW///////////////////////////////////////////////////////////////////////
         searchingTab = new Tab();
-        searchingTab.setText("Wyszukiwanie");
+        searchingTab.setText(LanguagePackage.getWord("Wyszukiwanie"));
         searchingTab.setClosable(false);
         GridPane searchingGridPane = new GridPane();
         searchingGridPane.setVgap(5);
@@ -272,26 +278,12 @@ public class MainStage extends Application {
         RowConstraints row = new RowConstraints();
         row.setPercentHeight(16);
         row.setVgrow(Priority.ALWAYS);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
-        searchingGridPane.getRowConstraints().add(row);
 
+        for(int i = 0; i < 17; i ++) {
+            searchingGridPane.getRowConstraints().add(row);
+        }
 
-        Text insertIngredientsLabel = new Text("Wprowadź składniki");
+        Text insertIngredientsLabel = new Text(LanguagePackage.getWord("Wprowadź składniki"));
         insertIngredientsLabel.setId("insertIngredientsText");
         HBox insertIngredientsLabelHBox = new HBox();
         insertIngredientsLabelHBox.setAlignment(Pos.CENTER);
@@ -303,7 +295,7 @@ public class MainStage extends Application {
         ingredientsInSearchList.setMaxWidth(Double.MAX_VALUE);
         ingredientsInSearchList.setMaxHeight(Double.MAX_VALUE);
 
-        Label chooseIngredientsInSearchLabel = new Label("Wybierz składniki");
+        Label chooseIngredientsInSearchLabel = new Label(LanguagePackage.getWord("Wybierz składniki"));
         chooseIngredientsInSearchLabel.setMaxHeight(Double.MAX_VALUE);
         chooseIngredientsInSearchLabel.setMaxWidth(Double.MAX_VALUE);
         chooseIngredientsInSearchLabel.setAlignment(Pos.CENTER);
@@ -312,9 +304,8 @@ public class MainStage extends Application {
         chooseIngredientsInSearchComboBox.setMaxHeight(Double.MAX_VALUE);
         chooseIngredientsInSearchComboBox.setMaxWidth(Double.MAX_VALUE);
 
-        Button addIngredientInSearchButton = new Button("Dodaj składnik");
+        Button addIngredientInSearchButton = new Button(LanguagePackage.getWord("Dodaj składnik"));
         addIngredientInSearchButton.setMaxWidth(Double.MAX_VALUE);
-       // addIngredientInSearchButton.setMaxHeight(Double.MAX_VALUE);
 
         try {
             Scanner in = new Scanner(new File(WhatToCook.path + "data/ownedIngredients/ownedIngredients"));
@@ -322,7 +313,7 @@ public class MainStage extends Application {
                 ingredientsInSearchList.getItems().add(in.nextLine());
             }
             in.close();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException ignored) {
 
         }
 
@@ -332,19 +323,16 @@ public class MainStage extends Application {
                     ingredientsInSearchList.getItems().add(chooseIngredientsInSearchComboBox.getSelectionModel().getSelectedItem());
                 try {
                     PrintWriter writer = new PrintWriter(new File(WhatToCook.path + "data/ownedIngredients/ownedIngredients"));
-                    for(String i : ingredientsInSearchList.getItems()) {
-                        writer.println(i);
-                    }
+                    ingredientsInSearchList.getItems().forEach(writer::println);
                     writer.close();
-                } catch (FileNotFoundException e) {
+                } catch (FileNotFoundException ignored) {
 
                 }
             }
         });
 
-        Button removeIngredientInSearchButton = new Button("Usuń składnik");
+        Button removeIngredientInSearchButton = new Button(LanguagePackage.getWord("Usuń składnik"));
         removeIngredientInSearchButton.setMaxWidth(Double.MAX_VALUE);
-       // removeIngredientInSearchButton.setMaxHeight(Double.MAX_VALUE);
 
         removeIngredientInSearchButton.setOnAction(event -> {
             if (ingredientsInSearchList.getSelectionModel().getSelectedIndex() >= 0)
@@ -355,68 +343,59 @@ public class MainStage extends Application {
                     writer.println(i);
                 }
                 writer.close();
-            } catch (FileNotFoundException e) {
+            } catch (FileNotFoundException ignored) {
 
             }
         });
 
-        Button importIngredientsInSearchButton = new Button("Importuj");
+        Button importIngredientsInSearchButton = new Button(LanguagePackage.getWord("Importuj"));
         //importIngredientsInSearchButton.setMaxHeight(Double.MAX_VALUE);
         importIngredientsInSearchButton.setMaxWidth(Double.MAX_VALUE);
 
-        importIngredientsInSearchButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                FileChooser chooseFile = new FileChooser();
-                chooseFile.setTitle("Wybierz plik z posiadanymi składnikami");
-                File openFile = chooseFile.showOpenDialog(primaryStage);
-                if (openFile != null) {
-                    try {
-                        Scanner in = new Scanner(openFile);
-                        while(in.hasNextLine())
-                            ingredientsInSearchList.getItems().add(in.nextLine());
+        importIngredientsInSearchButton.setOnAction(event -> {
+            FileChooser chooseFile = new FileChooser();
+            chooseFile.setTitle("Wybierz plik z posiadanymi składnikami");
+            File openFile = chooseFile.showOpenDialog(primaryStage);
+            if (openFile != null) {
+                try {
+                    Scanner in = new Scanner(openFile);
+                    while(in.hasNextLine())
+                        ingredientsInSearchList.getItems().add(in.nextLine());
 
-                    } catch (FileNotFoundException e) {
-                    }
+                } catch (FileNotFoundException ignored) {
                 }
             }
         });
 
-        Button exportIngredientsInSearchButoon = new Button("Eksportuj");
+        Button exportIngredientsInSearchButoon = new Button(LanguagePackage.getWord("Eksportuj"));
         exportIngredientsInSearchButoon.setMaxWidth(Double.MAX_VALUE);
-        //exportIngredientsInSearchButoon.setMaxHeight(Double.MAX_VALUE);
-        exportIngredientsInSearchButoon.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                FileChooser chooseFile = new FileChooser();
-                chooseFile.setTitle("Wybierz lokalizacje zapisu");
-                chooseFile.setInitialFileName("Posiadane Składniki.txt");
-                File saveFile = chooseFile.showSaveDialog(primaryStage);
-                if (saveFile != null) {
-                    try {
-                        PrintWriter writer = new PrintWriter(saveFile);
-                        for(String s : ingredientsInSearchList.getItems()) {
-                            writer.println(s);
-                        }
-                        writer.close();
-                    } catch (FileNotFoundException e) {
+        exportIngredientsInSearchButoon.setOnAction(event -> {
+            FileChooser chooseFile = new FileChooser();
+            chooseFile.setTitle("Wybierz lokalizacje zapisu");
+            chooseFile.setInitialFileName("Posiadane Składniki.txt");
+            File saveFile = chooseFile.showSaveDialog(primaryStage);
+            if (saveFile != null) {
+                try {
+                    PrintWriter writer = new PrintWriter(saveFile);
+                    ingredientsInSearchList.getItems().forEach(writer::println);
+                    writer.close();
+                } catch (FileNotFoundException ignored) {
 
-                    }
                 }
             }
         });
 
-        Label foundRecipesInSearchLabel = new Label("Znalezione przepisy");
+        Label foundRecipesInSearchLabel = new Label(LanguagePackage.getWord("Znalezione przepisy"));
         foundRecipesInSearchLabel.setAlignment(Pos.CENTER);
         foundRecipesInSearchLabel.setMaxHeight(Double.MAX_VALUE);
         foundRecipesInSearchLabel.setMaxWidth(Double.MAX_VALUE);
-        Label mealForInSearchLabel = new Label("Danie na:");
+        Label mealForInSearchLabel = new Label(LanguagePackage.getWord("Danie na:"));
         mealForInSearchLabel.setAlignment(Pos.CENTER);
         mealForInSearchLabel.setMaxHeight(Double.MAX_VALUE);
         mealForInSearchLabel.setMaxWidth(Double.MAX_VALUE);
-        Label preparingTimeInSearchLabel = new Label("Czas przygotowania:");
+        Label preparingTimeInSearchLabel = new Label(LanguagePackage.getWord("Czas przygotowania:"));
 
-        Label preparingEaseInSearchLabel = new Label("Latwość przygotowania:");
+        Label preparingEaseInSearchLabel = new Label(LanguagePackage.getWord("Łatwość przygotowania:"));
 
 
         foundRecipesInSearchList = new ListView<>();
@@ -426,9 +405,10 @@ public class MainStage extends Application {
             }
         });
 
-        Button searchForRecipesInSearchButton = new Button("Szukaj przepisów");
+        Button searchForRecipesInSearchButton = new Button(LanguagePackage.getWord("Szukaj przepisów"));
         //searchForRecipesInSearchButton.setMaxHeight(Double.MAX_VALUE);
         searchForRecipesInSearchButton.setMaxWidth(Double.MAX_VALUE);
+
 
         searchForRecipesInSearchButton.setOnAction(event -> {
             ArrayList<Ingredient> ownedIngredients = new ArrayList<>();
@@ -457,22 +437,22 @@ public class MainStage extends Application {
         });
 
         preparingTimeInSearchComboBox = new ComboBox<>();
-        preparingTimeInSearchComboBox.getItems().add("Szybko");
-        preparingTimeInSearchComboBox.getItems().add("Srednio");
-        preparingTimeInSearchComboBox.getItems().add("Wolno");
+        preparingTimeInSearchComboBox.getItems().add(LanguagePackage.getWord("Szybko"));
+        preparingTimeInSearchComboBox.getItems().add(LanguagePackage.getWord("Średnio"));
+        preparingTimeInSearchComboBox.getItems().add(LanguagePackage.getWord("Wolno"));
         preparingTimeInSearchComboBox.getSelectionModel().select(0);
         preparingEaseInSearchComboBox = new ComboBox<>();
-        preparingEaseInSearchComboBox.getItems().add("Latwe");
-        preparingEaseInSearchComboBox.getItems().add("Srednie");
-        preparingEaseInSearchComboBox.getItems().add("Trudne");
+        preparingEaseInSearchComboBox.getItems().add(LanguagePackage.getWord("Łatwe"));
+        preparingEaseInSearchComboBox.getItems().add(LanguagePackage.getWord("Średnie"));
+        preparingEaseInSearchComboBox.getItems().add(LanguagePackage.getWord("Trudne"));
         preparingEaseInSearchComboBox.getSelectionModel().select(0);
 
-        breakfestInSearchCheckBox = new CheckBox("Sniadanie");
-        dinerInSearchCheckBox = new CheckBox("Obiad");
-        supperInSearchCheckBox = new CheckBox("Kolację");
-        dessertInSearchCheckBox = new CheckBox("Deser");
-        snackInSearchCheckBox = new CheckBox("Przekąskę");
-        spareIngredientsCheckBox = new CheckBox("Składniki Alternatywne");
+        breakfestInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Śniadanie"));
+        dinerInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Obiad"));
+        supperInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Kolację"));
+        dessertInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Deser"));
+        snackInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Przekąskę"));
+        spareIngredientsCheckBox = new CheckBox(LanguagePackage.getWord("Składniki Alternatywne:"));
 
         searchingGridPane.add(chooseIngredientsInSearchComboBox, 2, 2, 2, 1);
         searchingGridPane.add(chooseIngredientsInSearchLabel, 2, 1, 2, 1);
@@ -504,7 +484,7 @@ public class MainStage extends Application {
         mainTable.getTabs().add(searchingTab);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //TWORZENIE KARTY BAZY PRZEPISOW
-        recipesDatabaseTab = new Tab("Baza Przepisów");
+        recipesDatabaseTab = new Tab(LanguagePackage.getWord("Baza Przepisów"));
         recipesDatabaseTab.setClosable(false);
         GridPane recipesDatabaseGridPane = new GridPane();
         recipesDatabaseGridPane.setHgap(5);
@@ -523,7 +503,7 @@ public class MainStage extends Application {
             recipesDatabaseGridPane.getRowConstraints().add(rowInRecipesDatabase);
         }
 
-        Label searchInRecipesDatabaseLabel = new Label("Wyszukaj");
+        Label searchInRecipesDatabaseLabel = new Label(LanguagePackage.getWord("Wyszukaj"));
         searchInRecipesDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
         searchInRecipesDatabaseLabel.setMaxHeight(Double.MAX_VALUE);
         searchInRecipesDatabaseLabel.setAlignment(Pos.CENTER);
@@ -531,7 +511,7 @@ public class MainStage extends Application {
         searchInRecipesDatabase = new TextField();
 
 
-        Button searchingOptionsInRecipesDatabaseButton = new Button("Opcje Wyszukiwania");
+        Button searchingOptionsInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Opcje Wyszukiwania"));
         //searchingOptionsInRecipesDatabaseButton.setMaxHeight(Double.MAX_VALUE);
         searchingOptionsInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
 
@@ -572,7 +552,7 @@ public class MainStage extends Application {
             refreshLinkedRecipes();
 
         });
-        Label linkedRecipesInRecipesDatabaseLabel = new Label("Przepisy powiązane:");
+        Label linkedRecipesInRecipesDatabaseLabel = new Label(LanguagePackage.getWord("Przepisy powiązane:"));
         linkedRecipesInRecipesDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
         linkedRecipesInRecipesDatabaseLabel.setAlignment(Pos.CENTER);
 
@@ -580,7 +560,7 @@ public class MainStage extends Application {
         linkedRecipesInRecipesDatabaseComboBox.setMaxWidth(Double.MAX_VALUE);
         linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
 
-        Button addLinkedRecipeInRecipesDatabaseButton = new Button("Dodaj Powiązanie");
+        Button addLinkedRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Dodaj Powiązanie"));
         addLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
         addLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
             if(markedRecipe!=null) {
@@ -593,7 +573,7 @@ public class MainStage extends Application {
                 }
             }
         });
-        Button removeLinkedRecipeInRecipesDatabaseButton = new Button("Usuń Powiązanie");
+        Button removeLinkedRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Usuń Powiązanie"));
         removeLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
         removeLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
             if(linkedRecipesToggleGroup.getSelectedToggle()!=null) {
@@ -606,7 +586,7 @@ public class MainStage extends Application {
 
         });
 
-        Button addRecipeInRecipesDatabaseButton = new Button("Nowy Przepis");
+        Button addRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Nowy Przepis"));
         addRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
 
         addRecipeInRecipesDatabaseButton.setOnAction(event -> {
@@ -615,14 +595,14 @@ public class MainStage extends Application {
                 showNewEditMenu(null);
             } else {
                 Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
-                cantCreateRecipe.setTitle("Błąd tworzenia przepisu");
-                cantCreateRecipe.setHeaderText("Nie można utworzyć nowego przepisu.");
-                cantCreateRecipe.setContentText("W jednym momencie może być tworzony albo edytowany tylko jeden przepis");
+                cantCreateRecipe.setTitle(LanguagePackage.getWord("Błąd tworzenia przepisu"));
+                cantCreateRecipe.setHeaderText(LanguagePackage.getWord("Nie można utworzyć nowego przepisu."));
+                cantCreateRecipe.setContentText(LanguagePackage.getWord("W jednym momencie może być tworzony albo edytowany tylko jeden przepis"));
                 cantCreateRecipe.showAndWait();
             }
         });
 
-        Button removeRecipeInRecipesDatabaseButton = new Button("Usuń Przepis");
+        Button removeRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Usuń Przepis"));
         //removeRecipeInRecipesDatabaseButton.setMaxHeight(Double.MAX_VALUE);
         removeRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
         removeRecipeInRecipesDatabaseButton.setOnAction(event -> {
@@ -653,15 +633,15 @@ public class MainStage extends Application {
                     LinkedRecipes.saveLinkings();
                 } else {
                     Alert cantDeleteRecipe = new Alert(Alert.AlertType.ERROR);
-                    cantDeleteRecipe.setTitle("Błąd usuwania przepisu");
-                    cantDeleteRecipe.setHeaderText("Nie można usunąć przepisu: " + recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
-                    cantDeleteRecipe.setContentText("Przepis podlega aktualnie edycji, a edytowane przepisy nie mogą być usuwane.");
+                    cantDeleteRecipe.setTitle(LanguagePackage.getWord("Błąd usuwania przepisu"));
+                    cantDeleteRecipe.setHeaderText(LanguagePackage.getWord("Nie można usunąć przepisu."));
+                    cantDeleteRecipe.setContentText(LanguagePackage.getWord("Przepis podlega aktualnie edycji, a edytowane przepisy nie mogą być usuwane."));
                     cantDeleteRecipe.showAndWait();
                 }
             }
         });
 
-        Button editRecipeInRecipesDatabaseButton = new Button("Edytuj Przepis");
+        Button editRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Edytuj Przepis"));
         editRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
 
         editRecipeInRecipesDatabaseButton.setOnAction(event -> {
@@ -671,15 +651,15 @@ public class MainStage extends Application {
                 showNewEditMenu(RecipesList.getRecipe(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem()));
             } else if (markedRecipe == null) {
                 Alert chooseRecipeToEdit = new Alert(Alert.AlertType.INFORMATION);
-                chooseRecipeToEdit.setTitle("Wybierz przepis do edycji");
+                chooseRecipeToEdit.setTitle(LanguagePackage.getWord("Wybierz przepis do edycji"));
                 chooseRecipeToEdit.setHeaderText(null);
-                chooseRecipeToEdit.setContentText("Przepis do edycji należy wybrać z listy powyżej.");
+                chooseRecipeToEdit.setContentText(LanguagePackage.getWord("Przepis do edycji należy wybrać z listy powyżej."));
                 chooseRecipeToEdit.showAndWait();
             } else {
                 Alert cantEditRecipe = new Alert(Alert.AlertType.ERROR);
-                cantEditRecipe.setTitle("Błąd edycji przepisu");
-                cantEditRecipe.setHeaderText("Nie można edytować przepisu: " + recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
-                cantEditRecipe.setContentText("W jednym momencie może być tworzony albo edytowany tylko jeden przepis");
+                cantEditRecipe.setTitle(LanguagePackage.getWord("Błąd edycji przepisu"));
+                cantEditRecipe.setHeaderText(LanguagePackage.getWord("Nie można edytować przepisu."));
+                cantEditRecipe.setContentText(LanguagePackage.getWord("W jednym momencie może być tworzony albo edytowany tylko jeden przepis"));
                 cantEditRecipe.showAndWait();
             }
         });
@@ -692,6 +672,9 @@ public class MainStage extends Application {
         downButtonsInRecipesDatabase.getChildren().add(addRecipeInRecipesDatabaseButton);
         downButtonsInRecipesDatabase.getChildren().add(editRecipeInRecipesDatabaseButton);
         downButtonsInRecipesDatabase.getChildren().add(removeRecipeInRecipesDatabaseButton);
+        HBox.setMargin(addRecipeInRecipesDatabaseButton,new Insets(0,10,0,10));
+        HBox.setMargin(editRecipeInRecipesDatabaseButton,new Insets(0,10,0,10));
+        HBox.setMargin(removeRecipeInRecipesDatabaseButton,new Insets(0,10,0,10));
 
         RecipesList.getObservableList(recipesInRecipesDatabaseList);
 
@@ -709,7 +692,7 @@ public class MainStage extends Application {
         mainTable.getTabs().add(recipesDatabaseTab);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //TWORZENIE KARTY SKLADNIKOW
-        ingredientsDatabaseTab = new Tab("Składniki");
+        ingredientsDatabaseTab = new Tab(LanguagePackage.getWord("Składniki"));
         GridPane ingredientsDatabaseGridPane = new GridPane();
         ColumnConstraints columnInIgredientsDatabase = new ColumnConstraints();
         ingredientsDatabaseGridPane.setVgap(5);
@@ -730,7 +713,7 @@ public class MainStage extends Application {
         ingredientsInIngredientsDatabaseList.setMaxWidth(Double.MAX_VALUE);
         ingredientsInIngredientsDatabaseList.setMaxHeight(Double.MAX_VALUE);
 
-        Label ingredientNameInIngredientsDatabaseLabel = new Label("Nazwa Składnika:");
+        Label ingredientNameInIngredientsDatabaseLabel = new Label(LanguagePackage.getWord("Nazwa Składnika:"));
         ingredientNameInIngredientsDatabaseLabel.setMaxHeight(Double.MAX_VALUE);
         ingredientNameInIngredientsDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
         ingredientNameInIngredientsDatabaseLabel.setAlignment(Pos.CENTER);
@@ -739,7 +722,7 @@ public class MainStage extends Application {
         ingredientNameInIngredientsDatabaseTextField.setMaxWidth(Double.MAX_VALUE);
         //ingredientNameInIngredientsDatabaseTextField.setMaxHeight(Double.MAX_VALUE);
 
-        Button addIngredientInIngredientsDatabaseButton = new Button("Dodaj");
+        Button addIngredientInIngredientsDatabaseButton = new Button(LanguagePackage.getWord("Dodaj"));
         //addIngredientInIngredientsDatabaseButton.setMaxHeight(Double.MAX_VALUE);
         addIngredientInIngredientsDatabaseButton.setMaxWidth(Double.MAX_VALUE);
 
@@ -760,7 +743,7 @@ public class MainStage extends Application {
             }
         });
 
-        Button removeIngredientInIngredientsDatabaseButton = new Button("Usuń");
+        Button removeIngredientInIngredientsDatabaseButton = new Button(LanguagePackage.getWord("Usuń"));
         //removeIngredientInIngredientsDatabaseButton.setMaxHeight(Double.MAX_VALUE);
         removeIngredientInIngredientsDatabaseButton.setMaxWidth(Double.MAX_VALUE);
 
@@ -784,18 +767,18 @@ public class MainStage extends Application {
             }
             else {
                 Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
-                cantCreateRecipe.setTitle("Błąd usuwania składnika");
-                cantCreateRecipe.setHeaderText("Nie można usunąć składnika");
+                cantCreateRecipe.setTitle(LanguagePackage.getWord("Błąd usuwania składnika"));
+                cantCreateRecipe.setHeaderText(LanguagePackage.getWord("Nie można usunąć składnika"));
                 String cantdelete = "";
                 for(String i : recipesContainIngredient) {
                     cantdelete+= i;
                 }
-                cantCreateRecipe.setContentText("Składnik jest wykorzystywany w przepisach na:" + WhatToCook.endl + cantdelete);
+                cantCreateRecipe.setContentText(LanguagePackage.getWord("Składnik jest wykorzystywany w przepisach na:") + WhatToCook.endl + cantdelete);
                 cantCreateRecipe.showAndWait();
             }
         });
 
-        Label spareIngredientsInIngredientsDatabaseLabel = new Label("Składniki Alternatywne:");
+        Label spareIngredientsInIngredientsDatabaseLabel = new Label(LanguagePackage.getWord("Składniki Alternatywne:"));
         spareIngredientsInIngredientsDatabaseLabel.setMaxHeight(Double.MAX_VALUE);
         spareIngredientsInIngredientsDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
         spareIngredientsInIngredientsDatabaseLabel.setAlignment(Pos.CENTER);
@@ -808,7 +791,7 @@ public class MainStage extends Application {
             SpareIngredientsList.rebuildListModel(spareIngredientsInIngredientsDatabaseList, new Ingredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem()));
         });
 
-        Button addSpareIngredientInIngredientsDatabaseButton = new Button("Dodaj");
+        Button addSpareIngredientInIngredientsDatabaseButton = new Button(LanguagePackage.getWord("Dodaj"));
         addSpareIngredientInIngredientsDatabaseButton.setMaxWidth(Double.MAX_VALUE);
 
         addSpareIngredientInIngredientsDatabaseButton.setOnAction(event -> {
@@ -826,7 +809,7 @@ public class MainStage extends Application {
             }
         });
 
-        Button removeSpareIngredientInIngredientsDatabaseButton = new Button("Usuń");
+        Button removeSpareIngredientInIngredientsDatabaseButton = new Button(LanguagePackage.getWord("Usuń"));
         removeSpareIngredientInIngredientsDatabaseButton.setMaxWidth(Double.MAX_VALUE);
 
         removeSpareIngredientInIngredientsDatabaseButton.setOnAction(event -> {
@@ -869,82 +852,7 @@ public class MainStage extends Application {
         primaryStage.show();
 
     }
-/*
-    private void showRecipe(Recipe recipeToShow) {
-        Tab showRecipeTab = new Tab(recipeToShow.getName());
-        BorderPane showRecipeMainBorderPane = new BorderPane();
-        TextArea recipeTextArea = new TextArea();
-        String toShow = "";
-        toShow += "Przepis: " + recipeToShow.getName() + WhatToCook.endl + WhatToCook.endl + WhatToCook.endl;
-        toShow += "Łatwość przygotowania: ";
-        if (recipeToShow.getParameters().getPreparingEase() == 0)
-            toShow += "Łatwo";
-        if (recipeToShow.getParameters().getPreparingEase() == 1)
-            toShow += "Średnio";
-        if (recipeToShow.getParameters().getPreparingEase() == 2)
-            toShow += "Trudno";
-        toShow += WhatToCook.endl + WhatToCook.endl;
-        toShow += "Czas przygotowania: ";
-        if (recipeToShow.getParameters().getPreparingTime() == 0)
-            toShow += "Krótko";
-        if (recipeToShow.getParameters().getPreparingTime() == 1)
-            toShow += "Średnio";
-        if (recipeToShow.getParameters().getPreparingTime() == 2)
-            toShow += "Długo";
-        toShow += WhatToCook.endl + WhatToCook.endl;
-        toShow += "Danie na: ";
-        if (recipeToShow.getParameters().getParameters()[0])
-            toShow += " Śniadanie";
-        if (recipeToShow.getParameters().getParameters()[1])
-            toShow += " Deser";
-        if (recipeToShow.getParameters().getParameters()[2])
-            toShow += " Obiad";
-        if (recipeToShow.getParameters().getParameters()[3])
-            toShow += " Kolację";
-        if (recipeToShow.getParameters().getParameters()[4])
-            toShow += " Przekąskę";
-        toShow += WhatToCook.endl + WhatToCook.endl;
-        toShow += "Składniki: " + WhatToCook.endl;
-        for (int i = 0; i < recipeToShow.getSize(); i++) {
-            toShow += recipeToShow.getIngredient(i).toString() + " " + recipeToShow.getAmount(i) + " " + recipeToShow.getUnit(i) + WhatToCook.endl;
-        }
-        toShow += WhatToCook.endl + WhatToCook.endl;
-        toShow += "Instrukcja przygotowania: " + WhatToCook.endl;
-        toShow += recipeToShow.getRecipe();
-
-
-        ContextMenu showRecipeContexMenu = new ContextMenu();
-        MenuItem addToShoppingList = new MenuItem("Dodaj do zakupów");
-        addToShoppingList.setOnAction(event -> {
-            for (int i = 0; i < recipeToShow.getSize(); i++) {
-                Ingredient ingredient = recipeToShow.getIngredient(i);
-                boolean contain = false;
-                for (int j = 0; j < ingredientsInSearchList.getItems().size(); j++) {
-                    if (ingredientsInSearchList.getItems().get(j).equals(ingredient.getName()))
-                        contain = true;
-                }
-                if (!contain)
-                    ToBuyIngredientsList.add(recipeToShow.getIngredient(i));
-            }
-        });
-        MenuItem closeRecipeTab = new MenuItem("Zamknij");
-        closeRecipeTab.setOnAction(event -> mainTable.getTabs().remove(showRecipeTab));
-        showRecipeContexMenu.getItems().add(addToShoppingList);
-        showRecipeContexMenu.getItems().add(new SeparatorMenuItem());
-        showRecipeContexMenu.getItems().add(closeRecipeTab);
-
-
-        recipeTextArea.setContextMenu(showRecipeContexMenu);
-        recipeTextArea.setWrapText(true);
-        recipeTextArea.setText(toShow);
-        recipeTextArea.setEditable(false);
-        showRecipeMainBorderPane.setCenter(recipeTextArea);
-        showRecipeTab.setContent(showRecipeMainBorderPane);
-        mainTable.getTabs().add(showRecipeTab);
-        mainTable.getSelectionModel().select(showRecipeTab);
-    }*/
-
-    public void showRecipe(Recipe toShow) {
+    private void showRecipe(Recipe toShow) {
         GridPane showRecipeGridPane = new GridPane();
         //showRecipeGridPane.setGridLinesVisible(true);
         ColumnConstraints columnInShowRecipe = new ColumnConstraints();
@@ -963,39 +871,39 @@ public class MainStage extends Application {
 
         showRecipeGridPane.add(instructionsInRecipe,0,6,4,6);
 
-        Label youWillNeedLabel = new Label("Będziesz potrzebować:");
+        Label youWillNeedLabel = new Label(LanguagePackage.getWord("Będziesz potrzebować:"));
         youWillNeedLabel.setMaxWidth(Double.MAX_VALUE);
         youWillNeedLabel.setAlignment(Pos.CENTER);
         youWillNeedLabel.setTextAlignment(TextAlignment.CENTER);
         String tmp = "";
         if (toShow.getParameters().getPreparingEase() == 0)
-            tmp = "Łatwo";
+            tmp = LanguagePackage.getWord("Łatwo");
         if (toShow.getParameters().getPreparingEase() == 1)
-            tmp = "Średnio";
+            tmp = LanguagePackage.getWord("Średnio");
         if (toShow.getParameters().getPreparingEase() == 2)
-            tmp = "Trudno";
-        Label preparingEaseLabel = new Label("Łatwość przygotowywania: "+ tmp);
+            tmp = LanguagePackage.getWord("Trudno");
+        Label preparingEaseLabel = new Label(LanguagePackage.getWord("Łatwość przygotowywania: "+ tmp));
         preparingEaseLabel.setMaxWidth(Double.MAX_VALUE);
         preparingEaseLabel.setAlignment(Pos.CENTER);
         preparingEaseLabel.setTextAlignment(TextAlignment.CENTER);
         tmp = "";
         if (toShow.getParameters().getPreparingTime() == 0)
-            tmp = "Krótko";
+            tmp = LanguagePackage.getWord("Krótko");
         if (toShow.getParameters().getPreparingTime() == 1)
-            tmp = "Średnio";
+            tmp = LanguagePackage.getWord("Średnio");
         if (toShow.getParameters().getPreparingTime() == 2)
-            tmp = "Długo";
-        Label preparingTimeLabel = new Label("Czas przygotowywania: " + tmp);
+            tmp = LanguagePackage.getWord("Długo");
+        Label preparingTimeLabel = new Label(LanguagePackage.getWord("Czas przygotowywania: ") + tmp);
         preparingTimeLabel.setMaxWidth(Double.MAX_VALUE);
         preparingTimeLabel.setAlignment(Pos.CENTER);
         preparingTimeLabel.setTextAlignment(TextAlignment.CENTER);
 
-        Label howToPrepareLabel = new Label("Przygotowanie:");
+        Label howToPrepareLabel = new Label(LanguagePackage.getWord("Przygotowanie:"));
         howToPrepareLabel.setMaxWidth(Double.MAX_VALUE);
         howToPrepareLabel.setAlignment(Pos.CENTER);
         howToPrepareLabel.setTextAlignment(TextAlignment.CENTER);
 
-        Label seeAlso = new Label("Zobacz również:");
+        Label seeAlso = new Label(LanguagePackage.getWord("Zobacz również:"));
         seeAlso.setMaxWidth(Double.MAX_VALUE);
         seeAlso.setAlignment(Pos.CENTER);
         seeAlso.setTextAlignment(TextAlignment.CENTER);
@@ -1010,24 +918,21 @@ public class MainStage extends Application {
         linkedRecipesInShowRecipe.setItems(linkedRecipesList);
 
         linkedRecipesInShowRecipe.setMaxWidth(Double.MAX_VALUE);
-        Button openLinkedRecipe = new Button("Otwórz");
+        Button openLinkedRecipe = new Button(LanguagePackage.getWord("Otwórz"));
         openLinkedRecipe.setMaxWidth(Double.MAX_VALUE);
         openLinkedRecipe.setAlignment(Pos.CENTER);
-        openLinkedRecipe.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(linkedRecipesInShowRecipe.getSelectionModel().getSelectedItem()!=null) {
-                    showRecipe(RecipesList.getRecipe(linkedRecipesInShowRecipe.getSelectionModel().getSelectedItem()));
-                }
+        openLinkedRecipe.setOnAction(event -> {
+            if(linkedRecipesInShowRecipe.getSelectionModel().getSelectedItem()!=null) {
+                showRecipe(RecipesList.getRecipe(linkedRecipesInShowRecipe.getSelectionModel().getSelectedItem()));
             }
         });
         showRecipeGridPane.add(youWillNeedLabel,0,0,2,1);
-        showRecipeGridPane.add(preparingTimeLabel,2,1,2,1);
-        showRecipeGridPane.add(preparingEaseLabel,2,2,2,1);
+        showRecipeGridPane.add(preparingTimeLabel,2,0,2,1);
+        showRecipeGridPane.add(preparingEaseLabel,2,1,2,1);
         if(toShow.getLinkedRecipes().size()>0) {
-            showRecipeGridPane.add(seeAlso, 2, 3, 2, 1);
-            showRecipeGridPane.add(linkedRecipesInShowRecipe, 2, 4, 1, 1);
-            showRecipeGridPane.add(openLinkedRecipe, 3, 4, 1, 1);
+            showRecipeGridPane.add(seeAlso, 2, 2, 2, 1);
+            showRecipeGridPane.add(linkedRecipesInShowRecipe, 2, 3, 1, 1);
+            showRecipeGridPane.add(openLinkedRecipe, 3, 3, 1, 1);
         }
         showRecipeGridPane.add(howToPrepareLabel,0,5,2,1);
 
@@ -1041,7 +946,7 @@ public class MainStage extends Application {
 
         showRecipeGridPane.add(ingredientsInShowRecipeList,0,1,2,3);
 
-        Button addToShoppingList = new Button("Dodaj brakujące do zakupów");
+        Button addToShoppingList = new Button(LanguagePackage.getWord("Dodaj brakujące do zakupów"));
         addToShoppingList.setMaxWidth(Double.MAX_VALUE);
         addToShoppingList.setOnAction(event -> {
             for (int i = 0; i < toShow.getSize(); i++) {
@@ -1079,7 +984,7 @@ public class MainStage extends Application {
         if (recipe != null) {
             newEditMenuTab = new Tab(recipe.getName());
         } else {
-            newEditMenuTab = new Tab("Nowy Przepis");
+            newEditMenuTab = new Tab(LanguagePackage.getWord("Nowy Przepis"));
         }
         GridPane mainGridNewEditMenuTab = new GridPane();
         ColumnConstraints columnInNewEditMenu = new ColumnConstraints();
@@ -1095,13 +1000,13 @@ public class MainStage extends Application {
             mainGridNewEditMenuTab.getRowConstraints().add(rowInIngredientsDatabase);
         }
 
-        Label recipeNameLabel = new Label("Podaj nazwę przepisu: ");
+        Label recipeNameLabel = new Label(LanguagePackage.getWord("Podaj nazwę przepisu: "));
         recipeNameLabel.setMaxWidth(Double.MAX_VALUE);
         recipeNameLabel.setAlignment(Pos.CENTER);
 
         ListView<String> ingredientsInNewEditMenuList = new ListView<>();
 
-        Label instructionsNewEditMenuLabel = new Label("Napisz instrukcję przygotowywania posiłku");
+        Label instructionsNewEditMenuLabel = new Label(LanguagePackage.getWord("Napisz instrukcję przygotowywania posiłku"));
         instructionsNewEditMenuLabel.setMaxWidth(Double.MAX_VALUE);
         instructionsNewEditMenuLabel.setAlignment(Pos.CENTER);
         TextArea instructionsNewEditMenuTextArea = new TextArea();
@@ -1109,10 +1014,10 @@ public class MainStage extends Application {
         instructionsNewEditMenuTextArea.setMaxWidth(Double.MAX_VALUE);
         instructionsNewEditMenuTextArea.setWrapText(true);
 
-        Button saveAndExitButton = new Button("Zapisz i wyjdź");
+        Button saveAndExitButton = new Button(LanguagePackage.getWord("Zapisz i wyjdź"));
         saveAndExitButton.setMaxWidth(Double.MAX_VALUE);
 
-        Button exitWithoutSavingButton = new Button("Wyjdź bez zapisywania");
+        Button exitWithoutSavingButton = new Button(LanguagePackage.getWord("Wyjdź bez zapisywania"));
         exitWithoutSavingButton.setMaxWidth(Double.MAX_VALUE);
 
         exitWithoutSavingButton.setOnAction(event -> {
@@ -1125,9 +1030,9 @@ public class MainStage extends Application {
 
         //PANEL Z DWIEMA ZAKLADKAMI
         TabPane newEditMenuTabPane = new TabPane();
-        Tab tabGeneral = new Tab("Składniki");
+        Tab tabGeneral = new Tab(LanguagePackage.getWord("Składniki"));
         tabGeneral.setClosable(false);
-        Tab tabParameters = new Tab("Parametry");
+        Tab tabParameters = new Tab(LanguagePackage.getWord("Parametry"));
         tabParameters.setClosable(false);
 
         GridPane ingredientsGridPane = new GridPane();
@@ -1147,18 +1052,18 @@ public class MainStage extends Application {
         ingredientsGridPane.getRowConstraints().add(rowInIngredientsGridPane);
         ingredientsGridPane.getRowConstraints().add(rowInIngredientsGridPane);
 
-        Label chooseIngredientsLabel = new Label("Wybierz składniki");
+        Label chooseIngredientsLabel = new Label(LanguagePackage.getWord("Wybierz składniki"));
         chooseIngredientsLabel.setMaxWidth(Double.MAX_VALUE);
         chooseIngredientsLabel.setAlignment(Pos.CENTER);
-        Label ammountInNewEditMenuLabel = new Label("Ilość:");
-        Label unitInNewEditMenuLabel = new Label("Jednostka:");
+        Label ammountInNewEditMenuLabel = new Label(LanguagePackage.getWord("Ilość:"));
+        Label unitInNewEditMenuLabel = new Label(LanguagePackage.getWord("Jednostka:"));
 
         TextField ammountInNewEditMenuTextField = new TextField();
         TextField unitInNewEditMenuTextField = new TextField();
 
-        Button addIngredientInNewEditMenuButton = new Button("Dodaj składnik");
+        Button addIngredientInNewEditMenuButton = new Button(LanguagePackage.getWord("Dodaj składnik"));
         addIngredientInNewEditMenuButton.setMaxWidth(Double.MAX_VALUE);
-        Button removeIngredientInNewEditMenuButton = new Button("Usuń składnik");
+        Button removeIngredientInNewEditMenuButton = new Button(LanguagePackage.getWord("Usuń składnik"));
         removeIngredientInNewEditMenuButton.setMaxWidth(Double.MAX_VALUE);
         ingredientsInNewEditMenuComboBox.setMaxWidth(Double.MAX_VALUE);
         ingredientsGridPane.add(chooseIngredientsLabel, 0, 0, 2, 1);
@@ -1180,44 +1085,44 @@ public class MainStage extends Application {
             parametersGridPane.getRowConstraints().add(rowInParametersGridPane);
         }
 
-        Label mealForLabel = new Label("Danie na:");
+        Label mealForLabel = new Label(LanguagePackage.getWord("Danie na:"));
         mealForLabel.setMaxWidth(Double.MAX_VALUE);
         mealForLabel.setAlignment(Pos.CENTER);
 
-        Label preparingTimeInNewEditMenuLabel = new Label("Czas przygotowania:");
+        Label preparingTimeInNewEditMenuLabel = new Label(LanguagePackage.getWord("Czas przygotowania:"));
         preparingTimeInNewEditMenuLabel.setMinHeight(0);
         preparingTimeInNewEditMenuLabel.setMaxWidth(Double.MAX_VALUE);
         preparingTimeInNewEditMenuLabel.setAlignment(Pos.CENTER);
 
-        Label preparingEaseInNewEditMenuLabel = new Label("Latwość przygotowania:");
+        Label preparingEaseInNewEditMenuLabel = new Label(LanguagePackage.getWord("Łatwość przygotowania:"));
         preparingEaseInNewEditMenuLabel.setMinHeight(0);
         preparingEaseInNewEditMenuLabel.setMaxWidth(Double.MAX_VALUE);
         preparingEaseInNewEditMenuLabel.setAlignment(Pos.CENTER);
 
-        CheckBox breakfestInNewEditCheckBox = new CheckBox("Sniadanie");
+        CheckBox breakfestInNewEditCheckBox = new CheckBox(LanguagePackage.getWord("Śniadanie"));
         breakfestInNewEditCheckBox.setMinHeight(0);
-        CheckBox dinerInNewEditCheckBox = new CheckBox("Obiad");
+        CheckBox dinerInNewEditCheckBox = new CheckBox(LanguagePackage.getWord("Obiad"));
         dinerInNewEditCheckBox.setMinHeight(0);
-        CheckBox supperInNewEditCheckBox = new CheckBox("Kolację");
+        CheckBox supperInNewEditCheckBox = new CheckBox(LanguagePackage.getWord("Kolację"));
         supperInNewEditCheckBox.setMinHeight(0);
-        CheckBox dessertInNewEdithCheckBox = new CheckBox("Deser");
+        CheckBox dessertInNewEdithCheckBox = new CheckBox(LanguagePackage.getWord("Deser"));
         dessertInNewEdithCheckBox.setMinHeight(0);
-        CheckBox snackInNewEditCheckBox = new CheckBox("Przekąskę");
+        CheckBox snackInNewEditCheckBox = new CheckBox(LanguagePackage.getWord("Przekąskę"));
         snackInNewEditCheckBox.setMinHeight(0);
 
         ComboBox<String> preparingTimeInNewEditComboBox = new ComboBox<>();
         preparingTimeInNewEditComboBox.setMinHeight(0);
         preparingTimeInNewEditComboBox.setMaxWidth(Double.MAX_VALUE);
-        preparingTimeInNewEditComboBox.getItems().add("Szybko");
-        preparingTimeInNewEditComboBox.getItems().add("Srednio");
-        preparingTimeInNewEditComboBox.getItems().add("Wolno");
+        preparingTimeInNewEditComboBox.getItems().add(LanguagePackage.getWord("Szybko"));
+        preparingTimeInNewEditComboBox.getItems().add(LanguagePackage.getWord("Średnio"));
+        preparingTimeInNewEditComboBox.getItems().add(LanguagePackage.getWord("Wolno"));
         preparingTimeInNewEditComboBox.getSelectionModel().select(0);
         ComboBox<String> preparingEaseInNewEditComboBox = new ComboBox<>();
         preparingEaseInNewEditComboBox.setMinHeight(0);
         preparingEaseInNewEditComboBox.setMaxWidth(Double.MAX_VALUE);
-        preparingEaseInNewEditComboBox.getItems().add("Latwe");
-        preparingEaseInNewEditComboBox.getItems().add("Srednie");
-        preparingEaseInNewEditComboBox.getItems().add("Trudne");
+        preparingEaseInNewEditComboBox.getItems().add(LanguagePackage.getWord("Łatwe"));
+        preparingEaseInNewEditComboBox.getItems().add(LanguagePackage.getWord("Średnie"));
+        preparingEaseInNewEditComboBox.getItems().add(LanguagePackage.getWord("Trudne"));
         preparingEaseInNewEditComboBox.getSelectionModel().select(0);
 
         parametersGridPane.add(mealForLabel, 0, 0, 2, 1);
@@ -1316,9 +1221,9 @@ public class MainStage extends Application {
                     inEdit = null;
                 } else {
                     Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
-                    cantCreateRecipe.setTitle("Błąd tworzenia przepisu");
-                    cantCreateRecipe.setHeaderText("Nie można utworzyć nowego przepisu.");
-                    cantCreateRecipe.setContentText("Przepis musi zawierać nazwę, opis i conajmniej jeden składnik");
+                    cantCreateRecipe.setTitle(LanguagePackage.getWord("Błąd tworzenia przepisu"));
+                    cantCreateRecipe.setHeaderText(LanguagePackage.getWord("Nie można utworzyć nowego przepisu."));
+                    cantCreateRecipe.setContentText(LanguagePackage.getWord("Przepis musi zawierać nazwę, opis i conajmniej jeden składnik"));
                     cantCreateRecipe.showAndWait();
                 }
             } else if ((!name1.equals("")) && (!instructions.equals("")) && (!ingredients.isEmpty())) {
@@ -1333,9 +1238,9 @@ public class MainStage extends Application {
                     inEdit = null;
                 } else {
                     Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
-                    cantCreateRecipe.setTitle("Błąd tworzenia przepisu");
-                    cantCreateRecipe.setHeaderText("Nie można utworzyć nowego przepisu.");
-                    cantCreateRecipe.setContentText("Przepis musi zawierać nazwę, opis i conajmniej jeden składnik");
+                    cantCreateRecipe.setTitle(LanguagePackage.getWord("Błąd tworzenia przepisu"));
+                    cantCreateRecipe.setHeaderText(LanguagePackage.getWord("Nie można utworzyć nowego przepisu."));
+                    cantCreateRecipe.setContentText(LanguagePackage.getWord("Przepis musi zawierać nazwę, opis i conajmniej jeden składnik"));
                     cantCreateRecipe.showAndWait();
                 }
             }
