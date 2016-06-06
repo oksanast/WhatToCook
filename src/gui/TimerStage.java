@@ -1,6 +1,6 @@
 package gui;
 
-import core.LanguagePackage;
+import auxiliary.LanguagePackage;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;

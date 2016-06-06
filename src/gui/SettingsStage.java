@@ -1,7 +1,7 @@
 package gui;
 
-import core.Dictionary;
-import core.LanguagePackage;
+import auxiliary.Dictionary;
+import auxiliary.LanguagePackage;
 import core.WhatToCook;
 import javafx.application.Application;
 import javafx.event.ActionEvent;

@@ -1,7 +1,7 @@
 package gui;
 
 import core.Ingredient;
-import core.LanguagePackage;
+import auxiliary.LanguagePackage;
 import core.ToBuyIngredientsList;
 import javafx.application.Application;
 import javafx.geometry.Pos;

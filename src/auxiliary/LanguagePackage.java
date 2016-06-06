@@ -1,4 +1,6 @@
-package core;
+package auxiliary;
+
+import auxiliary.Dictionary;
 
 /**
  * Created by Mateusz on 05.06.2016.

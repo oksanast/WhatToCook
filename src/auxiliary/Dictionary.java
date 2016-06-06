@@ -1,4 +1,4 @@
-package core;
+package auxiliary;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,15 +16,6 @@ public class Dictionary {
                 languages.add(listScanner.nextLine());
                 words.add(new ArrayList<>());
             }
-        /*for(int i = 0; i < languages.size();i++) {
-            Scanner wordsScanner = new Scanner(new InputStreamReader(Dictionary.class.getResourceAsStream("resources/languages/words/" + languages.get(i))));
-            while (wordsScanner.hasNextLine()) {
-                    while(wordsScanner.hasNextLine()) {
-                        String line = wordsScanner.nextLine();
-                        words.get(i).add(line);
-                    }
-            }
-        }*/
         Scanner wordsScanner = new Scanner(new InputStreamReader(Dictionary.class.getResourceAsStream("resources/languages/words/words.txt")));
         while(wordsScanner.hasNextLine()) {
             String line = wordsScanner.nextLine();

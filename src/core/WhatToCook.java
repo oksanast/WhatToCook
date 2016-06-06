@@ -1,5 +1,7 @@
 package core;
 
+import auxiliary.Dictionary;
+import auxiliary.LanguagePackage;
 import gui.MainStage;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
@@ -7,7 +9,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 

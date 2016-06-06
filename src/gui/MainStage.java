@@ -1,5 +1,6 @@
 package gui;
 
+import auxiliary.LanguagePackage;
 import auxiliary.ListHandler;
 import auxiliary.PairAmountUnit;
 import auxiliary.RecipeParameters;
