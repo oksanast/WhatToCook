@@ -21,7 +21,6 @@ public class SpareIngredientsList {
         spareIngredientslist=new ArrayList<>();
     }
 
-
     public static SpareIngredients get(Ingredient ingredient)
     {
         for(SpareIngredients i : spareIngredientslist)
