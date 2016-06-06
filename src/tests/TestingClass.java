@@ -1,6 +1,9 @@
 package tests;
 
+import auxiliary.PairAmountUnit;
+import auxiliary.RecipeParameters;
 import core.Ingredient;
+import core.IngredientsList;
 import core.WhatToCook;
 import org.junit.Test;
 
@@ -37,5 +40,26 @@ public class TestingClass {
                 assertNotEquals(new Ingredient("Banany"), toAdd);
         }
     }
+
+    @Test
+    public void testRecipeParameters() throws Exception {
+        int preparingEase = 0;
+        int preparingTime = 0;
+        boolean[] parameters = {true,true,false,false,false};
+        RecipeParameters testParameters = new RecipeParameters(parameters,preparingEase,preparingTime);
+        assertEquals(preparingEase,testParameters.getPreparingEase());
+        assertEquals(preparingTime,testParameters.getPreparingTime());
+        assertEquals(parameters,testParameters.getParameters());
+    }
+
+    @Test
+    public void testPairAmountUnit() throws Exception {
+        String amount = "2";
+        String unit = "kg";
+        PairAmountUnit testPairAmountUnit = new PairAmountUnit(amount,unit);
+        assertEquals(amount,testPairAmountUnit.getAmount());
+        assertEquals(unit,testPairAmountUnit.getUnit());
+    }
+
 
 }
