@@ -47,10 +47,15 @@ public class MainStage extends Application {
         MenuBar mainMenu = new MenuBar();
 
         Menu fileMenu = new Menu(LanguagePackage.getWord("Plik"));
+        fileMenu.setId("menu");
         Menu editMenu = new Menu(LanguagePackage.getWord("Edycja"));
+        editMenu.setId("menu");
         Menu viewMenu = new Menu(LanguagePackage.getWord("Widok"));
+        viewMenu.setId("menu");
         Menu toolsMenu = new Menu(LanguagePackage.getWord("Narzędzia"));
+        toolsMenu.setId("menu");
         Menu helpMenu = new Menu(LanguagePackage.getWord("Pomoc"));
+        helpMenu.setId("menu");
 
         //TWORZENIE OKIEN DIALOGOWYCH
         ShoppingListStage shoppinglist = new ShoppingListStage();
@@ -64,6 +69,7 @@ public class MainStage extends Application {
         Menu newMenu = new Menu(LanguagePackage.getWord("Nowy"));
 
         MenuItem newRecipe = new MenuItem(LanguagePackage.getWord("Przepis"));
+        newRecipe.setId("menu");
         newRecipe.setOnAction(event -> {
             if (!isEditionTurnOn) {
                 isEditionTurnOn = true;
@@ -77,13 +83,17 @@ public class MainStage extends Application {
             }
         });
         MenuItem newIngredient = new MenuItem(LanguagePackage.getWord("Składnik"));
+        newIngredient.setId("menu");
         newIngredient.setOnAction(event -> mainTable.getSelectionModel().select(2));
         MenuItem exit = new MenuItem(LanguagePackage.getWord("Wyjście"));
+        exit.setId("menu");
         exit.setOnAction(event -> System.exit(0));
 
         MenuItem exportAllIngredients = new MenuItem(LanguagePackage.getWord("Eksportuj Składniki"));
+        exportAllIngredients.setId("menu");
 
         MenuItem settingsMenuItem = new MenuItem(LanguagePackage.getWord("Opcje"));
+        settingsMenuItem.setId("menu");
         settingsMenuItem.setOnAction(event -> {
             settingsWindows.refresh();
         });
@@ -99,6 +109,7 @@ public class MainStage extends Application {
         });
 
         MenuItem importAllIngredients = new MenuItem(LanguagePackage.getWord("Importuj Składniki"));
+        importAllIngredients.setId("menu");
         importAllIngredients.setOnAction(event -> {
             FileChooser chooseFile = new FileChooser();
             chooseFile.setTitle("Wybierz plik ze składnikami");
@@ -125,19 +136,25 @@ public class MainStage extends Application {
         });
 
         MenuItem clearInsertIngredients = new MenuItem(LanguagePackage.getWord("Wyczyść wprowadzone składniki"));
+        clearInsertIngredients.setId("menu");
         clearInsertIngredients.setOnAction(event -> {
             for (int i = ingredientsInSearchList.getItems().size() - 1; i >= 0; i--) {
                 ingredientsInSearchList.getItems().remove(i);
             }
         });
         MenuItem clearFoundRecipes = new MenuItem(LanguagePackage.getWord("Wyczyść wyniki wyszukiwania"));
+        clearFoundRecipes.setId("menu");
         clearFoundRecipes.setOnAction(event -> foundRecipesInSearchList.setItems(FXCollections.emptyObservableList()));
 
         Menu cardsMenu = new Menu(LanguagePackage.getWord("Karty"));
+        cardsMenu.setId("menu");
 
         CheckMenuItem searchingCard = new CheckMenuItem(LanguagePackage.getWord("Wyszukiwanie"));
+        searchingCard.setId("menu");
         CheckMenuItem recipesDatabaseCard = new CheckMenuItem(LanguagePackage.getWord("Baza Przepisów"));
+        recipesDatabaseCard.setId("menu");
         CheckMenuItem ingredientsCard = new CheckMenuItem(LanguagePackage.getWord("Składniki"));
+        ingredientsCard.setId("menu");
 
         newMenu.getItems().add(newRecipe);
         newMenu.getItems().add(newIngredient);
@@ -154,6 +171,7 @@ public class MainStage extends Application {
         editMenu.getItems().add(clearFoundRecipes);
 
         MenuItem closeAllRecipes = new MenuItem(LanguagePackage.getWord("Zamknij wszystkie przepisy"));
+        closeAllRecipes.setId("menu");
         closeAllRecipes.setOnAction(event -> {
             if (isEditionTurnOn) {
                 for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount + 1; i--)
@@ -165,6 +183,7 @@ public class MainStage extends Application {
         });
 
         MenuItem teamMenuItem = new MenuItem(LanguagePackage.getWord("Autorzy"));
+        teamMenuItem.setId("menu");
         teamMenuItem.setOnAction(event -> {
             AboutWindow teamStage = new AboutWindow();
             try {
@@ -228,6 +247,7 @@ public class MainStage extends Application {
         viewMenu.getItems().add(closeAllRecipes);
 
         MenuItem shoppingListMenuItem = new MenuItem(LanguagePackage.getWord("Lista Zakupów"));
+        shoppingListMenuItem.setId("menu");
         shoppingListMenuItem.setOnAction(event -> {
             try {
                 shoppinglist.refresh();
@@ -237,6 +257,7 @@ public class MainStage extends Application {
         });
 
         MenuItem timeMenuItem = new MenuItem(LanguagePackage.getWord("Minutnik"));
+        timeMenuItem.setId("menu");
         timeMenuItem.setOnAction(event -> {
             try {
                 timerWindow.start(primaryStage);
@@ -386,16 +407,20 @@ public class MainStage extends Application {
         });
 
         Label foundRecipesInSearchLabel = new Label(LanguagePackage.getWord("Znalezione przepisy"));
+
         foundRecipesInSearchLabel.setAlignment(Pos.CENTER);
         foundRecipesInSearchLabel.setMaxHeight(Double.MAX_VALUE);
         foundRecipesInSearchLabel.setMaxWidth(Double.MAX_VALUE);
         Label mealForInSearchLabel = new Label(LanguagePackage.getWord("Danie na:"));
+
         mealForInSearchLabel.setAlignment(Pos.CENTER);
         mealForInSearchLabel.setMaxHeight(Double.MAX_VALUE);
         mealForInSearchLabel.setMaxWidth(Double.MAX_VALUE);
         Label preparingTimeInSearchLabel = new Label(LanguagePackage.getWord("Czas przygotowania:"));
 
+
         Label preparingEaseInSearchLabel = new Label(LanguagePackage.getWord("Łatwość przygotowania:"));
+
 
 
         foundRecipesInSearchList = new ListView<>();

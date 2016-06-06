@@ -42,7 +42,7 @@ public class AboutWindow extends Application {
         mainStage.setScene(mainScene);
         mainStage.setResizable(false);
         mainStage.initModality(Modality.APPLICATION_MODAL);
-        mainScene.getStylesheets().add(MainStage.class.getResource("css/style.css").toExternalForm());
+       // mainScene.getStylesheets().add(MainStage.class.getResource("css/style.css").toExternalForm());
         mainStage.show();
     }
 

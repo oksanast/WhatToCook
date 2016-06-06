@@ -68,7 +68,7 @@ public class SettingsStage extends Application {
         mainLayout.add(languageSelectionComboBox,1,1,1,1);
 
         settingsScene = new Scene(mainLayout,300,100);
-        settingsScene.getStylesheets().add(SettingsStage.class.getResource("css/style.css").toExternalForm());
+      //  settingsScene.getStylesheets().add(SettingsStage.class.getResource("css/style.css").toExternalForm());
         settingsStage = new Stage();
         settingsStage.setScene(settingsScene);
         settingsStage.setResizable(false);

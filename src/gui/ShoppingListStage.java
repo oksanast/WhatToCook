@@ -77,7 +77,7 @@ public class ShoppingListStage extends Application {
         Scene mainScene = new Scene(mainBorderPane,400,400);
         shoppingListStage.initModality(Modality.APPLICATION_MODAL);
         shoppingListStage.setScene(mainScene);
-        mainScene.getStylesheets().add(MainStage.class.getResource("css/style.css").toExternalForm());
+       // mainScene.getStylesheets().add(MainStage.class.getResource("css/style.css").toExternalForm());
     }
     void refresh() {
         shoppingListList.setItems(ToBuyIngredientsList.getObservableList());
