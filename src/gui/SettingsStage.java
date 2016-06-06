@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
@@ -54,7 +55,8 @@ public class SettingsStage extends Application {
 
         languageSelectionComboBox.setOnAction(event -> {
             if(!languageSelectionComboBox.getSelectionModel().getSelectedItem().equals(LanguagePackage.language)) {
-                WhatToCook.exportSettings(languageSelectionComboBox.getSelectionModel().getSelectedItem());
+                nextLanguage = languageSelectionComboBox.getSelectionModel().getSelectedItem();
+                WhatToCook.exportSettings(nextLanguage);
                 Alert languageChangeAlert = new Alert(Alert.AlertType.INFORMATION);
                 languageChangeAlert.setTitle(LanguagePackage.getWord("Wybierz język"));
                 languageChangeAlert.setHeaderText(null);
@@ -63,24 +65,42 @@ public class SettingsStage extends Application {
             }
         });
 
+        autoNewCardCheckBox = new CheckBox(LanguagePackage.getWord("Automatyczne przechodzenie do nowej karty"));
+        autoNewCardCheckBox.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                WhatToCook.autoNewCard = autoNewCardCheckBox.isSelected();
+                if(!nextLanguage.equals(""))
+                    WhatToCook.exportSettings(nextLanguage);
+                else
+                    WhatToCook.exportSettings();
+            }
+        });
         mainLayout.add(titleLabel,0,0,2,1);
         mainLayout.add(selectLanguageLabel,0,1,1,1);
         mainLayout.add(languageSelectionComboBox,1,1,1,1);
+        mainLayout.add(autoNewCardCheckBox,0,2,2,1);
 
-        settingsScene = new Scene(mainLayout,300,100);
+        settingsScene = new Scene(mainLayout,330,100);
       //  settingsScene.getStylesheets().add(SettingsStage.class.getResource("css/style.css").toExternalForm());
         settingsStage = new Stage();
         settingsStage.setScene(settingsScene);
         settingsStage.setResizable(false);
         settingsStage.initModality(Modality.WINDOW_MODAL);
+        settingsStage.setResizable(false);
     }
     public void refresh() {
         languageSelectionComboBox.getSelectionModel().select(LanguagePackage.language);
+        autoNewCardCheckBox.setSelected(WhatToCook.autoNewCard);
         settingsStage.show();
     }
     Stage settingsStage;
     Scene settingsScene;
 
     private ComboBox<String> languageSelectionComboBox;
+
+    private CheckBox autoNewCardCheckBox;
+
+    private String nextLanguage = "";
 
 }

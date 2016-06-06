@@ -1,4 +1,5 @@
 Plik  File
+Opcje  Options
 Edycja  Edit
 Widok  View
 Narzędzia  Tools
@@ -85,10 +86,13 @@ W jednym momencie może być tworzony albo edytowany tylko jeden przepis  You ca
 Błąd usuwania przepisu  Deleting recipe error
 Nie można usunąć przepisu.  You can't delete recipe.
 Przepis podlega aktualnie edycji, a edytowane przepisy nie mogą być usuwane.  Recipe is now being editted.
-W jednym momencie może być tworzony albo edytowany tylko jeden przepis. Only one recipe can be in edit at once.
+W jednym momencie może być tworzony albo edytowany tylko jeden przepis.  Only one recipe can be in edit at once.
 Wybierz lokalizację zapisu  Choose saving location.
 Posiadane składniki.txt  OwnedIngredients.txt
 Wybierz plik z posiadanymi składnikami  Choose file with owned ingredients
 Wybierz lokalizację zapisu  Choose saving location
-start  start
-reset  reset
+Wprowadź składniki  Input Ingredients
+Wybierz język  Select Language
+Zmiany będą widoczne po ponownym uruchomieniu programu  Chanbes will take place after relaunching the application
+Ustawienia  Settings
+Automatyczne przechodzenie do nowej karty  Auto open new card

@@ -64,6 +64,7 @@ public class WhatToCook extends Application {
                 createCfg.println("searchInEveryWord=true");
                 createCfg.println("caseSensitive=false");
                 createCfg.println("language=Polski");
+                createCfg.println("autoNewCard=true");
                 createCfg.close();
             }
 
@@ -88,6 +89,9 @@ public class WhatToCook extends Application {
             line = in.nextLine();
             dividedLine = line.split("=");
             LanguagePackage.language = dividedLine[1];
+            line = in.nextLine();
+            dividedLine = line.split("=");
+            autoNewCard=dividedLine[1].equals("true");
             in.close();
         } catch (FileNotFoundException e) {
             System.out.println("Concig file not found, program will run with default settings");
@@ -106,6 +110,7 @@ public class WhatToCook extends Application {
             out.println("searchInEveryWord=" + searchInEveryWord);
             out.println("caseSensitive=" + caseSensitiveSearch);
             out.println("language=" + LanguagePackage.language);
+            out.println("autoNewCard=" + autoNewCard);
             out.close();
         } catch (FileNotFoundException e) {
 
@@ -118,6 +123,7 @@ public class WhatToCook extends Application {
             out.println("searchInEveryWord=" + searchInEveryWord);
             out.println("caseSensitive=" + caseSensitiveSearch);
             out.println("language=" + nextLanguage);
+            out.println("autoNewCard=" + autoNewCard);
             out.close();
         } catch (FileNotFoundException e) {
 
@@ -128,6 +134,7 @@ public class WhatToCook extends Application {
     //ZMIENNE KONFIGURACYJNE
     public static boolean caseSensitiveSearch = true;
     public static boolean searchInEveryWord = false;
+    public static boolean autoNewCard;
 
     public static String path;
 }

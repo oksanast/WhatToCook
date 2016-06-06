@@ -16,7 +16,7 @@ public class Dictionary {
                 languages.add(listScanner.nextLine());
                 words.add(new ArrayList<>());
             }
-        for(int i = 0; i < languages.size();i++) {
+        /*for(int i = 0; i < languages.size();i++) {
             Scanner wordsScanner = new Scanner(new InputStreamReader(Dictionary.class.getResourceAsStream("resources/languages/words/" + languages.get(i))));
             while (wordsScanner.hasNextLine()) {
                     while(wordsScanner.hasNextLine()) {
@@ -24,6 +24,15 @@ public class Dictionary {
                         words.get(i).add(line);
                     }
             }
+        }*/
+        Scanner wordsScanner = new Scanner(new InputStreamReader(Dictionary.class.getResourceAsStream("resources/languages/words/words.txt")));
+        while(wordsScanner.hasNextLine()) {
+            String line = wordsScanner.nextLine();
+            String[] splittedLine = line.split("\\s\\s");
+            for(int i = 0; i < languages.size();i++) {
+                words.get(i).add(splittedLine[i]);
+            }
+            System.out.println(splittedLine[0]);
         }
     }
 
