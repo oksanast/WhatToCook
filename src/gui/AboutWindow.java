@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -19,7 +18,7 @@ import javafx.stage.Stage;
 public class AboutWindow extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        mainStage = new Stage();
+        Stage mainStage = new Stage();
         BorderPane mainBorderPane = new BorderPane();
         mainStage.getIcons().add(new Image("file:data/icon.png"));
         Label titleLable = new Label("Autorzy:");
@@ -39,14 +38,12 @@ public class AboutWindow extends Application {
         mainBorderPane.setCenter(autorsLabel);
         mainBorderPane.setBottom(versionLabel);
 
-        mainScene = new Scene(mainBorderPane,200,240);
+        Scene mainScene = new Scene(mainBorderPane, 200, 240);
         mainStage.setScene(mainScene);
         mainStage.setResizable(false);
         mainStage.initModality(Modality.APPLICATION_MODAL);
-        mainScene.getStylesheets().add(MainStage.class.getResource("css/style.css").toExternalForm());
+       // mainScene.getStylesheets().add(MainStage.class.getResource("css/style.css").toExternalForm());
         mainStage.show();
     }
 
-    private Stage mainStage;
-    private Scene mainScene;
 }

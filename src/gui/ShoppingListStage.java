@@ -1,6 +1,7 @@
 package gui;
 
 import core.Ingredient;
+import auxiliary.LanguagePackage;
 import core.ToBuyIngredientsList;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -44,17 +45,17 @@ public class ShoppingListStage extends Application {
         downButtons = new HBox();
         downButtons.setAlignment(Pos.CENTER);
 
-        Button clearShoppingList = new Button("Wyczyść listę");
+        Button clearShoppingList = new Button(LanguagePackage.getWord("Wyczyść listę"));
         clearShoppingList.setOnAction(event -> {
             ToBuyIngredientsList.clear();
             refresh();
         });
         clearShoppingList.setMaxWidth(Double.MAX_VALUE);
 
-        Button exportShoppingList = new Button("Eksportuj listę");
+        Button exportShoppingList = new Button(LanguagePackage.getWord("Eksportuj listę"));
         exportShoppingList.setOnAction(event -> {
             FileChooser chooseFile = new FileChooser();
-            chooseFile.setTitle("Wybierz lokalizacje zapisu");
+            chooseFile.setTitle(LanguagePackage.getWord("Wybierz lokalizację zapisu"));
             File saveFile = chooseFile.showSaveDialog(primaryStage);
             if(saveFile!=null) {
                 try {
@@ -76,7 +77,7 @@ public class ShoppingListStage extends Application {
         Scene mainScene = new Scene(mainBorderPane,400,400);
         shoppingListStage.initModality(Modality.APPLICATION_MODAL);
         shoppingListStage.setScene(mainScene);
-        mainScene.getStylesheets().add(MainStage.class.getResource("css/style.css").toExternalForm());
+       // mainScene.getStylesheets().add(MainStage.class.getResource("css/style.css").toExternalForm());
     }
     void refresh() {
         shoppingListList.setItems(ToBuyIngredientsList.getObservableList());

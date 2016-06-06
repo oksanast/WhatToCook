@@ -1,5 +1,6 @@
 package gui;
 
+import auxiliary.LanguagePackage;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
@@ -71,7 +72,7 @@ public class TimerStage extends Application {
         mainGridLayout.add(plusSeconds, 3, 3, 1, 1);
         mainGridLayout.add(minusSeconds, 4, 3, 1, 1);
 
-        Button start = new Button("start");
+        Button start = new Button(LanguagePackage.getWord("start"));
         start.setMaxHeight(Double.MAX_VALUE);
         start.setMaxWidth(Double.MAX_VALUE);
         start.setOnAction(event -> {
@@ -116,7 +117,7 @@ public class TimerStage extends Application {
                 plusSeconds.setDisable(true);
             }
         });
-        Button reset = new Button("reset");
+        Button reset = new Button(LanguagePackage.getWord("reset"));
         reset.setMaxHeight(Double.MAX_VALUE);
         reset.setMaxWidth(Double.MAX_VALUE);
         reset.setOnAction(event -> {

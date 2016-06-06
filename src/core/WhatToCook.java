@@ -1,5 +1,7 @@
 package core;
 
+import auxiliary.Dictionary;
+import auxiliary.LanguagePackage;
 import gui.MainStage;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
@@ -7,7 +9,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -63,6 +64,8 @@ public class WhatToCook extends Application {
                 PrintWriter createCfg = new PrintWriter(new File(path+"/data/cfg"));
                 createCfg.println("searchInEveryWord=true");
                 createCfg.println("caseSensitive=false");
+                createCfg.println("language=Polski");
+                createCfg.println("autoNewCard=true");
                 createCfg.close();
             }
 
@@ -84,10 +87,17 @@ public class WhatToCook extends Application {
             line = in.nextLine();
             dividedLine = line.split("=");
             caseSensitiveSearch = dividedLine[1].equals("true");
+            line = in.nextLine();
+            dividedLine = line.split("=");
+            LanguagePackage.language = dividedLine[1];
+            line = in.nextLine();
+            dividedLine = line.split("=");
+            autoNewCard=dividedLine[1].equals("true");
             in.close();
         } catch (FileNotFoundException e) {
             System.out.println("Concig file not found, program will run with default settings");
         }
+        Dictionary.initialize();
         launch(args);
     }
 
@@ -97,18 +107,35 @@ public class WhatToCook extends Application {
 
     public static void exportSettings() {
         try {
-            PrintWriter out = new PrintWriter(new File(WhatToCook.path + "data/cfg"));
+            PrintWriter out = new PrintWriter(new File(WhatToCook.path + "/data/cfg"));
             out.println("searchInEveryWord=" + searchInEveryWord);
             out.println("caseSensitive=" + caseSensitiveSearch);
+            out.println("language=" + LanguagePackage.language);
+            out.println("autoNewCard=" + autoNewCard);
             out.close();
         } catch (FileNotFoundException e) {
 
         }
 
     }
+    public static void exportSettings(String nextLanguage) {
+        try {
+            PrintWriter out = new PrintWriter(new File(WhatToCook.path + "/data/cfg"));
+            out.println("searchInEveryWord=" + searchInEveryWord);
+            out.println("caseSensitive=" + caseSensitiveSearch);
+            out.println("language=" + nextLanguage);
+            out.println("autoNewCard=" + autoNewCard);
+            out.close();
+        } catch (FileNotFoundException e) {
+
+        }
+
+    }
+
     //ZMIENNE KONFIGURACYJNE
     public static boolean caseSensitiveSearch = true;
     public static boolean searchInEveryWord = false;
+    public static boolean autoNewCard;
 
     public static String path;
 }
