@@ -81,4 +81,24 @@ public class TestingClass {
         Ingredient ananasy = new Ingredient(ingredientName);
         assertEquals(ingredientName,ananasy.getName());
     }
+
+    @Test
+    public void testRecipeConstructor() throws Exception {
+        String name = "Name";
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("ingr"));
+        String instructions = "instructions";
+        ArrayList<PairAmountUnit> PAU = new ArrayList<>();
+        PAU.add(new PairAmountUnit("amount", "unit"));
+        boolean[] params = {false, false, false, false, false};
+        RecipeParameters parameters = new RecipeParameters(params, 0, 0);
+
+        Recipe recipe = new Recipe(name, ingredients, PAU, instructions, parameters);
+
+        assertEquals(recipe.getName(), name);
+        assertTrue(ingredients.equals(recipe.getIngredients()));
+        assertTrue(PAU.equals(recipe.getPairAmountUnitList()));
+        assertEquals(recipe.getRecipe(), instructions);
+        assertEquals(recipe.getParameters(), params);
+    }
 }
