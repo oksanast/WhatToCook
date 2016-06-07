@@ -23,7 +23,6 @@ public class Dictionary {
             for(int i = 0; i < languages.size();i++) {
                 words.get(i).add(splittedLine[i]);
             }
-            System.out.println(splittedLine[0]);
         }
     }
 
