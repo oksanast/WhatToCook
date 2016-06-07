@@ -51,6 +51,7 @@ public class IngredientsList{
     {
             if(IngredientsList.add(newIngredient))
                 SpareIngredientsList.add(newIngredient);
+            if(!WhatToCook.path.equals(""))
             rewriteFile();
     }
     static public void rewriteFile()
@@ -74,7 +75,13 @@ public class IngredientsList{
     static public void removeIngredient(String name)
     {
         IngredientsList.remove(new Ingredient(name));
-        rewriteFile();
+        if(!WhatToCook.path.equals(""))
+            rewriteFile();
+    }
+    static public void removeIngredient(Ingredient name) {
+        IngredientsList.remove(name);
+        if(!WhatToCook.path.equals(""))
+            rewriteFile();
     }
     static public void rebuildModel(ListView<String> toInsert)
     {
@@ -84,25 +91,6 @@ public class IngredientsList{
             toInsert.getItems().add(ingredient.getName());
         }
     }
-   /* static public void reloadComboBox(ComboBox<String> comboBox)
-    {
-        comboBox.getItems().removeAll();
-        for(Ingredient ingredient : IngredientsList)
-        {
-            comboBox.getItems().add(ingredient.getName());
-        }
-    }
-    */
-/*
-    static public void reloadComboBox(ComboBox<String> comboBox,ArrayList<Ingredient> toHide)
-    {
-        comboBox.getItems().removeAll();
-        for(Ingredient ingredient : IngredientsList)
-        {
-            if(!toHide.contains(ingredient))
-            comboBox.getItems().add(ingredient.getName());
-        }
-    }*/
     static public ObservableList<String> getObservableCollection() {
         ObservableList<String> toReturn = FXCollections.observableArrayList();
         for(Ingredient i : IngredientsList) {

@@ -137,5 +137,5 @@ public class WhatToCook extends Application {
     public static boolean searchInEveryWord = false;
     public static boolean autoNewCard;
 
-    public static String path;
+    public static String path = "";
 }

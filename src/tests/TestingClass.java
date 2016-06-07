@@ -78,6 +78,25 @@ public class TestingClass {
     }
 
     @Test
+    public void testIngredientsList() throws Exception {
+        Ingredient first = new Ingredient("Ananasy");
+        Ingredient second = new Ingredient("Banany");
+        Ingredient third = new Ingredient("Jabłka");
+
+        IngredientsList.addIngredient(first);
+        IngredientsList.addIngredient(second);
+        IngredientsList.addIngredient(third);
+        assertTrue(IngredientsList.contain(first));
+        assertTrue(IngredientsList.contain(second));
+        assertTrue(IngredientsList.contain(third));
+
+        IngredientsList.removeIngredient(first);
+        assertTrue(!IngredientsList.contain(first));
+        assertTrue(IngredientsList.contain(second));
+        assertTrue(IngredientsList.contain(third));
+    }
+
+    @Test
     public void testRecipeConstructor() throws Exception {
         String name = "Name";
         ArrayList<Ingredient> ingredients = new ArrayList<>();
@@ -121,8 +140,8 @@ public class TestingClass {
     @Test
     public void testDictionary() throws Exception {
         auxiliary.Dictionary.initialize();
-        assertEquals("",auxiliary.Dictionary.translate("brakslowa","Polski"));
-        assertEquals("",auxiliary.Dictionary.translate("brakslowa",""));
+        assertEquals("",auxiliary.Dictionary.translate("braksłowa","Polski"));
+        assertEquals("",auxiliary.Dictionary.translate("braksłowa",""));
         assertEquals("",auxiliary.Dictionary.translate("",""));
         assertEquals("",auxiliary.Dictionary.translate("","Polski"));
     }
