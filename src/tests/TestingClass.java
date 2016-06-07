@@ -5,11 +5,13 @@ import auxiliary.PairAmountUnit;
 import auxiliary.RecipeParameters;
 import core.Ingredient;
 import core.IngredientsList;
+import core.Recipe;
 import core.WhatToCook;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -71,5 +73,25 @@ public class TestingClass {
         assertEquals(ingredient,testListHandler.getIngredient());
         assertEquals(amount,testListHandler.getAmmount());
         assertEquals(unit,testListHandler.getUnit());
+    }
+
+    @Test
+    public void testRecipeConstructor() throws Exception {
+        String name = "Name";
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("ingr"));
+        String instructions = "instructions";
+        ArrayList<PairAmountUnit> PAU = new ArrayList<>();
+        PAU.add(new PairAmountUnit("amount", "unit"));
+        boolean[] params = {false, false, false, false, false};
+        RecipeParameters parameters = new RecipeParameters(params, 0, 0);
+
+        Recipe recipe = new Recipe(name, ingredients, PAU, instructions, parameters);
+
+        assertEquals(recipe.getName(), name);
+        assertTrue(ingredients.equals(recipe.getIngredients()));
+        assertTrue(PAU.equals(recipe.getPairAmountUnitList()));
+        assertEquals(recipe.getRecipe(), instructions);
+        assertEquals(recipe.getParameters(), params);
     }
 }

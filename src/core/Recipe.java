@@ -44,6 +44,22 @@ public class Recipe implements Comparable<Recipe>
         LinkedRecipes = linkedRecipes;
     }
 
+    /*
+        For tests
+    */
+    public ArrayList<Ingredient> getIngredients() {
+        ArrayList<Ingredient> cpy = new ArrayList<>();
+        for (Ingredient item : this.ingredients)
+            cpy.add(new Ingredient(item.getName()));
+        return cpy;
+    }
+    public ArrayList<PairAmountUnit> getPairAmountUnitList() {
+        ArrayList<PairAmountUnit> cpy = new ArrayList<>();
+        for (PairAmountUnit item : this.ingredientsAmountAndUnits)
+            cpy.add(new PairAmountUnit(item.getAmount(), item.getUnit()));
+        return cpy;
+    }
+
     private String name;
     private ArrayList<Ingredient> ingredients;
     private ArrayList<PairAmountUnit> ingredientsAmountAndUnits;
