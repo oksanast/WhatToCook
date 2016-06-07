@@ -99,6 +99,6 @@ public class TestingClass {
         assertTrue(ingredients.equals(recipe.getIngredients()));
         assertTrue(PAU.equals(recipe.getPairAmountUnitList()));
         assertEquals(recipe.getRecipe(), instructions);
-        assertEquals(recipe.getParameters(), params);
+        assertTrue(recipe.getParameters().getParameters() == params);
     }
 }
