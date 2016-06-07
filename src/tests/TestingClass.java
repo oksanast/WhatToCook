@@ -1,5 +1,6 @@
 package tests;
 
+import auxiliary.ListHandler;
 import auxiliary.PairAmountUnit;
 import auxiliary.RecipeParameters;
 import core.Ingredient;
@@ -61,5 +62,14 @@ public class TestingClass {
         assertEquals(unit,testPairAmountUnit.getUnit());
     }
 
-
+    @Test
+    public void testListHandler() throws Exception {
+        String ingredient = "Ananasy";
+        String amount = "2";
+        String unit = "sztuki";
+        ListHandler testListHandler = new ListHandler(ingredient,amount,unit);
+        assertEquals(ingredient,testListHandler.getIngredient());
+        assertEquals(amount,testListHandler.getAmmount());
+        assertEquals(unit,testListHandler.getUnit());
+    }
 }
