@@ -76,6 +76,13 @@ public class TestingClass {
     }
 
     @Test
+    public void testIngredient() throws Exception {
+        String ingredientName = "Ananasy";
+        Ingredient ananasy = new Ingredient(ingredientName);
+        assertEquals(ingredientName,ananasy.getName());
+    }
+
+    @Test
     public void testRecipeConstructor() throws Exception {
         String name = "Name";
         ArrayList<Ingredient> ingredients = new ArrayList<>();
