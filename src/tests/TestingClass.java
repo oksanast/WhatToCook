@@ -72,4 +72,11 @@ public class TestingClass {
         assertEquals(amount,testListHandler.getAmmount());
         assertEquals(unit,testListHandler.getUnit());
     }
+
+    @Test
+    public void testIngredient() throws Exception {
+        String ingredientName = "Ananasy";
+        Ingredient ananasy = new Ingredient(ingredientName);
+        assertEquals(ingredientName,ananasy.getName());
+    }
 }
