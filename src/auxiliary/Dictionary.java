@@ -41,7 +41,6 @@ public class Dictionary {
             }
         }
         if(wordIndex==-1) {
-            System.out.println("Nie znaleziono tłumaczenia dla: "+toTranslate);
             return "";
         }
         return words.get(languageIndex).get(wordIndex);

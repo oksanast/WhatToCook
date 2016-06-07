@@ -25,7 +25,6 @@ public class IngredientsList{
 
     static public void initialize()
     {
-        IngredientsList = new TreeSet<>();
         Scanner in;
         String[] tmp;
         String line;
@@ -48,7 +47,6 @@ public class IngredientsList{
             System.err.println("Error during loading ingredients");
         }
     }
-
     static public void addIngredient(Ingredient newIngredient)
     {
             if(IngredientsList.add(newIngredient))
@@ -135,5 +133,5 @@ public class IngredientsList{
     {
         return IngredientsList.size();
     }
-    private static  SortedSet<Ingredient> IngredientsList;
+    private static  SortedSet<Ingredient> IngredientsList = new TreeSet<>();
 }

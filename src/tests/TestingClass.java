@@ -1,12 +1,7 @@
 package tests;
 
-import auxiliary.ListHandler;
-import auxiliary.PairAmountUnit;
-import auxiliary.RecipeParameters;
-import core.Ingredient;
-import core.IngredientsList;
-import core.Recipe;
-import core.WhatToCook;
+import auxiliary.*;
+import core.*;
 import org.junit.Test;
 
 import java.io.File;
@@ -100,5 +95,35 @@ public class TestingClass {
         assertTrue(PAU.equals(recipe.getPairAmountUnitList()));
         assertEquals(recipe.getRecipe(), instructions);
         assertTrue(recipe.getParameters().getParameters() == params);
+    }
+
+    @Test
+    public void testAddIngredientToBuyList() throws Exception {
+        Ingredient testIngredient = new Ingredient("Ananasy");
+        ToBuyIngredientsList.add(testIngredient);
+        for(Ingredient i : ToBuyIngredientsList.getSet()) {
+            assertEquals(testIngredient,i);
+        }
+    }
+
+    @Test
+    public void testAddSpareIngredient() throws Exception {
+        Ingredient baseIngredient = new Ingredient("Ananasy");
+        Ingredient spareIngredient = new Ingredient("Banany");
+
+        SpareIngredients testSpareIngredients = new SpareIngredients(baseIngredient);
+        testSpareIngredients.addSpareIngredient(spareIngredient);
+
+        for(Ingredient i : testSpareIngredients.getSpareIngredients()) {
+            assertEquals(spareIngredient,i);
+        }
+    }
+    @Test
+    public void testDictionary() throws Exception {
+        auxiliary.Dictionary.initialize();
+        assertEquals("",auxiliary.Dictionary.translate("brakslowa","Polski"));
+        assertEquals("",auxiliary.Dictionary.translate("brakslowa",""));
+        assertEquals("",auxiliary.Dictionary.translate("",""));
+        assertEquals("",auxiliary.Dictionary.translate("","Polski"));
     }
 }
