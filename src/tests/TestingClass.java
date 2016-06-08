@@ -129,6 +129,7 @@ public class TestingClass {
         Recipe recipe = new Recipe(name, ingredients, PAU, instructions, parameters);
         Recipe recipe2 = new Recipe(name, ingredients, PAU, instructions, parameters);
         assertTrue(recipe.equals(recipe2));
+
     }
     @Test
     public void testAddAndDeleteLinkedRecipes() throws Exception {
@@ -142,7 +143,6 @@ public class TestingClass {
         Recipe recipe2 = new Recipe("name2", ingredients, PAU, "instructions", new RecipeParameters(params, 0, 0));
 
         //Dodanie przepisów do listy głównej
-
         RecipesList.add(recipe1);
         RecipesList.add(recipe2);
 
