@@ -1,4 +1,7 @@
 package auxiliary;
+
+import java.util.Arrays;
+
 /**
  * Created by WTC-Team on 25.04.2016.
  * Project WhatToCook
@@ -23,6 +26,27 @@ public class RecipeParameters {
 
     public int getPreparingTime() {
         return PreparingTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RecipeParameters that = (RecipeParameters) o;
+
+        if (PreparingEase != that.PreparingEase) return false;
+        if (PreparingTime != that.PreparingTime) return false;
+        return Arrays.equals(Parameters, that.Parameters);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Arrays.hashCode(Parameters);
+        result = 31 * result + PreparingEase;
+        result = 31 * result + PreparingTime;
+        return result;
     }
 
     private boolean[] Parameters;

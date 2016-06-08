@@ -271,7 +271,6 @@ public class MainStage extends Application {
         helpMenu.getItems().add(teamMenuItem);
         mainMenu.getMenus().addAll(fileMenu, editMenu, viewMenu, toolsMenu, helpMenu);
 
-        SpareIngredientsList.initialize();
         RecipesList.initialize();
         IngredientsList.initialize();
         ToBuyIngredientsList.initialize();

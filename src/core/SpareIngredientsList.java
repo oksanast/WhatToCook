@@ -17,10 +17,6 @@ import java.util.ArrayList;
  */
 public class SpareIngredientsList {
 
-    public static void initialize() {
-        spareIngredientslist=new ArrayList<>();
-    }
-
     public static SpareIngredients get(Ingredient ingredient)
     {
         for(SpareIngredients i : spareIngredientslist)
@@ -120,5 +116,5 @@ public class SpareIngredientsList {
             s.getSpareIngredients().remove(spare);
         }
     }
-    private static ArrayList<SpareIngredients> spareIngredientslist;
+    private static ArrayList<SpareIngredients> spareIngredientslist =new ArrayList<>();
 }

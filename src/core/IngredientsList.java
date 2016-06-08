@@ -25,7 +25,6 @@ public class IngredientsList{
 
     static public void initialize()
     {
-        IngredientsList = new TreeSet<>();
         Scanner in;
         String[] tmp;
         String line;
@@ -48,11 +47,11 @@ public class IngredientsList{
             System.err.println("Error during loading ingredients");
         }
     }
-
     static public void addIngredient(Ingredient newIngredient)
     {
             if(IngredientsList.add(newIngredient))
                 SpareIngredientsList.add(newIngredient);
+            if(!WhatToCook.path.equals(""))
             rewriteFile();
     }
     static public void rewriteFile()
@@ -76,7 +75,13 @@ public class IngredientsList{
     static public void removeIngredient(String name)
     {
         IngredientsList.remove(new Ingredient(name));
-        rewriteFile();
+        if(!WhatToCook.path.equals(""))
+            rewriteFile();
+    }
+    static public void removeIngredient(Ingredient name) {
+        IngredientsList.remove(name);
+        if(!WhatToCook.path.equals(""))
+            rewriteFile();
     }
     static public void rebuildModel(ListView<String> toInsert)
     {
@@ -86,25 +91,6 @@ public class IngredientsList{
             toInsert.getItems().add(ingredient.getName());
         }
     }
-   /* static public void reloadComboBox(ComboBox<String> comboBox)
-    {
-        comboBox.getItems().removeAll();
-        for(Ingredient ingredient : IngredientsList)
-        {
-            comboBox.getItems().add(ingredient.getName());
-        }
-    }
-    */
-/*
-    static public void reloadComboBox(ComboBox<String> comboBox,ArrayList<Ingredient> toHide)
-    {
-        comboBox.getItems().removeAll();
-        for(Ingredient ingredient : IngredientsList)
-        {
-            if(!toHide.contains(ingredient))
-            comboBox.getItems().add(ingredient.getName());
-        }
-    }*/
     static public ObservableList<String> getObservableCollection() {
         ObservableList<String> toReturn = FXCollections.observableArrayList();
         for(Ingredient i : IngredientsList) {
@@ -135,5 +121,5 @@ public class IngredientsList{
     {
         return IngredientsList.size();
     }
-    private static  SortedSet<Ingredient> IngredientsList;
+    private static  SortedSet<Ingredient> IngredientsList = new TreeSet<>();
 }

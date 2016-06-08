@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -79,21 +80,32 @@ public class WhatToCook extends Application {
         }
         try {
             Scanner in = new Scanner(new File(WhatToCook.path + "/data/cfg"));
-            String line;
-            String dividedLine[];
-            line = in.nextLine();
-            dividedLine = line.split("=");
-            searchInEveryWord = dividedLine[1].equals("true");
-            line = in.nextLine();
-            dividedLine = line.split("=");
-            caseSensitiveSearch = dividedLine[1].equals("true");
-            line = in.nextLine();
-            dividedLine = line.split("=");
-            LanguagePackage.language = dividedLine[1];
-            line = in.nextLine();
-            dividedLine = line.split("=");
-            autoNewCard=dividedLine[1].equals("true");
-            in.close();
+            try {
+                String line;
+                String dividedLine[];
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                searchInEveryWord = dividedLine[1].equals("true");
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                caseSensitiveSearch = dividedLine[1].equals("true");
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                LanguagePackage.language = dividedLine[1];
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                autoNewCard = dividedLine[1].equals("true");
+                in.close();
+            } catch (NoSuchElementException e) {
+                PrintWriter out = new PrintWriter(new File(WhatToCook.path + "/data/cfg"));
+                out.println("searchInEveryWord=" + searchInEveryWord);
+                out.println("caseSensitive=" + caseSensitiveSearch);
+                out.println("language=" + LanguagePackage.language);
+                out.println("autoNewCard=" + autoNewCard);
+                out.close();
+
+            }
+
         } catch (FileNotFoundException e) {
             System.out.println("Concig file not found, program will run with default settings");
         }
@@ -135,7 +147,7 @@ public class WhatToCook extends Application {
     //ZMIENNE KONFIGURACYJNE
     public static boolean caseSensitiveSearch = true;
     public static boolean searchInEveryWord = false;
-    public static boolean autoNewCard;
+    public static boolean autoNewCard = true;
 
-    public static String path;
+    public static String path = "";
 }

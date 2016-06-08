@@ -16,7 +16,6 @@ import java.util.TreeSet;
  */
 public class ToBuyIngredientsList {
     public static void initialize() {
-        toBuyList = new TreeSet<>();
         try {
             Scanner in = new Scanner(new File(WhatToCook.path + "/data/toBuyList/shoppingList"));
             while(in.hasNextLine()) {
@@ -67,5 +66,5 @@ public class ToBuyIngredientsList {
         }
     }
 
-    private static SortedSet<Ingredient> toBuyList;
+    private static SortedSet<Ingredient> toBuyList = new TreeSet<>();
 }
