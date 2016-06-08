@@ -71,7 +71,21 @@ public class Recipe implements Comparable<Recipe>
     public int compareTo(Recipe o) {
         Collator c = Collator.getInstance(Locale.getDefault());
         return c.compare(this.getName(),o.getName());
-
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Recipe that = (Recipe) o;
+
+        if(this.name.equals(that.name) && this.ingredients.equals(that.ingredients) &&
+                this.ingredientsAmountAndUnits.equals(that.ingredientsAmountAndUnits) &&
+                this.instructions.equals(that.instructions) &&
+                this.parameters.equals(that.parameters) && this.LinkedRecipes.equals(that.LinkedRecipes))
+            return true;
+        else
+            return false;
+    }
 }

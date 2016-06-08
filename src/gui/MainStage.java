@@ -477,7 +477,7 @@ public class MainStage extends Application {
         supperInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Kolację"));
         dessertInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Deser"));
         snackInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Przekąskę"));
-        spareIngredientsCheckBox = new CheckBox(LanguagePackage.getWord("Składniki Alternatywne:"));
+        spareIngredientsCheckBox = new CheckBox(LanguagePackage.getWord("Składniki Alternatywne"));
 
         searchingGridPane.add(chooseIngredientsInSearchComboBox, 2, 2, 2, 1);
         searchingGridPane.add(chooseIngredientsInSearchLabel, 2, 1, 2, 1);
@@ -803,7 +803,7 @@ public class MainStage extends Application {
             }
         });
 
-        Label spareIngredientsInIngredientsDatabaseLabel = new Label(LanguagePackage.getWord("Składniki Alternatywne:"));
+        Label spareIngredientsInIngredientsDatabaseLabel = new Label(LanguagePackage.getWord("Składniki Alternatywne"));
         spareIngredientsInIngredientsDatabaseLabel.setMaxHeight(Double.MAX_VALUE);
         spareIngredientsInIngredientsDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
         spareIngredientsInIngredientsDatabaseLabel.setAlignment(Pos.CENTER);

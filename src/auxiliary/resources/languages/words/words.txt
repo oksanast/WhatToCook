@@ -40,7 +40,7 @@ Wolno  Slowly
 Łatwe  Easy
 Średnie  Average
 Trudne  Difficult
-Składniki Alternatywne:  Alternative ingredients
+Składniki Alternatywne  Alternative ingredients
 Szukaj przepisów  Search recipes
 Wyszukaj  Search
 Opcje Wyszukiwania  Searching options
