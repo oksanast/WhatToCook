@@ -117,6 +117,40 @@ public class TestingClass {
     }
 
     @Test
+    public void testRecipesList() throws Exception {
+        String name = "Pomidorowa";
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("Pomidory"));
+        String instructions = "instructions";
+        ArrayList<PairAmountUnit> PAU = new ArrayList<>();
+        PAU.add(new PairAmountUnit("2", "sztuki"));
+        boolean[] params = {false, false, false, false, false};
+        RecipeParameters parameters = new RecipeParameters(params, 0, 0);
+
+        Recipe first = new Recipe(name, ingredients, PAU, instructions, parameters);
+
+        name = "Ogórkowa";
+        ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("Ogórki"));
+        instructions = "instructions";
+        PAU = new ArrayList<>();
+        PAU.add(new PairAmountUnit("3", "sztuki"));
+        parameters = new RecipeParameters(params, 0, 0);
+
+        Recipe second = new Recipe(name, ingredients, PAU, instructions, parameters);
+
+        RecipesList.add(first);
+        RecipesList.add(second);
+
+        assertTrue(RecipesList.isRecipe(first));
+        assertTrue(RecipesList.isRecipe(second));
+
+        assertEquals(null,RecipesList.getRecipe("Rosół"));
+
+        assertEquals(first.getName(),RecipesList.getRecipe("Pomidorowa").getName());
+    }
+
+    @Test
     public void testAddIngredientToBuyList() throws Exception {
         Ingredient testIngredient = new Ingredient("Ananasy");
         ToBuyIngredientsList.add(testIngredient);
@@ -144,5 +178,15 @@ public class TestingClass {
         assertEquals("",auxiliary.Dictionary.translate("braksłowa",""));
         assertEquals("",auxiliary.Dictionary.translate("",""));
         assertEquals("",auxiliary.Dictionary.translate("","Polski"));
+    }
+    @Test
+    public void testEqualsIngredients() {
+        String name;
+
+        Ingredient ingredient = new Ingredient("jabłko");
+        Ingredient ingredient2 = new Ingredient("jabłko2");
+        int result = ingredient.compareTo(ingredient2);
+        assertTrue(!ingredient.equals(ingredient2));
+
     }
 }

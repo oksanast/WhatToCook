@@ -73,5 +73,5 @@ public class Recipe implements Comparable<Recipe>
         return c.compare(this.getName(),o.getName());
 
     }
-
+    
 }
