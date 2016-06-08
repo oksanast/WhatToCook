@@ -6,19 +6,14 @@ import auxiliary.PairAmountUnit;
 import auxiliary.RecipeParameters;
 import core.*;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
@@ -38,29 +33,228 @@ import java.util.Scanner;
  * Project InferenceEngine
  */
 
-public class MainStage extends Application {
+public class MainStageZap extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("WhatToCook");
-        primaryStage.getIcons().add(new Image("file:data/icon.png"));
-        BorderPane mainLayout = new BorderPane();
-        mainTable = new TabPane();
-        MenuBar mainMenu = new MenuBar();
+        mainStage = primaryStage;
+        mainLayout = new BorderPane();
+        RecipesList.initialize();
+        IngredientsList.initialize();
+        ToBuyIngredientsList.initialize();
+        recipesDatabaseTab = new Tab(LanguagePackage.getWord("Baza Przepisów"));
+        recipesDatabaseTab.setClosable(false);
+        GridPane recipesDatabaseGridPane = new GridPane();
+        recipesDatabaseGridPane.setHgap(5);
+        recipesDatabaseGridPane.setVgap(5);
 
-        Menu fileMenu = new Menu(LanguagePackage.getWord("Plik"));
-        fileMenu.setId("menu");
-        Menu editMenu = new Menu(LanguagePackage.getWord("Edycja"));
-        editMenu.setId("menu");
-        Menu viewMenu = new Menu(LanguagePackage.getWord("Widok"));
-        viewMenu.setId("menu");
-        Menu toolsMenu = new Menu(LanguagePackage.getWord("Narzędzia"));
-        toolsMenu.setId("menu");
-        Menu helpMenu = new Menu(LanguagePackage.getWord("Pomoc"));
-        helpMenu.setId("menu");
+        ColumnConstraints columnInRecipesDatabase = new ColumnConstraints();
+        columnInRecipesDatabase.setPercentWidth(25);
+        recipesDatabaseGridPane.getColumnConstraints().add(columnInRecipesDatabase);
+        recipesDatabaseGridPane.getColumnConstraints().add(columnInRecipesDatabase);
+        recipesDatabaseGridPane.getColumnConstraints().add(columnInRecipesDatabase);
+        recipesDatabaseGridPane.getColumnConstraints().add(columnInRecipesDatabase);
 
+        RowConstraints rowInRecipesDatabase = new RowConstraints();
+        rowInRecipesDatabase.setPercentHeight(12.5);
+        for (int i = 0; i < 14; i++) {
+            recipesDatabaseGridPane.getRowConstraints().add(rowInRecipesDatabase);
+        }
+
+        Label searchInRecipesDatabaseLabel = new Label(LanguagePackage.getWord("Wyszukaj"));
+        searchInRecipesDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
+        searchInRecipesDatabaseLabel.setMaxHeight(Double.MAX_VALUE);
+        searchInRecipesDatabaseLabel.setAlignment(Pos.CENTER);
+
+        searchInRecipesDatabase = new TextField();
+
+
+        Button searchingOptionsInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Opcje Wyszukiwania"));
+        //searchingOptionsInRecipesDatabaseButton.setMaxHeight(Double.MAX_VALUE);
+        searchingOptionsInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
+
+        searchingOptionsInRecipesDatabaseButton.setOnAction(event -> searchOptions.refresh());
+        recipesInRecipesDatabaseList = new ListView<>();
+        searchInRecipesDatabase.textProperty().addListener((observable, oldValue, newValue) -> {
+            String beg = searchInRecipesDatabase.getText();
+            recipesInRecipesDatabaseList.setItems(RecipesList.getObservableList(beg, WhatToCook.caseSensitiveSearch, WhatToCook.searchInEveryWord));
+        });
+        recipesInRecipesDatabaseList.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+                showRecipe(RecipesList.getRecipe(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem()));
+            }
+        });
+
+
+        linkedRecipesAmmmount = new Label("0/6");
+        linkedRecipesAmmmount.setAlignment(Pos.CENTER);
+        linkedRecipesAmmmount.setTextAlignment(TextAlignment.CENTER);
+        linkedRecipesAmmmount.setMaxWidth(Double.MAX_VALUE);
+
+
+        linkedRecipesGridPane = new GridPane();
+        RowConstraints linkedRecipesRow = new RowConstraints();
+        linkedRecipesRow.setPercentHeight(14);
+        for(int i = 0; i < 6; i++) {
+            linkedRecipesGridPane.getRowConstraints().add(linkedRecipesRow);
+        }
+        ColumnConstraints linkedRecipesColumn = new ColumnConstraints();
+        linkedRecipesColumn.setPercentWidth(100);
+        linkedRecipesGridPane.getColumnConstraints().add(linkedRecipesColumn);
+        recipesDatabaseGridPane.add(linkedRecipesGridPane,2,5,2,8);
+        recipesDatabaseGridPane.add(linkedRecipesAmmmount,2,12,2,1);
+
+        recipesInRecipesDatabaseList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            markedRecipe = recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem();
+            linkedRecipesToggleGroup.selectToggle(null);
+            refreshLinkedRecipes();
+
+        });
+        Label linkedRecipesInRecipesDatabaseLabel = new Label(LanguagePackage.getWord("Przepisy powiązane:"));
+        linkedRecipesInRecipesDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
+        linkedRecipesInRecipesDatabaseLabel.setAlignment(Pos.CENTER);
+
+        linkedRecipesInRecipesDatabaseComboBox = new ComboBox<>();
+        linkedRecipesInRecipesDatabaseComboBox.setMaxWidth(Double.MAX_VALUE);
+        linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
+
+        Button addLinkedRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Dodaj Powiązanie"));
+        addLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
+        addLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
+            if(markedRecipe!=null) {
+                //noinspection ConstantConditions
+                if (RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size()<6 && !RecipesList.getRecipe
+                        (markedRecipe).getName().equals(linkedRecipesInRecipesDatabaseComboBox.getSelectionModel().getSelectedItem())) {
+                    LinkedRecipes.addLinking(markedRecipe,linkedRecipesInRecipesDatabaseComboBox.getSelectionModel().getSelectedItem());
+                    refreshLinkedRecipes();
+                    LinkedRecipes.saveLinkings();
+                }
+            }
+        });
+        Button removeLinkedRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Usuń Powiązanie"));
+        removeLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
+        removeLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
+            if(linkedRecipesToggleGroup.getSelectedToggle()!=null) {
+                RadioButton button = (RadioButton) linkedRecipesToggleGroup.getSelectedToggle();
+                String recipeName = button.getText();
+                LinkedRecipes.deleteLinking(markedRecipe,recipeName);
+                refreshLinkedRecipes();
+                LinkedRecipes.saveLinkings();
+            }
+
+        });
+
+        Button addRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Nowy Przepis"));
+        addRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
+
+        addRecipeInRecipesDatabaseButton.setOnAction(event -> {
+            if (!isEditionTurnOn) {
+                isEditionTurnOn = true;
+                showNewEditMenu(null);
+            } else {
+                Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
+                cantCreateRecipe.setTitle(LanguagePackage.getWord("Błąd tworzenia przepisu"));
+                cantCreateRecipe.setHeaderText(LanguagePackage.getWord("Nie można utworzyć nowego przepisu."));
+                cantCreateRecipe.setContentText(LanguagePackage.getWord("W jednym momencie może być tworzony albo edytowany tylko jeden przepis"));
+                cantCreateRecipe.showAndWait();
+            }
+        });
+
+        Button removeRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Usuń Przepis"));
+        //removeRecipeInRecipesDatabaseButton.setMaxHeight(Double.MAX_VALUE);
+        removeRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
+        removeRecipeInRecipesDatabaseButton.setOnAction(event -> {
+            if (inEdit == null) {
+                for(int j = 0; j < RecipesList.size();j++) {
+                    for(int k = 0; k < RecipesList.recipesList.get(j).getLinkedRecipes().size();k++) {
+                        if(RecipesList.recipesList.get(j).getLinkedRecipes().get(k).equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
+                            RecipesList.recipesList.get(j).getLinkedRecipes().remove(k);
+                        }
+                    }
+                }
+                RecipesList.remove(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
+                recipesInRecipesDatabaseList.setItems(RecipesList.getObservableList(searchInRecipesDatabase.getText(), WhatToCook.caseSensitiveSearch, WhatToCook.searchInEveryWord));
+                linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
+                LinkedRecipes.saveLinkings();
+            } else {
+                if (!inEdit.getName().equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
+                    for(int j = 0; j < RecipesList.size();j++) {
+                        for(int k = 0; k < RecipesList.recipesList.get(j).getLinkedRecipes().size();k++) {
+                            if(RecipesList.recipesList.get(j).getLinkedRecipes().get(k).equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
+                                RecipesList.recipesList.get(j).getLinkedRecipes().remove(k);
+                            }
+                        }
+                    }
+                    RecipesList.remove(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
+                    recipesInRecipesDatabaseList.setItems(RecipesList.getObservableList(searchInRecipesDatabase.getText(), WhatToCook.caseSensitiveSearch, WhatToCook.searchInEveryWord));
+                    linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
+                    LinkedRecipes.saveLinkings();
+                } else {
+                    Alert cantDeleteRecipe = new Alert(Alert.AlertType.ERROR);
+                    cantDeleteRecipe.setTitle(LanguagePackage.getWord("Błąd usuwania przepisu"));
+                    cantDeleteRecipe.setHeaderText(LanguagePackage.getWord("Nie można usunąć przepisu."));
+                    cantDeleteRecipe.setContentText(LanguagePackage.getWord("Przepis podlega aktualnie edycji, a edytowane przepisy nie mogą być usuwane."));
+                    cantDeleteRecipe.showAndWait();
+                }
+            }
+        });
+
+        Button editRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Edytuj Przepis"));
+        editRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
+
+        editRecipeInRecipesDatabaseButton.setOnAction(event -> {
+            if (!isEditionTurnOn && markedRecipe!=null) {
+                isEditionTurnOn = true;
+                inEdit = RecipesList.getRecipe(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
+                showNewEditMenu(RecipesList.getRecipe(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem()));
+            } else if (markedRecipe == null) {
+                Alert chooseRecipeToEdit = new Alert(Alert.AlertType.INFORMATION);
+                chooseRecipeToEdit.setTitle(LanguagePackage.getWord("Wybierz przepis do edycji"));
+                chooseRecipeToEdit.setHeaderText(null);
+                chooseRecipeToEdit.setContentText(LanguagePackage.getWord("Przepis do edycji należy wybrać z listy powyżej."));
+                chooseRecipeToEdit.showAndWait();
+            } else {
+                Alert cantEditRecipe = new Alert(Alert.AlertType.ERROR);
+                cantEditRecipe.setTitle(LanguagePackage.getWord("Błąd edycji przepisu"));
+                cantEditRecipe.setHeaderText(LanguagePackage.getWord("Nie można edytować przepisu."));
+                cantEditRecipe.setContentText(LanguagePackage.getWord("W jednym momencie może być tworzony albo edytowany tylko jeden przepis"));
+                cantEditRecipe.showAndWait();
+            }
+        });
+
+        HBox downButtonsInRecipesDatabase = new HBox();
+        downButtonsInRecipesDatabase.setAlignment(Pos.CENTER);
+        HBox.setHgrow(addRecipeInRecipesDatabaseButton, Priority.ALWAYS);
+        HBox.setHgrow(editRecipeInRecipesDatabaseButton, Priority.ALWAYS);
+        HBox.setHgrow(removeRecipeInRecipesDatabaseButton, Priority.ALWAYS);
+        downButtonsInRecipesDatabase.getChildren().add(addRecipeInRecipesDatabaseButton);
+        downButtonsInRecipesDatabase.getChildren().add(editRecipeInRecipesDatabaseButton);
+        downButtonsInRecipesDatabase.getChildren().add(removeRecipeInRecipesDatabaseButton);
+        HBox.setMargin(addRecipeInRecipesDatabaseButton,new Insets(0,10,0,10));
+        HBox.setMargin(editRecipeInRecipesDatabaseButton,new Insets(0,10,0,10));
+        HBox.setMargin(removeRecipeInRecipesDatabaseButton,new Insets(0,10,0,10));
+
+        RecipesList.getObservableList(recipesInRecipesDatabaseList);
+
+        recipesDatabaseGridPane.add(searchInRecipesDatabaseLabel, 0, 0, 4, 1);
+        recipesDatabaseGridPane.add(searchInRecipesDatabase, 0, 1, 3, 1);
+        recipesDatabaseGridPane.add(searchingOptionsInRecipesDatabaseButton, 3, 1, 1, 1);
+        recipesDatabaseGridPane.add(recipesInRecipesDatabaseList, 0, 2, 2, 11);
+        recipesDatabaseGridPane.add(downButtonsInRecipesDatabase, 0, 13, 4, 1);
+        recipesDatabaseGridPane.add(linkedRecipesInRecipesDatabaseLabel, 2, 2, 2, 1);
+        recipesDatabaseGridPane.add(linkedRecipesInRecipesDatabaseComboBox, 2, 3, 2, 1);
+        recipesDatabaseGridPane.add(addLinkedRecipeInRecipesDatabaseButton, 2, 4, 1, 1);
+        recipesDatabaseGridPane.add(removeLinkedRecipeInRecipesDatabaseButton, 3, 4, 1, 1);
+
+        recipesDatabaseTab.setContent(recipesDatabaseGridPane);
+
+        drawInterface(primaryStage,columns);
+
+        mainTable.getTabs().add(searchingTab);
+        mainTable.getTabs().add(recipesDatabaseTab);
+        mainTable.getTabs().add(ingredientsDatabaseTab);
         //TWORZENIE OKIEN DIALOGOWYCH
         ShoppingListStage shoppinglist = new ShoppingListStage();
-        SearchOptionsStage searchOptions = new SearchOptionsStage();
+        searchOptions = new SearchOptionsStage();
         shoppinglist.start(primaryStage);
         searchOptions.start(primaryStage);
         SettingsStage settingsWindows = new SettingsStage();
@@ -271,15 +465,52 @@ public class MainStage extends Application {
         helpMenu.getItems().add(teamMenuItem);
         mainMenu.getMenus().addAll(fileMenu, editMenu, viewMenu, toolsMenu, helpMenu);
 
-        RecipesList.initialize();
-        IngredientsList.initialize();
-        ToBuyIngredientsList.initialize();
-
         //INICJALIZACJA TEGO, CO MUSI BYC NA POCZATKU
         ingredientsInNewEditMenuComboBox = new ComboBox<>();
         ingredientsInNewEditMenuComboBox.setItems(IngredientsList.getObservableCollection());
 
-        //TWORZENIE KARTY WYSZUKIWANIA PRZEPISOW///////////////////////////////////////////////////////////////////////
+
+        mainLayout.setTop(mainMenu);
+        mainScene = new Scene(mainLayout, 500, 650);
+        primaryStage.setMinHeight(650);
+        primaryStage.setMinWidth(400);
+        mainScene.getStylesheets().add(MainStageZap.class.getResource("css/style.css").toExternalForm());
+        primaryStage.setScene(mainScene);
+        primaryStage.show();
+        mainScene.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if(newValue.intValue()>800) {
+                    columns = 1;
+                }
+                else
+                    columns=2;
+                drawInterface(primaryStage,columns);
+            }
+        });
+
+    }
+    private void drawInterface() {
+        drawInterface(mainStage,columns);
+    }
+    private void drawInterface(Stage primaryStage,int columns) {
+        primaryStage.setTitle("WhatToCook");
+        primaryStage.getIcons().add(new Image("file:data/icon.png"));
+
+       // mainTable = new TabPane();
+        mainMenu = new MenuBar();
+
+        fileMenu = new Menu(LanguagePackage.getWord("Plik"));
+        fileMenu.setId("menu");
+        editMenu = new Menu(LanguagePackage.getWord("Edycja"));
+        editMenu.setId("menu");
+        viewMenu = new Menu(LanguagePackage.getWord("Widok"));
+        viewMenu.setId("menu");
+        toolsMenu = new Menu(LanguagePackage.getWord("Narzędzia"));
+        toolsMenu.setId("menu");
+        helpMenu = new Menu(LanguagePackage.getWord("Pomoc"));
+        helpMenu.setId("menu");
+
         searchingTab = new Tab();
         searchingTab.setText(LanguagePackage.getWord("Wyszukiwanie"));
         searchingTab.setClosable(false);
@@ -304,6 +535,15 @@ public class MainStage extends Application {
             searchingGridPane.getRowConstraints().add(row);
         }
 
+        GridPane mainGridPane = new GridPane();
+        ColumnConstraints mainColumn = new ColumnConstraints();
+        mainColumn.setPercentWidth(50);
+        mainGridPane.getColumnConstraints().add(mainColumn);
+        mainGridPane.getColumnConstraints().add(mainColumn);
+
+        RowConstraints mainRow = new RowConstraints();
+        mainRow.setPercentHeight(100);
+        mainGridPane.getRowConstraints().add(mainRow);
         Text insertIngredientsLabel = new Text(LanguagePackage.getWord("Wprowadź składniki"));
         insertIngredientsLabel.setId("insertIngredientsText");
         HBox insertIngredientsLabelHBox = new HBox();
@@ -506,215 +746,11 @@ public class MainStage extends Application {
 
         chooseIngredientsInSearchComboBox.setItems(IngredientsList.getObservableCollection());
 
-        mainTable.getTabs().add(searchingTab);
+        //TWORZENIE KARTY WYSZUKIWANIA PRZEPISOW///////////////////////////////////////////////////////////////////////
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //TWORZENIE KARTY BAZY PRZEPISOW
-        recipesDatabaseTab = new Tab(LanguagePackage.getWord("Baza Przepisów"));
-        recipesDatabaseTab.setClosable(false);
-        GridPane recipesDatabaseGridPane = new GridPane();
-        recipesDatabaseGridPane.setHgap(5);
-        recipesDatabaseGridPane.setVgap(5);
 
-        ColumnConstraints columnInRecipesDatabase = new ColumnConstraints();
-        columnInRecipesDatabase.setPercentWidth(25);
-        recipesDatabaseGridPane.getColumnConstraints().add(columnInRecipesDatabase);
-        recipesDatabaseGridPane.getColumnConstraints().add(columnInRecipesDatabase);
-        recipesDatabaseGridPane.getColumnConstraints().add(columnInRecipesDatabase);
-        recipesDatabaseGridPane.getColumnConstraints().add(columnInRecipesDatabase);
-
-        RowConstraints rowInRecipesDatabase = new RowConstraints();
-        rowInRecipesDatabase.setPercentHeight(12.5);
-        for (int i = 0; i < 14; i++) {
-            recipesDatabaseGridPane.getRowConstraints().add(rowInRecipesDatabase);
-        }
-
-        Label searchInRecipesDatabaseLabel = new Label(LanguagePackage.getWord("Wyszukaj"));
-        searchInRecipesDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
-        searchInRecipesDatabaseLabel.setMaxHeight(Double.MAX_VALUE);
-        searchInRecipesDatabaseLabel.setAlignment(Pos.CENTER);
-
-        searchInRecipesDatabase = new TextField();
-
-
-        Button searchingOptionsInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Opcje Wyszukiwania"));
-        //searchingOptionsInRecipesDatabaseButton.setMaxHeight(Double.MAX_VALUE);
-        searchingOptionsInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
-
-        searchingOptionsInRecipesDatabaseButton.setOnAction(event -> searchOptions.refresh());
-
-        recipesInRecipesDatabaseList = new ListView<>();
-        searchInRecipesDatabase.textProperty().addListener((observable, oldValue, newValue) -> {
-            String beg = searchInRecipesDatabase.getText();
-            recipesInRecipesDatabaseList.setItems(RecipesList.getObservableList(beg, WhatToCook.caseSensitiveSearch, WhatToCook.searchInEveryWord));
-        });
-        recipesInRecipesDatabaseList.setOnMouseClicked(event -> {
-            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
-                showRecipe(RecipesList.getRecipe(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem()));
-            }
-        });
-
-        linkedRecipesAmmmount = new Label("0/6");
-        linkedRecipesAmmmount.setAlignment(Pos.CENTER);
-        linkedRecipesAmmmount.setTextAlignment(TextAlignment.CENTER);
-        linkedRecipesAmmmount.setMaxWidth(Double.MAX_VALUE);
-
-
-        linkedRecipesGridPane = new GridPane();
-        RowConstraints linkedRecipesRow = new RowConstraints();
-        linkedRecipesRow.setPercentHeight(14);
-        for(int i = 0; i < 6; i++) {
-            linkedRecipesGridPane.getRowConstraints().add(linkedRecipesRow);
-        }
-        ColumnConstraints linkedRecipesColumn = new ColumnConstraints();
-        linkedRecipesColumn.setPercentWidth(100);
-        linkedRecipesGridPane.getColumnConstraints().add(linkedRecipesColumn);
-        recipesDatabaseGridPane.add(linkedRecipesGridPane,2,5,2,8);
-        recipesDatabaseGridPane.add(linkedRecipesAmmmount,2,12,2,1);
-
-        recipesInRecipesDatabaseList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            markedRecipe = recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem();
-            linkedRecipesToggleGroup.selectToggle(null);
-            refreshLinkedRecipes();
-
-        });
-        Label linkedRecipesInRecipesDatabaseLabel = new Label(LanguagePackage.getWord("Przepisy powiązane:"));
-        linkedRecipesInRecipesDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
-        linkedRecipesInRecipesDatabaseLabel.setAlignment(Pos.CENTER);
-
-        linkedRecipesInRecipesDatabaseComboBox = new ComboBox<>();
-        linkedRecipesInRecipesDatabaseComboBox.setMaxWidth(Double.MAX_VALUE);
-        linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
-
-        Button addLinkedRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Dodaj Powiązanie"));
-        addLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
-        addLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
-            if(markedRecipe!=null) {
-                //noinspection ConstantConditions
-                if (RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size()<6 && !RecipesList.getRecipe
-                        (markedRecipe).getName().equals(linkedRecipesInRecipesDatabaseComboBox.getSelectionModel().getSelectedItem())) {
-                    LinkedRecipes.addLinking(markedRecipe,linkedRecipesInRecipesDatabaseComboBox.getSelectionModel().getSelectedItem());
-                    refreshLinkedRecipes();
-                    LinkedRecipes.saveLinkings();
-                }
-            }
-        });
-        Button removeLinkedRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Usuń Powiązanie"));
-        removeLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
-        removeLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
-            if(linkedRecipesToggleGroup.getSelectedToggle()!=null) {
-                RadioButton button = (RadioButton) linkedRecipesToggleGroup.getSelectedToggle();
-                String recipeName = button.getText();
-                LinkedRecipes.deleteLinking(markedRecipe,recipeName);
-                refreshLinkedRecipes();
-                LinkedRecipes.saveLinkings();
-            }
-
-        });
-
-        Button addRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Nowy Przepis"));
-        addRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
-
-        addRecipeInRecipesDatabaseButton.setOnAction(event -> {
-            if (!isEditionTurnOn) {
-                isEditionTurnOn = true;
-                showNewEditMenu(null);
-            } else {
-                Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
-                cantCreateRecipe.setTitle(LanguagePackage.getWord("Błąd tworzenia przepisu"));
-                cantCreateRecipe.setHeaderText(LanguagePackage.getWord("Nie można utworzyć nowego przepisu."));
-                cantCreateRecipe.setContentText(LanguagePackage.getWord("W jednym momencie może być tworzony albo edytowany tylko jeden przepis"));
-                cantCreateRecipe.showAndWait();
-            }
-        });
-
-        Button removeRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Usuń Przepis"));
-        //removeRecipeInRecipesDatabaseButton.setMaxHeight(Double.MAX_VALUE);
-        removeRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
-        removeRecipeInRecipesDatabaseButton.setOnAction(event -> {
-            if (inEdit == null) {
-                for(int j = 0; j < RecipesList.size();j++) {
-                    for(int k = 0; k < RecipesList.recipesList.get(j).getLinkedRecipes().size();k++) {
-                        if(RecipesList.recipesList.get(j).getLinkedRecipes().get(k).equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
-                            RecipesList.recipesList.get(j).getLinkedRecipes().remove(k);
-                        }
-                    }
-                }
-                RecipesList.remove(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
-                recipesInRecipesDatabaseList.setItems(RecipesList.getObservableList(searchInRecipesDatabase.getText(), WhatToCook.caseSensitiveSearch, WhatToCook.searchInEveryWord));
-                linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
-                LinkedRecipes.saveLinkings();
-            } else {
-                if (!inEdit.getName().equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
-                    for(int j = 0; j < RecipesList.size();j++) {
-                        for(int k = 0; k < RecipesList.recipesList.get(j).getLinkedRecipes().size();k++) {
-                            if(RecipesList.recipesList.get(j).getLinkedRecipes().get(k).equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
-                                RecipesList.recipesList.get(j).getLinkedRecipes().remove(k);
-                            }
-                        }
-                    }
-                    RecipesList.remove(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
-                    recipesInRecipesDatabaseList.setItems(RecipesList.getObservableList(searchInRecipesDatabase.getText(), WhatToCook.caseSensitiveSearch, WhatToCook.searchInEveryWord));
-                    linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
-                    LinkedRecipes.saveLinkings();
-                } else {
-                    Alert cantDeleteRecipe = new Alert(Alert.AlertType.ERROR);
-                    cantDeleteRecipe.setTitle(LanguagePackage.getWord("Błąd usuwania przepisu"));
-                    cantDeleteRecipe.setHeaderText(LanguagePackage.getWord("Nie można usunąć przepisu."));
-                    cantDeleteRecipe.setContentText(LanguagePackage.getWord("Przepis podlega aktualnie edycji, a edytowane przepisy nie mogą być usuwane."));
-                    cantDeleteRecipe.showAndWait();
-                }
-            }
-        });
-
-        Button editRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Edytuj Przepis"));
-        editRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
-
-        editRecipeInRecipesDatabaseButton.setOnAction(event -> {
-            if (!isEditionTurnOn && markedRecipe!=null) {
-                isEditionTurnOn = true;
-                inEdit = RecipesList.getRecipe(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
-                showNewEditMenu(RecipesList.getRecipe(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem()));
-            } else if (markedRecipe == null) {
-                Alert chooseRecipeToEdit = new Alert(Alert.AlertType.INFORMATION);
-                chooseRecipeToEdit.setTitle(LanguagePackage.getWord("Wybierz przepis do edycji"));
-                chooseRecipeToEdit.setHeaderText(null);
-                chooseRecipeToEdit.setContentText(LanguagePackage.getWord("Przepis do edycji należy wybrać z listy powyżej."));
-                chooseRecipeToEdit.showAndWait();
-            } else {
-                Alert cantEditRecipe = new Alert(Alert.AlertType.ERROR);
-                cantEditRecipe.setTitle(LanguagePackage.getWord("Błąd edycji przepisu"));
-                cantEditRecipe.setHeaderText(LanguagePackage.getWord("Nie można edytować przepisu."));
-                cantEditRecipe.setContentText(LanguagePackage.getWord("W jednym momencie może być tworzony albo edytowany tylko jeden przepis"));
-                cantEditRecipe.showAndWait();
-            }
-        });
-
-        HBox downButtonsInRecipesDatabase = new HBox();
-        downButtonsInRecipesDatabase.setAlignment(Pos.CENTER);
-        HBox.setHgrow(addRecipeInRecipesDatabaseButton, Priority.ALWAYS);
-        HBox.setHgrow(editRecipeInRecipesDatabaseButton, Priority.ALWAYS);
-        HBox.setHgrow(removeRecipeInRecipesDatabaseButton, Priority.ALWAYS);
-        downButtonsInRecipesDatabase.getChildren().add(addRecipeInRecipesDatabaseButton);
-        downButtonsInRecipesDatabase.getChildren().add(editRecipeInRecipesDatabaseButton);
-        downButtonsInRecipesDatabase.getChildren().add(removeRecipeInRecipesDatabaseButton);
-        HBox.setMargin(addRecipeInRecipesDatabaseButton,new Insets(0,10,0,10));
-        HBox.setMargin(editRecipeInRecipesDatabaseButton,new Insets(0,10,0,10));
-        HBox.setMargin(removeRecipeInRecipesDatabaseButton,new Insets(0,10,0,10));
-
-        RecipesList.getObservableList(recipesInRecipesDatabaseList);
-
-        recipesDatabaseGridPane.add(searchInRecipesDatabaseLabel, 0, 0, 4, 1);
-        recipesDatabaseGridPane.add(searchInRecipesDatabase, 0, 1, 3, 1);
-        recipesDatabaseGridPane.add(searchingOptionsInRecipesDatabaseButton, 3, 1, 1, 1);
-        recipesDatabaseGridPane.add(recipesInRecipesDatabaseList, 0, 2, 2, 11);
-        recipesDatabaseGridPane.add(downButtonsInRecipesDatabase, 0, 13, 4, 1);
-        recipesDatabaseGridPane.add(linkedRecipesInRecipesDatabaseLabel, 2, 2, 2, 1);
-        recipesDatabaseGridPane.add(linkedRecipesInRecipesDatabaseComboBox, 2, 3, 2, 1);
-        recipesDatabaseGridPane.add(addLinkedRecipeInRecipesDatabaseButton, 2, 4, 1, 1);
-        recipesDatabaseGridPane.add(removeLinkedRecipeInRecipesDatabaseButton, 3, 4, 1, 1);
-
-        recipesDatabaseTab.setContent(recipesDatabaseGridPane);
-        mainTable.getTabs().add(recipesDatabaseTab);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //TWORZENIE KARTY SKLADNIKOW
         ingredientsDatabaseTab = new Tab(LanguagePackage.getWord("Składniki"));
@@ -866,17 +902,41 @@ public class MainStage extends Application {
 
         ingredientsDatabaseTab.setContent(ingredientsDatabaseGridPane);
         ingredientsDatabaseTab.setClosable(false);
-        mainTable.getTabs().add(ingredientsDatabaseTab);
-        mainLayout.setCenter(mainTable);
-        mainLayout.setTop(mainMenu);
-        Scene mainScene = new Scene(mainLayout, 500, 650);
-        primaryStage.setMinHeight(650);
-        primaryStage.setMinWidth(400);
-        mainScene.getStylesheets().add(MainStage.class.getResource("css/style.css").toExternalForm());
-        primaryStage.setScene(mainScene);
-        primaryStage.show();
+
+        //mainLayout.setCenter(mainTable);
+        if(columns==2) {
+            for(int i = recipesPane.getTabs().size()-1;i>0;i--) {
+                Tab recipeTab = recipesPane.getTabs().get(i);
+                if(!mainTable.getTabs().contains(recipeTab))
+                    mainTable.getTabs().add(recipeTab);
+                recipesPane.getTabs().remove(recipeTab);
+            }
+            mainGridPane.add(mainTable, 0, 0, 2, 1);
+        }
+        if(columns==1) {
+            for(int i = mainTable.getTabs().size()-1;i>=mainCardsCount;i--) {
+                Tab recipeTab = mainTable.getTabs().get(i);
+                if(!recipesPane.getTabs().contains(recipeTab))
+                    recipesPane.getTabs().add(recipeTab);
+                mainTable.getTabs().remove(recipeTab);
+            }
+            mainGridPane.add(mainTable, 0, 0, 1, 1);
+            mainGridPane.add(recipesPane,1, 0,1,1);
+        }
+        mainLayout.setCenter(mainGridPane);
+
 
     }
+    private BorderPane mainLayout;
+    private MenuBar mainMenu;
+    private Menu fileMenu;
+    private Menu editMenu;
+    private Menu viewMenu;
+    private Menu toolsMenu;
+    private Menu helpMenu;
+    private SearchOptionsStage searchOptions;
+    private TabPane recipesPane = new TabPane();
+
     private void showRecipe(Recipe toShow) {
         GridPane showRecipeGridPane = new GridPane();
         //showRecipeGridPane.setGridLinesVisible(true);
@@ -993,6 +1053,7 @@ public class MainStage extends Application {
         showRecipeTab.setContent(showRecipeGridPane);
         mainTable.getTabs().add(showRecipeTab);
         mainTable.getSelectionModel().select(showRecipeTab);
+        drawInterface();
     }
     private boolean isFalse(boolean parameters[], int n) {
         for (int i = 0; i < n; i++) {
@@ -1306,9 +1367,13 @@ public class MainStage extends Application {
         }
     }
 
+    private int columns = 2;
+
+    private Stage mainStage;
+
     private GridPane linkedRecipesGridPane;
 
-    private TabPane mainTable;
+    private TabPane mainTable = new TabPane();
 
     private Tab searchingTab;
     private Tab recipesDatabaseTab;
@@ -1346,5 +1411,6 @@ public class MainStage extends Application {
     private ToggleGroup linkedRecipesToggleGroup = new ToggleGroup();
 
     private Label linkedRecipesAmmmount;
+    private Scene mainScene;
 
 }
