@@ -117,6 +117,55 @@ public class TestingClass {
     }
 
     @Test
+    public void testAddAndDeleteLinkedRecipes() throws Exception {
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("ingr"));
+        ArrayList<PairAmountUnit> PAU = new ArrayList<>();
+        PAU.add(new PairAmountUnit("amount", "unit"));
+        boolean[] params = {false, false, false, false, false};
+
+        Recipe recipe1 = new Recipe("name1", ingredients, PAU, "instructions", new RecipeParameters(params, 0, 0));
+        Recipe recipe2 = new Recipe("name2", ingredients, PAU, "instructions", new RecipeParameters(params, 0, 0));
+
+        //Dodanie przepisów do listy głównej
+
+        RecipesList.add(recipe1);
+        RecipesList.add(recipe2);
+
+        ArrayList<String> expectedLinkedRecipes1 = new ArrayList<>();
+        expectedLinkedRecipes1.add("name2");
+        ArrayList<String> expectedLinkedRecipes2 = new ArrayList<>();
+        expectedLinkedRecipes2.add("name1");
+
+        LinkedRecipes.addLinking(recipe1.getName(), recipe2.getName());
+
+        ArrayList<String> linkedRecipes1 = recipe1.getLinkedRecipes();
+        ArrayList<String> linkedRecipes2 = recipe2.getLinkedRecipes();
+
+        assertTrue(linkedRecipes1.equals(expectedLinkedRecipes1));
+        assertTrue(linkedRecipes2.equals(expectedLinkedRecipes2));
+
+        //Próba dodania drugi raz powiązań
+        LinkedRecipes.addLinking(recipe1.getName(), recipe2.getName());
+        assertTrue(linkedRecipes1.equals(expectedLinkedRecipes1));
+        assertTrue(linkedRecipes2.equals(expectedLinkedRecipes2));
+
+        //Usunięcie powiązań
+        LinkedRecipes.deleteLinking(recipe1.getName(), recipe2.getName());
+        assertTrue(recipe1.getLinkedRecipes().isEmpty());
+        assertTrue(recipe2.getLinkedRecipes().isEmpty());
+
+        //Próba ponownego usunięcia powiązań
+        LinkedRecipes.deleteLinking(recipe1.getName(), recipe2.getName());
+        assertTrue(recipe1.getLinkedRecipes().isEmpty());
+        assertTrue(recipe2.getLinkedRecipes().isEmpty());
+
+        //Usunięcie testowych przepisów z bazy przepisów
+        RecipesList.remove(recipe1.getName());
+        RecipesList.remove(recipe1.getName());
+    }
+
+    @Test
     public void testRecipesList() throws Exception {
         String name = "Pomidorowa";
         ArrayList<Ingredient> ingredients = new ArrayList<>();
