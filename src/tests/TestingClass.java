@@ -146,6 +146,7 @@ public class TestingClass {
         RecipesList.add(recipe1);
         RecipesList.add(recipe2);
 
+        //Zakładam, że nie istnieją przepisy o nazwach name1 i name2
         ArrayList<String> expectedLinkedRecipes1 = new ArrayList<>();
         expectedLinkedRecipes1.add("name2");
         ArrayList<String> expectedLinkedRecipes2 = new ArrayList<>();
