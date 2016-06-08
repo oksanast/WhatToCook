@@ -115,7 +115,21 @@ public class TestingClass {
         assertEquals(recipe.getRecipe(), instructions);
         assertTrue(recipe.getParameters().getParameters() == params);
     }
+    @Test
+    public void testRecipesEquals() throws Exception {
+        String name = "Name";
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
+        ingredients.add(new Ingredient("ingr"));
+        String instructions = "instructions";
+        ArrayList<PairAmountUnit> PAU = new ArrayList<>();
+        PAU.add(new PairAmountUnit("amount", "unit"));
+        boolean[] params = {false, false, false, false, false};
+        RecipeParameters parameters = new RecipeParameters(params, 0, 0);
 
+        Recipe recipe = new Recipe(name, ingredients, PAU, instructions, parameters);
+        Recipe recipe2 = new Recipe(name, ingredients, PAU, instructions, parameters);
+        assertTrue(recipe.equals(recipe2));
+    }
     @Test
     public void testAddAndDeleteLinkedRecipes() throws Exception {
         ArrayList<Ingredient> ingredients = new ArrayList<>();
