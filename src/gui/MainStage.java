@@ -22,6 +22,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.sound.midi.MidiDevice;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -33,7 +34,7 @@ import java.util.Scanner;
  * Project InferenceEngine
  */
 
-public class MainStageZap extends Application {
+public class MainStage extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         mainStage = primaryStage;
@@ -46,6 +47,24 @@ public class MainStageZap extends Application {
         GridPane recipesDatabaseGridPane = new GridPane();
         recipesDatabaseGridPane.setHgap(5);
         recipesDatabaseGridPane.setVgap(5);
+
+        primaryStage.setTitle("WhatToCook");
+        primaryStage.getIcons().add(new Image("file:data/icon.png"));
+
+        // mainTable = new TabPane();
+        mainMenu = new MenuBar();
+
+        fileMenu = new Menu(LanguagePackage.getWord("Plik"));
+        fileMenu.setId("menu");
+        editMenu = new Menu(LanguagePackage.getWord("Edycja"));
+        editMenu.setId("menu");
+        viewMenu = new Menu(LanguagePackage.getWord("Widok"));
+        viewMenu.setId("menu");
+        toolsMenu = new Menu(LanguagePackage.getWord("Narzędzia"));
+        toolsMenu.setId("menu");
+        helpMenu = new Menu(LanguagePackage.getWord("Pomoc"));
+        helpMenu.setId("menu");
+
 
         ColumnConstraints columnInRecipesDatabase = new ColumnConstraints();
         columnInRecipesDatabase.setPercentWidth(25);
@@ -246,6 +265,158 @@ public class MainStageZap extends Application {
         recipesDatabaseGridPane.add(removeLinkedRecipeInRecipesDatabaseButton, 3, 4, 1, 1);
 
         recipesDatabaseTab.setContent(recipesDatabaseGridPane);
+
+        //TWORZENIE KARTY SKLADNIKOW
+        ingredientsDatabaseTab = new Tab(LanguagePackage.getWord("Składniki"));
+        GridPane ingredientsDatabaseGridPane = new GridPane();
+        ColumnConstraints columnInIgredientsDatabase = new ColumnConstraints();
+        ingredientsDatabaseGridPane.setVgap(5);
+        ingredientsDatabaseGridPane.setHgap(5);
+        columnInIgredientsDatabase.setPercentWidth(25);
+        ingredientsDatabaseGridPane.getColumnConstraints().add(columnInIgredientsDatabase);
+        ingredientsDatabaseGridPane.getColumnConstraints().add(columnInIgredientsDatabase);
+        ingredientsDatabaseGridPane.getColumnConstraints().add(columnInIgredientsDatabase);
+        ingredientsDatabaseGridPane.getColumnConstraints().add(columnInIgredientsDatabase);
+
+        RowConstraints rowInIngredientsDatabase = new RowConstraints();
+        rowInIngredientsDatabase.setPercentHeight(7);
+        for (int i = 0; i < 14; i++) {
+            ingredientsDatabaseGridPane.getRowConstraints().add(rowInIngredientsDatabase);
+        }
+
+        ingredientsInIngredientsDatabaseList = new ListView<>();
+        ingredientsInIngredientsDatabaseList.setMaxWidth(Double.MAX_VALUE);
+        ingredientsInIngredientsDatabaseList.setMaxHeight(Double.MAX_VALUE);
+
+        Label ingredientNameInIngredientsDatabaseLabel = new Label(LanguagePackage.getWord("Nazwa Składnika:"));
+        ingredientNameInIngredientsDatabaseLabel.setMaxHeight(Double.MAX_VALUE);
+        ingredientNameInIngredientsDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
+        ingredientNameInIngredientsDatabaseLabel.setAlignment(Pos.CENTER);
+
+        TextField ingredientNameInIngredientsDatabaseTextField = new TextField();
+        ingredientNameInIngredientsDatabaseTextField.setMaxWidth(Double.MAX_VALUE);
+        //ingredientNameInIngredientsDatabaseTextField.setMaxHeight(Double.MAX_VALUE);
+
+        Button addIngredientInIngredientsDatabaseButton = new Button(LanguagePackage.getWord("Dodaj"));
+        //addIngredientInIngredientsDatabaseButton.setMaxHeight(Double.MAX_VALUE);
+        addIngredientInIngredientsDatabaseButton.setMaxWidth(Double.MAX_VALUE);
+
+        addIngredientInIngredientsDatabaseButton.setOnAction(event -> {
+            if (!ingredientNameInIngredientsDatabaseTextField.getText().equals("")) {
+                Ingredient toAdd = new Ingredient(ingredientNameInIngredientsDatabaseTextField.getText());
+                if (toAdd.getName().charAt(toAdd.getName().length() - 1) != '/') {
+                    IngredientsList.addIngredient(toAdd);
+
+                    ingredientNameInIngredientsDatabaseTextField.setText("");
+                    IngredientsList.rebuildModel(ingredientsInIngredientsDatabaseList);
+                    IngredientsList.getObservableCollection();
+                    chooseIngredientsInSearchComboBox.setItems(IngredientsList.getObservableCollection());
+                    ingredientsInNewEditMenuComboBox.setItems(IngredientsList.getObservableCollection());
+                    spareIngredientsInIngredientsDatabaseComboBox.setItems(IngredientsList.getObservableCollection());
+
+                }
+            }
+        });
+
+        Button removeIngredientInIngredientsDatabaseButton = new Button(LanguagePackage.getWord("Usuń"));
+        //removeIngredientInIngredientsDatabaseButton.setMaxHeight(Double.MAX_VALUE);
+        removeIngredientInIngredientsDatabaseButton.setMaxWidth(Double.MAX_VALUE);
+
+        removeIngredientInIngredientsDatabaseButton.setOnAction(event -> {
+            boolean ifExist = false;
+            ArrayList<String> recipesContainIngredient = new ArrayList<>();
+            for (int i = 0; i < RecipesList.size(); i++) {
+                for (int j = 0; j < RecipesList.recipesList.get(i).getSize(); j++) {
+                    if(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem().equals(RecipesList.recipesList.get(i).getIngredient(j).getName())) {
+                        ifExist = true;
+                        recipesContainIngredient.add(RecipesList.recipesList.get(i).getName());
+                    }
+                }
+            }
+            if(!ifExist) {
+                IngredientsList.removeIngredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem());
+                IngredientsList.rebuildModel(ingredientsInIngredientsDatabaseList);
+                ingredientsInNewEditMenuComboBox.setItems(IngredientsList.getObservableCollection());
+                chooseIngredientsInSearchComboBox.setItems(IngredientsList.getObservableCollection());
+                spareIngredientsInIngredientsDatabaseComboBox.setItems(IngredientsList.getObservableCollection());
+            }
+            else {
+                Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
+                cantCreateRecipe.setTitle(LanguagePackage.getWord("Błąd usuwania składnika"));
+                cantCreateRecipe.setHeaderText(LanguagePackage.getWord("Nie można usunąć składnika"));
+                String cantdelete = "";
+                for(String i : recipesContainIngredient) {
+                    cantdelete+= i;
+                }
+                cantCreateRecipe.setContentText(LanguagePackage.getWord("Składnik jest wykorzystywany w przepisach na:") + WhatToCook.endl + cantdelete);
+                cantCreateRecipe.showAndWait();
+            }
+        });
+
+        Label spareIngredientsInIngredientsDatabaseLabel = new Label(LanguagePackage.getWord("Składniki Alternatywne"));
+        spareIngredientsInIngredientsDatabaseLabel.setMaxHeight(Double.MAX_VALUE);
+        spareIngredientsInIngredientsDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
+        spareIngredientsInIngredientsDatabaseLabel.setAlignment(Pos.CENTER);
+
+        ListView<String> spareIngredientsInIngredientsDatabaseList = new ListView<>();
+        spareIngredientsInIngredientsDatabaseList.setMaxWidth(Double.MAX_VALUE);
+        spareIngredientsInIngredientsDatabaseList.setMaxHeight(Double.MAX_VALUE);
+
+        ingredientsInIngredientsDatabaseList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            SpareIngredientsList.rebuildListModel(spareIngredientsInIngredientsDatabaseList, new Ingredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem()));
+        });
+
+        Button addSpareIngredientInIngredientsDatabaseButton = new Button(LanguagePackage.getWord("Dodaj"));
+        addSpareIngredientInIngredientsDatabaseButton.setMaxWidth(Double.MAX_VALUE);
+
+        addSpareIngredientInIngredientsDatabaseButton.setOnAction(event -> {
+            if (spareIngredientsInIngredientsDatabaseComboBox.getSelectionModel().getSelectedItem() != null) {
+                boolean exist = false;
+                for (int i = 0; i < spareIngredientsInIngredientsDatabaseList.getItems().size(); i++)
+                    if (spareIngredientsInIngredientsDatabaseList.getItems().get(i).equals(spareIngredientsInIngredientsDatabaseComboBox.getSelectionModel().getSelectedItem()))
+                        exist = true;
+                if (!exist) {
+                    //spareIngredientsInIngredientsDatabaseList.getItems().add(spareIngredientsInIngredientsDatabaseComboBox.getSelectionModel().getSelectedItem());
+                    SpareIngredientsList.addSpareIngredient(new Ingredient(spareIngredientsInIngredientsDatabaseComboBox.getSelectionModel().getSelectedItem()), new Ingredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem()));
+                    SpareIngredientsList.rebuildListModel(spareIngredientsInIngredientsDatabaseList, new Ingredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem()));
+                    IngredientsList.rewriteFile();
+                }
+            }
+        });
+
+        Button removeSpareIngredientInIngredientsDatabaseButton = new Button(LanguagePackage.getWord("Usuń"));
+        removeSpareIngredientInIngredientsDatabaseButton.setMaxWidth(Double.MAX_VALUE);
+
+        removeSpareIngredientInIngredientsDatabaseButton.setOnAction(event -> {
+            if (spareIngredientsInIngredientsDatabaseList.getSelectionModel().getSelectedIndex() >= 0) {
+                SpareIngredientsList.removeSpareIngredient(new Ingredient(spareIngredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem()), new Ingredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem()));
+                spareIngredientsInIngredientsDatabaseList.getItems().remove(spareIngredientsInIngredientsDatabaseList.getSelectionModel().getSelectedIndex());
+                IngredientsList.rewriteFile();
+            }
+        });
+
+        spareIngredientsInIngredientsDatabaseComboBox = new ComboBox<>();
+        spareIngredientsInIngredientsDatabaseComboBox.setMaxWidth(Double.MAX_VALUE);
+
+        spareIngredientsInIngredientsDatabaseComboBox.setItems(IngredientsList.getObservableCollection());
+
+        IngredientsList.rebuildModel(ingredientsInIngredientsDatabaseList);
+
+
+        ingredientsDatabaseGridPane.add(ingredientsInIngredientsDatabaseList, 0, 0, 2, 14);
+        ingredientsDatabaseGridPane.add(ingredientNameInIngredientsDatabaseLabel, 2, 0, 2, 1);
+        ingredientsDatabaseGridPane.add(ingredientNameInIngredientsDatabaseTextField, 2, 1, 2, 1);
+        ingredientsDatabaseGridPane.add(addIngredientInIngredientsDatabaseButton, 2, 2, 1, 1);
+        ingredientsDatabaseGridPane.add(removeIngredientInIngredientsDatabaseButton, 3, 2, 1, 1);
+        ingredientsDatabaseGridPane.add(spareIngredientsInIngredientsDatabaseLabel, 2, 3, 2, 1);
+        ingredientsDatabaseGridPane.add(spareIngredientsInIngredientsDatabaseComboBox, 2, 4, 1, 2);
+        ingredientsDatabaseGridPane.add(addSpareIngredientInIngredientsDatabaseButton, 3, 4, 1, 1);
+        ingredientsDatabaseGridPane.add(removeSpareIngredientInIngredientsDatabaseButton, 3, 5, 1, 1);
+        ingredientsDatabaseGridPane.add(spareIngredientsInIngredientsDatabaseList, 2, 6, 2, 8);
+
+        ingredientsDatabaseTab.setContent(ingredientsDatabaseGridPane);
+        ingredientsDatabaseTab.setClosable(false);
+
 
         drawInterface(primaryStage,columns);
 
@@ -474,7 +645,7 @@ public class MainStageZap extends Application {
         mainScene = new Scene(mainLayout, 500, 650);
         primaryStage.setMinHeight(650);
         primaryStage.setMinWidth(400);
-        mainScene.getStylesheets().add(MainStageZap.class.getResource("css/style.css").toExternalForm());
+        mainScene.getStylesheets().add(MainStage.class.getResource("css/style.css").toExternalForm());
         primaryStage.setScene(mainScene);
         primaryStage.show();
         mainScene.widthProperty().addListener(new ChangeListener<Number>() {
@@ -494,23 +665,6 @@ public class MainStageZap extends Application {
         drawInterface(mainStage,columns);
     }
     private void drawInterface(Stage primaryStage,int columns) {
-        primaryStage.setTitle("WhatToCook");
-        primaryStage.getIcons().add(new Image("file:data/icon.png"));
-
-       // mainTable = new TabPane();
-        mainMenu = new MenuBar();
-
-        fileMenu = new Menu(LanguagePackage.getWord("Plik"));
-        fileMenu.setId("menu");
-        editMenu = new Menu(LanguagePackage.getWord("Edycja"));
-        editMenu.setId("menu");
-        viewMenu = new Menu(LanguagePackage.getWord("Widok"));
-        viewMenu.setId("menu");
-        toolsMenu = new Menu(LanguagePackage.getWord("Narzędzia"));
-        toolsMenu.setId("menu");
-        helpMenu = new Menu(LanguagePackage.getWord("Pomoc"));
-        helpMenu.setId("menu");
-
         searchingTab = new Tab();
         searchingTab.setText(LanguagePackage.getWord("Wyszukiwanie"));
         searchingTab.setClosable(false);
@@ -540,6 +694,10 @@ public class MainStageZap extends Application {
         mainColumn.setPercentWidth(50);
         mainGridPane.getColumnConstraints().add(mainColumn);
         mainGridPane.getColumnConstraints().add(mainColumn);
+
+        mainGridPane.setPadding(new Insets(0,15,15,10));
+
+        mainGridPane.setHgap(5);
 
         RowConstraints mainRow = new RowConstraints();
         mainRow.setPercentHeight(100);
@@ -746,166 +904,12 @@ public class MainStageZap extends Application {
 
         chooseIngredientsInSearchComboBox.setItems(IngredientsList.getObservableCollection());
 
-        //TWORZENIE KARTY WYSZUKIWANIA PRZEPISOW///////////////////////////////////////////////////////////////////////
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //TWORZENIE KARTY BAZY PRZEPISOW
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //TWORZENIE KARTY SKLADNIKOW
-        ingredientsDatabaseTab = new Tab(LanguagePackage.getWord("Składniki"));
-        GridPane ingredientsDatabaseGridPane = new GridPane();
-        ColumnConstraints columnInIgredientsDatabase = new ColumnConstraints();
-        ingredientsDatabaseGridPane.setVgap(5);
-        ingredientsDatabaseGridPane.setHgap(5);
-        columnInIgredientsDatabase.setPercentWidth(25);
-        ingredientsDatabaseGridPane.getColumnConstraints().add(columnInIgredientsDatabase);
-        ingredientsDatabaseGridPane.getColumnConstraints().add(columnInIgredientsDatabase);
-        ingredientsDatabaseGridPane.getColumnConstraints().add(columnInIgredientsDatabase);
-        ingredientsDatabaseGridPane.getColumnConstraints().add(columnInIgredientsDatabase);
-
-        RowConstraints rowInIngredientsDatabase = new RowConstraints();
-        rowInIngredientsDatabase.setPercentHeight(7);
-        for (int i = 0; i < 14; i++) {
-            ingredientsDatabaseGridPane.getRowConstraints().add(rowInIngredientsDatabase);
-        }
-
-        ingredientsInIngredientsDatabaseList = new ListView<>();
-        ingredientsInIngredientsDatabaseList.setMaxWidth(Double.MAX_VALUE);
-        ingredientsInIngredientsDatabaseList.setMaxHeight(Double.MAX_VALUE);
-
-        Label ingredientNameInIngredientsDatabaseLabel = new Label(LanguagePackage.getWord("Nazwa Składnika:"));
-        ingredientNameInIngredientsDatabaseLabel.setMaxHeight(Double.MAX_VALUE);
-        ingredientNameInIngredientsDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
-        ingredientNameInIngredientsDatabaseLabel.setAlignment(Pos.CENTER);
-
-        TextField ingredientNameInIngredientsDatabaseTextField = new TextField();
-        ingredientNameInIngredientsDatabaseTextField.setMaxWidth(Double.MAX_VALUE);
-        //ingredientNameInIngredientsDatabaseTextField.setMaxHeight(Double.MAX_VALUE);
-
-        Button addIngredientInIngredientsDatabaseButton = new Button(LanguagePackage.getWord("Dodaj"));
-        //addIngredientInIngredientsDatabaseButton.setMaxHeight(Double.MAX_VALUE);
-        addIngredientInIngredientsDatabaseButton.setMaxWidth(Double.MAX_VALUE);
-
-        addIngredientInIngredientsDatabaseButton.setOnAction(event -> {
-            if (!ingredientNameInIngredientsDatabaseTextField.getText().equals("")) {
-                Ingredient toAdd = new Ingredient(ingredientNameInIngredientsDatabaseTextField.getText());
-                if (toAdd.getName().charAt(toAdd.getName().length() - 1) != '/') {
-                    IngredientsList.addIngredient(toAdd);
-
-                    ingredientNameInIngredientsDatabaseTextField.setText("");
-                    IngredientsList.rebuildModel(ingredientsInIngredientsDatabaseList);
-                    IngredientsList.getObservableCollection();
-                    chooseIngredientsInSearchComboBox.setItems(IngredientsList.getObservableCollection());
-                    ingredientsInNewEditMenuComboBox.setItems(IngredientsList.getObservableCollection());
-                    spareIngredientsInIngredientsDatabaseComboBox.setItems(IngredientsList.getObservableCollection());
-
-                }
-            }
-        });
-
-        Button removeIngredientInIngredientsDatabaseButton = new Button(LanguagePackage.getWord("Usuń"));
-        //removeIngredientInIngredientsDatabaseButton.setMaxHeight(Double.MAX_VALUE);
-        removeIngredientInIngredientsDatabaseButton.setMaxWidth(Double.MAX_VALUE);
-
-        removeIngredientInIngredientsDatabaseButton.setOnAction(event -> {
-            boolean ifExist = false;
-            ArrayList<String> recipesContainIngredient = new ArrayList<>();
-            for (int i = 0; i < RecipesList.size(); i++) {
-                for (int j = 0; j < RecipesList.recipesList.get(i).getSize(); j++) {
-                    if(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem().equals(RecipesList.recipesList.get(i).getIngredient(j).getName())) {
-                        ifExist = true;
-                        recipesContainIngredient.add(RecipesList.recipesList.get(i).getName());
-                    }
-                }
-            }
-            if(!ifExist) {
-                IngredientsList.removeIngredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem());
-                IngredientsList.rebuildModel(ingredientsInIngredientsDatabaseList);
-                ingredientsInNewEditMenuComboBox.setItems(IngredientsList.getObservableCollection());
-                chooseIngredientsInSearchComboBox.setItems(IngredientsList.getObservableCollection());
-                spareIngredientsInIngredientsDatabaseComboBox.setItems(IngredientsList.getObservableCollection());
-            }
-            else {
-                Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
-                cantCreateRecipe.setTitle(LanguagePackage.getWord("Błąd usuwania składnika"));
-                cantCreateRecipe.setHeaderText(LanguagePackage.getWord("Nie można usunąć składnika"));
-                String cantdelete = "";
-                for(String i : recipesContainIngredient) {
-                    cantdelete+= i;
-                }
-                cantCreateRecipe.setContentText(LanguagePackage.getWord("Składnik jest wykorzystywany w przepisach na:") + WhatToCook.endl + cantdelete);
-                cantCreateRecipe.showAndWait();
-            }
-        });
-
-        Label spareIngredientsInIngredientsDatabaseLabel = new Label(LanguagePackage.getWord("Składniki Alternatywne"));
-        spareIngredientsInIngredientsDatabaseLabel.setMaxHeight(Double.MAX_VALUE);
-        spareIngredientsInIngredientsDatabaseLabel.setMaxWidth(Double.MAX_VALUE);
-        spareIngredientsInIngredientsDatabaseLabel.setAlignment(Pos.CENTER);
-
-        ListView<String> spareIngredientsInIngredientsDatabaseList = new ListView<>();
-        spareIngredientsInIngredientsDatabaseList.setMaxWidth(Double.MAX_VALUE);
-        spareIngredientsInIngredientsDatabaseList.setMaxHeight(Double.MAX_VALUE);
-
-        ingredientsInIngredientsDatabaseList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            SpareIngredientsList.rebuildListModel(spareIngredientsInIngredientsDatabaseList, new Ingredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem()));
-        });
-
-        Button addSpareIngredientInIngredientsDatabaseButton = new Button(LanguagePackage.getWord("Dodaj"));
-        addSpareIngredientInIngredientsDatabaseButton.setMaxWidth(Double.MAX_VALUE);
-
-        addSpareIngredientInIngredientsDatabaseButton.setOnAction(event -> {
-            if (spareIngredientsInIngredientsDatabaseComboBox.getSelectionModel().getSelectedItem() != null) {
-                boolean exist = false;
-                for (int i = 0; i < spareIngredientsInIngredientsDatabaseList.getItems().size(); i++)
-                    if (spareIngredientsInIngredientsDatabaseList.getItems().get(i).equals(spareIngredientsInIngredientsDatabaseComboBox.getSelectionModel().getSelectedItem()))
-                        exist = true;
-                if (!exist) {
-                    //spareIngredientsInIngredientsDatabaseList.getItems().add(spareIngredientsInIngredientsDatabaseComboBox.getSelectionModel().getSelectedItem());
-                    SpareIngredientsList.addSpareIngredient(new Ingredient(spareIngredientsInIngredientsDatabaseComboBox.getSelectionModel().getSelectedItem()), new Ingredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem()));
-                    SpareIngredientsList.rebuildListModel(spareIngredientsInIngredientsDatabaseList, new Ingredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem()));
-                    IngredientsList.rewriteFile();
-                }
-            }
-        });
-
-        Button removeSpareIngredientInIngredientsDatabaseButton = new Button(LanguagePackage.getWord("Usuń"));
-        removeSpareIngredientInIngredientsDatabaseButton.setMaxWidth(Double.MAX_VALUE);
-
-        removeSpareIngredientInIngredientsDatabaseButton.setOnAction(event -> {
-            if (spareIngredientsInIngredientsDatabaseList.getSelectionModel().getSelectedIndex() >= 0) {
-                SpareIngredientsList.removeSpareIngredient(new Ingredient(spareIngredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem()), new Ingredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem()));
-                spareIngredientsInIngredientsDatabaseList.getItems().remove(spareIngredientsInIngredientsDatabaseList.getSelectionModel().getSelectedIndex());
-                IngredientsList.rewriteFile();
-            }
-        });
-
-        spareIngredientsInIngredientsDatabaseComboBox = new ComboBox<>();
-        spareIngredientsInIngredientsDatabaseComboBox.setMaxWidth(Double.MAX_VALUE);
-
-        spareIngredientsInIngredientsDatabaseComboBox.setItems(IngredientsList.getObservableCollection());
-
-        IngredientsList.rebuildModel(ingredientsInIngredientsDatabaseList);
-
-
-        ingredientsDatabaseGridPane.add(ingredientsInIngredientsDatabaseList, 0, 0, 2, 14);
-        ingredientsDatabaseGridPane.add(ingredientNameInIngredientsDatabaseLabel, 2, 0, 2, 1);
-        ingredientsDatabaseGridPane.add(ingredientNameInIngredientsDatabaseTextField, 2, 1, 2, 1);
-        ingredientsDatabaseGridPane.add(addIngredientInIngredientsDatabaseButton, 2, 2, 1, 1);
-        ingredientsDatabaseGridPane.add(removeIngredientInIngredientsDatabaseButton, 3, 2, 1, 1);
-        ingredientsDatabaseGridPane.add(spareIngredientsInIngredientsDatabaseLabel, 2, 3, 2, 1);
-        ingredientsDatabaseGridPane.add(spareIngredientsInIngredientsDatabaseComboBox, 2, 4, 1, 2);
-        ingredientsDatabaseGridPane.add(addSpareIngredientInIngredientsDatabaseButton, 3, 4, 1, 1);
-        ingredientsDatabaseGridPane.add(removeSpareIngredientInIngredientsDatabaseButton, 3, 5, 1, 1);
-        ingredientsDatabaseGridPane.add(spareIngredientsInIngredientsDatabaseList, 2, 6, 2, 8);
-
-        ingredientsDatabaseTab.setContent(ingredientsDatabaseGridPane);
-        ingredientsDatabaseTab.setClosable(false);
-
-        //mainLayout.setCenter(mainTable);
+        Label InfoRightLabel = new Label(LanguagePackage.getWord("Tutaj pojawią się otwarte przepisy"));
+        InfoRightLabel.setAlignment(Pos.CENTER);
+        InfoRightLabel.setMaxWidth(Double.MAX_VALUE);
+        InfoRightLabel.setTextAlignment(TextAlignment.CENTER);
         if(columns==2) {
-            for(int i = recipesPane.getTabs().size()-1;i>0;i--) {
+            for(int i = recipesPane.getTabs().size()-1;i>=0;i--) {
                 Tab recipeTab = recipesPane.getTabs().get(i);
                 if(!mainTable.getTabs().contains(recipeTab))
                     mainTable.getTabs().add(recipeTab);
@@ -920,12 +924,16 @@ public class MainStageZap extends Application {
                     recipesPane.getTabs().add(recipeTab);
                 mainTable.getTabs().remove(recipeTab);
             }
-            mainGridPane.add(mainTable, 0, 0, 1, 1);
-            mainGridPane.add(recipesPane,1, 0,1,1);
+            if(recipesPane.getTabs().size()==0) {
+                mainGridPane.add(mainTable, 0, 0, 1, 1);
+                mainGridPane.add(InfoRightLabel,1,0,1,1);
+            }
+            else {
+                mainGridPane.add(mainTable, 0, 0, 1, 1);
+                mainGridPane.add(recipesPane, 1, 0, 1, 1);
+            }
         }
         mainLayout.setCenter(mainGridPane);
-
-
     }
     private BorderPane mainLayout;
     private MenuBar mainMenu;
@@ -962,23 +970,23 @@ public class MainStageZap extends Application {
         youWillNeedLabel.setTextAlignment(TextAlignment.CENTER);
         String tmp = "";
         if (toShow.getParameters().getPreparingEase() == 0)
-            tmp = LanguagePackage.getWord("Łatwo");
+            tmp = LanguagePackage.getWord("Łatwe");
         if (toShow.getParameters().getPreparingEase() == 1)
-            tmp = LanguagePackage.getWord("Średnio");
+            tmp = LanguagePackage.getWord("Średnie");
         if (toShow.getParameters().getPreparingEase() == 2)
-            tmp = LanguagePackage.getWord("Trudno");
-        Label preparingEaseLabel = new Label(LanguagePackage.getWord("Łatwość przygotowywania: "+ tmp));
+            tmp = LanguagePackage.getWord("Trudne");
+        Label preparingEaseLabel = new Label(LanguagePackage.getWord("Łatwość przygotowania:")+" "+ tmp);
         preparingEaseLabel.setMaxWidth(Double.MAX_VALUE);
         preparingEaseLabel.setAlignment(Pos.CENTER);
         preparingEaseLabel.setTextAlignment(TextAlignment.CENTER);
         tmp = "";
         if (toShow.getParameters().getPreparingTime() == 0)
-            tmp = LanguagePackage.getWord("Krótko");
+            tmp = LanguagePackage.getWord("Szybko");
         if (toShow.getParameters().getPreparingTime() == 1)
             tmp = LanguagePackage.getWord("Średnio");
         if (toShow.getParameters().getPreparingTime() == 2)
-            tmp = LanguagePackage.getWord("Długo");
-        Label preparingTimeLabel = new Label(LanguagePackage.getWord("Czas przygotowywania: ") + tmp);
+            tmp = LanguagePackage.getWord("Wolno");
+        Label preparingTimeLabel = new Label(LanguagePackage.getWord("Czas przygotowania:") +" "+ tmp);
         preparingTimeLabel.setMaxWidth(Double.MAX_VALUE);
         preparingTimeLabel.setAlignment(Pos.CENTER);
         preparingTimeLabel.setTextAlignment(TextAlignment.CENTER);
@@ -1052,7 +1060,6 @@ public class MainStageZap extends Application {
         showRecipeTab.setClosable(true);
         showRecipeTab.setContent(showRecipeGridPane);
         mainTable.getTabs().add(showRecipeTab);
-        mainTable.getSelectionModel().select(showRecipeTab);
         drawInterface();
     }
     private boolean isFalse(boolean parameters[], int n) {

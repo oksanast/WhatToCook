@@ -3,8 +3,7 @@ package core;
 import auxiliary.Dictionary;
 import auxiliary.LanguagePackage;
 //import gui.MainStage;
-import gui.MainStageOriginal;
-import gui.MainStageZap;
+import gui.MainStage;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
@@ -22,7 +21,7 @@ import java.util.Scanner;
 public class WhatToCook extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        whatToCookStage = new MainStageZap();
+        whatToCookStage = new MainStage();
         whatToCookStage.start(primaryStage);
     }
     public static void main(String args[]) {
@@ -117,7 +116,7 @@ public class WhatToCook extends Application {
 
     public static String endl = System.lineSeparator();
 
-    public static MainStageZap whatToCookStage;
+    public static MainStage whatToCookStage;
 
     public static void exportSettings() {
         try {
