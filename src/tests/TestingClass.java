@@ -115,6 +115,7 @@ public class TestingClass {
         assertEquals(recipe.getRecipe(), instructions);
         assertTrue(recipe.getParameters().getParameters() == params);
     }
+
     @Test
     public void testRecipesEquals() throws Exception {
         String name = "Name";
@@ -131,6 +132,7 @@ public class TestingClass {
         assertTrue(recipe.equals(recipe2));
 
     }
+
     @Test
     public void testAddAndDeleteLinkedRecipes() throws Exception {
         ArrayList<Ingredient> ingredients = new ArrayList<>();
