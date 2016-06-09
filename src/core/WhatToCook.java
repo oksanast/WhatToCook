@@ -132,7 +132,7 @@ public class WhatToCook extends Application {
             out.println("autoNewCard=" + autoNewCard);
             out.println("interfaceType=" + WhatToCook.interfaceType);
             out.close();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException ignored) {
 
         }
 
@@ -146,7 +146,7 @@ public class WhatToCook extends Application {
             out.println("autoNewCard=" + autoNewCard);
             out.println("interfaceType=" + WhatToCook.interfaceType);
             out.close();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException ignored) {
 
         }
 

@@ -19,7 +19,7 @@ public class Dictionary {
         Scanner wordsScanner = new Scanner(new InputStreamReader(Dictionary.class.getResourceAsStream("resources/languages/words/words.txt")));
         while(wordsScanner.hasNextLine()) {
             String line = wordsScanner.nextLine();
-            String[] splittedLine = line.split("\\s\\s");
+            String[] splittedLine = line.split("~");
             for(int i = 0; i < languages.size();i++) {
                 words.get(i).add(splittedLine[i]);
             }
