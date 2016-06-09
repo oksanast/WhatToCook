@@ -6,8 +6,6 @@ import auxiliary.PairAmountUnit;
 import auxiliary.RecipeParameters;
 import core.*;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -22,7 +20,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.sound.midi.MidiDevice;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -31,13 +28,12 @@ import java.util.Scanner;
 
 /**
  * Created by WTC-Team on 22.05.2016.
- * Project InferenceEngine
+ * Project WhatToCook
  */
 
 public class MainStage extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        mainStage = primaryStage;
         mainLayout = new BorderPane();
         RecipesList.initialize();
         IngredientsList.initialize();
@@ -52,17 +48,17 @@ public class MainStage extends Application {
         primaryStage.getIcons().add(new Image("file:data/icon.png"));
 
         // mainTable = new TabPane();
-        mainMenu = new MenuBar();
+        MenuBar mainMenu = new MenuBar();
 
-        fileMenu = new Menu(LanguagePackage.getWord("Plik"));
+        Menu fileMenu = new Menu(LanguagePackage.getWord("Plik"));
         fileMenu.setId("menu");
-        editMenu = new Menu(LanguagePackage.getWord("Edycja"));
+        Menu editMenu = new Menu(LanguagePackage.getWord("Edycja"));
         editMenu.setId("menu");
-        viewMenu = new Menu(LanguagePackage.getWord("Widok"));
+        Menu viewMenu = new Menu(LanguagePackage.getWord("Widok"));
         viewMenu.setId("menu");
-        toolsMenu = new Menu(LanguagePackage.getWord("Narzędzia"));
+        Menu toolsMenu = new Menu(LanguagePackage.getWord("Narzędzia"));
         toolsMenu.setId("menu");
-        helpMenu = new Menu(LanguagePackage.getWord("Pomoc"));
+        Menu helpMenu = new Menu(LanguagePackage.getWord("Pomoc"));
         helpMenu.setId("menu");
 
 
@@ -417,8 +413,233 @@ public class MainStage extends Application {
         ingredientsDatabaseTab.setContent(ingredientsDatabaseGridPane);
         ingredientsDatabaseTab.setClosable(false);
 
+        searchingTab = new Tab();
+        searchingTab.setText(LanguagePackage.getWord("Wyszukiwanie"));
+        searchingTab.setClosable(false);
+        GridPane searchingGridPane = new GridPane();
+        searchingGridPane.setVgap(5);
+        searchingGridPane.setHgap(5);
+        searchingGridPane.setPadding(new Insets(10,0,10,0));
+        //searchingGridPane.setAlignment(Pos.CENTER);
+        ColumnConstraints column = new ColumnConstraints();
+        column.setPercentWidth(25);
+        column.setHgrow(Priority.ALWAYS);
+        searchingGridPane.getColumnConstraints().add(column);
+        searchingGridPane.getColumnConstraints().add(column);
+        searchingGridPane.getColumnConstraints().add(column);
+        searchingGridPane.getColumnConstraints().add(column);
 
-        drawInterface(primaryStage,columns);
+        RowConstraints row = new RowConstraints();
+        row.setPercentHeight(16);
+        row.setVgrow(Priority.ALWAYS);
+
+        for(int i = 0; i < 17; i ++) {
+            searchingGridPane.getRowConstraints().add(row);
+        }
+
+        Text insertIngredientsLabel = new Text(LanguagePackage.getWord("Wprowadź składniki"));
+        insertIngredientsLabel.setId("insertIngredientsText");
+        HBox insertIngredientsLabelHBox = new HBox();
+        insertIngredientsLabelHBox.setAlignment(Pos.CENTER);
+        searchingGridPane.add(insertIngredientsLabelHBox, 0, 0, 4, 1);
+
+        ingredientsInSearchList = new ListView<>();
+
+        searchingGridPane.add(ingredientsInSearchList, 0, 1, 2, 5);
+        ingredientsInSearchList.setMaxWidth(Double.MAX_VALUE);
+        ingredientsInSearchList.setMaxHeight(Double.MAX_VALUE);
+
+        Label chooseIngredientsInSearchLabel = new Label(LanguagePackage.getWord("Wybierz składniki"));
+        chooseIngredientsInSearchLabel.setMaxHeight(Double.MAX_VALUE);
+        chooseIngredientsInSearchLabel.setMaxWidth(Double.MAX_VALUE);
+        chooseIngredientsInSearchLabel.setAlignment(Pos.CENTER);
+
+        chooseIngredientsInSearchComboBox = new ComboBox<>();
+        chooseIngredientsInSearchComboBox.setMaxHeight(Double.MAX_VALUE);
+        chooseIngredientsInSearchComboBox.setMaxWidth(Double.MAX_VALUE);
+
+        Button addIngredientInSearchButton = new Button(LanguagePackage.getWord("Dodaj składnik"));
+        addIngredientInSearchButton.setMaxWidth(Double.MAX_VALUE);
+
+        try {
+            Scanner in = new Scanner(new File(WhatToCook.path + "data/ownedIngredients/ownedIngredients"));
+            while(in.hasNextLine()) {
+                ingredientsInSearchList.getItems().add(in.nextLine());
+            }
+            in.close();
+        } catch (FileNotFoundException ignored) {
+
+        }
+
+        addIngredientInSearchButton.setOnAction(event -> {
+            if (chooseIngredientsInSearchComboBox.getSelectionModel().getSelectedItem() != null) {
+                if (!ingredientsInSearchList.getItems().contains(chooseIngredientsInSearchComboBox.getSelectionModel().getSelectedItem()))
+                    ingredientsInSearchList.getItems().add(chooseIngredientsInSearchComboBox.getSelectionModel().getSelectedItem());
+                try {
+                    PrintWriter writer = new PrintWriter(new File(WhatToCook.path + "data/ownedIngredients/ownedIngredients"));
+                    ingredientsInSearchList.getItems().forEach(writer::println);
+                    writer.close();
+                } catch (FileNotFoundException ignored) {
+
+                }
+            }
+        });
+
+        Button removeIngredientInSearchButton = new Button(LanguagePackage.getWord("Usuń składnik"));
+        removeIngredientInSearchButton.setMaxWidth(Double.MAX_VALUE);
+
+        removeIngredientInSearchButton.setOnAction(event -> {
+            if (ingredientsInSearchList.getSelectionModel().getSelectedIndex() >= 0)
+                ingredientsInSearchList.getItems().remove(ingredientsInSearchList.getSelectionModel().getSelectedIndex());
+            try {
+                PrintWriter writer = new PrintWriter(new File(WhatToCook.path + "data/ownedIngredients/ownedIngredients"));
+                ingredientsInSearchList.getItems().forEach(writer::println);
+                writer.close();
+            } catch (FileNotFoundException ignored) {
+
+            }
+        });
+
+        Button importIngredientsInSearchButton = new Button(LanguagePackage.getWord("Importuj"));
+        //importIngredientsInSearchButton.setMaxHeight(Double.MAX_VALUE);
+        importIngredientsInSearchButton.setMaxWidth(Double.MAX_VALUE);
+
+        importIngredientsInSearchButton.setOnAction(event -> {
+            FileChooser chooseFile = new FileChooser();
+            chooseFile.setTitle("Wybierz plik z posiadanymi składnikami");
+            File openFile = chooseFile.showOpenDialog(primaryStage);
+            if (openFile != null) {
+                try {
+                    Scanner in = new Scanner(openFile);
+                    while(in.hasNextLine())
+                        ingredientsInSearchList.getItems().add(in.nextLine());
+
+                } catch (FileNotFoundException ignored) {
+                }
+            }
+        });
+
+        Button exportIngredientsInSearchButoon = new Button(LanguagePackage.getWord("Eksportuj"));
+        exportIngredientsInSearchButoon.setMaxWidth(Double.MAX_VALUE);
+        exportIngredientsInSearchButoon.setOnAction(event -> {
+            FileChooser chooseFile = new FileChooser();
+            chooseFile.setTitle("Wybierz lokalizacje zapisu");
+            chooseFile.setInitialFileName("Posiadane Składniki.txt");
+            File saveFile = chooseFile.showSaveDialog(primaryStage);
+            if (saveFile != null) {
+                try {
+                    PrintWriter writer = new PrintWriter(saveFile);
+                    ingredientsInSearchList.getItems().forEach(writer::println);
+                    writer.close();
+                } catch (FileNotFoundException ignored) {
+
+                }
+            }
+        });
+
+        Label foundRecipesInSearchLabel = new Label(LanguagePackage.getWord("Znalezione przepisy"));
+
+        foundRecipesInSearchLabel.setAlignment(Pos.CENTER);
+        foundRecipesInSearchLabel.setMaxHeight(Double.MAX_VALUE);
+        foundRecipesInSearchLabel.setMaxWidth(Double.MAX_VALUE);
+        Label mealForInSearchLabel = new Label(LanguagePackage.getWord("Danie na:"));
+
+        mealForInSearchLabel.setAlignment(Pos.CENTER);
+        mealForInSearchLabel.setMaxHeight(Double.MAX_VALUE);
+        mealForInSearchLabel.setMaxWidth(Double.MAX_VALUE);
+        Label preparingTimeInSearchLabel = new Label(LanguagePackage.getWord("Czas przygotowania:"));
+
+
+        Label preparingEaseInSearchLabel = new Label(LanguagePackage.getWord("Łatwość przygotowania:"));
+
+
+
+        foundRecipesInSearchList = new ListView<>();
+        foundRecipesInSearchList.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+                showRecipe(RecipesList.getRecipe(foundRecipesInSearchList.getSelectionModel().getSelectedItem()));
+            }
+        });
+
+        Button searchForRecipesInSearchButton = new Button(LanguagePackage.getWord("Szukaj przepisów"));
+        //searchForRecipesInSearchButton.setMaxHeight(Double.MAX_VALUE);
+        searchForRecipesInSearchButton.setMaxWidth(Double.MAX_VALUE);
+
+
+        searchForRecipesInSearchButton.setOnAction(event -> {
+            ArrayList<Ingredient> ownedIngredients = new ArrayList<>();
+            for (int i = 0; i < ingredientsInSearchList.getItems().size(); i++) {
+                ownedIngredients.add(new Ingredient(ingredientsInSearchList.getItems().get(i)));
+            }
+            boolean[] parameters = new boolean[5];
+            parameters[0] = breakfestInSearchCheckBox.isSelected();
+            parameters[1] = dessertInSearchCheckBox.isSelected();
+            parameters[2] = dinerInSearchCheckBox.isSelected();
+            parameters[3] = supperInSearchCheckBox.isSelected();
+            parameters[4] = snackInSearchCheckBox.isSelected();
+            if (isFalse(parameters, 5)) {
+                for (int i = 0; i < 5; i++) {
+                    parameters[i] = true;
+                }
+            }
+            ObservableList<String> foundRecipesObservableList = FXCollections.observableArrayList();
+            foundRecipesObservableList.removeAll();
+            for (int i = 0; i < RecipesList.size(); i++) {
+                if (RecipesList.checkWithIngredientsList(ownedIngredients, i, parameters, preparingEaseInSearchComboBox.getSelectionModel().getSelectedIndex(), preparingTimeInSearchComboBox.getSelectionModel().getSelectedIndex(), spareIngredientsCheckBox.isSelected())) {
+                    foundRecipesObservableList.add(RecipesList.getRecipeNameAtIndex(i));
+                }
+            }
+            foundRecipesInSearchList.setItems(foundRecipesObservableList);
+        });
+
+        preparingTimeInSearchComboBox = new ComboBox<>();
+        preparingTimeInSearchComboBox.getItems().add(LanguagePackage.getWord("Szybko"));
+        preparingTimeInSearchComboBox.getItems().add(LanguagePackage.getWord("Średnio"));
+        preparingTimeInSearchComboBox.getItems().add(LanguagePackage.getWord("Wolno"));
+        preparingTimeInSearchComboBox.getSelectionModel().select(0);
+        preparingEaseInSearchComboBox = new ComboBox<>();
+        preparingEaseInSearchComboBox.getItems().add(LanguagePackage.getWord("Łatwe"));
+        preparingEaseInSearchComboBox.getItems().add(LanguagePackage.getWord("Średnie"));
+        preparingEaseInSearchComboBox.getItems().add(LanguagePackage.getWord("Trudne"));
+        preparingEaseInSearchComboBox.getSelectionModel().select(0);
+
+        breakfestInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Śniadanie"));
+        dinerInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Obiad"));
+        supperInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Kolację"));
+        dessertInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Deser"));
+        snackInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Przekąskę"));
+        spareIngredientsCheckBox = new CheckBox(LanguagePackage.getWord("Składniki Alternatywne"));
+
+        searchingGridPane.add(chooseIngredientsInSearchComboBox, 2, 2, 2, 1);
+        searchingGridPane.add(chooseIngredientsInSearchLabel, 2, 1, 2, 1);
+        searchingGridPane.add(addIngredientInSearchButton, 2, 3, 2, 1);
+        searchingGridPane.add(removeIngredientInSearchButton, 2, 4, 2, 1);
+        searchingGridPane.add(importIngredientsInSearchButton, 2, 5);
+        searchingGridPane.add(exportIngredientsInSearchButoon, 3, 5);
+        searchingGridPane.add(foundRecipesInSearchLabel, 0, 6, 2, 1);
+        searchingGridPane.add(foundRecipesInSearchList, 0, 7, 2, 9);
+        searchingGridPane.add(searchForRecipesInSearchButton, 0, 16, 2, 1);
+        searchingGridPane.add(mealForInSearchLabel, 2, 6, 2, 1);
+        searchingGridPane.add(breakfestInSearchCheckBox, 2, 7, 2, 1);
+        searchingGridPane.add(dinerInSearchCheckBox, 2, 8, 2, 1);
+        searchingGridPane.add(supperInSearchCheckBox, 2, 9, 2, 1);
+        searchingGridPane.add(dessertInSearchCheckBox, 2, 10, 2, 1);
+        searchingGridPane.add(snackInSearchCheckBox, 2, 11, 2, 1);
+        searchingGridPane.add(preparingTimeInSearchLabel, 2, 12, 2, 1);
+        searchingGridPane.add(preparingTimeInSearchComboBox, 2, 13, 2, 1);
+        searchingGridPane.add(preparingEaseInSearchLabel, 2, 14, 2, 1);
+        searchingGridPane.add(preparingEaseInSearchComboBox, 2, 15, 2, 1);
+        searchingGridPane.add(spareIngredientsCheckBox, 2, 16, 2, 1);
+
+
+        searchingTab.setClosable(false);
+        searchingTab.setContent(searchingGridPane);
+
+        chooseIngredientsInSearchComboBox.setItems(IngredientsList.getObservableCollection());
+
+
+
+        drawInterface(columns);
 
         mainTable.getTabs().add(searchingTab);
         mainTable.getTabs().add(recipesDatabaseTab);
@@ -450,7 +671,6 @@ public class MainStage extends Application {
         });
         MenuItem newIngredient = new MenuItem(LanguagePackage.getWord("Składnik"));
         newIngredient.setId("menu");
-        newIngredient.setOnAction(event -> mainTable.getSelectionModel().select(2));
         MenuItem exit = new MenuItem(LanguagePackage.getWord("Wyjście"));
         exit.setId("menu");
         exit.setOnAction(event -> System.exit(0));
@@ -460,9 +680,7 @@ public class MainStage extends Application {
 
         MenuItem settingsMenuItem = new MenuItem(LanguagePackage.getWord("Opcje"));
         settingsMenuItem.setId("menu");
-        settingsMenuItem.setOnAction(event -> {
-            settingsWindows.refresh();
-        });
+        settingsMenuItem.setOnAction(event -> settingsWindows.refresh());
 
         exportAllIngredients.setOnAction(event -> {
             FileChooser chooseFile = new FileChooser();
@@ -639,56 +857,42 @@ public class MainStage extends Application {
         //INICJALIZACJA TEGO, CO MUSI BYC NA POCZATKU
         ingredientsInNewEditMenuComboBox = new ComboBox<>();
         ingredientsInNewEditMenuComboBox.setItems(IngredientsList.getObservableCollection());
-
+        newIngredient.setOnAction(event -> {
+            if(ingredientsCard.isSelected())
+                mainTable.getSelectionModel().select(mainCardsCount-1);
+            else {
+                if (mainCardsCount >= 2)
+                    mainTable.getTabs().add(2, ingredientsDatabaseTab);
+                else if (mainCardsCount == 1)
+                    mainTable.getTabs().add(1, ingredientsDatabaseTab);
+                else
+                    mainTable.getTabs().add(0, ingredientsDatabaseTab);
+                mainCardsCount++;
+                ingredientsCard.setSelected(true);
+            }
+        });
 
         mainLayout.setTop(mainMenu);
-        mainScene = new Scene(mainLayout, 500, 650);
+        Scene mainScene = new Scene(mainLayout, 500, 650);
         primaryStage.setMinHeight(650);
         primaryStage.setMinWidth(400);
         mainScene.getStylesheets().add(MainStage.class.getResource("css/style.css").toExternalForm());
         primaryStage.setScene(mainScene);
         primaryStage.show();
-        mainScene.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                if(newValue.intValue()>800) {
-                    columns = 1;
-                }
-                else
-                    columns=2;
-                drawInterface(primaryStage,columns);
+        mainScene.widthProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue.intValue()>800) {
+                columns = 1;
             }
+            else
+                columns=2;
+            drawInterface(columns);
         });
 
     }
     private void drawInterface() {
-        drawInterface(mainStage,columns);
+        drawInterface(columns);
     }
-    private void drawInterface(Stage primaryStage,int columns) {
-        searchingTab = new Tab();
-        searchingTab.setText(LanguagePackage.getWord("Wyszukiwanie"));
-        searchingTab.setClosable(false);
-        GridPane searchingGridPane = new GridPane();
-        searchingGridPane.setVgap(5);
-        searchingGridPane.setHgap(5);
-        searchingGridPane.setPadding(new Insets(10,0,10,0));
-        //searchingGridPane.setAlignment(Pos.CENTER);
-        ColumnConstraints column = new ColumnConstraints();
-        column.setPercentWidth(25);
-        column.setHgrow(Priority.ALWAYS);
-        searchingGridPane.getColumnConstraints().add(column);
-        searchingGridPane.getColumnConstraints().add(column);
-        searchingGridPane.getColumnConstraints().add(column);
-        searchingGridPane.getColumnConstraints().add(column);
-
-        RowConstraints row = new RowConstraints();
-        row.setPercentHeight(16);
-        row.setVgrow(Priority.ALWAYS);
-
-        for(int i = 0; i < 17; i ++) {
-            searchingGridPane.getRowConstraints().add(row);
-        }
-
+    private void drawInterface(int columns) {
         GridPane mainGridPane = new GridPane();
         ColumnConstraints mainColumn = new ColumnConstraints();
         mainColumn.setPercentWidth(50);
@@ -698,216 +902,15 @@ public class MainStage extends Application {
         mainGridPane.setPadding(new Insets(0,15,15,10));
 
         mainGridPane.setHgap(5);
-
-        RowConstraints mainRow = new RowConstraints();
-        mainRow.setPercentHeight(100);
-        mainGridPane.getRowConstraints().add(mainRow);
-        Text insertIngredientsLabel = new Text(LanguagePackage.getWord("Wprowadź składniki"));
-        insertIngredientsLabel.setId("insertIngredientsText");
-        HBox insertIngredientsLabelHBox = new HBox();
-        insertIngredientsLabelHBox.setAlignment(Pos.CENTER);
-        searchingGridPane.add(insertIngredientsLabelHBox, 0, 0, 4, 1);
-
-        ingredientsInSearchList = new ListView<>();
-
-        searchingGridPane.add(ingredientsInSearchList, 0, 1, 2, 5);
-        ingredientsInSearchList.setMaxWidth(Double.MAX_VALUE);
-        ingredientsInSearchList.setMaxHeight(Double.MAX_VALUE);
-
-        Label chooseIngredientsInSearchLabel = new Label(LanguagePackage.getWord("Wybierz składniki"));
-        chooseIngredientsInSearchLabel.setMaxHeight(Double.MAX_VALUE);
-        chooseIngredientsInSearchLabel.setMaxWidth(Double.MAX_VALUE);
-        chooseIngredientsInSearchLabel.setAlignment(Pos.CENTER);
-
-        chooseIngredientsInSearchComboBox = new ComboBox<>();
-        chooseIngredientsInSearchComboBox.setMaxHeight(Double.MAX_VALUE);
-        chooseIngredientsInSearchComboBox.setMaxWidth(Double.MAX_VALUE);
-
-        Button addIngredientInSearchButton = new Button(LanguagePackage.getWord("Dodaj składnik"));
-        addIngredientInSearchButton.setMaxWidth(Double.MAX_VALUE);
-
-        try {
-            Scanner in = new Scanner(new File(WhatToCook.path + "data/ownedIngredients/ownedIngredients"));
-            while(in.hasNextLine()) {
-                ingredientsInSearchList.getItems().add(in.nextLine());
-            }
-            in.close();
-        } catch (FileNotFoundException ignored) {
-
-        }
-
-        addIngredientInSearchButton.setOnAction(event -> {
-            if (chooseIngredientsInSearchComboBox.getSelectionModel().getSelectedItem() != null) {
-                if (!ingredientsInSearchList.getItems().contains(chooseIngredientsInSearchComboBox.getSelectionModel().getSelectedItem()))
-                    ingredientsInSearchList.getItems().add(chooseIngredientsInSearchComboBox.getSelectionModel().getSelectedItem());
-                try {
-                    PrintWriter writer = new PrintWriter(new File(WhatToCook.path + "data/ownedIngredients/ownedIngredients"));
-                    ingredientsInSearchList.getItems().forEach(writer::println);
-                    writer.close();
-                } catch (FileNotFoundException ignored) {
-
-                }
-            }
-        });
-
-        Button removeIngredientInSearchButton = new Button(LanguagePackage.getWord("Usuń składnik"));
-        removeIngredientInSearchButton.setMaxWidth(Double.MAX_VALUE);
-
-        removeIngredientInSearchButton.setOnAction(event -> {
-            if (ingredientsInSearchList.getSelectionModel().getSelectedIndex() >= 0)
-                ingredientsInSearchList.getItems().remove(ingredientsInSearchList.getSelectionModel().getSelectedIndex());
-            try {
-                PrintWriter writer = new PrintWriter(new File(WhatToCook.path + "data/ownedIngredients/ownedIngredients"));
-                for(String i : ingredientsInSearchList.getItems()) {
-                    writer.println(i);
-                }
-                writer.close();
-            } catch (FileNotFoundException ignored) {
-
-            }
-        });
-
-        Button importIngredientsInSearchButton = new Button(LanguagePackage.getWord("Importuj"));
-        //importIngredientsInSearchButton.setMaxHeight(Double.MAX_VALUE);
-        importIngredientsInSearchButton.setMaxWidth(Double.MAX_VALUE);
-
-        importIngredientsInSearchButton.setOnAction(event -> {
-            FileChooser chooseFile = new FileChooser();
-            chooseFile.setTitle("Wybierz plik z posiadanymi składnikami");
-            File openFile = chooseFile.showOpenDialog(primaryStage);
-            if (openFile != null) {
-                try {
-                    Scanner in = new Scanner(openFile);
-                    while(in.hasNextLine())
-                        ingredientsInSearchList.getItems().add(in.nextLine());
-
-                } catch (FileNotFoundException ignored) {
-                }
-            }
-        });
-
-        Button exportIngredientsInSearchButoon = new Button(LanguagePackage.getWord("Eksportuj"));
-        exportIngredientsInSearchButoon.setMaxWidth(Double.MAX_VALUE);
-        exportIngredientsInSearchButoon.setOnAction(event -> {
-            FileChooser chooseFile = new FileChooser();
-            chooseFile.setTitle("Wybierz lokalizacje zapisu");
-            chooseFile.setInitialFileName("Posiadane Składniki.txt");
-            File saveFile = chooseFile.showSaveDialog(primaryStage);
-            if (saveFile != null) {
-                try {
-                    PrintWriter writer = new PrintWriter(saveFile);
-                    ingredientsInSearchList.getItems().forEach(writer::println);
-                    writer.close();
-                } catch (FileNotFoundException ignored) {
-
-                }
-            }
-        });
-
-        Label foundRecipesInSearchLabel = new Label(LanguagePackage.getWord("Znalezione przepisy"));
-
-        foundRecipesInSearchLabel.setAlignment(Pos.CENTER);
-        foundRecipesInSearchLabel.setMaxHeight(Double.MAX_VALUE);
-        foundRecipesInSearchLabel.setMaxWidth(Double.MAX_VALUE);
-        Label mealForInSearchLabel = new Label(LanguagePackage.getWord("Danie na:"));
-
-        mealForInSearchLabel.setAlignment(Pos.CENTER);
-        mealForInSearchLabel.setMaxHeight(Double.MAX_VALUE);
-        mealForInSearchLabel.setMaxWidth(Double.MAX_VALUE);
-        Label preparingTimeInSearchLabel = new Label(LanguagePackage.getWord("Czas przygotowania:"));
-
-
-        Label preparingEaseInSearchLabel = new Label(LanguagePackage.getWord("Łatwość przygotowania:"));
-
-
-
-        foundRecipesInSearchList = new ListView<>();
-        foundRecipesInSearchList.setOnMouseClicked(event -> {
-            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
-                showRecipe(RecipesList.getRecipe(foundRecipesInSearchList.getSelectionModel().getSelectedItem()));
-            }
-        });
-
-        Button searchForRecipesInSearchButton = new Button(LanguagePackage.getWord("Szukaj przepisów"));
-        //searchForRecipesInSearchButton.setMaxHeight(Double.MAX_VALUE);
-        searchForRecipesInSearchButton.setMaxWidth(Double.MAX_VALUE);
-
-
-        searchForRecipesInSearchButton.setOnAction(event -> {
-            ArrayList<Ingredient> ownedIngredients = new ArrayList<>();
-            for (int i = 0; i < ingredientsInSearchList.getItems().size(); i++) {
-                ownedIngredients.add(new Ingredient(ingredientsInSearchList.getItems().get(i)));
-            }
-            boolean[] parameters = new boolean[5];
-            parameters[0] = breakfestInSearchCheckBox.isSelected();
-            parameters[1] = dessertInSearchCheckBox.isSelected();
-            parameters[2] = dinerInSearchCheckBox.isSelected();
-            parameters[3] = supperInSearchCheckBox.isSelected();
-            parameters[4] = snackInSearchCheckBox.isSelected();
-            if (isFalse(parameters, 5)) {
-                for (int i = 0; i < 5; i++) {
-                    parameters[i] = true;
-                }
-            }
-            ObservableList<String> foundRecipesObservableList = FXCollections.observableArrayList();
-            foundRecipesObservableList.removeAll();
-            for (int i = 0; i < RecipesList.size(); i++) {
-                if (RecipesList.checkWithIngredientsList(ownedIngredients, i, parameters, preparingEaseInSearchComboBox.getSelectionModel().getSelectedIndex(), preparingTimeInSearchComboBox.getSelectionModel().getSelectedIndex(), spareIngredientsCheckBox.isSelected())) {
-                    foundRecipesObservableList.add(RecipesList.getRecipeNameAtIndex(i));
-                }
-            }
-            foundRecipesInSearchList.setItems(foundRecipesObservableList);
-        });
-
-        preparingTimeInSearchComboBox = new ComboBox<>();
-        preparingTimeInSearchComboBox.getItems().add(LanguagePackage.getWord("Szybko"));
-        preparingTimeInSearchComboBox.getItems().add(LanguagePackage.getWord("Średnio"));
-        preparingTimeInSearchComboBox.getItems().add(LanguagePackage.getWord("Wolno"));
-        preparingTimeInSearchComboBox.getSelectionModel().select(0);
-        preparingEaseInSearchComboBox = new ComboBox<>();
-        preparingEaseInSearchComboBox.getItems().add(LanguagePackage.getWord("Łatwe"));
-        preparingEaseInSearchComboBox.getItems().add(LanguagePackage.getWord("Średnie"));
-        preparingEaseInSearchComboBox.getItems().add(LanguagePackage.getWord("Trudne"));
-        preparingEaseInSearchComboBox.getSelectionModel().select(0);
-
-        breakfestInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Śniadanie"));
-        dinerInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Obiad"));
-        supperInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Kolację"));
-        dessertInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Deser"));
-        snackInSearchCheckBox = new CheckBox(LanguagePackage.getWord("Przekąskę"));
-        spareIngredientsCheckBox = new CheckBox(LanguagePackage.getWord("Składniki Alternatywne"));
-
-        searchingGridPane.add(chooseIngredientsInSearchComboBox, 2, 2, 2, 1);
-        searchingGridPane.add(chooseIngredientsInSearchLabel, 2, 1, 2, 1);
-        searchingGridPane.add(addIngredientInSearchButton, 2, 3, 2, 1);
-        searchingGridPane.add(removeIngredientInSearchButton, 2, 4, 2, 1);
-        searchingGridPane.add(importIngredientsInSearchButton, 2, 5);
-        searchingGridPane.add(exportIngredientsInSearchButoon, 3, 5);
-        searchingGridPane.add(foundRecipesInSearchLabel, 0, 6, 2, 1);
-        searchingGridPane.add(foundRecipesInSearchList, 0, 7, 2, 9);
-        searchingGridPane.add(searchForRecipesInSearchButton, 0, 16, 2, 1);
-        searchingGridPane.add(mealForInSearchLabel, 2, 6, 2, 1);
-        searchingGridPane.add(breakfestInSearchCheckBox, 2, 7, 2, 1);
-        searchingGridPane.add(dinerInSearchCheckBox, 2, 8, 2, 1);
-        searchingGridPane.add(supperInSearchCheckBox, 2, 9, 2, 1);
-        searchingGridPane.add(dessertInSearchCheckBox, 2, 10, 2, 1);
-        searchingGridPane.add(snackInSearchCheckBox, 2, 11, 2, 1);
-        searchingGridPane.add(preparingTimeInSearchLabel, 2, 12, 2, 1);
-        searchingGridPane.add(preparingTimeInSearchComboBox, 2, 13, 2, 1);
-        searchingGridPane.add(preparingEaseInSearchLabel, 2, 14, 2, 1);
-        searchingGridPane.add(preparingEaseInSearchComboBox, 2, 15, 2, 1);
-        searchingGridPane.add(spareIngredientsCheckBox, 2, 16, 2, 1);
-
-
-        searchingTab.setClosable(false);
-        searchingTab.setContent(searchingGridPane);
-
-        chooseIngredientsInSearchComboBox.setItems(IngredientsList.getObservableCollection());
-
         Label InfoRightLabel = new Label(LanguagePackage.getWord("Tutaj pojawią się otwarte przepisy"));
         InfoRightLabel.setAlignment(Pos.CENTER);
         InfoRightLabel.setMaxWidth(Double.MAX_VALUE);
         InfoRightLabel.setTextAlignment(TextAlignment.CENTER);
+
+        RowConstraints mainRow = new RowConstraints();
+        mainRow.setPercentHeight(100);
+        mainGridPane.getRowConstraints().add(mainRow);
+
         if(columns==2) {
             for(int i = recipesPane.getTabs().size()-1;i>=0;i--) {
                 Tab recipeTab = recipesPane.getTabs().get(i);
@@ -918,17 +921,29 @@ public class MainStage extends Application {
             mainGridPane.add(mainTable, 0, 0, 2, 1);
         }
         if(columns==1) {
-            for(int i = mainTable.getTabs().size()-1;i>=mainCardsCount;i--) {
-                Tab recipeTab = mainTable.getTabs().get(i);
-                if(!recipesPane.getTabs().contains(recipeTab))
-                    recipesPane.getTabs().add(recipeTab);
-                mainTable.getTabs().remove(recipeTab);
+            if(isEditionTurnOn) {
+                for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount+1; i--) {
+                    Tab recipeTab = mainTable.getTabs().get(i);
+                    recipeTab.setOnClosed(event -> drawInterface());
+                    if (!recipesPane.getTabs().contains(recipeTab))
+                        recipesPane.getTabs().add(recipeTab);
+                    mainTable.getTabs().remove(recipeTab);
+                }
+            }
+            else {
+                for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount; i--) {
+                    Tab recipeTab = mainTable.getTabs().get(i);
+                    recipeTab.setOnClosed(event -> drawInterface());
+                    if (!recipesPane.getTabs().contains(recipeTab))
+                        recipesPane.getTabs().add(recipeTab);
+                    mainTable.getTabs().remove(recipeTab);
+                }
             }
             if(recipesPane.getTabs().size()==0) {
                 mainGridPane.add(mainTable, 0, 0, 1, 1);
                 mainGridPane.add(InfoRightLabel,1,0,1,1);
             }
-            else {
+              else {
                 mainGridPane.add(mainTable, 0, 0, 1, 1);
                 mainGridPane.add(recipesPane, 1, 0, 1, 1);
             }
@@ -936,12 +951,6 @@ public class MainStage extends Application {
         mainLayout.setCenter(mainGridPane);
     }
     private BorderPane mainLayout;
-    private MenuBar mainMenu;
-    private Menu fileMenu;
-    private Menu editMenu;
-    private Menu viewMenu;
-    private Menu toolsMenu;
-    private Menu helpMenu;
     private SearchOptionsStage searchOptions;
     private TabPane recipesPane = new TabPane();
 
@@ -1337,8 +1346,6 @@ public class MainStage extends Application {
                     cantCreateRecipe.showAndWait();
                 }
             }
-
-
         });
 
         //DODAWANIE DO GLOWNEGO LAYOUTU
@@ -1375,8 +1382,6 @@ public class MainStage extends Application {
     }
 
     private int columns = 2;
-
-    private Stage mainStage;
 
     private GridPane linkedRecipesGridPane;
 
@@ -1418,6 +1423,5 @@ public class MainStage extends Application {
     private ToggleGroup linkedRecipesToggleGroup = new ToggleGroup();
 
     private Label linkedRecipesAmmmount;
-    private Scene mainScene;
 
 }

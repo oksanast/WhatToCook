@@ -97,3 +97,4 @@ Zmiany będą widoczne po ponownym uruchomieniu programu  Chanbes will take plac
 Ustawienia  Settings
 Automatyczne przechodzenie do nowej karty  Auto open new card
 Tutaj pojawią się otwarte przepisy  Here you'll find opened recipes
+Otwórz  Open
