@@ -28,7 +28,7 @@ public class ListHandler {
         return unit;
     }
 
-    String ingredient;
-    String ammount;
-    String unit;
+    private String ingredient;
+    private String ammount;
+    private String unit;
 }
