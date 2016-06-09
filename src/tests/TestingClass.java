@@ -11,16 +11,8 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
+@SuppressWarnings ("ALL")
 public class TestingClass {
-
-    @Test
-    public void testAddIngredient() throws Exception {
-        ArrayList<String> collection = new ArrayList<>();
-        collection.add("Banan");
-        assertEquals(1, collection.size());
-        collection.add("Ananas");
-        assertEquals(2, collection.size());
-    }
 
     @Test
     public void testInitialize() throws FileNotFoundException {
@@ -247,12 +239,11 @@ public class TestingClass {
     }
     @Test
     public void testEqualsIngredients() {
-        String name;
-
         Ingredient ingredient = new Ingredient("jabłko");
+        Ingredient ingredient3 = new Ingredient("jabłko2");
         Ingredient ingredient2 = new Ingredient("jabłko2");
-        int result = ingredient.compareTo(ingredient2);
         assertTrue(!ingredient.equals(ingredient2));
+        assertTrue(ingredient3.equals(ingredient2));
 
     }
 }

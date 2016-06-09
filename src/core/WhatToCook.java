@@ -68,6 +68,7 @@ public class WhatToCook extends Application {
                 createCfg.println("caseSensitive=false");
                 createCfg.println("language=Polski");
                 createCfg.println("autoNewCard=true");
+                createCfg.println("interfaceType=" + WhatToCook.interfaceType);
                 createCfg.close();
             }
 
@@ -96,6 +97,9 @@ public class WhatToCook extends Application {
                 line = in.nextLine();
                 dividedLine = line.split("=");
                 autoNewCard = dividedLine[1].equals("true");
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                interfaceType = Integer.parseInt(dividedLine[1]);
                 in.close();
             } catch (NoSuchElementException e) {
                 PrintWriter out = new PrintWriter(new File(WhatToCook.path + "/data/cfg"));
@@ -103,6 +107,7 @@ public class WhatToCook extends Application {
                 out.println("caseSensitive=" + caseSensitiveSearch);
                 out.println("language=" + LanguagePackage.language);
                 out.println("autoNewCard=" + autoNewCard);
+                out.println("interfaceType=" + "Adaptacyjnie");
                 out.close();
 
             }
@@ -125,6 +130,7 @@ public class WhatToCook extends Application {
             out.println("caseSensitive=" + caseSensitiveSearch);
             out.println("language=" + LanguagePackage.language);
             out.println("autoNewCard=" + autoNewCard);
+            out.println("interfaceType=" + WhatToCook.interfaceType);
             out.close();
         } catch (FileNotFoundException e) {
 
@@ -138,6 +144,7 @@ public class WhatToCook extends Application {
             out.println("caseSensitive=" + caseSensitiveSearch);
             out.println("language=" + nextLanguage);
             out.println("autoNewCard=" + autoNewCard);
+            out.println("interfaceType=" + WhatToCook.interfaceType);
             out.close();
         } catch (FileNotFoundException e) {
 
@@ -149,6 +156,8 @@ public class WhatToCook extends Application {
     public static boolean caseSensitiveSearch = true;
     public static boolean searchInEveryWord = false;
     public static boolean autoNewCard = true;
+
+    public static int interfaceType;
 
     public static String path = "";
 }

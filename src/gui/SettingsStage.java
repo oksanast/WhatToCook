@@ -4,8 +4,6 @@ import auxiliary.Dictionary;
 import auxiliary.LanguagePackage;
 import core.WhatToCook;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -28,7 +26,8 @@ public class SettingsStage extends Application {
     public void start(Stage primaryStage) throws Exception {
         GridPane mainLayout = new GridPane();
         RowConstraints row = new RowConstraints();
-        row.setPercentHeight(33);
+        row.setPercentHeight(25);
+        mainLayout.getRowConstraints().add(row);
         mainLayout.getRowConstraints().add(row);
         mainLayout.getRowConstraints().add(row);
         mainLayout.getRowConstraints().add(row);
@@ -66,39 +65,55 @@ public class SettingsStage extends Application {
         });
 
         autoNewCardCheckBox = new CheckBox(LanguagePackage.getWord("Automatyczne przechodzenie do nowej karty"));
-        autoNewCardCheckBox.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                WhatToCook.autoNewCard = autoNewCardCheckBox.isSelected();
-                if(!nextLanguage.equals(""))
-                    WhatToCook.exportSettings(nextLanguage);
-                else
-                    WhatToCook.exportSettings();
-            }
+        autoNewCardCheckBox.setMaxWidth(Double.MAX_VALUE);
+        autoNewCardCheckBox.setAlignment(Pos.CENTER);
+        autoNewCardCheckBox.setOnAction(event -> {
+            WhatToCook.autoNewCard = autoNewCardCheckBox.isSelected();
+            if(!nextLanguage.equals(""))
+                WhatToCook.exportSettings(nextLanguage);
+            else
+                WhatToCook.exportSettings();
         });
+        interfaceTypeComboBox = new ComboBox<>();
+        interfaceTypeComboBox.getItems().add(LanguagePackage.getWord("Jedna Kolumna"));
+        interfaceTypeComboBox.getItems().add(LanguagePackage.getWord("Dwie Kolumny"));
+        interfaceTypeComboBox.getItems().add(LanguagePackage.getWord("Adaptacyjnie"));
+
+        interfaceTypeComboBox.setOnAction(event -> {
+            WhatToCook.interfaceType = interfaceTypeComboBox.getSelectionModel().getSelectedIndex();
+            WhatToCook.exportSettings();
+            WhatToCook.whatToCookStage.drawInterface();
+        });
+
+        Label interfaceTypeLabel = new Label(LanguagePackage.getWord("Typ interfejsu"));
+        interfaceTypeLabel.setMaxWidth(Double.MAX_VALUE);
+        interfaceTypeLabel.setAlignment(Pos.CENTER);
+        interfaceTypeLabel.setTextAlignment(TextAlignment.CENTER);
+
         mainLayout.add(titleLabel,0,0,2,1);
         mainLayout.add(selectLanguageLabel,0,1,1,1);
         mainLayout.add(languageSelectionComboBox,1,1,1,1);
-        mainLayout.add(autoNewCardCheckBox,0,2,2,1);
+        mainLayout.add(interfaceTypeLabel,0,2,1,1);
+        mainLayout.add(interfaceTypeComboBox,1,2,1,1);
+        mainLayout.add(autoNewCardCheckBox,0,3,2,1);
 
-        settingsScene = new Scene(mainLayout,330,100);
-      //  settingsScene.getStylesheets().add(SettingsStage.class.getResource("css/style.css").toExternalForm());
+        Scene settingsScene = new Scene(mainLayout, 330, 130);
         settingsStage = new Stage();
         settingsStage.setScene(settingsScene);
         settingsStage.setResizable(false);
         settingsStage.initModality(Modality.WINDOW_MODAL);
         settingsStage.setResizable(false);
     }
-    public void refresh() {
+    void refresh() {
         languageSelectionComboBox.getSelectionModel().select(LanguagePackage.language);
+        interfaceTypeComboBox.getSelectionModel().select(WhatToCook.interfaceType);
         autoNewCardCheckBox.setSelected(WhatToCook.autoNewCard);
         settingsStage.show();
     }
-    Stage settingsStage;
-    Scene settingsScene;
+    private Stage settingsStage;
 
     private ComboBox<String> languageSelectionComboBox;
-
+    private ComboBox<String> interfaceTypeComboBox;
     private CheckBox autoNewCardCheckBox;
 
     private String nextLanguage = "";

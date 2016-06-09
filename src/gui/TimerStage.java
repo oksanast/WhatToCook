@@ -3,7 +3,6 @@ package gui;
 import auxiliary.LanguagePackage;
 import javafx.application.Application;
 import javafx.concurrent.Task;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -125,7 +124,7 @@ public class TimerStage extends Application {
                 timerThread.interrupt();
                 try {
                     timerThread.join();
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
 
                 }
                 start.setDisable(false);
@@ -156,17 +155,14 @@ public class TimerStage extends Application {
         mainStage.setResizable(false);
         mainStage.show();
 
-        mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                if(timerThread!=null) {
-                    timerThread.interrupt();
-                    try {
-                        timerThread.join();
-                    } catch (InterruptedException e) {
-                    }
-                    value = 0;
+        mainStage.setOnCloseRequest(event -> {
+            if(timerThread!=null) {
+                timerThread.interrupt();
+                try {
+                    timerThread.join();
+                } catch (InterruptedException ignored) {
                 }
+                value = 0;
             }
         });
 
