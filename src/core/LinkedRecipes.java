@@ -35,7 +35,8 @@ public class LinkedRecipes {
                 temp_recipe.setLinkedRecipes(temp_list);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Linkings file not found");
+            if(!WhatToCook.path.equals(""))
+                System.out.println("Linkings file not found");
         }
     }
 
@@ -122,7 +123,8 @@ public class LinkedRecipes {
             save.write(content);
             save.close();
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
-            System.out.println("Linkings file not found");
+            if(!WhatToCook.path.equals(""))
+                System.out.println("Linkings file not found");
         }
     }
 }

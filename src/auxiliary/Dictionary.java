@@ -41,7 +41,7 @@ public class Dictionary {
             }
         }
         if(wordIndex==-1) {
-            return "Nie";
+            return "";
         }
         return words.get(languageIndex).get(wordIndex);
     }
