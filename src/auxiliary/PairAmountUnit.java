@@ -22,6 +22,26 @@ public class PairAmountUnit {
     {
         return unit;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PairAmountUnit that = (PairAmountUnit) o;
+
+        if (amount != null ? !amount.equals(that.amount) : that.amount != null) return false;
+        return unit != null ? unit.equals(that.unit) : that.unit == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = amount != null ? amount.hashCode() : 0;
+        result = 31 * result + (unit != null ? unit.hashCode() : 0);
+        return result;
+    }
+
     String amount;
     String unit;
 }

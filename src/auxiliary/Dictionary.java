@@ -19,11 +19,10 @@ public class Dictionary {
         Scanner wordsScanner = new Scanner(new InputStreamReader(Dictionary.class.getResourceAsStream("resources/languages/words/words.txt")));
         while(wordsScanner.hasNextLine()) {
             String line = wordsScanner.nextLine();
-            String[] splittedLine = line.split("\\s\\s");
+            String[] splittedLine = line.split("~");
             for(int i = 0; i < languages.size();i++) {
                 words.get(i).add(splittedLine[i]);
             }
-            System.out.println(splittedLine[0]);
         }
     }
 
@@ -42,7 +41,6 @@ public class Dictionary {
             }
         }
         if(wordIndex==-1) {
-            System.out.println("Nie znaleziono tłumaczenia dla: "+toTranslate);
             return "";
         }
         return words.get(languageIndex).get(wordIndex);

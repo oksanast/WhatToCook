@@ -2,6 +2,7 @@ package core;
 
 import auxiliary.Dictionary;
 import auxiliary.LanguagePackage;
+//import gui.MainStage;
 import gui.MainStage;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
@@ -10,6 +11,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -66,6 +68,7 @@ public class WhatToCook extends Application {
                 createCfg.println("caseSensitive=false");
                 createCfg.println("language=Polski");
                 createCfg.println("autoNewCard=true");
+                createCfg.println("interfaceType=" + WhatToCook.interfaceType);
                 createCfg.close();
             }
 
@@ -79,21 +82,36 @@ public class WhatToCook extends Application {
         }
         try {
             Scanner in = new Scanner(new File(WhatToCook.path + "/data/cfg"));
-            String line;
-            String dividedLine[];
-            line = in.nextLine();
-            dividedLine = line.split("=");
-            searchInEveryWord = dividedLine[1].equals("true");
-            line = in.nextLine();
-            dividedLine = line.split("=");
-            caseSensitiveSearch = dividedLine[1].equals("true");
-            line = in.nextLine();
-            dividedLine = line.split("=");
-            LanguagePackage.language = dividedLine[1];
-            line = in.nextLine();
-            dividedLine = line.split("=");
-            autoNewCard=dividedLine[1].equals("true");
-            in.close();
+            try {
+                String line;
+                String dividedLine[];
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                searchInEveryWord = dividedLine[1].equals("true");
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                caseSensitiveSearch = dividedLine[1].equals("true");
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                LanguagePackage.language = dividedLine[1];
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                autoNewCard = dividedLine[1].equals("true");
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                interfaceType = Integer.parseInt(dividedLine[1]);
+                in.close();
+            } catch (NoSuchElementException e) {
+                PrintWriter out = new PrintWriter(new File(WhatToCook.path + "/data/cfg"));
+                out.println("searchInEveryWord=" + searchInEveryWord);
+                out.println("caseSensitive=" + caseSensitiveSearch);
+                out.println("language=" + LanguagePackage.language);
+                out.println("autoNewCard=" + autoNewCard);
+                out.println("interfaceType=" + "Adaptacyjnie");
+                out.close();
+
+            }
+
         } catch (FileNotFoundException e) {
             System.out.println("Concig file not found, program will run with default settings");
         }
@@ -112,8 +130,9 @@ public class WhatToCook extends Application {
             out.println("caseSensitive=" + caseSensitiveSearch);
             out.println("language=" + LanguagePackage.language);
             out.println("autoNewCard=" + autoNewCard);
+            out.println("interfaceType=" + WhatToCook.interfaceType);
             out.close();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException ignored) {
 
         }
 
@@ -125,8 +144,9 @@ public class WhatToCook extends Application {
             out.println("caseSensitive=" + caseSensitiveSearch);
             out.println("language=" + nextLanguage);
             out.println("autoNewCard=" + autoNewCard);
+            out.println("interfaceType=" + WhatToCook.interfaceType);
             out.close();
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException ignored) {
 
         }
 
@@ -135,7 +155,9 @@ public class WhatToCook extends Application {
     //ZMIENNE KONFIGURACYJNE
     public static boolean caseSensitiveSearch = true;
     public static boolean searchInEveryWord = false;
-    public static boolean autoNewCard;
+    public static boolean autoNewCard = true;
 
-    public static String path;
+    public static int interfaceType;
+
+    public static String path = "";
 }

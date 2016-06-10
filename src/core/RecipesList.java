@@ -25,8 +25,6 @@ public class RecipesList
 {
     static public void initialize()
     {
-        recipesList = new ArrayList<>();
-
         recipesList.clear();
         int preparingTime;
         int preparingEase;
@@ -98,42 +96,43 @@ public class RecipesList
         recipesList.add(recipe);
         Collections.sort(recipesList);
         String filename;
-        filename = WhatToCook.path + "/data/recipes" +"/"+ recipe.getName();
-        try {
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename)));
-           writer.println(recipe.getName());
-            writer.println(recipe.getParameters().getPreparingEase());
-            writer.println(recipe.getParameters().getPreparingTime());
-            String parameters = "";
-            parameters+=recipe.getParameters().getParameters()[0]+ " ";
-            parameters+=recipe.getParameters().getParameters()[1]+ " ";
-            parameters+=recipe.getParameters().getParameters()[2]+ " ";
-            parameters+=recipe.getParameters().getParameters()[3]+ " ";
-            parameters+=recipe.getParameters().getParameters()[4]+ " ";
-            writer.println(parameters);
-            writer.println(recipe.getSize());
-            for(int i = 0; i < recipe.getSize();i++)
-            {
-                String NameAndBooleans;
-                NameAndBooleans = recipe.getIngredient(i).getName();
-                if(recipe.getAmount(i).equals(""))
-                    NameAndBooleans+=" " + false;
-                else
-                    NameAndBooleans+=" " + true;
-                if(recipe.getUnit(i).equals(""))
-                    NameAndBooleans+=" " + false;
-                else
-                    NameAndBooleans+=" " + true;
-                writer.println(NameAndBooleans);
-                if(!recipe.getAmount(i).equals(""))
-                    writer.println(recipe.getAmount(i));
-                if(!recipe.getUnit(i).equals(""))
-                    writer.println(recipe.getUnit(i));
+        if(!WhatToCook.path.equals("")) {
+            filename = WhatToCook.path + "/data/recipes" + "/" + recipe.getName();
+            try {
+                PrintWriter writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filename)));
+                writer.println(recipe.getName());
+                writer.println(recipe.getParameters().getPreparingEase());
+                writer.println(recipe.getParameters().getPreparingTime());
+                String parameters = "";
+                parameters += recipe.getParameters().getParameters()[0] + " ";
+                parameters += recipe.getParameters().getParameters()[1] + " ";
+                parameters += recipe.getParameters().getParameters()[2] + " ";
+                parameters += recipe.getParameters().getParameters()[3] + " ";
+                parameters += recipe.getParameters().getParameters()[4] + " ";
+                writer.println(parameters);
+                writer.println(recipe.getSize());
+                for (int i = 0; i < recipe.getSize(); i++) {
+                    String NameAndBooleans;
+                    NameAndBooleans = recipe.getIngredient(i).getName();
+                    if (recipe.getAmount(i).equals(""))
+                        NameAndBooleans += " " + false;
+                    else
+                        NameAndBooleans += " " + true;
+                    if (recipe.getUnit(i).equals(""))
+                        NameAndBooleans += " " + false;
+                    else
+                        NameAndBooleans += " " + true;
+                    writer.println(NameAndBooleans);
+                    if (!recipe.getAmount(i).equals(""))
+                        writer.println(recipe.getAmount(i));
+                    if (!recipe.getUnit(i).equals(""))
+                        writer.println(recipe.getUnit(i));
+                }
+                writer.println((recipe.getRecipe()));
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            writer.println((recipe.getRecipe()));
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
     }
@@ -283,5 +282,5 @@ public class RecipesList
         return false;
     }
 
-    static public ArrayList<Recipe> recipesList;
+    static public ArrayList<Recipe> recipesList = new ArrayList<>();
 }
