@@ -102,3 +102,4 @@ Jedna Kolumna~One Column
 Dwie Kolumny~Two Columns
 Adaptacyjnie~Adaptative
 Typ interfejsu~Interface type
+Elementy interfejsu otworzysz z górnego menu programu.~You can open interface elements by using top program menu.

@@ -927,6 +927,11 @@ public class MainStage extends Application {
         InfoRightLabel.setMaxWidth(Double.MAX_VALUE);
         InfoRightLabel.setTextAlignment(TextAlignment.CENTER);
 
+        Label infoNoRecipesLabel = new Label(LanguagePackage.getWord("Elementy interfejsu otworzysz z górnego menu programu."));
+        infoNoRecipesLabel.setAlignment(Pos.CENTER);
+        infoNoRecipesLabel.setMaxWidth(Double.MAX_VALUE);
+        infoNoRecipesLabel.setTextAlignment(TextAlignment.CENTER);
+
         RowConstraints mainRow = new RowConstraints();
         mainRow.setPercentHeight(100);
         mainGridPane.getRowConstraints().add(mainRow);
@@ -940,7 +945,10 @@ public class MainStage extends Application {
                         mainTable.getTabs().add(recipeTab);
                     recipesPane.getTabs().remove(recipeTab);
                 }
-                mainGridPane.add(mainTable, 0, 0, 2, 1);
+                if(mainCardsCount!=0)
+                    mainGridPane.add(mainTable, 0, 0, 2, 1);
+                else
+                    mainGridPane.add(infoNoRecipesLabel,0,0,2,1);
                 if (openLastCard) {
                     mainTable.getSelectionModel().select(mainTable.getTabs().size() - 1);
                     openLastCard = false;
@@ -995,7 +1003,8 @@ public class MainStage extends Application {
                 }
                 if(mainCardsCount==0) {
                     if (recipesPane.getTabs().size() == 0) {
-                        mainGridPane.add(InfoRightLabel, 0, 0, 2, 1);
+                        mainGridPane.add(infoNoRecipesLabel, 0, 0, 1, 1);
+                        mainGridPane.add(InfoRightLabel, 1, 0, 1, 1);
                     } else {
                         mainGridPane.add(recipesPane, 0, 0, 2, 1);
                     }
@@ -1050,7 +1059,8 @@ public class MainStage extends Application {
             }
             if(mainCardsCount==0) {
                 if (recipesPane.getTabs().size() == 0) {
-                    mainGridPane.add(InfoRightLabel, 0, 0, 2, 1);
+                    mainGridPane.add(infoNoRecipesLabel,0,0,1,1);
+                    mainGridPane.add(InfoRightLabel, 1, 0, 1, 1);
                 } else {
                     mainGridPane.add(recipesPane, 0, 0, 2, 1);
                 }
@@ -1063,7 +1073,10 @@ public class MainStage extends Application {
                     mainTable.getTabs().add(recipeTab);
                 recipesPane.getTabs().remove(recipeTab);
             }
-            mainGridPane.add(mainTable, 0, 0, 2, 1);
+            if(mainCardsCount!=0)
+                 mainGridPane.add(mainTable, 0, 0, 2, 1);
+            else
+                mainGridPane.add(infoNoRecipesLabel,0,0,2,1);
             if (openLastCard) {
                 mainTable.getSelectionModel().select(mainTable.getTabs().size() - 1);
                 openLastCard = false;
