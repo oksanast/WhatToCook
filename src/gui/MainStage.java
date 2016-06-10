@@ -110,14 +110,14 @@ public class MainStage extends Application {
         linkedRecipesGridPane = new GridPane();
         RowConstraints linkedRecipesRow = new RowConstraints();
         linkedRecipesRow.setPercentHeight(14);
-        for(int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++) {
             linkedRecipesGridPane.getRowConstraints().add(linkedRecipesRow);
         }
         ColumnConstraints linkedRecipesColumn = new ColumnConstraints();
         linkedRecipesColumn.setPercentWidth(100);
         linkedRecipesGridPane.getColumnConstraints().add(linkedRecipesColumn);
-        recipesDatabaseGridPane.add(linkedRecipesGridPane,2,5,2,8);
-        recipesDatabaseGridPane.add(linkedRecipesAmmmount,2,12,2,1);
+        recipesDatabaseGridPane.add(linkedRecipesGridPane, 2, 5, 2, 8);
+        recipesDatabaseGridPane.add(linkedRecipesAmmmount, 2, 12, 2, 1);
 
         recipesInRecipesDatabaseList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             markedRecipe = recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem();
@@ -136,11 +136,11 @@ public class MainStage extends Application {
         Button addLinkedRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Dodaj Powiązanie"));
         addLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
         addLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
-            if(markedRecipe!=null) {
+            if (markedRecipe != null) {
                 //noinspection ConstantConditions
-                if (RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size()<6 && !RecipesList.getRecipe
+                if (RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size() < 6 && !RecipesList.getRecipe
                         (markedRecipe).getName().equals(linkedRecipesInRecipesDatabaseComboBox.getSelectionModel().getSelectedItem())) {
-                    LinkedRecipes.addLinking(markedRecipe,linkedRecipesInRecipesDatabaseComboBox.getSelectionModel().getSelectedItem());
+                    LinkedRecipes.addLinking(markedRecipe, linkedRecipesInRecipesDatabaseComboBox.getSelectionModel().getSelectedItem());
                     refreshLinkedRecipes();
                     LinkedRecipes.saveLinkings();
                 }
@@ -149,10 +149,10 @@ public class MainStage extends Application {
         Button removeLinkedRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Usuń Powiązanie"));
         removeLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
         removeLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
-            if(linkedRecipesToggleGroup.getSelectedToggle()!=null) {
+            if (linkedRecipesToggleGroup.getSelectedToggle() != null) {
                 RadioButton button = (RadioButton) linkedRecipesToggleGroup.getSelectedToggle();
                 String recipeName = button.getText();
-                LinkedRecipes.deleteLinking(markedRecipe,recipeName);
+                LinkedRecipes.deleteLinking(markedRecipe, recipeName);
                 refreshLinkedRecipes();
                 LinkedRecipes.saveLinkings();
             }
@@ -180,9 +180,9 @@ public class MainStage extends Application {
         removeRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
         removeRecipeInRecipesDatabaseButton.setOnAction(event -> {
             if (inEdit == null) {
-                for(int j = 0; j < RecipesList.size();j++) {
-                    for(int k = 0; k < RecipesList.recipesList.get(j).getLinkedRecipes().size();k++) {
-                        if(RecipesList.recipesList.get(j).getLinkedRecipes().get(k).equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
+                for (int j = 0; j < RecipesList.size(); j++) {
+                    for (int k = 0; k < RecipesList.recipesList.get(j).getLinkedRecipes().size(); k++) {
+                        if (RecipesList.recipesList.get(j).getLinkedRecipes().get(k).equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
                             RecipesList.recipesList.get(j).getLinkedRecipes().remove(k);
                         }
                     }
@@ -193,9 +193,9 @@ public class MainStage extends Application {
                 LinkedRecipes.saveLinkings();
             } else {
                 if (!inEdit.getName().equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
-                    for(int j = 0; j < RecipesList.size();j++) {
-                        for(int k = 0; k < RecipesList.recipesList.get(j).getLinkedRecipes().size();k++) {
-                            if(RecipesList.recipesList.get(j).getLinkedRecipes().get(k).equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
+                    for (int j = 0; j < RecipesList.size(); j++) {
+                        for (int k = 0; k < RecipesList.recipesList.get(j).getLinkedRecipes().size(); k++) {
+                            if (RecipesList.recipesList.get(j).getLinkedRecipes().get(k).equals(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem())) {
                                 RecipesList.recipesList.get(j).getLinkedRecipes().remove(k);
                             }
                         }
@@ -218,7 +218,7 @@ public class MainStage extends Application {
         editRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
 
         editRecipeInRecipesDatabaseButton.setOnAction(event -> {
-            if (!isEditionTurnOn && markedRecipe!=null) {
+            if (!isEditionTurnOn && markedRecipe != null) {
                 isEditionTurnOn = true;
                 inEdit = RecipesList.getRecipe(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem());
                 showNewEditMenu(RecipesList.getRecipe(recipesInRecipesDatabaseList.getSelectionModel().getSelectedItem()));
@@ -245,9 +245,9 @@ public class MainStage extends Application {
         downButtonsInRecipesDatabase.getChildren().add(addRecipeInRecipesDatabaseButton);
         downButtonsInRecipesDatabase.getChildren().add(editRecipeInRecipesDatabaseButton);
         downButtonsInRecipesDatabase.getChildren().add(removeRecipeInRecipesDatabaseButton);
-        HBox.setMargin(addRecipeInRecipesDatabaseButton,new Insets(0,10,0,10));
-        HBox.setMargin(editRecipeInRecipesDatabaseButton,new Insets(0,10,0,10));
-        HBox.setMargin(removeRecipeInRecipesDatabaseButton,new Insets(0,10,0,10));
+        HBox.setMargin(addRecipeInRecipesDatabaseButton, new Insets(0, 10, 0, 10));
+        HBox.setMargin(editRecipeInRecipesDatabaseButton, new Insets(0, 10, 0, 10));
+        HBox.setMargin(removeRecipeInRecipesDatabaseButton, new Insets(0, 10, 0, 10));
 
         RecipesList.getObservableList(recipesInRecipesDatabaseList);
 
@@ -324,26 +324,25 @@ public class MainStage extends Application {
             ArrayList<String> recipesContainIngredient = new ArrayList<>();
             for (int i = 0; i < RecipesList.size(); i++) {
                 for (int j = 0; j < RecipesList.recipesList.get(i).getSize(); j++) {
-                    if(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem().equals(RecipesList.recipesList.get(i).getIngredient(j).getName())) {
+                    if (ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem().equals(RecipesList.recipesList.get(i).getIngredient(j).getName())) {
                         ifExist = true;
                         recipesContainIngredient.add(RecipesList.recipesList.get(i).getName());
                     }
                 }
             }
-            if(!ifExist) {
+            if (!ifExist) {
                 IngredientsList.removeIngredient(ingredientsInIngredientsDatabaseList.getSelectionModel().getSelectedItem());
                 IngredientsList.rebuildModel(ingredientsInIngredientsDatabaseList);
                 ingredientsInNewEditMenuComboBox.setItems(IngredientsList.getObservableCollection());
                 chooseIngredientsInSearchComboBox.setItems(IngredientsList.getObservableCollection());
                 spareIngredientsInIngredientsDatabaseComboBox.setItems(IngredientsList.getObservableCollection());
-            }
-            else {
+            } else {
                 Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
                 cantCreateRecipe.setTitle(LanguagePackage.getWord("Błąd usuwania składnika"));
                 cantCreateRecipe.setHeaderText(LanguagePackage.getWord("Nie można usunąć składnika"));
                 String cantdelete = "";
-                for(String i : recipesContainIngredient) {
-                    cantdelete+= i;
+                for (String i : recipesContainIngredient) {
+                    cantdelete += i;
                 }
                 cantCreateRecipe.setContentText(LanguagePackage.getWord("Składnik jest wykorzystywany w przepisach na:") + WhatToCook.endl + cantdelete);
                 cantCreateRecipe.showAndWait();
@@ -420,7 +419,7 @@ public class MainStage extends Application {
         GridPane searchingGridPane = new GridPane();
         searchingGridPane.setVgap(5);
         searchingGridPane.setHgap(5);
-        searchingGridPane.setPadding(new Insets(10,0,10,0));
+        searchingGridPane.setPadding(new Insets(10, 0, 10, 0));
         //searchingGridPane.setAlignment(Pos.CENTER);
         ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(25);
@@ -434,7 +433,7 @@ public class MainStage extends Application {
         row.setPercentHeight(16);
         row.setVgrow(Priority.ALWAYS);
 
-        for(int i = 0; i < 17; i ++) {
+        for (int i = 0; i < 17; i++) {
             searchingGridPane.getRowConstraints().add(row);
         }
 
@@ -464,7 +463,7 @@ public class MainStage extends Application {
 
         try {
             Scanner in = new Scanner(new File(WhatToCook.path + "data/ownedIngredients/ownedIngredients"));
-            while(in.hasNextLine()) {
+            while (in.hasNextLine()) {
                 ingredientsInSearchList.getItems().add(in.nextLine());
             }
             in.close();
@@ -512,7 +511,7 @@ public class MainStage extends Application {
             if (openFile != null) {
                 try {
                     Scanner in = new Scanner(openFile);
-                    while(in.hasNextLine())
+                    while (in.hasNextLine())
                         ingredientsInSearchList.getItems().add(in.nextLine());
 
                 } catch (FileNotFoundException ignored) {
@@ -552,7 +551,6 @@ public class MainStage extends Application {
 
 
         Label preparingEaseInSearchLabel = new Label(LanguagePackage.getWord("Łatwość przygotowania:"));
-
 
 
         foundRecipesInSearchList = new ListView<>();
@@ -637,7 +635,6 @@ public class MainStage extends Application {
         searchingTab.setContent(searchingGridPane);
 
         chooseIngredientsInSearchComboBox.setItems(IngredientsList.getObservableCollection());
-
 
 
         drawInterface(columns);
@@ -868,8 +865,8 @@ public class MainStage extends Application {
         ingredientsInNewEditMenuComboBox = new ComboBox<>();
         ingredientsInNewEditMenuComboBox.setItems(IngredientsList.getObservableCollection());
         newIngredient.setOnAction(event -> {
-            if(ingredientsCard.isSelected())
-                mainTable.getSelectionModel().select(mainCardsCount-1);
+            if (ingredientsCard.isSelected())
+                mainTable.getSelectionModel().select(mainCardsCount - 1);
             else {
                 if (mainCardsCount >= 2)
                     mainTable.getTabs().add(2, ingredientsDatabaseTab);
@@ -890,18 +887,19 @@ public class MainStage extends Application {
         primaryStage.setScene(mainScene);
         primaryStage.show();
         mainScene.widthProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue.intValue()>800) {
+            if (newValue.intValue() > 800) {
                 columns = 1;
-            }
-            else
-                columns=2;
+            } else
+                columns = 2;
             drawInterface(columns);
         });
 
     }
+
     void drawInterface() {
         drawInterface(columns);
     }
+
     private void drawInterface(int columns) {
         mainStage.setTitle("WhatToCook");
         mainStage.getIcons().add(new Image("file:data/icon.png"));
@@ -911,7 +909,7 @@ public class MainStage extends Application {
         mainGridPane.getColumnConstraints().add(mainColumn);
         mainGridPane.getColumnConstraints().add(mainColumn);
 
-        mainGridPane.setPadding(new Insets(0,15,15,10));
+        mainGridPane.setPadding(new Insets(0, 15, 15, 10));
 
         mainGridPane.setHgap(5);
         Label InfoRightLabel = new Label(LanguagePackage.getWord("Tutaj pojawią się otwarte przepisy"));
@@ -923,7 +921,7 @@ public class MainStage extends Application {
         mainRow.setPercentHeight(100);
         mainGridPane.getRowConstraints().add(mainRow);
 
-        if(WhatToCook.interfaceType==2) {
+        if (WhatToCook.interfaceType == 2) {
 
             if (columns == 2) {
                 for (int i = recipesPane.getTabs().size() - 1; i >= 0; i--) {
@@ -933,14 +931,14 @@ public class MainStage extends Application {
                     recipesPane.getTabs().remove(recipeTab);
                 }
                 mainGridPane.add(mainTable, 0, 0, 2, 1);
-                if(openLastCard) {
-                    mainTable.getSelectionModel().select(mainTable.getTabs().size()-1);
-                    openLastCard=false;
+                if (openLastCard) {
+                    mainTable.getSelectionModel().select(mainTable.getTabs().size() - 1);
+                    openLastCard = false;
                 }
             }
             if (columns == 1) {
                 if (isEditionTurnOn) {
-                    boolean recipesPaneEmpty = recipesPane.getTabs().size()==0;
+                    boolean recipesPaneEmpty = recipesPane.getTabs().size() == 0;
                     int mainTableSelection = mainTable.getSelectionModel().getSelectedIndex();
                     for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount + 1; i--) {
                         Tab recipeTab = mainTable.getTabs().get(i);
@@ -949,16 +947,16 @@ public class MainStage extends Application {
                             recipesPane.getTabs().add(recipeTab);
                         mainTable.getTabs().remove(recipeTab);
                     }
-                    if(recipesPaneEmpty&&recipesPane.getTabs().size()!=0) {
+                    if (recipesPaneEmpty && recipesPane.getTabs().size() != 0) {
                         mainTable.getSelectionModel().select(mainTableSelection);
                         recipesPane.getSelectionModel().select(0);
                     }
-                    if(openLastCard) {
-                        recipesPane.getSelectionModel().select(recipesPane.getTabs().size()-1);
-                        openLastCard=false;
+                    if (openLastCard) {
+                        recipesPane.getSelectionModel().select(recipesPane.getTabs().size() - 1);
+                        openLastCard = false;
                     }
                 } else {
-                    boolean recipesPaneEmpty = recipesPane.getTabs().size()==0;
+                    boolean recipesPaneEmpty = recipesPane.getTabs().size() == 0;
                     int mainTableSelection = mainTable.getSelectionModel().getSelectedIndex();
                     for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount; i--) {
                         Tab recipeTab = mainTable.getTabs().get(i);
@@ -967,13 +965,13 @@ public class MainStage extends Application {
                             recipesPane.getTabs().add(recipeTab);
                         mainTable.getTabs().remove(recipeTab);
                     }
-                    if(recipesPaneEmpty&&recipesPane.getTabs().size()!=0) {
+                    if (recipesPaneEmpty && recipesPane.getTabs().size() != 0) {
                         mainTable.getSelectionModel().select(mainTableSelection);
                         recipesPane.getSelectionModel().select(0);
                     }
-                    if(openLastCard) {
-                        recipesPane.getSelectionModel().select(recipesPane.getTabs().size()-1);
-                        openLastCard=false;
+                    if (openLastCard) {
+                        recipesPane.getSelectionModel().select(recipesPane.getTabs().size() - 1);
+                        openLastCard = false;
                     }
                 }
                 if (recipesPane.getTabs().size() == 0) {
@@ -984,54 +982,52 @@ public class MainStage extends Application {
                     mainGridPane.add(recipesPane, 1, 0, 1, 1);
                 }
             }
-        }
-        else if(WhatToCook.interfaceType==1) {
-                if (isEditionTurnOn) {
-                    boolean recipesPaneEmpty = recipesPane.getTabs().size()==0;
-                    int mainTableSelection = mainTable.getSelectionModel().getSelectedIndex();
-                    for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount + 1; i--) {
-                        Tab recipeTab = mainTable.getTabs().get(i);
-                        recipeTab.setOnClosed(event -> drawInterface());
-                        if (!recipesPane.getTabs().contains(recipeTab))
-                            recipesPane.getTabs().add(recipeTab);
-                        mainTable.getTabs().remove(recipeTab);
-                    }
-                    if(recipesPaneEmpty&&recipesPane.getTabs().size()!=0) {
-                        mainTable.getSelectionModel().select(mainTableSelection);
-                        recipesPane.getSelectionModel().select(0);
-                    }
-                    if(openLastCard) {
-                        recipesPane.getSelectionModel().select(recipesPane.getTabs().size()-1);
-                        openLastCard=false;
-                    }
-                } else {
-                    boolean recipesPaneEmpty = recipesPane.getTabs().size()==0;
-                    int mainTableSelection = mainTable.getSelectionModel().getSelectedIndex();
-                    for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount; i--) {
-                        Tab recipeTab = mainTable.getTabs().get(i);
-                        recipeTab.setOnClosed(event -> drawInterface());
-                        if (!recipesPane.getTabs().contains(recipeTab))
-                            recipesPane.getTabs().add(recipeTab);
-                        mainTable.getTabs().remove(recipeTab);
-                    }
-                    if(recipesPaneEmpty&&recipesPane.getTabs().size()!=0) {
-                        mainTable.getSelectionModel().select(mainTableSelection);
-                        recipesPane.getSelectionModel().select(0);
-                    }
-                    if(openLastCard) {
-                        recipesPane.getSelectionModel().select(recipesPane.getTabs().size()-1);
-                        openLastCard=false;
-                    }
+        } else if (WhatToCook.interfaceType == 1) {
+            if (isEditionTurnOn) {
+                boolean recipesPaneEmpty = recipesPane.getTabs().size() == 0;
+                int mainTableSelection = mainTable.getSelectionModel().getSelectedIndex();
+                for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount + 1; i--) {
+                    Tab recipeTab = mainTable.getTabs().get(i);
+                    recipeTab.setOnClosed(event -> drawInterface());
+                    if (!recipesPane.getTabs().contains(recipeTab))
+                        recipesPane.getTabs().add(recipeTab);
+                    mainTable.getTabs().remove(recipeTab);
                 }
-                if (recipesPane.getTabs().size() == 0) {
-                    mainGridPane.add(mainTable, 0, 0, 1, 1);
-                    mainGridPane.add(InfoRightLabel, 1, 0, 1, 1);
-                } else {
-                    mainGridPane.add(mainTable, 0, 0, 1, 1);
-                    mainGridPane.add(recipesPane, 1, 0, 1, 1);
+                if (recipesPaneEmpty && recipesPane.getTabs().size() != 0) {
+                    mainTable.getSelectionModel().select(mainTableSelection);
+                    recipesPane.getSelectionModel().select(0);
                 }
-        }
-        else {
+                if (openLastCard) {
+                    recipesPane.getSelectionModel().select(recipesPane.getTabs().size() - 1);
+                    openLastCard = false;
+                }
+            } else {
+                boolean recipesPaneEmpty = recipesPane.getTabs().size() == 0;
+                int mainTableSelection = mainTable.getSelectionModel().getSelectedIndex();
+                for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount; i--) {
+                    Tab recipeTab = mainTable.getTabs().get(i);
+                    recipeTab.setOnClosed(event -> drawInterface());
+                    if (!recipesPane.getTabs().contains(recipeTab))
+                        recipesPane.getTabs().add(recipeTab);
+                    mainTable.getTabs().remove(recipeTab);
+                }
+                if (recipesPaneEmpty && recipesPane.getTabs().size() != 0) {
+                    mainTable.getSelectionModel().select(mainTableSelection);
+                    recipesPane.getSelectionModel().select(0);
+                }
+                if (openLastCard) {
+                    recipesPane.getSelectionModel().select(recipesPane.getTabs().size() - 1);
+                    openLastCard = false;
+                }
+            }
+            if (recipesPane.getTabs().size() == 0) {
+                mainGridPane.add(mainTable, 0, 0, 1, 1);
+                mainGridPane.add(InfoRightLabel, 1, 0, 1, 1);
+            } else {
+                mainGridPane.add(mainTable, 0, 0, 1, 1);
+                mainGridPane.add(recipesPane, 1, 0, 1, 1);
+            }
+        } else {
             for (int i = recipesPane.getTabs().size() - 1; i >= 0; i--) {
                 Tab recipeTab = recipesPane.getTabs().get(i);
                 if (!mainTable.getTabs().contains(recipeTab))
@@ -1039,13 +1035,14 @@ public class MainStage extends Application {
                 recipesPane.getTabs().remove(recipeTab);
             }
             mainGridPane.add(mainTable, 0, 0, 2, 1);
-            if(openLastCard) {
-                mainTable.getSelectionModel().select(mainTable.getTabs().size()-1);
-                openLastCard=false;
+            if (openLastCard) {
+                mainTable.getSelectionModel().select(mainTable.getTabs().size() - 1);
+                openLastCard = false;
             }
         }
         mainLayout.setCenter(mainGridPane);
     }
+
     private BorderPane mainLayout;
     private SearchOptionsStage searchOptions;
     private TabPane recipesPane = new TabPane();
@@ -1058,9 +1055,9 @@ public class MainStage extends Application {
         columnInShowRecipe.setPercentWidth(25);
         RowConstraints rowInShowRecipe = new RowConstraints();
         rowInShowRecipe.setPercentHeight(10);
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
             showRecipeGridPane.getColumnConstraints().add(columnInShowRecipe);
-        for(int i = 0; i < 10;i++)
+        for (int i = 0; i < 10; i++)
             showRecipeGridPane.getRowConstraints().add(rowInShowRecipe);
 
         TextArea instructionsInRecipe = new TextArea();
@@ -1068,7 +1065,7 @@ public class MainStage extends Application {
         instructionsInRecipe.setWrapText(true);
         instructionsInRecipe.setText(toShow.getRecipe());
 
-        showRecipeGridPane.add(instructionsInRecipe,0,6,4,6);
+        showRecipeGridPane.add(instructionsInRecipe, 0, 6, 4, 6);
 
         Label youWillNeedLabel = new Label(LanguagePackage.getWord("Będziesz potrzebować:"));
         youWillNeedLabel.setMaxWidth(Double.MAX_VALUE);
@@ -1081,7 +1078,7 @@ public class MainStage extends Application {
             tmp = LanguagePackage.getWord("Średnie");
         if (toShow.getParameters().getPreparingEase() == 2)
             tmp = LanguagePackage.getWord("Trudne");
-        Label preparingEaseLabel = new Label(LanguagePackage.getWord("Łatwość przygotowania:")+" "+ tmp);
+        Label preparingEaseLabel = new Label(LanguagePackage.getWord("Łatwość przygotowania:") + " " + tmp);
         preparingEaseLabel.setMaxWidth(Double.MAX_VALUE);
         preparingEaseLabel.setAlignment(Pos.CENTER);
         preparingEaseLabel.setTextAlignment(TextAlignment.CENTER);
@@ -1092,7 +1089,7 @@ public class MainStage extends Application {
             tmp = LanguagePackage.getWord("Średnio");
         if (toShow.getParameters().getPreparingTime() == 2)
             tmp = LanguagePackage.getWord("Wolno");
-        Label preparingTimeLabel = new Label(LanguagePackage.getWord("Czas przygotowania:") +" "+ tmp);
+        Label preparingTimeLabel = new Label(LanguagePackage.getWord("Czas przygotowania:") + " " + tmp);
         preparingTimeLabel.setMaxWidth(Double.MAX_VALUE);
         preparingTimeLabel.setAlignment(Pos.CENTER);
         preparingTimeLabel.setTextAlignment(TextAlignment.CENTER);
@@ -1111,7 +1108,7 @@ public class MainStage extends Application {
 
         ObservableList<String> linkedRecipesList = FXCollections.observableArrayList();
 
-        for(int i = 0; i < toShow.getLinkedRecipes().size();i++) {
+        for (int i = 0; i < toShow.getLinkedRecipes().size(); i++) {
             linkedRecipesList.add(toShow.getLinkedRecipes().get(i));
         }
         linkedRecipesInShowRecipe.setItems(linkedRecipesList);
@@ -1121,29 +1118,29 @@ public class MainStage extends Application {
         openLinkedRecipe.setMaxWidth(Double.MAX_VALUE);
         openLinkedRecipe.setAlignment(Pos.CENTER);
         openLinkedRecipe.setOnAction(event -> {
-            if(linkedRecipesInShowRecipe.getSelectionModel().getSelectedItem()!=null) {
+            if (linkedRecipesInShowRecipe.getSelectionModel().getSelectedItem() != null) {
                 showRecipe(RecipesList.getRecipe(linkedRecipesInShowRecipe.getSelectionModel().getSelectedItem()));
             }
         });
-        showRecipeGridPane.add(youWillNeedLabel,0,0,2,1);
-        showRecipeGridPane.add(preparingTimeLabel,2,0,2,1);
-        showRecipeGridPane.add(preparingEaseLabel,2,1,2,1);
-        if(toShow.getLinkedRecipes().size()>0) {
+        showRecipeGridPane.add(youWillNeedLabel, 0, 0, 2, 1);
+        showRecipeGridPane.add(preparingTimeLabel, 2, 0, 2, 1);
+        showRecipeGridPane.add(preparingEaseLabel, 2, 1, 2, 1);
+        if (toShow.getLinkedRecipes().size() > 0) {
             showRecipeGridPane.add(seeAlso, 2, 2, 2, 1);
             showRecipeGridPane.add(linkedRecipesInShowRecipe, 2, 3, 1, 1);
             showRecipeGridPane.add(openLinkedRecipe, 3, 3, 1, 1);
         }
-        showRecipeGridPane.add(howToPrepareLabel,0,5,2,1);
+        showRecipeGridPane.add(howToPrepareLabel, 0, 5, 2, 1);
 
         ListView<String> ingredientsInShowRecipeList = new ListView<>();
 
         ObservableList<String> ingredientsInShowRecipeObservableList = FXCollections.observableArrayList();
 
-        for(int i = 0; i < toShow.getSize();i++)
+        for (int i = 0; i < toShow.getSize(); i++)
             ingredientsInShowRecipeObservableList.add(toShow.getIngredient(i).toString());
         ingredientsInShowRecipeList.setItems(ingredientsInShowRecipeObservableList);
 
-        showRecipeGridPane.add(ingredientsInShowRecipeList,0,1,2,3);
+        showRecipeGridPane.add(ingredientsInShowRecipeList, 0, 1, 2, 3);
 
         Button addToShoppingList = new Button(LanguagePackage.getWord("Dodaj brakujące do zakupów"));
         addToShoppingList.setMaxWidth(Double.MAX_VALUE);
@@ -1160,16 +1157,17 @@ public class MainStage extends Application {
             }
         });
 
-        showRecipeGridPane.add(addToShoppingList,0,4,2,1);
+        showRecipeGridPane.add(addToShoppingList, 0, 4, 2, 1);
 
         Tab showRecipeTab = new Tab(toShow.getName());
         showRecipeTab.setClosable(true);
         showRecipeTab.setContent(showRecipeGridPane);
         mainTable.getTabs().add(showRecipeTab);
-        if(WhatToCook.autoNewCard)
-            openLastCard=true;
+        if (WhatToCook.autoNewCard)
+            openLastCard = true;
         drawInterface();
     }
+
     private boolean isFalse(boolean parameters[], int n) {
         for (int i = 0; i < n; i++) {
             if (parameters[i]) {
@@ -1464,13 +1462,13 @@ public class MainStage extends Application {
         mainTable.getSelectionModel().select(newEditMenuTab);
     }
 
-    @SuppressWarnings ("ConstantConditions")
+    @SuppressWarnings("ConstantConditions")
     private void refreshLinkedRecipes() {
         linkedRecipesToggleGroup.getToggles().removeAll();
         RadioButton linkedRecipeButton;
         linkedRecipesGridPane.getChildren().clear();
         String temp;
-        if(markedRecipe!=null) {
+        if (markedRecipe != null) {
             for (int i = 0; i < RecipesList.getRecipe(markedRecipe).getLinkedRecipes().size(); i++) {
                 temp = RecipesList.getRecipe(markedRecipe).getLinkedRecipes().get(i);
                 linkedRecipeButton = new RadioButton(temp);
