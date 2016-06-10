@@ -1445,6 +1445,7 @@ public class MainStage extends Application {
                     cantCreateRecipe.showAndWait();
                 }
             }
+            openLastCard = true;
         });
 
         //DODAWANIE DO GLOWNEGO LAYOUTU
