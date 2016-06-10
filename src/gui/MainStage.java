@@ -769,6 +769,10 @@ public class MainStage extends Application {
                 for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount; i--)
                     mainTable.getTabs().remove(i);
             }
+            for(int i = recipesPane.getTabs().size()-1; i >= 0 ; i --) {
+                recipesPane.getTabs().remove(i);
+            }
+            drawInterface();
         });
 
         MenuItem teamMenuItem = new MenuItem(LanguagePackage.getWord("Autorzy"));
