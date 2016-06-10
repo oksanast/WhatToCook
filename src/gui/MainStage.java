@@ -8,6 +8,8 @@ import core.*;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -903,7 +905,7 @@ public class MainStage extends Application {
                 columns = 2;
             drawInterface(columns);
         });
-
+        drawInterface();
     }
 
     void drawInterface() {
@@ -939,13 +941,17 @@ public class MainStage extends Application {
         if (WhatToCook.interfaceType == 2) {
 
             if (columns == 2) {
+                boolean isMainTableEmpty = mainTable.getTabs().isEmpty();
                 for (int i = recipesPane.getTabs().size() - 1; i >= 0; i--) {
                     Tab recipeTab = recipesPane.getTabs().get(i);
                     if (!mainTable.getTabs().contains(recipeTab))
                         mainTable.getTabs().add(recipeTab);
                     recipesPane.getTabs().remove(recipeTab);
                 }
-                if(mainCardsCount!=0)
+                if(isMainTableEmpty && mainTable.getTabs().size()!=0) {
+                    mainTable.getSelectionModel().select(mainTable.getTabs().size()-1);
+                }
+                if(mainTable.getTabs().size()!=0)
                     mainGridPane.add(mainTable, 0, 0, 2, 1);
                 else
                     mainGridPane.add(infoNoRecipesLabel,0,0,2,1);
@@ -992,7 +998,7 @@ public class MainStage extends Application {
                         openLastCard = false;
                     }
                 }
-                if(mainCardsCount!=0) {
+                if(mainTable.getTabs().size()!=0) {
                     if (recipesPane.getTabs().size() == 0) {
                         mainGridPane.add(mainTable, 0, 0, 1, 1);
                         mainGridPane.add(InfoRightLabel, 1, 0, 1, 1);
@@ -1001,7 +1007,7 @@ public class MainStage extends Application {
                         mainGridPane.add(recipesPane, 1, 0, 1, 1);
                     }
                 }
-                if(mainCardsCount==0) {
+                else {
                     if (recipesPane.getTabs().size() == 0) {
                         mainGridPane.add(infoNoRecipesLabel, 0, 0, 1, 1);
                         mainGridPane.add(InfoRightLabel, 1, 0, 1, 1);
@@ -1048,7 +1054,7 @@ public class MainStage extends Application {
                     openLastCard = false;
                 }
             }
-            if(mainCardsCount!=0) {
+            if(mainCardsCount!=0 || isEditionTurnOn) {
                 if (recipesPane.getTabs().size() == 0) {
                     mainGridPane.add(mainTable, 0, 0, 1, 1);
                     mainGridPane.add(InfoRightLabel, 1, 0, 1, 1);
@@ -1057,12 +1063,13 @@ public class MainStage extends Application {
                     mainGridPane.add(recipesPane, 1, 0, 1, 1);
                 }
             }
-            if(mainCardsCount==0) {
+            if(mainCardsCount==0 && !isEditionTurnOn) {
                 if (recipesPane.getTabs().size() == 0) {
                     mainGridPane.add(infoNoRecipesLabel,0,0,1,1);
                     mainGridPane.add(InfoRightLabel, 1, 0, 1, 1);
                 } else {
-                    mainGridPane.add(recipesPane, 0, 0, 2, 1);
+                    mainGridPane.add(infoNoRecipesLabel,0,0,1,1);
+                    mainGridPane.add(recipesPane, 1, 0, 1, 1);
                 }
             }
 
@@ -1073,7 +1080,7 @@ public class MainStage extends Application {
                     mainTable.getTabs().add(recipeTab);
                 recipesPane.getTabs().remove(recipeTab);
             }
-            if(mainCardsCount!=0)
+            if(mainTable.getTabs().size()!=0)
                  mainGridPane.add(mainTable, 0, 0, 2, 1);
             else
                 mainGridPane.add(infoNoRecipesLabel,0,0,2,1);
@@ -1202,6 +1209,7 @@ public class MainStage extends Application {
         showRecipeGridPane.add(addToShoppingList, 0, 4, 2, 1);
 
         Tab showRecipeTab = new Tab(toShow.getName());
+        showRecipeTab.setOnClosed(event -> drawInterface());
         showRecipeTab.setClosable(true);
         showRecipeTab.setContent(showRecipeGridPane);
         mainTable.getTabs().add(showRecipeTab);
@@ -1265,6 +1273,7 @@ public class MainStage extends Application {
             isEditionTurnOn = false;
             mainTable.getTabs().remove(newEditMenuTab);
             inEdit = null;
+            drawInterface();
         });
 
         TextField recipeNameTextField = new TextField();
@@ -1460,6 +1469,7 @@ public class MainStage extends Application {
                     mainTable.getSelectionModel().select(1);
                     linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
                     inEdit = null;
+                    drawInterface();
                 } else {
                     Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
                     cantCreateRecipe.setTitle(LanguagePackage.getWord("Błąd tworzenia przepisu"));
@@ -1477,6 +1487,7 @@ public class MainStage extends Application {
                     mainTable.getSelectionModel().select(1);
                     linkedRecipesInRecipesDatabaseComboBox.setItems(RecipesList.getObservableList());
                     inEdit = null;
+                    drawInterface();
                 } else {
                     Alert cantCreateRecipe = new Alert(Alert.AlertType.ERROR);
                     cantCreateRecipe.setTitle(LanguagePackage.getWord("Błąd tworzenia przepisu"));
