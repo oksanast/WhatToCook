@@ -1,5 +1,6 @@
 package gui;
 
+import com.sun.javafx.image.impl.ByteIndexed;
 import core.Ingredient;
 import auxiliary.LanguagePackage;
 import core.ToBuyIngredientsList;
@@ -77,7 +78,7 @@ public class ShoppingListStage extends Application {
         Scene mainScene = new Scene(mainBorderPane,400,400);
         shoppingListStage.initModality(Modality.APPLICATION_MODAL);
         shoppingListStage.setScene(mainScene);
-       // mainScene.getStylesheets().add(MainStage.class.getResource("css/style.css").toExternalForm());
+       shoppingListStage.initModality(Modality.APPLICATION_MODAL);
     }
     void refresh() {
         shoppingListList.setItems(ToBuyIngredientsList.getObservableList());

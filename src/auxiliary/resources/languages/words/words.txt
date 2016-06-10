@@ -68,8 +68,8 @@ Zapisz i wyjdź~Save and exit
 Wyjdź bez zapisywania~Exit without saving
 Zobacz również:~Check also:
 Autorzy:~Authors:
-Start~Start
-Reset~Reset
+start~start
+reset~reset
 Wyczyść listę~Clear list
 Eksportuj listę~Export list
 Błąd tworzenia przepisu~Creating recipe error

@@ -13,6 +13,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -655,6 +657,7 @@ public class MainStage extends Application {
         Menu newMenu = new Menu(LanguagePackage.getWord("Nowy"));
 
         MenuItem newRecipe = new MenuItem(LanguagePackage.getWord("Przepis"));
+        newRecipe.setAccelerator(KeyCombination.keyCombination("Ctrl+p"));
         newRecipe.setId("menu");
         newRecipe.setOnAction(event -> {
             if (!isEditionTurnOn) {
@@ -669,8 +672,10 @@ public class MainStage extends Application {
             }
         });
         MenuItem newIngredient = new MenuItem(LanguagePackage.getWord("Składnik"));
+        newIngredient.setAccelerator(KeyCombination.keyCombination("Ctrl+s"));
         newIngredient.setId("menu");
         MenuItem exit = new MenuItem(LanguagePackage.getWord("Wyjście"));
+        exit.setAccelerator(KeyCombination.keyCombination("Ctrl+q"));
         exit.setId("menu");
         exit.setOnAction(event -> System.exit(0));
 
@@ -678,6 +683,7 @@ public class MainStage extends Application {
         exportAllIngredients.setId("menu");
 
         MenuItem settingsMenuItem = new MenuItem(LanguagePackage.getWord("Opcje"));
+        settingsMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+o"));
         settingsMenuItem.setId("menu");
         settingsMenuItem.setOnAction(event -> settingsWindows.refresh());
 
@@ -733,10 +739,13 @@ public class MainStage extends Application {
         cardsMenu.setId("menu");
 
         CheckMenuItem searchingCard = new CheckMenuItem(LanguagePackage.getWord("Wyszukiwanie"));
+        searchingCard.setAccelerator(KeyCombination.keyCombination("Ctrl+1"));
         searchingCard.setId("menu");
         CheckMenuItem recipesDatabaseCard = new CheckMenuItem(LanguagePackage.getWord("Baza Przepisów"));
+        recipesDatabaseCard.setAccelerator(KeyCombination.keyCombination("Ctrl+2"));
         recipesDatabaseCard.setId("menu");
         CheckMenuItem ingredientsCard = new CheckMenuItem(LanguagePackage.getWord("Składniki"));
+        ingredientsCard.setAccelerator(KeyCombination.keyCombination("Ctrl+3"));
         ingredientsCard.setId("menu");
 
         newMenu.getItems().add(newRecipe);
@@ -830,6 +839,7 @@ public class MainStage extends Application {
         viewMenu.getItems().add(closeAllRecipes);
 
         MenuItem shoppingListMenuItem = new MenuItem(LanguagePackage.getWord("Lista Zakupów"));
+        shoppingListMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+l"));
         shoppingListMenuItem.setId("menu");
         shoppingListMenuItem.setOnAction(event -> {
             try {
@@ -840,6 +850,7 @@ public class MainStage extends Application {
         });
 
         MenuItem timeMenuItem = new MenuItem(LanguagePackage.getWord("Minutnik"));
+        timeMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+m"));
         timeMenuItem.setId("menu");
         timeMenuItem.setOnAction(event -> {
             try {
@@ -922,6 +933,10 @@ public class MainStage extends Application {
                     recipesPane.getTabs().remove(recipeTab);
                 }
                 mainGridPane.add(mainTable, 0, 0, 2, 1);
+                if(openLastCard) {
+                    mainTable.getSelectionModel().select(mainTable.getTabs().size()-1);
+                    openLastCard=false;
+                }
             }
             if (columns == 1) {
                 if (isEditionTurnOn) {
@@ -938,6 +953,10 @@ public class MainStage extends Application {
                         mainTable.getSelectionModel().select(mainTableSelection);
                         recipesPane.getSelectionModel().select(0);
                     }
+                    if(openLastCard) {
+                        recipesPane.getSelectionModel().select(recipesPane.getTabs().size()-1);
+                        openLastCard=false;
+                    }
                 } else {
                     boolean recipesPaneEmpty = recipesPane.getTabs().size()==0;
                     int mainTableSelection = mainTable.getSelectionModel().getSelectedIndex();
@@ -951,6 +970,10 @@ public class MainStage extends Application {
                     if(recipesPaneEmpty&&recipesPane.getTabs().size()!=0) {
                         mainTable.getSelectionModel().select(mainTableSelection);
                         recipesPane.getSelectionModel().select(0);
+                    }
+                    if(openLastCard) {
+                        recipesPane.getSelectionModel().select(recipesPane.getTabs().size()-1);
+                        openLastCard=false;
                     }
                 }
                 if (recipesPane.getTabs().size() == 0) {
@@ -977,6 +1000,10 @@ public class MainStage extends Application {
                         mainTable.getSelectionModel().select(mainTableSelection);
                         recipesPane.getSelectionModel().select(0);
                     }
+                    if(openLastCard) {
+                        recipesPane.getSelectionModel().select(recipesPane.getTabs().size()-1);
+                        openLastCard=false;
+                    }
                 } else {
                     boolean recipesPaneEmpty = recipesPane.getTabs().size()==0;
                     int mainTableSelection = mainTable.getSelectionModel().getSelectedIndex();
@@ -990,6 +1017,10 @@ public class MainStage extends Application {
                     if(recipesPaneEmpty&&recipesPane.getTabs().size()!=0) {
                         mainTable.getSelectionModel().select(mainTableSelection);
                         recipesPane.getSelectionModel().select(0);
+                    }
+                    if(openLastCard) {
+                        recipesPane.getSelectionModel().select(recipesPane.getTabs().size()-1);
+                        openLastCard=false;
                     }
                 }
                 if (recipesPane.getTabs().size() == 0) {
@@ -1008,6 +1039,10 @@ public class MainStage extends Application {
                 recipesPane.getTabs().remove(recipeTab);
             }
             mainGridPane.add(mainTable, 0, 0, 2, 1);
+            if(openLastCard) {
+                mainTable.getSelectionModel().select(mainTable.getTabs().size()-1);
+                openLastCard=false;
+            }
         }
         mainLayout.setCenter(mainGridPane);
     }
@@ -1131,6 +1166,8 @@ public class MainStage extends Application {
         showRecipeTab.setClosable(true);
         showRecipeTab.setContent(showRecipeGridPane);
         mainTable.getTabs().add(showRecipeTab);
+        if(WhatToCook.autoNewCard)
+            openLastCard=true;
         drawInterface();
     }
     private boolean isFalse(boolean parameters[], int n) {
@@ -1487,5 +1524,7 @@ public class MainStage extends Application {
     private Label linkedRecipesAmmmount;
 
     private Stage mainStage;
+
+    private boolean openLastCard = false;
 
 }
