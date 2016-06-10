@@ -26,11 +26,11 @@ public class SettingsStage extends Application {
     public void start(Stage primaryStage) throws Exception {
         GridPane mainLayout = new GridPane();
         RowConstraints row = new RowConstraints();
-        row.setPercentHeight(33);
+        row.setPercentHeight(25);
         mainLayout.getRowConstraints().add(row);
         mainLayout.getRowConstraints().add(row);
         mainLayout.getRowConstraints().add(row);
-       // mainLayout.getRowConstraints().add(row);
+        mainLayout.getRowConstraints().add(row);
         ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(50);
         mainLayout.getColumnConstraints().add(column);
@@ -95,7 +95,7 @@ public class SettingsStage extends Application {
         mainLayout.add(languageSelectionComboBox,1,1,1,1);
         mainLayout.add(interfaceTypeLabel,0,2,1,1);
         mainLayout.add(interfaceTypeComboBox,1,2,1,1);
-      //  mainLayout.add(autoNewCardCheckBox,0,3,2,1);
+        mainLayout.add(autoNewCardCheckBox,0,3,2,1);
 
         Scene settingsScene = new Scene(mainLayout, 330, 130);
         settingsStage = new Stage();
@@ -103,6 +103,7 @@ public class SettingsStage extends Application {
         settingsStage.setResizable(false);
         settingsStage.initModality(Modality.WINDOW_MODAL);
         settingsStage.setResizable(false);
+        settingsStage.initModality(Modality.APPLICATION_MODAL);
     }
     void refresh() {
         languageSelectionComboBox.getSelectionModel().select(LanguagePackage.language);

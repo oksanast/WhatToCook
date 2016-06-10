@@ -44,6 +44,7 @@ public class SearchOptionsStage extends Application {
         Scene mainScene = new Scene(mainGridPane,200,100);
         searchOptionsStage.initModality(Modality.APPLICATION_MODAL);
         searchOptionsStage.setScene(mainScene);
+        searchOptionsStage.initModality(Modality.APPLICATION_MODAL);
     }
     void refresh() {
         caseSensitive.selectedProperty().setValue(WhatToCook.caseSensitiveSearch);

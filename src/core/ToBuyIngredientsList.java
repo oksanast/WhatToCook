@@ -37,6 +37,12 @@ public class ToBuyIngredientsList {
     }
     public static void clear() {
         toBuyList.clear();
+        try {
+            PrintWriter writer = new PrintWriter(new File(WhatToCook.path + "/data/toBuyList/shoppingList"));
+            writer.close();
+        } catch (FileNotFoundException ignored) {
+
+        }
     }
 
     public static int size() {
