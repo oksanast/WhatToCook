@@ -101,8 +101,6 @@ public class SettingsStage extends Application {
         settingsStage = new Stage();
         settingsStage.setScene(settingsScene);
         settingsStage.setResizable(false);
-        settingsStage.initModality(Modality.WINDOW_MODAL);
-        settingsStage.setResizable(false);
         settingsStage.initModality(Modality.APPLICATION_MODAL);
     }
     void refresh() {

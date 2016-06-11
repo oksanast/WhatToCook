@@ -137,6 +137,7 @@ public class MainStage extends Application {
 
         Button addLinkedRecipeInRecipesDatabaseButton = new Button(LanguagePackage.getWord("Dodaj Powiązanie"));
         addLinkedRecipeInRecipesDatabaseButton.setMaxWidth(Double.MAX_VALUE);
+       // addLinkedRecipeInRecipesDatabaseButton.setAlignment(Pos.CENTER);
         addLinkedRecipeInRecipesDatabaseButton.setOnAction(event -> {
             if (markedRecipe != null) {
                 //noinspection ConstantConditions
@@ -1562,7 +1563,7 @@ public class MainStage extends Application {
         newEditMenuTab.setContent(mainGridNewEditMenuTab);
         newEditMenuTab.setClosable(false);
         mainTable.getTabs().add(mainCardsCount, newEditMenuTab);
-        mainTable.getSelectionModel().select(newEditMenuTab);
+        drawInterface();
     }
 
     @SuppressWarnings("ConstantConditions")
