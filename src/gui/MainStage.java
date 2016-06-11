@@ -24,9 +24,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import javax.swing.*;
+import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -401,11 +401,19 @@ public class MainStage extends Application {
         IngredientsList.rebuildModel(ingredientsInIngredientsDatabaseList);
 
 
+        HBox addDeleteIngredientInIngredientsDatabaseHBox = new HBox();
+        addDeleteIngredientInIngredientsDatabaseHBox.setAlignment(Pos.CENTER);
+        HBox.setHgrow(addIngredientInIngredientsDatabaseButton, Priority.ALWAYS);
+        HBox.setHgrow(removeIngredientInIngredientsDatabaseButton, Priority.ALWAYS);
+        addDeleteIngredientInIngredientsDatabaseHBox.getChildren().add(addIngredientInIngredientsDatabaseButton);
+        addDeleteIngredientInIngredientsDatabaseHBox.getChildren().add(removeIngredientInIngredientsDatabaseButton);
+        HBox.setMargin(addIngredientInIngredientsDatabaseButton, new Insets(0, 10, 0, 10));
+        HBox.setMargin(removeIngredientInIngredientsDatabaseButton, new Insets(0, 10, 0, 10));
+
         ingredientsDatabaseGridPane.add(ingredientsInIngredientsDatabaseList, 0, 0, 2, 14);
         ingredientsDatabaseGridPane.add(ingredientNameInIngredientsDatabaseLabel, 2, 0, 2, 1);
         ingredientsDatabaseGridPane.add(ingredientNameInIngredientsDatabaseTextField, 2, 1, 2, 1);
-        ingredientsDatabaseGridPane.add(addIngredientInIngredientsDatabaseButton, 2, 2, 1, 1);
-        ingredientsDatabaseGridPane.add(removeIngredientInIngredientsDatabaseButton, 3, 2, 1, 1);
+        ingredientsDatabaseGridPane.add(addDeleteIngredientInIngredientsDatabaseHBox,2,2,2,1);
         ingredientsDatabaseGridPane.add(spareIngredientsInIngredientsDatabaseLabel, 2, 3, 2, 1);
         ingredientsDatabaseGridPane.add(spareIngredientsInIngredientsDatabaseComboBox, 2, 4, 1, 2);
         ingredientsDatabaseGridPane.add(addSpareIngredientInIngredientsDatabaseButton, 3, 4, 1, 1);
@@ -914,14 +922,21 @@ public class MainStage extends Application {
 
     private void drawInterface(int columns) {
         mainStage.setTitle("WhatToCook");
-        mainStage.getIcons().add(new Image("file:data/icon.png"));
+        mainStage.getIcons().add(new Image(MainStage.class.getResourceAsStream("resources/icon.png")));
+        try {
+            URL iconURL = MainStage.class.getResource("resources/icon.png");
+            java.awt.Image image = new ImageIcon(iconURL).getImage();
+            com.apple.eawt.Application.getApplication().setDockIconImage(image);
+        } catch (Exception ignored) {
+
+        }
         GridPane mainGridPane = new GridPane();
         ColumnConstraints mainColumn = new ColumnConstraints();
         mainColumn.setPercentWidth(50);
         mainGridPane.getColumnConstraints().add(mainColumn);
         mainGridPane.getColumnConstraints().add(mainColumn);
 
-        mainGridPane.setPadding(new Insets(0, 15, 15, 10));
+        mainGridPane.setPadding(new Insets(0, 15, 0, 10));
 
         mainGridPane.setHgap(5);
         Label InfoRightLabel = new Label(LanguagePackage.getWord("Tutaj pojawią się otwarte przepisy"));
@@ -942,12 +957,15 @@ public class MainStage extends Application {
 
             if (columns == 2) {
                 boolean isMainTableEmpty = mainTable.getTabs().isEmpty();
-                for (int i = recipesPane.getTabs().size() - 1; i >= 0; i--) {
+                for(int i = 0; i < recipesPane.getTabs().size();i++) {
                     Tab recipeTab = recipesPane.getTabs().get(i);
                     if (!mainTable.getTabs().contains(recipeTab))
                         mainTable.getTabs().add(recipeTab);
-                    recipesPane.getTabs().remove(recipeTab);
                 }
+                for(int i = 0; i < recipesPane.getTabs().size();i++) {
+                    recipesPane.getTabs().remove(i);
+                }
+
                 if(isMainTableEmpty && mainTable.getTabs().size()!=0) {
                     mainTable.getSelectionModel().select(mainTable.getTabs().size()-1);
                 }
@@ -964,12 +982,14 @@ public class MainStage extends Application {
                 if (isEditionTurnOn) {
                     boolean recipesPaneEmpty = recipesPane.getTabs().size() == 0;
                     int mainTableSelection = mainTable.getSelectionModel().getSelectedIndex();
-                    for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount + 1; i--) {
+                    for(int i = mainCardsCount+1; i < mainTable.getTabs().size();i++) {
                         Tab recipeTab = mainTable.getTabs().get(i);
                         recipeTab.setOnClosed(event -> drawInterface());
                         if (!recipesPane.getTabs().contains(recipeTab))
                             recipesPane.getTabs().add(recipeTab);
-                        mainTable.getTabs().remove(recipeTab);
+                    }
+                    for(int i = mainCardsCount+1;i <mainTable.getTabs().size();i++ ) {
+                        mainTable.getTabs().remove(i);
                     }
                     if (recipesPaneEmpty && recipesPane.getTabs().size() != 0) {
                         mainTable.getSelectionModel().select(mainTableSelection);
@@ -982,12 +1002,14 @@ public class MainStage extends Application {
                 } else {
                     boolean recipesPaneEmpty = recipesPane.getTabs().size() == 0;
                     int mainTableSelection = mainTable.getSelectionModel().getSelectedIndex();
-                    for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount; i--) {
+                    for(int i = mainCardsCount; i < mainTable.getTabs().size();i++) {
                         Tab recipeTab = mainTable.getTabs().get(i);
                         recipeTab.setOnClosed(event -> drawInterface());
                         if (!recipesPane.getTabs().contains(recipeTab))
                             recipesPane.getTabs().add(recipeTab);
-                        mainTable.getTabs().remove(recipeTab);
+                    }
+                    for(int i = mainCardsCount;i <mainTable.getTabs().size();i++ ) {
+                        mainTable.getTabs().remove(i);
                     }
                     if (recipesPaneEmpty && recipesPane.getTabs().size() != 0) {
                         mainTable.getSelectionModel().select(mainTableSelection);
@@ -1020,12 +1042,14 @@ public class MainStage extends Application {
             if (isEditionTurnOn) {
                 boolean recipesPaneEmpty = recipesPane.getTabs().size() == 0;
                 int mainTableSelection = mainTable.getSelectionModel().getSelectedIndex();
-                for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount + 1; i--) {
+                for(int i = mainCardsCount+1; i < mainTable.getTabs().size();i++) {
                     Tab recipeTab = mainTable.getTabs().get(i);
                     recipeTab.setOnClosed(event -> drawInterface());
                     if (!recipesPane.getTabs().contains(recipeTab))
                         recipesPane.getTabs().add(recipeTab);
-                    mainTable.getTabs().remove(recipeTab);
+                }
+                for(int i = mainCardsCount+1;i <mainTable.getTabs().size();i++ ) {
+                    mainTable.getTabs().remove(i);
                 }
                 if (recipesPaneEmpty && recipesPane.getTabs().size() != 0) {
                     mainTable.getSelectionModel().select(mainTableSelection);
@@ -1038,12 +1062,14 @@ public class MainStage extends Application {
             } else {
                 boolean recipesPaneEmpty = recipesPane.getTabs().size() == 0;
                 int mainTableSelection = mainTable.getSelectionModel().getSelectedIndex();
-                for (int i = mainTable.getTabs().size() - 1; i >= mainCardsCount; i--) {
+                for(int i = mainCardsCount; i < mainTable.getTabs().size();i++) {
                     Tab recipeTab = mainTable.getTabs().get(i);
                     recipeTab.setOnClosed(event -> drawInterface());
                     if (!recipesPane.getTabs().contains(recipeTab))
                         recipesPane.getTabs().add(recipeTab);
-                    mainTable.getTabs().remove(recipeTab);
+                }
+                for(int i = mainCardsCount;i <mainTable.getTabs().size();i++ ) {
+                    mainTable.getTabs().remove(i);
                 }
                 if (recipesPaneEmpty && recipesPane.getTabs().size() != 0) {
                     mainTable.getSelectionModel().select(mainTableSelection);
@@ -1074,11 +1100,13 @@ public class MainStage extends Application {
             }
 
         } else {
-            for (int i = recipesPane.getTabs().size() - 1; i >= 0; i--) {
+            for(int i = 0; i < recipesPane.getTabs().size();i++) {
                 Tab recipeTab = recipesPane.getTabs().get(i);
                 if (!mainTable.getTabs().contains(recipeTab))
                     mainTable.getTabs().add(recipeTab);
-                recipesPane.getTabs().remove(recipeTab);
+            }
+            for(int i = 0; i < recipesPane.getTabs().size();i++) {
+                recipesPane.getTabs().remove(i);
             }
             if(mainTable.getTabs().size()!=0)
                  mainGridPane.add(mainTable, 0, 0, 2, 1);
@@ -1166,18 +1194,28 @@ public class MainStage extends Application {
         Button openLinkedRecipe = new Button(LanguagePackage.getWord("Otwórz"));
         openLinkedRecipe.setMaxWidth(Double.MAX_VALUE);
         openLinkedRecipe.setAlignment(Pos.CENTER);
+        openLinkedRecipe.setMinWidth(Button.USE_PREF_SIZE);
         openLinkedRecipe.setOnAction(event -> {
             if (linkedRecipesInShowRecipe.getSelectionModel().getSelectedItem() != null) {
                 showRecipe(RecipesList.getRecipe(linkedRecipesInShowRecipe.getSelectionModel().getSelectedItem()));
             }
         });
+
+        HBox seeAlsoInShownRecipehBox = new HBox();
+        seeAlsoInShownRecipehBox.setAlignment(Pos.CENTER);
+        HBox.setHgrow(linkedRecipesInShowRecipe, Priority.ALWAYS);
+        HBox.setHgrow(openLinkedRecipe, Priority.ALWAYS);
+        seeAlsoInShownRecipehBox.getChildren().add(linkedRecipesInShowRecipe);
+        seeAlsoInShownRecipehBox.getChildren().add(openLinkedRecipe);
+        HBox.setMargin(linkedRecipesInShowRecipe, new Insets(0, 10, 0, 10));
+        HBox.setMargin(openLinkedRecipe, new Insets(0, 10, 0, 10));
+
         showRecipeGridPane.add(youWillNeedLabel, 0, 0, 2, 1);
         showRecipeGridPane.add(preparingTimeLabel, 2, 0, 2, 1);
         showRecipeGridPane.add(preparingEaseLabel, 2, 1, 2, 1);
         if (toShow.getLinkedRecipes().size() > 0) {
             showRecipeGridPane.add(seeAlso, 2, 2, 2, 1);
-            showRecipeGridPane.add(linkedRecipesInShowRecipe, 2, 3, 1, 1);
-            showRecipeGridPane.add(openLinkedRecipe, 3, 3, 1, 1);
+            showRecipeGridPane.add(seeAlsoInShownRecipehBox,2,3,2,1);
         }
         showRecipeGridPane.add(howToPrepareLabel, 0, 5, 2, 1);
 
@@ -1500,14 +1538,26 @@ public class MainStage extends Application {
         });
 
         //DODAWANIE DO GLOWNEGO LAYOUTU
+
+        HBox downButtonsInCreatingRecipe = new HBox();
+        downButtonsInCreatingRecipe.setAlignment(Pos.CENTER);
+        HBox.setHgrow(saveAndExitButton, Priority.ALWAYS);
+        HBox.setHgrow(exitWithoutSavingButton, Priority.ALWAYS);
+        downButtonsInCreatingRecipe.getChildren().add(saveAndExitButton);
+        downButtonsInCreatingRecipe.getChildren().add(exitWithoutSavingButton);
+        HBox.setMargin(saveAndExitButton, new Insets(0, 10, 0, 10));
+        HBox.setMargin(exitWithoutSavingButton, new Insets(0, 10, 0, 10));
+
         mainGridNewEditMenuTab.add(recipeNameLabel, 0, 0, 2, 1);
         mainGridNewEditMenuTab.add(recipeNameTextField, 2, 0, 2, 1);
-        mainGridNewEditMenuTab.add(ingredientsInNewEditMenuList, 0, 1, 2, 7);
+        mainGridNewEditMenuTab.add(ingredientsInNewEditMenuList, 0, 1, 2, 8);
         mainGridNewEditMenuTab.add(instructionsNewEditMenuLabel, 0, 8, 4, 1);
         mainGridNewEditMenuTab.add(instructionsNewEditMenuTextArea, 0, 9, 4, 6);
-        mainGridNewEditMenuTab.add(saveAndExitButton, 0, 15, 2, 1);
-        mainGridNewEditMenuTab.add(exitWithoutSavingButton, 2, 15, 2, 1);
-        mainGridNewEditMenuTab.add(newEditMenuTabPane, 2, 1, 2, 7);
+        mainGridNewEditMenuTab.add(downButtonsInCreatingRecipe,0,15,4,1);
+        mainGridNewEditMenuTab.add(newEditMenuTabPane, 2, 1, 2, 8);
+
+        mainGridNewEditMenuTab.setHgap(5);
+        mainGridNewEditMenuTab.setVgap(5);
 
         newEditMenuTab.setContent(mainGridNewEditMenuTab);
         newEditMenuTab.setClosable(false);

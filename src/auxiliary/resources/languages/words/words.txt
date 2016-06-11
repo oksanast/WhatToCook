@@ -103,3 +103,4 @@ Dwie Kolumny~Two Columns
 Adaptacyjnie~Adaptative
 Typ interfejsu~Interface type
 Elementy interfejsu otworzysz z górnego menu programu.~You can open interface elements by using top program menu.
+Podaj nazwę przepisu: ~Insert recipe name:
