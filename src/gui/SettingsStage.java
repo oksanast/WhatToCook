@@ -77,7 +77,7 @@ public class SettingsStage extends Application {
         interfaceTypeComboBox = new ComboBox<>();
         interfaceTypeComboBox.getItems().add(LanguagePackage.getWord("Jedna Kolumna"));
         interfaceTypeComboBox.getItems().add(LanguagePackage.getWord("Dwie Kolumny"));
-        interfaceTypeComboBox.getItems().add(LanguagePackage.getWord("Adaptacyjnie"));
+        interfaceTypeComboBox.getItems().add(LanguagePackage.getWord("Adaptacyjny"));
 
         interfaceTypeComboBox.setOnAction(event -> {
             WhatToCook.interfaceType = interfaceTypeComboBox.getSelectionModel().getSelectedIndex();

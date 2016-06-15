@@ -34,7 +34,7 @@ public class ShoppingListStage extends Application {
         mainBorderPane = new BorderPane();
         shoppingListStage.getIcons().add(new Image("file:data/icon.png"));
 
-        noItemsLabel = new Label("Aby dodać nowe składniki do listy kliknij prawym przyciskiem myszy na otwarty przepis i wybierz \"Dodaj do Zakupów\"");
+        noItemsLabel = new Label(LanguagePackage.getWord("Aby dodać nowe składniki do listy otwórz wybrany przepis i wybierz \"Dodaj do zakupów\""));
         noItemsLabel.setMaxHeight(Double.MAX_VALUE);
         noItemsLabel.setMaxWidth(Double.MAX_VALUE);
         noItemsLabel.setAlignment(Pos.CENTER);
