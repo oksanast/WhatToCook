@@ -105,3 +105,4 @@ Typ interfejsu~Interface type
 Elementy interfejsu otworzysz z górnego menu programu.~You can open interface elements by using top program menu.
 Podaj nazwę przepisu: ~Insert recipe name:
 Aby dodać nowe składniki do listy otwórz wybrany przepis i wybierz "Dodaj do zakupów"~To add new ingredients to that list open recipe and choose "Add to Shopping List"
+Lista Zakupów~Shopping List

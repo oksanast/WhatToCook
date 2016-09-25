@@ -30,7 +30,7 @@ public class ShoppingListStage extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         shoppingListStage = new Stage();
-        shoppingListStage.setTitle("Lista Zakupów");
+        shoppingListStage.setTitle(LanguagePackage.getWord("Lista Zakupów"));
         mainBorderPane = new BorderPane();
         shoppingListStage.getIcons().add(new Image("file:data/icon.png"));
 
@@ -57,6 +57,8 @@ public class ShoppingListStage extends Application {
         exportShoppingList.setOnAction(event -> {
             FileChooser chooseFile = new FileChooser();
             chooseFile.setTitle(LanguagePackage.getWord("Wybierz lokalizację zapisu"));
+            chooseFile.setInitialFileName(LanguagePackage.getWord("Lista Zakupów")  + ".txt");
+            chooseFile.setInitialDirectory(new File(System.getProperty("user.home")));
             File saveFile = chooseFile.showSaveDialog(primaryStage);
             if(saveFile!=null) {
                 try {
