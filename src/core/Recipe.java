@@ -80,12 +80,9 @@ public class Recipe implements Comparable<Recipe>
 
         Recipe that = (Recipe) o;
 
-        if(this.name.equals(that.name) && this.ingredients.equals(that.ingredients) &&
+        return this.name.equals(that.name) && this.ingredients.equals(that.ingredients) &&
                 this.ingredientsAmountAndUnits.equals(that.ingredientsAmountAndUnits) &&
                 this.instructions.equals(that.instructions) &&
-                this.parameters.equals(that.parameters) && this.LinkedRecipes.equals(that.LinkedRecipes))
-            return true;
-        else
-            return false;
+                this.parameters.equals(that.parameters) && this.LinkedRecipes.equals(that.LinkedRecipes);
     }
 }
