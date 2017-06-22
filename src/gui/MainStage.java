@@ -937,7 +937,7 @@ public class MainStage extends Application {
         try {
             URL iconURL = MainStage.class.getResource("resources/icon.png");
             java.awt.Image image = new ImageIcon(iconURL).getImage();
-            com.apple.eawt.Application.getApplication().setDockIconImage(image);
+           // com.apple.eawt.Application.getApplication().setDockIconImage(image);
         } catch (Exception ignored) {
 
         }

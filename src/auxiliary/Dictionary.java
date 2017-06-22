@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Dictionary {
 
     public static void initialize() {
-        Scanner listScanner = new Scanner(new InputStreamReader(Dictionary.class.getResourceAsStream("resources/languages/list")));
+        Scanner listScanner = new Scanner(new InputStreamReader(Dictionary.class.getResourceAsStream("resources/languages/list.txt")));
             while(listScanner.hasNextLine()) {
                 languages.add(listScanner.nextLine());
                 words.add(new ArrayList<>());
