@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="WhatToCook:jar">
+    <output-path>$USER_HOME$/Desktop</output-path>
+    <root id="archive" name="WhatToCook.jar">
+      <element id="module-output" name="WhatToCook" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/data" />
+    </root>
+  </artifact>
+</component>

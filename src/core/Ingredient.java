@@ -1,12 +1,18 @@
 package core;
 
+import java.text.Collator;
+import java.util.Locale;
+
 /**
- * Created by Mateusz on 23.03.2016.
+ * Created by WTC-Team on 23.03.2016.
+ * Project WhatToCook
+ */
+/*
+    IMPLEMENTUJE COMPARABLE W CELU ALFABETYCZNEGO SORTOWANIA SKLADNIKÓW
  */
 public class Ingredient implements Comparable<Ingredient> {
     public Ingredient(String name) {
         this.name = name;
-
     }
 
     public String getName() {
@@ -33,9 +39,10 @@ public class Ingredient implements Comparable<Ingredient> {
     }
 
     private String name;
-
     @Override
     public int compareTo(Ingredient o) {
-        return this.getName().compareTo(o.getName());
+        Collator c = Collator.getInstance(Locale.getDefault());
+        return c.compare(this.getName(),o.getName());
     }
+
 }

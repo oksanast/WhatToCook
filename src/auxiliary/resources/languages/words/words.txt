@@ -1,0 +1,108 @@
+Plik~File
+Opcje~Options
+Edycja~Edit
+Widok~View
+Narzędzia~Tools
+Pomoc~Help
+Nowy~New
+Przepis~Recipe
+Składnik~Ingredients
+Wyjście~Exit
+Eksportuj Składniki~Export Ingredients
+Importuj Składniki~Import Ingredients
+Wyczyść wprowadzone składniki~Clear input ingredients
+Wyczyść wyniki wyszukiwania~Clear search results
+Karty~Cards
+Wyszukiwanie~Searching
+Baza Przepisów~Recipes Database
+Składniki~Ingredients
+Zamknij wszystkie przepisy~Close all cards
+Lista Zakupów~Shopping List
+Minutnik~Timer
+Autorzy~Authors
+Wybierz Składniki~Choose ingredients
+Dodaj składnik~Add ingredient
+Usuń składnik~Delete ingredient
+Importuj~Import
+Eksportuj~Export
+Znalezione przepisy~Found Recipes
+Danie na:~Dish for:
+Śniadanie~Breakfast
+Obiad~Diner
+Kolację~Supper
+Deser~Dessert
+Przekąskę~Snack
+Czas przygotowania:~Preparing time
+Łatwość przygotowania:~Preparing ease
+Szybko~Quick
+Średnio~Average
+Wolno~Slowly
+Łatwe~Easy
+Średnie~Average
+Trudne~Difficult
+Składniki Alternatywne~Alternative ingredients
+Szukaj przepisów~Search recipes
+Wyszukaj~Search
+Opcje Wyszukiwania~Searching options
+Rozróżniaj wielkość liter~Case-Sensitive
+Szukaj w każdym słowie~Search in every world
+Przepisy powiązane:~Linked recipes:
+Dodaj Powiązanie~Add Linking
+Usuń Powiązanie~Delete Linking
+Nowy Przepis~New Recipe
+Edytuj Przepis~Edit Recipe
+Usuń Przepis~Delete Recipe
+Nazwa Składnika:~Ingredient Name
+Dodaj~Add
+Usuń~Delete
+Będziesz potrzebować:~You need
+Dodaj brakujące do zakupów~Add to shopping list
+Przygotowanie:~Preparing
+Parametry~Parameters
+Wybierz składniki~Choose ingredients
+Podaj nazwę przepisu~Input recipe name
+Ilość:~Ammount
+Jednostka:~Unit
+Napisz instrukcję przygotowania posiłku~Type preparing instructions
+Zapisz i wyjdź~Save and exit
+Wyjdź bez zapisywania~Exit without saving
+Zobacz również:~Check also:
+Autorzy:~Authors:
+start~start
+reset~reset
+Wyczyść listę~Clear list
+Eksportuj listę~Export list
+Błąd tworzenia przepisu~Creating recipe error
+Nie można utworzyć nowego przepisu~You can't create a new recipe
+Przepis musi zawierać nazwę, opis i conajmniej jeden składnik~Recipe has to contain name, instructions and at least one ingredient
+Błąd usuwania składnika~Deleting ingredient eroor
+Nie można usunąć składnika~You can't delete ingredient
+Składnik jest wykorzystywany w przepisach na:~Recipes contain ingredient:
+Wybierz przepis do edycji~Choose recipe to edit
+Przepis do edycji należy wybrać z listy powyżej.~You should choose recipe to edit from a list above
+Błąd edycji przepisu~Error with recipe edit
+Nie można edytować przepisu.~You can't edit recipe
+W jednym momencie może być tworzony albo edytowany tylko jeden przepis~You can only edit one recipe at once.
+Błąd usuwania przepisu~Deleting recipe error
+Nie można usunąć przepisu.~You can't delete recipe.
+Przepis podlega aktualnie edycji, a edytowane przepisy nie mogą być usuwane.~Recipe is now being editted.
+W jednym momencie może być tworzony albo edytowany tylko jeden przepis.~Only one recipe can be in edit at once.
+Wybierz lokalizację zapisu~Choose saving location.
+Posiadane składniki.txt~OwnedIngredients.txt
+Wybierz plik z posiadanymi składnikami~Choose file with owned ingredients
+Wybierz lokalizację zapisu~Choose saving location
+Wprowadź składniki~Input Ingredients
+Wybierz język~Select Language
+Zmiany będą widoczne po ponownym uruchomieniu programu~Chanbes will take place after relaunching the application
+Ustawienia~Settings
+Automatyczne przechodzenie do nowej karty~Auto open new card
+Tutaj pojawią się otwarte przepisy~Here you'll find opened recipes
+Otwórz~Open
+Jedna Kolumna~One Column
+Dwie Kolumny~Two Columns
+Adaptacyjny~Adaptative
+Typ interfejsu~Interface type
+Elementy interfejsu otworzysz z górnego menu programu.~You can open interface elements by using top program menu.
+Podaj nazwę przepisu: ~Insert recipe name:
+Aby dodać nowe składniki do listy otwórz wybrany przepis i wybierz "Dodaj do zakupów"~To add new ingredients to that list open recipe and choose "Add to Shopping List"
+Lista Zakupów~Shopping List

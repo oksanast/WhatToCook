@@ -1,151 +1,160 @@
 package core;
 
-import gui.MainWindow;
+import auxiliary.Dictionary;
+import auxiliary.LanguagePackage;
+import gui.MainStage;
+import javafx.application.Application;
+import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * Created by Mateusz on 09.03.2016.s
+ * Created by WTC-Team on 22.05.2016.
+ * Project WhatToCook
  */
-public class WhatToCook implements Runnable {
-
-    public static void main(String[] args) {
-        new WhatToCook();
+public class WhatToCook extends Application {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        whatToCookStage = new MainStage();
+        whatToCookStage.start(primaryStage);
     }
-    public WhatToCook() {
-        selectedLanguagePack = new ArrayList<String>();
-        buildPolishLanguage();
-        buildEnglishLanguage();
-        selectedLanguagePack = polishLanguagePack;
+    public static void main(String args[]) {
+        path = System.getProperty("user.home") + "/Documents/WhatToCook";
+        File resources = new File(path);
+        try {
+            if(!resources.exists()) {
+                resources.mkdir();
+            }
+            if(!new File(path+"/data").exists()) {
+                new File(path+"/data").mkdir();
+            }
+            if(!new File(path+"/data/Ingredients").exists()) {
+                new File(path+"/data/Ingredients").mkdir();
+            }
+            if(!new File(path+"/data/Ingredients/ingredients").exists()) {
+                new File(path+"/data/Ingredients/ingredients").createNewFile();
+            }
+            if(!new File(path+"/data/ownedIngredients").exists()) {
+                new File(path+"/data/ownedIngredients").mkdir();
+            }
+            if(!new File(path+"/data/ownedIngredients/ownedIngredients").exists()) {
+                new File(path+"/data/ownedIngredients/ownedIngredients").createNewFile();
+            }
+            if(!new File(path+"/data/recipes").exists()) {
+                new File(path+"/data/recipes").mkdir();
+            }
+            if(!new File(path+"/data/recipes/linked").exists()) {
+                new File(path+"/data/recipes/linked").mkdir();
+            }
+            if(!new File(path+"/data/recipes/linked/linkedRecipes").exists()) {
+                new File(path+"/data/recipes/linked/linkedRecipes").createNewFile();
+            }
+            if(!new File(path+"/data/toBuyList").exists()) {
+                new File(path+"/data/toBuyList").mkdir();
+            }
+            if(!new File(path+"/data/toBuyList/shoppingList").exists()) {
+                new File(path+"/data/toBuyList/shoppingList").createNewFile();
+            }
+            if(!new File(path+"/data/cfg").exists()) {
+                new File(path+"/data/cfg").createNewFile();
+                PrintWriter createCfg = new PrintWriter(new File(path+"/data/cfg"));
+                createCfg.println("searchInEveryWord=true");
+                createCfg.println("caseSensitive=false");
+                createCfg.println("language=Polski");
+                createCfg.println("autoNewCard=true");
+                createCfg.println("interfaceType=" + WhatToCook.interfaceType);
+                createCfg.close();
+            }
 
-        RecipesList.initialize();
-        IngredientsList.initialize();
-        IngredientsList.loadIngredients();
 
-        Scanner in;
-        try
-        {
-            in = new Scanner(new File("src/cfg"));
-            String language = in.next();
-            if(language.equals("english"))
-                selectedLanguagePack = englishLanguagePack;
-            if(language.equals("polski"))
-                selectedLanguagePack = polishLanguagePack;
-            MainWindow.getToNewCard = in.nextBoolean();
-            System.out.println(MainWindow.getToNewCard);
+        } catch (SecurityException | java.io.IOException e) {
+            Alert fatalError = new Alert(Alert.AlertType.ERROR);
+            fatalError.setTitle("Błąd uruchamiania programu");
+            fatalError.setHeaderText("Program nie może zostać uruchomiony z braku praw do zapisu w folderze domowym użytkownika");
+            fatalError.setContentText("Przywróć sobie uprawnienia do zapisu w swoim folderze domowym, o ścieżce: " + path);
+            System.exit(0);
+        }
+        try {
+            Scanner in = new Scanner(new File(WhatToCook.path + "/data/cfg"));
+            try {
+                String line;
+                String dividedLine[];
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                searchInEveryWord = dividedLine[1].equals("true");
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                caseSensitiveSearch = dividedLine[1].equals("true");
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                LanguagePackage.language = dividedLine[1];
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                autoNewCard = dividedLine[1].equals("true");
+                line = in.nextLine();
+                dividedLine = line.split("=");
+                interfaceType = Integer.parseInt(dividedLine[1]);
+                in.close();
+            } catch (NoSuchElementException e) {
+                PrintWriter out = new PrintWriter(new File(WhatToCook.path + "/data/cfg"));
+                out.println("searchInEveryWord=" + searchInEveryWord);
+                out.println("caseSensitive=" + caseSensitiveSearch);
+                out.println("language=" + LanguagePackage.language);
+                out.println("autoNewCard=" + autoNewCard);
+                out.println("interfaceType=" + "Adaptacyjnie");
+                out.close();
+
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Concig file not found, program will run with default settings");
+        }
+        Dictionary.initialize();
+        launch(args);
+    }
+
+    public static String endl = System.lineSeparator();
+
+    public static MainStage whatToCookStage;
+
+    public static void exportSettings() {
+        try {
+            PrintWriter out = new PrintWriter(new File(WhatToCook.path + "/data/cfg"));
+            out.println("searchInEveryWord=" + searchInEveryWord);
+            out.println("caseSensitive=" + caseSensitiveSearch);
+            out.println("language=" + LanguagePackage.language);
+            out.println("autoNewCard=" + autoNewCard);
+            out.println("interfaceType=" + WhatToCook.interfaceType);
+            out.close();
+        } catch (FileNotFoundException ignored) {
 
         }
-        catch (FileNotFoundException e)
-        {
+
+    }
+    public static void exportSettings(String nextLanguage) {
+        try {
+            PrintWriter out = new PrintWriter(new File(WhatToCook.path + "/data/cfg"));
+            out.println("searchInEveryWord=" + searchInEveryWord);
+            out.println("caseSensitive=" + caseSensitiveSearch);
+            out.println("language=" + nextLanguage);
+            out.println("autoNewCard=" + autoNewCard);
+            out.println("interfaceType=" + WhatToCook.interfaceType);
+            out.close();
+        } catch (FileNotFoundException ignored) {
 
         }
-        catch (NoSuchElementException e)
-        {
-
-        }
-
-        frame = new MainWindow();
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
-        new Thread(this).start();
-    }
-
-
-
-
-    public void run()
-    {
 
     }
-    private void buildEnglishLanguage()
-    {
-        englishLanguagePack = new ArrayList<String>();
-        englishLanguagePack.add("File");
-        englishLanguagePack.add("Exit");
-        englishLanguagePack.add("Edit");
-        englishLanguagePack.add("Clear inserted ingredients");
-        englishLanguagePack.add("Clear search results");
-        englishLanguagePack.add("Help");
-        englishLanguagePack.add("Options");
-        englishLanguagePack.add("About");
-        englishLanguagePack.add("Search");
-        englishLanguagePack.add("Recipes Database");
-        englishLanguagePack.add("Insert ingredients");
-        englishLanguagePack.add("Choose ingredients:");
-        englishLanguagePack.add("Add ingredients");
-        englishLanguagePack.add("Remove ingredients");
-        englishLanguagePack.add("Founds receipes");
-        englishLanguagePack.add("Search for receipes");
-        englishLanguagePack.add("Search");
-        englishLanguagePack.add("New Recipe");
-        englishLanguagePack.add("Edit Selected Recipe");
-        englishLanguagePack.add("Insert Recipe Name");
-        englishLanguagePack.add("Write making instrictions below");
-        englishLanguagePack.add("Save and Exit");
-        englishLanguagePack.add("Exit without saving");
-        englishLanguagePack.add("Close the Recipe");
-        englishLanguagePack.add("Auto-Move to the new tab");
-        englishLanguagePack.add("Language");
-        englishLanguagePack.add("General");
-        englishLanguagePack.add("Ingredients");
-        englishLanguagePack.add("Ingredient Name:");
-        englishLanguagePack.add("Add");
-        englishLanguagePack.add("Remove");
-        englishLanguagePack.add("Remove recipe");
-        englishLanguagePack.add("Check input ingredients, name and preparing instructions. Maybe the same recipe is already in the database");
-        englishLanguagePack.add("Recipe Error");
-        englishLanguagePack.add("Insert recipe name:");
-    }
 
-    private void buildPolishLanguage()
-    {
-        polishLanguagePack = new ArrayList<String>();
-        polishLanguagePack.add("Plik");
-        polishLanguagePack.add("Zakończ");
-        polishLanguagePack.add("Edycja");
-        polishLanguagePack.add("Wyczyść wprowadzone składniki");
-        polishLanguagePack.add("Wyczyść wyniki wyszukiwania");
-        polishLanguagePack.add("Pomoc");
-        polishLanguagePack.add("Opcje");
-        polishLanguagePack.add("O Programie");
-        polishLanguagePack.add("Wyszukiwanie");
-        polishLanguagePack.add("Baza Przepisów");
-        polishLanguagePack.add("Wprowadź składniki");
-        polishLanguagePack.add("Wybierz składniki:");
-        polishLanguagePack.add("Dodaj składnik");
-        polishLanguagePack.add("Usuń składnik");
-        polishLanguagePack.add("Znalezione przepisy");
-        polishLanguagePack.add("Szukaj przepisów");
-        polishLanguagePack.add("Wyszukaj");
-        polishLanguagePack.add("Nowy Przepis");
-        polishLanguagePack.add("Edytuj Wybrany Przepis");
-        polishLanguagePack.add("Podaj nazwę przepisu");
-        polishLanguagePack.add("Napisz instrukcję przygotowania posiłku");
-        polishLanguagePack.add("Zapisz i wyjdź");
-        polishLanguagePack.add("Wyjdź bez Zapisywania");
-        polishLanguagePack.add("Zamknij przepis");
-        polishLanguagePack.add("Automatyczne przechodzenie do nowej karty");
-        polishLanguagePack.add("Język");
-        polishLanguagePack.add("Ogólne");
-        polishLanguagePack.add("Składniki");
-        polishLanguagePack.add("Nazwa Składnika:");
-        polishLanguagePack.add("Dodaj");
-        polishLanguagePack.add("Usuń");
-        polishLanguagePack.add("Usuń przepis");
-        polishLanguagePack.add("Sprawdź czy podałeś składniki, nazwę i instrukcję przygotowania. Być może taki przepis już jest w bazie");
-        polishLanguagePack.add("Błąd Przepisu");
-        polishLanguagePack.add("Podaj nazwę przepisu:");
-    }
-    public static ArrayList<String> polishLanguagePack;
-    public static ArrayList<String> englishLanguagePack;
-    public static ArrayList<String> selectedLanguagePack;
-    public static MainWindow frame;
+    //ZMIENNE KONFIGURACYJNE
+    public static boolean caseSensitiveSearch = true;
+    public static boolean searchInEveryWord = false;
+    public static boolean autoNewCard = true;
 
-    //public static RecipesList recipesDatabase;
+    public static int interfaceType;
+
+    public static String path = "";
 }
